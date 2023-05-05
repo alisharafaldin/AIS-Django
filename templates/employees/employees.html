@@ -1,0 +1,266 @@
+{% extends 'base.html' %}
+{% load static %} 
+{% block title %} | Employees {% endblock %}
+{% block content %}
+<div class="content-wrapper">
+  <div class="main-title">
+    <h4 class="form-group col-md-9">جميع الموظفين</h4>
+  </div>
+  <form method="GET" class="form-inline my-2 my-lg-0">
+    <button
+      type="button"
+      class="btn btn-main"
+      data-toggle="modal"
+      data-target="#staticBackdrop"
+    >
+      إضافة موظف جديد
+    </button>
+    <button class="btn btn-main" type="submit">
+      بحث
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+    <a href="{% url 'employees' %}" class="btn btn-main" type="submit">
+      إعادة تعيين
+      <i class="fa-solid fa-rotate-right"></i>
+    </a>
+    <input
+      class="form-control mr-sm-2 remove-outline"
+      name="search_emp"
+      placeholder="بحث بالإسم"
+    />
+    <input
+      class="form-control mr-sm-2 remove-outline"
+      name="search_iqama"
+      placeholder="بحث برقم الحدود"
+    />
+    <input
+      class="form-control mr-sm-2 remove-outline"
+      name="search_border"
+      placeholder="بحث برقم الإقامة"
+    />
+    <input
+      class="form-control mr-sm-2 remove-outline"
+      name="search_company"
+      placeholder="تصفية بالشركة"
+    />
+    <!-- <div class="form-control mr-sm-2 remove-outline"name="search_company">{{emp_form.companyID}}</div> -->
+  </form>
+  <div class="content">
+    <div class="form-inline my-2 my-lg-0"></div>
+
+    <p class="sub-title">إجمالي عدد الموظفين : {{emp_count.count}}</p>
+    <p class="sub-title">
+      إجمالي الموظفين على رأس العمل : {{emp_workingStatus}}
+    </p>
+    <br /><br />
+    <!-- Start Search -->
+    <br />
+    <!-- <form action="{% url 'employees' %}" class="form-inline my-2 my-lg-0">
+      <div class="btn-group" role="group">
+        <button class="btn btn-warning my-2 my-sm-0" type="submit">تنفيذ بحث</button>
+        <input class="form-control mr-sm-2 remove-outline" name="search_iqama" type="search" placeholder="بحث برقم الإقامة" aria-label="Search">
+      </div>   
+    </form> -->
+    <!-- End Search -->
+
+    <!-- Start Modal -->
+    <div
+      class="modal fade"
+      id="staticBackdrop"
+      data-backdrop="static"
+      data-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body">
+            <!-- Start Modal Countries -->
+            {% include 'partials/_alerts.html' %}
+            <form method="POST">
+              <div class="form-row main-title">
+                <h5 class="form-group col-md-9" id="staticBackdropLabel">
+                  إضافة موظف جديد
+                </h5>
+                <button type="submit" name="btnempsave" class="btn btn-save">
+                  إضافة
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  إلغاء
+                </button>
+              </div>
+              <br />
+              {% csrf_token %}
+              <h6 style="font-weight: bold">الإسم الكامل - عربي</h6>
+              <div class="form-row">
+                <div class="form-group col-md-3">{{emp_form.f_Name_ar}}</div>
+                <div class="form-group col-md-3">{{emp_form.s_Name_ar}}</div>
+                <div class="form-group col-md-3">{{emp_form.t_Name_ar}}</div>
+                <div class="form-group col-md-3">{{emp_form.fo_Name_ar}}</div>
+              </div>
+              <h6 style="font-weight: bold">الإسم الكامل - إنجليزي</h6>
+              <div class="form-row">
+                <div class="form-group col-md-3">{{emp_form.f_Name_en}}</div>
+                <div class="form-group col-md-3">{{emp_form.s_Name_en}}</div>
+                <div class="form-group col-md-3">{{emp_form.t_Name_en}}</div>
+                <div class="form-group col-md-3">{{emp_form.fo_Name_en}}</div>
+              </div>
+              <!-- تاريخ الميلا - الجنس - الجنسية - الحالة الإجتماعية -->
+              <div class="form-row">
+                <div class="form-group col-md-3">{{emp_form.dateOfBirth}}</div>
+                <div class="form-group col-md-3">{{emp_form.genderID}}</div>
+                <div class="form-group col-md-3">
+                  {{emp_form.nationalityID}}
+                </div>
+                <div class="form-group col-md-3">
+                  {{emp_form.socialStatusID}}
+                </div>
+              </div>
+              <!-- رقم الجواز - تاريخ إنتهاء الجواز - تاريخ الدخول - رقم الحدود -->
+              <div class="form-row">
+                <div class="form-group col-md-3">
+                  {{emp_form.passportNumber}}
+                </div>
+                <div class="form-group col-md-3">
+                  {{emp_form.passportExpiryDate}}
+                </div>
+                <div class="form-group col-md-3">{{emp_form.enteryDate}}</div>
+                <div class="form-group col-md-3">{{emp_form.borderNumber}}</div>
+              </div>
+              <!-- الكفيل - الشركة - رقم التأشيرة - رقم مكتب العمل -->
+              <div class="form-row">
+                <div class="form-group col-md-3">{{emp_form.visaNumber}}</div>
+                <div class="form-group col-md-3">{{emp_form.sponserID}}</div>
+                <div class="form-group col-md-3">{{emp_form.companyID}}</div>
+                <div class="form-group col-md-3">
+                  {{emp_form.businessOfficeNumber}}
+                </div>
+              </div>
+              <!-- رقم الإقامة - إنتهاء التأمين الطبي - تاريخ إصدار الإقامة - تاريخ الإنتهاء -->
+              <div class="form-row">
+                <div class="form-group col-md-3">{{emp_form.iqamaNumber}}</div>
+                <div class="form-group col-md-3">
+                  {{emp_form.iqamaReleaseDate}}
+                </div>
+                <div class="form-group col-md-3">
+                  {{emp_form.iqamaExpiredDate}}
+                </div>
+                <div class="form-group col-md-3">
+                  {{emp_form.medicalInsuranceExpirDate}}
+                </div>
+              </div>
+              <h4>معلومات العمل</h4>
+              <!-- تاريخ بداية العمل - المهنة - التخصص - حالة العمل -->
+              <div class="form-row">
+                <div class="form-group col-md-3">
+                  {{emp_form.workStartingDate}}
+                </div>
+                <div class="form-group col-md-3">{{emp_form.workTradeID}}</div>
+                <div class="form-group col-md-3">
+                  {{emp_form.workSpecialtyID}}
+                </div>
+                <div class="form-group col-md-3">
+                  {{emp_form.workingStatusID}}
+                </div>
+              </div>
+              <!-- تاريخ إنتهاء العمل - راتب التأمينات - راتب العقد - إضافي ثابت -->
+              <div class="form-row">
+                <div class="form-group col-md-3">
+                  {{emp_form.salaryInsurance}}
+                </div>
+                <div class="form-group col-md-3">
+                  {{emp_form.contractSalary}}
+                </div>
+                <div class="form-group col-md-3">{{emp_form.fixedExtra}}</div>
+                <div class="form-group col-md-3">
+                  {{emp_form.endDateOfService}}
+                </div>
+              </div>
+              <!-- البنك - رقم الحساب - رقم الجوال -->
+              <div class="form-row">
+                <div class="form-group col-md-3">{{emp_form.bankID}}</div>
+                <div class="form-group col-md-6">
+                  {{emp_form.accountNumber}}
+                </div>
+                <div class="form-group col-md-3">{{emp_form.mobileNumber}}</div>
+              </div>
+              <h4>معلومات الوثائق</h4>
+              <!-- التأمين الطبي - نسخة مقيم - فحص كرونا - توكلنا - صحتي -->
+              <div class="form-row">
+                <div class="form-group col-md-3">
+                  {{emp_form.medicalInsurance}}
+                </div>
+                <div class="form-group col-md-3">{{emp_form.muqeemCopy}}</div>
+                <div class="form-group col-md-3">{{emp_form.coronaCheck}}</div>
+                <div class="form-group col-md-3">{{emp_form.tawaklna}}</div>
+                <div class="form-group col-md-3">{{emp_form.sahaty}}</div>
+              </div>
+              <!-- صورة الموظف - رابط المستندات - ملاحظات -->
+              <div class="form-row">
+                <div class="form-group col-md-3">{{emp_form.emp_Photo}}</div>
+                <div class="form-group col-md-3">{{emp_form.documentLink}}</div>
+                <div class="form-group col-md-3">{{emp_form.coronaCheck}}</div>
+                <div class="form-group col-md-3">{{emp_form.notes}}</div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Modal -->
+
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">الإسم</th>
+          <th scope="col">نوع الهوية</th>
+          <th scope="col">رقم الهوية</th>
+          <th scope="col">السكن</th>
+          <th scope="col">رقم الجوال</th>
+          <th scope="col">المستندات</th>
+          <th scope="col">تعديل</th>
+          <th scope="col">طباعة</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for emp in all_emp %}
+        <tr>
+          <!-- لعمل ارقام تسلسلة -->
+          <th scope="row">{{forloop.counter}}</th>
+          <!-- تفاصيل الجدول -->
+          <td>{{emp.f_Name_ar}}</td>
+          <td>{{emp.typeID}}</td>
+          <td>{{emp.id_number}}</td>
+          <td>{{emp.detailsAddress}}</td>
+          <td>{{emp.mobileNumber}}</td>
+          <td>
+            {% if emp.documentLink %}
+            <a href="{{emp.documentLink}}" target="blank">رابط المستندات</a>
+            {% else %}
+            <a style="color: brown">لا يوجد مستندات</a>
+            {% endif %}
+          </td>
+          <td>
+            <a class="btn-link" href="{% url 'update_emp' emp.id %}">
+              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+            </a>
+          </td>
+          <td>
+            <a href="{% url 'employee' emp_id=emp.id %}" class="btn-link">
+              <i class="fa-sharp fa-solid fa-print"></i>
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

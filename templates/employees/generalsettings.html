@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} | Cart {% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+    <h4 class="main-title">الشاشة الرئيسة</h4>
+    <div class="content">
+        <a class="btn btn-main" href="{% url 'employees' %}">معلومات الموظفين</a>
+        <a class="btn btn-main" href="{% url 'countrie' %}">الدول</a>
+        <a class="btn btn-main" href="{% url 'gender' %}">الجنس</a>
+        <a class="btn btn-main" href="{% url 'sponser' %}">الكفيل</a>
+        <hr>
+    </div>
+</div>
+{% endblock content %}

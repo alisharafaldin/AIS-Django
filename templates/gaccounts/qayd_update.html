@@ -1,0 +1,84 @@
+{% extends 'base.html' %} {% load static %} {% block title %} | Accounts Update
+{% endblock %} {% block content %}
+<div class="content-wrapper">
+  <h4 class="main-title">تعديل القيد : {{qayd_form.id}}</h4>
+  <div class="content">
+    <br />
+    <form method="POST" >
+      {% csrf_token %} 
+      {% include 'partials/_alerts.html' %}
+      <button type="submit" class="btn btn-save">حفظ التعديل</button>
+      <a href="{% url 'qayd_all' %}" class="btn btn-close">إلغاء</a>
+      <div class="form-row">
+        <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
+          <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">رقم القيد</h6>
+            <div class="form-group col-md-6">{{qayd_form.id}}</div>
+          </div>
+          <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">تفاصيل القيد</h6>
+            <div class="form-group col-md-6">{{qayd_form.details}}</div>
+          </div>
+          <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">المستخدم</h6>
+            <div class="form-group col-md-6">{{qayd_form.userID}}</div>
+          </div>
+          <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">التاريخ</h6>
+            <div class="form-group col-md-6">{{qayd_form.dateQayd}}</div>
+          </div>
+          <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">العملة</h6>
+            <div class="form-group col-md-6">{{qayd_form.currencyID}}</div>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
+          <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">الوصف</h6>
+            <div class="form-group col-md-6">{{qayd_form.desQayd}}</div>
+          </div>
+          <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">المرفقات</h6>
+            <div class="form-group col-md-6">{{qayd_form.attachments}}</div>
+          </div>
+        </div>
+      </div>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <!-- <th scope="col">رقم القيد</th> -->
+            <th scope="col">الحساب</th>
+            <th scope="col">مدين</th>
+            <th scope="col">دائن</th>
+            <th scope="col">الوصف</th>
+            <th scope="col">المشروع</th>
+            <th scope="col">الموظف</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <!-- لعمل ارقام تسلسلة -->
+            <th scope="row">{{forloop.counter}}</th>
+            <!-- تفاصيل الجدول -->
+            <!-- <td>{{ qd_form.accountID }}</td> -->
+            <!-- <td>{{ qd_form.debit }}</td> -->
+            <!-- <td>{{ qd_form.credit }}</td> -->
+            <!-- <td>{{ qd_form.desQaydDetails }}</td> -->
+            <!-- <td>{{ qd_form.projectID }}</td> -->
+            <!-- <td>{{ qd_form.empID }}</td> -->
+          </tr>
+        </tbody>
+        <tbody>
+          <tr>
+            <td></td>
+            <th>المجموع</th>
+            <th>مجموع مدين : 0.00</th>
+            <th>مجموع الدائن : 0.00</th>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+</div>
+{% endblock %}

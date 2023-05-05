@@ -1,0 +1,94 @@
+{% extends 'base.html' %} 
+{% block title %} | Signin{% endblock %} 
+{% block content %}
+<!-- Start Signin -->
+<div class="login-box">
+  <div class="login-logo">
+    <a href="{% url 'index' %}"> <b>الإبداع لنظم المعلومات</b>LTE </a>
+  </div>
+  <!-- /.login-logo -->
+  <div class="card">
+    <div class="card-body login-card-body">
+      <p class="login-box-msg">Sign in to start your session</p>
+      {% if request.user.is_authenticated %}
+      <h4 class="alert alert-warning">
+        Welcome, <strong>{{request.user.username}} </strong> you are now logged
+        in
+        <a class="text-center" href="{% url 'logout' %}">logout</a>
+      </h4>
+      {% else %}
+      <form method="POST">
+        {% csrf_token %}
+        {% include 'partials/_alerts.html' %}
+        <hr />
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            class="form-control"
+            name="user"
+            placeholder="Username"
+            required
+          />
+          <div class="input-group-text">
+            <span class="fas fa-envelope"></span>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input
+            type="password"
+            class="form-control"
+            name="pass"
+            placeholder="Password"
+          />
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            <div class="icheck-primary">
+              <label for="rememberme">Remember Me</label>
+              <input
+                type="checkbox"
+                checked
+                name="rememberme"
+                id="inputTerms"
+              />
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-4">
+            <button
+              type="submit"
+              name="btnlogin"
+              class="btn btn-primary btn-block btn-flat"
+            >
+              Sign In
+            </button>
+          </div>
+        </div>
+      </form>
+      <div class="social-auth-links text-center mb-3">
+        <p>- OR -</p>
+        <a href="#" class="btn btn-block btn-primary">
+          <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
+        </a>
+        <a href="#" class="btn btn-block btn-danger">
+          <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
+        </a>
+      </div>
+      <!-- /.social-auth-links -->
+      <p class="mb-1"><a href="#">I forgot my password</a></p>
+      <p class="mb-0">
+        <a href="register.html" class="text-center"
+          >Register a new membership</a
+        >
+      </p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+<!-- End Signin -->
+{% endblock %}

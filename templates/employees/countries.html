@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} | Countries {% endblock %}
+{% block content %}
+<div class="container p-5 my-5 rounded border border-warning">
+  <h1 class="text-center">معلومات الدول</h1>
+  <br>
+  <br>
+  <!-- Start Modal Countries -->
+  <form method="POST">
+    {% csrf_token %}
+    {% include 'partials/_alerts.html' %}
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="inputCountryName_ar">إسم الدولة عربي</label>
+        <input type="text" class="form-control" name="countryName_ar" id="inputCountryName_ar" required value="{{countryName_ar}}">
+      </div>
+      <div class="form-group col-md-4">
+          <label for="inputCountryName_en">إسم الدولة إنجليزي</label>
+          <input type="text" class="form-control" name="countryName_en" id="inputCountryName_en" required value="{{countryName_en}}">
+        </div>
+        <div class="form-group col-md-2">
+          <label for="inputCode">رمز الدولة</label>
+          <input type="text" class="form-control" name="code" id="inputCode" placeholder="" required value="{{code}}">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputCallKey">مفتاح الإتصال</label>
+        <input type="text" class="form-control" name="callKey" id="inputCallKey" placeholder="" required value="{{callKey}}">
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="inputNationality">الجنسية</label>
+          <input type="text" class="form-control" name="nationality" id="inputNationality" placeholder="" required value="{{nationality}}">
+        </div>
+      </div>
+      <button type="submit" name="btnsave" class="btn btn-warning">إضافة</button>
+      <a href="{% url 'index' %}" class="btn btn-secondary">الرئيسية</a>
+  </form>       
+  <hr>  
+  <h5>All Countries</h5> 
+  <table class="table table-hover">
+      <thead>
+          <tr>
+          <th scope="col">#</th>
+          <th scope="col">إسم الدولة عربي</th>
+          <th scope="col">إسم الدولة إنجليزي</th>
+          <th scope="col">رمز الدولة</th>
+          <th scope="col">مفتاح الإتصال</th>
+          <th scope="col">تسمية الجنسية</th>
+          <th scope="col">تعديل</th>
+          <th scope="col">حذف</th>
+          </tr>
+      </thead>
+      <tbody>
+      {% for countrie in all_countrie %}
+      <tr>
+          <!-- لعمل ارقام تسلسلة -->
+          <th scope="row">{{forloop.counter}}</th>
+          <!-- تفاصيل الجدول -->
+          <td>{{countrie.countryName_ar}}</td>
+          <td>{{countrie.countryName_en}}</td>
+          <td>{{countrie.code}}</td>
+          <td>{{countrie.callKey}}</td>
+          <td>{{countrie.nationality}}</td>
+          <td>
+            <a href="{% url 'edit_countrie' countrie_id=countrie.id %}" class="btn btn-info btn-sm" name="btnmodel" data-target="#edit_gender" data-toggle="modal">تعديل</a>
+          </td>
+          <td>
+            <a href="{% url 'delete_countrie' countrie.id%}" class="btn btn-danger btn-sm">حذف</a>
+          </td>
+
+      </tr>
+      {% endfor %}
+      </tbody>
+  </table>
+  <div class="modal fade " id="countries" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">  
+      <div class="modal-dialog modal-dialog-centered">   
+      <div class="modal-content">
+          <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">الدول</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+          </div>
+          <div class="modal-body">
+
+          </div>
+          <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnclose">Close</button>
+          <button onclick="addtocart()" class="btn btn-warning" >Confirm</button>
+          <a href="{% url 'cart' %}" id="toCart" class="btn btn-warning" >To Cart</a>
+          </div>
+      </div>
+      </div>
+  </div>
+  <!-- End Modal Countries -->
+ <script>
+    function addtocart(){
+      document.getElementById('toCart').click();
+      document.getElementById('btnclose').click();
+      document.getElementById('frmaddtocart').submit();
+    }
+  </script>
+</div>
+{% endblock content %}

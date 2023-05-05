@@ -1,0 +1,177 @@
+*{
+    direction: rtl !important;
+}
+.layout-fixed .main-sidebar {
+    right: 0;  
+    position: fixed;
+    background: var(--mainColor);
+    color: #ffff !important;
+    font-weight: bold;
+    border-left: solid 4px var(--subColor);
+}
+.brand-image {
+    float: right;
+}
+.content-wrapper, .main-footer, .main-header {
+    margin-left: 0px;
+    margin-right: 250px;
+}
+.mr-auto-navbav{
+    margin-right: auto!important;
+}
+.navbar-expand .navbar-nav .nav-link {
+    padding-right: 1rem;
+    padding-left: 1rem;
+}
+
+[class*=icheck-]>input:first-child:checked+input[type=hidden]+label::after, 
+[class*=icheck-]>input:first-child:checked+label::after {
+    right: 15px;
+    left: auto;
+}
+.nav-sidebar .nav-link>.right, 
+.nav-sidebar .nav-link>p>.right {
+    left: 1rem;
+    right: auto;
+}
+.nav-sidebar .nav-link>.right:nth-child(2), 
+.nav-sidebar .nav-link>p>.right:nth-child(2) {
+    left: 2.2rem;
+    right: auto;
+}
+.small-box .icon>i {
+    left: 15px;
+    right: auto;
+}
+@media (min-width: 992px){
+    .sidebar-mini.sidebar-collapse .content-wrapper, .sidebar-mini.sidebar-collapse .main-footer, .sidebar-mini.sidebar-collapse .main-header {
+        margin-right: 4.6rem!important;
+    }
+    .sidebar-mini.sidebar-collapse .content-wrapper, .sidebar-mini.sidebar-collapse .main-footer, .sidebar-mini.sidebar-collapse .main-header {
+        margin-right: 4.6rem!important;
+        margin-left: 0!important;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .main-sidebar, .main-sidebar::before {
+        box-shadow: none !important;
+        margin-right: -250px;
+    }
+
+    .content-wrapper, .content-wrapper::before, .main-footer, .main-footer::before, .main-header, .main-header::before {
+        margin-right: 0;
+    }
+
+    .sidebar-open .main-sidebar, .sidebar-open .main-sidebar::before {
+        margin-right: 0;
+    }
+}
+
+
+
+/* استايل  */
+:root{
+    --mainColor: #243743 !important;
+    --subColor: #28b78d;
+    --sub2Color: #a0a9ae;
+    --BackgroundColor-Main: #28b78d !important;
+    --BackgroundColor-Sub: #efefef !important;
+    --mainTitle: #000000;
+    --subTitle: #10171a;
+    --subTitleContent: #83888a;
+    --bgC-btn-Main: #28b78d;
+    --bgC-btn-Sub: #a0a9ae;
+    --borderColor: #a0a9ae;
+  }
+.has-treeview:hover{
+  color: var(--mainColor) !important;
+}
+.active{
+  color: var(--mainColor);
+}
+.brand-link-image{
+  width: 125px !important;
+  margin-right: 21% !important;
+}
+.card-img{
+  width: 100%;
+}
+html, body{
+    direction: rtl;
+    text-align: right;
+    height: 100%;
+    width: 100%;
+  }
+.container{
+    border: solid var(--borderColor) 1px;
+    /* margin: 5px; */
+    padding: 0px !important;
+    border-top-right-radius: 10px;
+  
+  }
+  .main-title{
+    background: var(--mainColor) !important;
+    border-top-right-radius: 5px;
+    padding: 10px;
+    padding-right: 20px;
+    color: #fff;
+    font-weight: bold;
+    border-top: var(--subColor) solid;
+  }
+  .content {
+    margin: 15px;
+  }
+  .btn{
+    padding: 6px;
+    margin: 5px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #fff;
+  }
+  .btn:hover{
+    color: #fff;
+    /* font-weight: bold; */
+    border-color: var(--mainColor);
+  
+  }
+  .btn-main {
+    background-color: var(--subColor) ;
+  }
+  .btn-save{
+    background-color: var(--subColor) !important;
+    border-color: var(--subColor);
+  }
+  .btn-close{
+    background-color: var(--sub2Color) !important;
+    border-color: var(--sub2Color);
+  }
+  
+  .btn-link{
+    color: var(--mainColor);
+    font-size: 20px;
+  }
+  .current_value{
+    font-weight: bold !important;
+  }
+  .sub-title{
+    background: var(--BackgroundColor-Sub);
+    color: var(--subTitle);
+    padding: 5px;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 14px;
+    margin-left: 5px !important;
+    min-width: 110px;
+  }
+  .sub-title-content{
+    width: 160px;
+    margin-left: 5px !important;
+    font-size: 14px;
+    color: var(--subTitleContent);
+    /* min-width: 160px; */
+    border: var(--BackgroundColor-Sub) solid 1px;
+    /* width: auto; */
+    padding: 0 5px;
+    overflow: hidden;
+  }

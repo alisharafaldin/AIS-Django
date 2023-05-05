@@ -1,0 +1,110 @@
+{% extends 'base.html' %} {% load static %} {% block title %} | New Qayd {%
+endblock %} {% block content %}
+<div class="content-wrapper">
+  <div class="main-title">
+    <h4 class="form-group col-md-9">قيود يومية جديد</h4>
+  </div>
+  <form method="GET" class="form-inline my-2 my-lg-0">
+    <!-- <input type="date" class="form-control mr-sm-2 remove-outline"name="search_emp"  placeholder="التاريخ" >
+    <input class="form-control mr-sm-2 remove-outline"name="search_iqama" placeholder="الوصف" >
+    <input class="form-control mr-sm-2 remove-outline"name="search_border" placeholder="بحث برقم الإقامة" >
+    <input class="form-control mr-sm-2 remove-outline"name="search_company" placeholder="تصفية بالشركة" > -->
+    <!-- <div class="form-control mr-sm-2 remove-outline"name="search_company">{{emp_form.companyID}}</div> -->
+  </form>
+  <div class="content">
+    <!-- Start Search -->
+    <!-- <p class="sub-title">إجمالي حسابات المستوى الأول : {{emp_count.count}}</p>
+    <p class="sub-title">إجمالي حسابات المستوى الثاني : {{emp_count.count}}</p>
+    <p class="sub-title">إجمالي حسابات المستوى الثالث : {{emp_count.count}}</p>
+    <p class="sub-title">إجمالي حسابات المستوى الرابع : {{emp_count.count}}</p> -->
+    <!-- End Search -->
+    <br /><br />
+    <!-- Start Modal -->
+    <!-- Start Modal Countries -->
+    {% include 'partials/_alerts.html' %}
+    <form method="POST">
+      {% csrf_token %}
+      <button type="submit" name="btnempsave" class="btn btn-save">
+        إضافة
+      </button>
+      <a
+        href="{% url 'qayd_all' %}"
+        class="btn btn-close"
+        data-dismiss="modal"
+        aria-label="Close"
+        >إلغاء</a
+      >
+      <div class="form-row">
+        <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
+          <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">تفاصيل اليد</h6>
+            <div class="form-group col-md-6">{{qayd_form.details}}</div>
+          </div>
+          <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">المستخدم</h6>
+            <div class="form-group col-md-6">{{qayd_form.userID}}</div>
+          </div>
+          <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">رقم القيد</h6>
+            <div class="form-group col-md-6">{{qayd_form.id}}</div>
+          </div>
+          <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">التاريخ</h6>
+            <div class="form-group col-md-6">{{qayd_form.dateQayd}}</div>
+          </div>
+          <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">العملة</h6>
+            <div class="form-group col-md-6">{{qayd_form.accCurrencyID}}</div>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
+          <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">الوصف</h6>
+            <div class="form-group col-md-6">{{qayd_form.desQayd}}</div>
+          </div>
+          <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">المرفقات</h6>
+            <div class="form-group col-md-6">{{qayd_form.attachments}}</div>
+          </div>
+        </div>
+      </div>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <!-- <th scope="col">رقم القيد</th> -->
+            <th scope="col">الحساب</th>
+            <th scope="col">مدين</th>
+            <th scope="col">دائن</th>
+            <th scope="col">الوصف</th>
+            <th scope="col">المشروع</th>
+            <th scope="col">الموظف</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <!-- لعمل ارقام تسلسلة -->
+            <th scope="row">{{forloop.counter}}</th>
+            <!-- تفاصيل الجدول -->
+            <td>{{ qd_form.accID }}</td>
+            <td>{{ qd_form.debit }}</td>
+            <td>{{ qd_form.credit }}</td>
+            <td>{{ qd_form.desQaydDetails }}</td>
+            <td>{{ qd_form.projectID }}</td>
+            <td>{{ qd_form.empID }}</td>
+          </tr>
+        </tbody>
+        <tbody>
+          <tr>
+            <td></td>
+            <th>المجموع</th>
+            <th>مجموع مدين : 0.00</th>
+            <th>مجموع الدائن : 0.00</th>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+    <!-- End Modal -->
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} | Accounts Tree {% endblock %}
+{% block content %}
+<div class=" content-wrapper">
+  <div class="main-title">
+    <h4 class="form-group col-md-9">شجرة الحسابات</h4>
+  </div>
+  <form method="GET" class="form-inline my-2 my-lg-0">  
+    <button type="button" class="btn btn-main" data-toggle="modal" data-target="#staticBackdrop">إضافة حساب جديد</button>
+    <button class="btn btn-main" type="submit">
+      بحث 
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+    <a href="{% url 'acc_all' %}" class="btn btn-main" type="submit">
+      إعادة تعيين
+      <i class="fa-solid fa-rotate-right"></i>
+    </a>
+    <input class="form-control mr-sm-2 remove-outline"name="search_emp"  placeholder="بحث بالإسم" >
+    <input class="form-control mr-sm-2 remove-outline"name="search_iqama" placeholder="بحث برقم الحدود" >
+    <input class="form-control mr-sm-2 remove-outline"name="search_border" placeholder="بحث برقم الإقامة" >
+    <input class="form-control mr-sm-2 remove-outline"name="search_company" placeholder="تصفية بالشركة" >
+    <!-- <div class="form-control mr-sm-2 remove-outline"name="search_company">{{emp_form.companyID}}</div> -->
+
+  </form>
+
+  <div class="content">
+    <!-- Start Search -->
+    <!-- <p class="sub-title">إجمالي حسابات المستوى الأول : {{emp_count.count}}</p>
+    <p class="sub-title">إجمالي حسابات المستوى الثاني : {{emp_count.count}}</p>
+    <p class="sub-title">إجمالي حسابات المستوى الثالث : {{emp_count.count}}</p>
+    <p class="sub-title">إجمالي حسابات المستوى الرابع : {{emp_count.count}}</p> -->
+    <!-- End Search -->
+    <br><br>
+    <!-- Start Modal -->
+    <div class="modal fade " id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body">   
+            <!-- Start Modal Countries -->
+            {% include 'partials/_alerts.html' %}        
+            <form method="POST">
+              <div class="form-row main-title">
+                <h5 class=" form-group col-md-9" id="staticBackdropLabel">إضافة حساب جديد</h5>
+                <button type="submit" name="btnempsave" class="btn btn-save">إضافة</button>
+                <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close">
+                  إلغاء
+                </button>
+              </div>
+              <br>
+              {% csrf_token %}
+              <div class=" form-row"> 
+                <h6 style="font-weight: bold;" class="col-md-3">إسم الحساب عربي</h6>
+                <div class="form-group col-md-6">{{acc_form.accName_ar}}</div>
+              </div>
+              <div class=" form-row"> 
+                <h6 style="font-weight: bold;" class="col-md-3">إسم الحساب إنجليزي</h6>
+                <div class="form-group col-md-6">{{acc_form.accName_en}}</div>
+              </div>
+              <div class=" form-row"> 
+                <h6 style="font-weight: bold;" class="col-md-3">رمز الحساب </h6>
+                <div class="form-group col-md-6">{{acc_form.accCode}}</div>
+              </div>
+              <div class=" form-row"> 
+                <h6 style="font-weight: bold;" class="col-md-3">نوع الحساب </h6>
+                <div class="form-group col-md-6">{{acc_form.accTypeID}}</div>
+              </div>
+              <div class=" form-row"> 
+                <h6 style="font-weight: bold;" class="col-md-3">طبيعة الحساب </h6>
+                <div class="form-group col-md-6">{{acc_form.accDorCID}}</div>
+              </div>
+              <div class=" form-row"> 
+                <h6 style="font-weight: bold;" class="col-md-3"> الحساب الأب</h6>
+                <div class="form-group col-md-6">{{acc_form.accParentID}}</div>
+              </div>
+              <div class=" form-row"> 
+                <h6 style="font-weight: bold;" class="col-md-3">حساب الميزانية</h6>
+                <div class="form-group col-md-6">{{acc_form.accBudgetID}}</div>
+              </div>
+              <div class=" form-row"> 
+                <h6 style="font-weight: bold;" class="col-md-3">وصف الحساب </h6>
+                <div class="form-group col-md-6">{{acc_form.accDes}}</div>
+              </div>
+              <div class=" form-row"> 
+                <h6 style="font-weight: bold;" class="col-md-3">إمكانية الدفع و السداد من الحساب</h6>
+                <div class="form-group col-md-6">{{acc_form.is_can_pay}}</div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Modal -->
+    {% include 'partials/_alerts.html' %}
+
+  <form method="POST">
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">رمز الحساب</th>
+            <th scope="col">إسم الحساب</th>
+            <th scope="col">الحساب الأب</th>
+            <th scope="col">نوع الحساب</th>
+            <th scope="col">العملة</th>
+            <th scope="col">طبيعة الحساب</th>
+            <th scope="col">توجيه الميزانية</th>
+            <th scope="col">الوصف</th>
+            <th scope="col">يمكن الدفع والتحصيل بهذا الحساب</th>
+            <th scope="col">تعديل</th>
+            <th scope="col">حذف</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for acc in acc_all %}
+        <tr>
+            <!-- لعمل ارقام تسلسلة -->
+            <th scope="row">{{forloop.counter}}</th>
+            <!-- تفاصيل الجدول -->
+            <td>{{acc.accCode}}</td>
+            <td>{{acc.accName_ar}}</td>
+            <td>{{acc.accParentID}}</td>
+            <td>{{acc.accTypeID}}</td>
+            <td>{{acc.accaccDes}}</td>
+            <td>{{acc.accDorCID}}</td>
+            <td>{{acc.accBudgetID}}</td>
+            <td>{{acc.accDes}}</td>
+            <td>{{acc.is_can_pay}}</td>
+            <td>
+              <a class="btn-link" href="{% url 'acc_update' acc.id %}">
+                 <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+              </a>
+            </td>
+            <td>
+              <a href="" class="btn-link ">
+                <i class="fa-sharp fa-solid fa-print"></i>
+              </a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+  </form>
+  </div>
+</div>
+{% endblock %}

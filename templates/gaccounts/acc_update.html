@@ -1,0 +1,55 @@
+{% extends 'base.html' %} {% load static %} {% block title %} | Accounts
+Update{% endblock %} {% block content %}
+<div class="content-wrapper">
+  <h4 class="main-title">تعديل الحساب : {{allAcc.accName_ar}}</h4>
+  <div class="content">
+    <br />
+    <form method="POST">
+      <button type="submit" class="btn btn-save">حفظ التعديل</button>
+      <a href="{% url 'acc_all' %}" class="btn btn-close">إلغاء</a>
+      <br />
+      <br />
+      {% csrf_token %} {% include 'partials/_alerts.html' %}
+      <br />
+      <div class="form-row">
+        <h6 style="font-weight: bold" class="col-md-3">إسم الحساب عربي</h6>
+        <div class="form-group col-md-6">{{acc_form.accName_ar}}</div>
+      </div>
+      <div class="form-row">
+        <h6 style="font-weight: bold" class="col-md-3">إسم الحساب إنجليزي</h6>
+        <div class="form-group col-md-6">{{acc_form.accName_en}}</div>
+      </div>
+      <div class="form-row">
+        <h6 style="font-weight: bold" class="col-md-3">رمز الحساب</h6>
+        <div class="form-group col-md-6">{{acc_form.accCode}}</div>
+      </div>
+      <div class="form-row">
+        <h6 style="font-weight: bold" class="col-md-3">نوع الحساب</h6>
+        <div class="form-group col-md-6">{{acc_form.accTypeID}}</div>
+      </div>
+      <div class="form-row">
+        <h6 style="font-weight: bold" class="col-md-3">طبيعة الحساب</h6>
+        <div class="form-group col-md-6">{{acc_form.accDorCID}}</div>
+      </div>
+      <div class="form-row">
+        <h6 style="font-weight: bold" class="col-md-3">الحساب الأب</h6>
+        <div class="form-group col-md-6">{{acc_form.accParentID}}</div>
+      </div>
+      <div class="form-row">
+        <h6 style="font-weight: bold" class="col-md-3">حساب الميزانية</h6>
+        <div class="form-group col-md-6">{{acc_form.accBudgetID}}</div>
+      </div>
+      <div class="form-row">
+        <h6 style="font-weight: bold" class="col-md-3">وصف الحساب</h6>
+        <div class="form-group col-md-6">{{acc_form.accDes}}</div>
+      </div>
+      <div class="form-row">
+        <h6 style="font-weight: bold" class="col-md-3">
+          إمكانية الدفع و السداد من الحساب
+        </h6>
+        <div class="form-group col-md-6">{{acc_form.is_can_pay}}</div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
