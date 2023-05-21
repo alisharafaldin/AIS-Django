@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.contrib import messages
 from employees.models import *
 from .models import *
@@ -7,15 +7,37 @@ from .forms import ShareholderForm, ContractsForm
 import io
 from django.http import FileResponse
 from reportlab.pdfgen import canvas
+from django.http import HttpResponse
+from django.views.generic import View
+from .pdf import html2pdf
 
 # Create your views here.
+# class GeneratePdf(View):
+#     def get(self, request, *args, **kwargs):
+#         pdf = render_to_pdf('report.html')
+#         if pdf:
+#             response=HttpResponse(pdf, content_type='application/pdf')
+#             filename = "AbnetBirkineh_%s.pdf" %("CV")
+#             content = "inline; filename= %s" %(filename)
+#             response['Content-Disposition']=content
+#             return response
+#         return HttpResponse("Page Not Found")
+        # return HttpResponse(pdf, content_type='application/pdf')
 
-def shareholders(request):
+def pdf(request):
+    pdf=html2pdf("shareholders/pdf.html")
+    return HttpResponse(pdf, content_type='application/pdf')
+ 
+def shareholders(request): 
     if request.method == 'POST':
         add_share = ShareholderForm(request.POST, request.FILES)
         if add_share.is_valid():
             add_share.save()
             messages.success(request, 'تمت الإضافة بنجاح')
+        else:
+            messages.error(request, 'يوجد خطأ في البيانات')
+    else:
+        messages.error(request, 'الدالة ليست بوست')
     all_share = ShareholdersInfo.objects.all()
      # Start Search
     txtsearch = None
@@ -31,11 +53,55 @@ def shareholders(request):
         txtsearch = request.GET['search_mobileNumber'] # تغذية المتغير بالمدخلات حسب النيم
         if txtsearch: # للتحقق أن البيانات ليست فارغة
             all_share = all_share.filter(mobileNumber__icontains=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
+    if 'typeID' in request.GET: # للتحقق من وجود نيم  في الرابط
+        txtsearch = request.GET['typeID'] # تغذية المتغير بالمدخلات حسب النيم
+        if txtsearch: # للتحقق أن البيانات ليست فارغة
+            all_share = all_share.filter(typeID=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
+    if 'workTradeID' in request.GET: # للتحقق من وجود نيم  في الرابط
+        txtsearch = request.GET['workTradeID'] # تغذية المتغير بالمدخلات حسب النيم
+        if txtsearch: # للتحقق أن البيانات ليست فارغة
+            all_share = all_share.filter(workTradeID=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف  
     context = {
         'shar_form':ShareholderForm(),
         'all':all_share,
     }
     return render(request , 'shareholders/shareholders.html', context)
+
+def shareholder(request, shareholder_id):
+    shareholders = ShareholdersInfo.objects.all()
+    shareholder = ShareholdersInfo.objects.get(id=shareholder_id)
+    context = {
+        'shareholder':shareholder,
+        'shareholders':shareholders,
+    }
+    return render(request , 'shareholders/shareholder.html', context)
+
+def share_update(request, shareholder_id):
+    shareholder_id = ShareholdersInfo.objects.get(id=shareholder_id)
+    if request.method == 'POST':
+        shareholder_save = ShareholderForm(request.POST, request.FILES, instance=shareholder_id)
+        if shareholder_save.is_valid():
+            shareholder_save.save()
+            messages.success(request, 'تم تحديث البيانات بنجاح')       
+        return redirect('shareholders') 
+    else:
+        shareholder_save = ShareholderForm(instance=shareholder_id)
+    context = {
+        'shareholder_form':shareholder_save,
+        'shareholder':shareholder_id,
+    }
+    return render(request, 'shareholders/share_update.html', context)
+    # return redirect('shareholders/contract/' + str(contract_id), context)
+
+def share_delete(request, shareholder_id):
+    if request.user.is_authenticated and not request.user.is_anonymous and shareholder_id:
+        shareholder = ShareholdersInfo.objects.get(id=shareholder_id)
+        shareholder.delete()
+        messages.success(request, 'تم الحذف بنجاح')
+    else:
+        messages.error(request, 'الرجاء تسجيل الدخول')
+    # return render(request, 'shareholders/share_update.html', context)
+    return redirect('shareholders') 
 
 def contracts(request):
     if request.method == 'POST':
@@ -74,6 +140,8 @@ def contract(request, contract_id):
         'all_contract':all_contract,
         'totalamountOfShare':totalamountOfShare,
     }
+    # pdf=html2pdf("shareholders/contract.html")
+    # return HttpResponse(pdf, content_type='application/pdf', context)
     return render(request , 'shareholders/contract.html', context)
 
 def contract_print(request, contract_id):

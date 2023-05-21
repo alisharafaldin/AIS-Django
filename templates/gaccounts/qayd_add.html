@@ -1,5 +1,7 @@
-{% extends 'base.html' %} {% load static %} {% block title %} | New Qayd {%
-endblock %} {% block content %}
+{% extends 'base.html' %}
+{% load static %} 
+{% block title %} | New Qayd {% endblock %}
+{% block content %}
 <div class="content-wrapper">
   <div class="main-title">
     <h4 class="form-group col-md-9">قيود يومية جديد</h4>
@@ -36,10 +38,6 @@ endblock %} {% block content %}
       >
       <div class="form-row">
         <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
-          <div class="form-row">
-            <h6 style="font-weight: bold" class="col-md-3">تفاصيل اليد</h6>
-            <div class="form-group col-md-6">{{qayd_form.details}}</div>
-          </div>
           <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">المستخدم</h6>
             <div class="form-group col-md-6">{{qayd_form.userID}}</div>
@@ -86,12 +84,12 @@ endblock %} {% block content %}
             <!-- لعمل ارقام تسلسلة -->
             <th scope="row">{{forloop.counter}}</th>
             <!-- تفاصيل الجدول -->
-            <td>{{ qd_form.accID }}</td>
-            <td>{{ qd_form.debit }}</td>
-            <td>{{ qd_form.credit }}</td>
-            <td>{{ qd_form.desQaydDetails }}</td>
-            <td>{{ qd_form.projectID }}</td>
-            <td>{{ qd_form.empID }}</td>
+            <td>{{ qayd_details_form.accID }}</td>
+            <td>{{ qayd_details_form.debit }}</td>
+            <td>{{ qayd_details_form.credit }}</td>
+            <td>{{ qayd_details_form.desQaydDetails }}</td>
+            <td>{{ qayd_details_form.projectID }}</td>
+            <td>{{ qayd_details_form.empID }}</td>
           </tr>
         </tbody>
         <tbody>

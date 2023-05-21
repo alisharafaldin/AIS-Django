@@ -83,6 +83,7 @@
     --bgC-btn-Main: #28b78d;
     --bgC-btn-Sub: #a0a9ae;
     --borderColor: #a0a9ae;
+    --btnDelete: #ff0000;
   }
 .has-treeview:hover{
   color: var(--mainColor) !important;
@@ -145,6 +146,11 @@ html, body{
   .btn-close{
     background-color: var(--sub2Color) !important;
     border-color: var(--sub2Color);
+  }
+
+  .btn-delete{
+    background-color: var(--btnDelete) !important;
+    border-color: var(--btnDelete);
   }
   
   .btn-link{

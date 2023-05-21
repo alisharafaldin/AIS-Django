@@ -23,12 +23,12 @@ class QaydForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             # 'id': forms.TextInput(attrs={'class':'form-control', 'placeholder':'معرف القيد'}),
-            'userID': forms.Select(attrs={'name':'userID', 'class':'form-control', 'placeholder':'المستخدم'}),
-            'dateQayd': forms.TextInput(attrs={'name':'dateQayd', 'class':'form-control',  'type':'date' , 'placeholder':'تاريخ القيد'}),
-            'currencyID': forms.Select(attrs={'name':'currencyID', 'class':'form-control', 'placeholder':'العملة'}),
-            'desQayd': forms.Textarea(attrs={'name':'desQayd', 'class':'form-control', 'placeholder':'وصف القيد', 'style':'height: 50px;'}),
-            'attachments': forms.FileInput(attrs={'name':'attachments', 'class':'form-control', 'placeholder':'مرفقات القي'}),
-            'details': forms.TextInput(attrs={'name':'details','class':'form-control', 'placeholder':'تفاصيل القيد'}),     
+            'userID': forms.Select(attrs={'class':'form-control', 'placeholder':'المستخدم'}),
+            'dateQayd': forms.TextInput(attrs={'class':'form-control',  'type':'date' , 'placeholder':'تاريخ القيد'}),
+            'currencyID': forms.Select(attrs={'class':'form-control', 'placeholder':'العملة'}),
+            'desQayd': forms.Textarea(attrs={'class':'form-control', 'placeholder':'وصف القيد', 'style':'height: 50px;'}),
+            'attachments': forms.FileInput(attrs={'class':'form-control', 'placeholder':'مرفقات القي'}),
+            'details': forms.TextInput(attrs={'class':'form-control', 'placeholder':'تفاصيل القيد'}),     
         }
 
 class QaydDetailsForm(forms.ModelForm):
@@ -36,13 +36,14 @@ class QaydDetailsForm(forms.ModelForm):
         model = QaydDetails
         fields = '__all__'
         widgets = {
-            'debit': forms.NumberInput(attrs={'name':'debit','class':'form-control', 'placeholder':'مدين'}),
-            'credit': forms.NumberInput(attrs={'name':'credit','class':'form-control', 'placeholder':'دائن'}),
-            'desQaydDetails': forms.TextInput(attrs={'name':'desQaydDetails','class':'form-control', 'placeholder':'وصف القيد'}),
-            'qaydID': forms.Select(attrs={'name':'qaydID','class':'form-control', 'placeholder':'راس القيد'}),
-            'accID': forms.Select(attrs={'name':'accID','class':'form-control', 'placeholder':'الحساب'}),
-            'projectID': forms.Select(attrs={'name':'projectID','class':'form-control', 'placeholder':'المشروع'}),
-            'empID': forms.Select(attrs={'name':'empID','class':'form-control', 'placeholder':'الموظف'}),       
+            'qaydID': forms.Select(attrs={'class':'form-control', 'placeholder':'رأس القيد'}),
+            'debit': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'مدين'}),
+            'credit': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'دائن'}),
+            'desQaydDetails': forms.TextInput(attrs={'class':'form-control', 'placeholder':'وصف القيد'}),
+            'qaydID': forms.Select(attrs={'class':'form-control', 'placeholder':'راس القيد'}),
+            'accID': forms.Select(attrs={'class':'form-control', 'placeholder':'الحساب'}),
+            'projectID': forms.Select(attrs={'class':'form-control', 'placeholder':'المشروع'}),
+            'empID': forms.Select(attrs={'class':'form-control', 'placeholder':'الموظف'}),       
         }
 
 

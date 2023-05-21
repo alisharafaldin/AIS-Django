@@ -15,10 +15,15 @@
       إعادة تعيين
       <i class="fa-solid fa-rotate-right"></i>
     </a>
+    <a href="{% url 'pdf' %}" class="nv-link" target="blank">Download PDF Report</a>
+   
     <input class="form-control mr-sm-2 remove-outline" name="search_name" placeholder="بحث بالإسم"/>
     <input class="form-control mr-sm-2 remove-outline" name="search_id_number" placeholder="بحث برقم الهوية"/>
     <input class="form-control mr-sm-2 remove-outline" name="search_mobileNumber" placeholder="بحث برقم الجوال"/>
-    <!-- <div class="form-control mr-sm-2 remove-outline"name="search_company">{{shar_form.companyID}}</div> -->
+    <h6 class="sub-title">فلتر نوع الهوية</h6>
+    <div class="mr-sm-2">{{shar_form.typeID}}</div>
+    <h6 class="sub-title">فلتر المهنة</h6>
+    <div class="mr-sm-2">{{shar_form.workTradeID}}</div>
   </form>
   <div class="content">
     <div class="form-inline my-2 my-lg-0"></div>
@@ -48,43 +53,78 @@
               </div>
               <!-- تاريخ الميلا - الجنس - الجنسية - الحالة الإجتماعية -->
               <div class="form-row">
+                <h6 class="sub-title">تاريخ الميلاد</h6>
                 <div class="form-group col-md-3">{{shar_form.dateOfBirth}}</div>
+                <h6 class="sub-title">الجنس</h6>
                 <div class="form-group col-md-3">{{shar_form.genderID}}</div>
+              </div>
+              <div class="form-row">
+                <h6 class="sub-title">الجنسية</h6>
                 <div class="form-group col-md-3">{{shar_form.nationalityID}}</div>
+                <h6 class="sub-title">الحالة الإجتماعة</h6>
                 <div class="form-group col-md-3">{{shar_form.socialStatusID}}</div>
               </div>
-
               <!-- نوع الهوية - رقم الهوية - تاريخ إنتهاء الهوية - رقم الجوال - رقم جوال آخر  -->
               <div class="form-row">
+                <h6 class="sub-title">نوع الهوية</h6>
                 <div class="form-group col-md-3">{{shar_form.typeID}}</div>
+                <h6 class="sub-title">رقم الهوية</h6>
                 <div class="form-group col-md-3">{{shar_form.id_number}}</div>
+              </div>
+              <div class="form-row">   
+                <h6 class="sub-title">تاريخ إنتهاء الهوية</h6>
                 <div class="form-group col-md-3">{{shar_form.id_ExpiredDate}}</div>
+                <h6 class="sub-title">عنوان السكن</h6>
+                <div class="form-group col-md-3">{{shar_form.detailsAddress}}</div>
+              </div>
+              <div class="form-row">   
+                <h6 class="sub-title">الولاية</h6>
+                <div class="form-group col-md-3">{{shar_form.stateID}}</div>
+                <h6 class="sub-title">المدينة</h6>
+                <div class="form-group col-md-3">{{shar_form.cityID}}</div>
+              </div>
+              <div class="form-row">
+                <h6 class="sub-title">رقم الهاتف</h6>
                 <div class="form-group col-md-3">{{shar_form.mobileNumber}}</div>
+                <h6 class="sub-title">هاتف آخر</h6>
                 <div class="form-group col-md-3">{{shar_form.mobileNumberAnother}}</div>
               </div>
               <!--  الولاية -  المدينة - وصف عنوان السكن - المهنة - التخصص  -->
               <div class="form-row">   
-                <div class="form-group col-md-3">{{shar_form.stateID}}</div>
-                <div class="form-group col-md-3">{{shar_form.cityID}}</div>
-                <div class="form-group col-md-3">{{shar_form.detailsAddress}}</div>
+                <h6 class="sub-title">المهنة</h6>
                 <div class="form-group col-md-3">{{shar_form.workTradeID}}</div>
+                <h6 class="sub-title">التخصص</h6>
                 <div class="form-group col-md-3">{{shar_form.workSpecialtyID}}</div>
               </div>
               <!-- mohamedesmail01022077221 -->
               <!--صاخي البنك - الفرع - نوع الحساب - رقم الحساب - رقم الآيبان - صاحب الحساب -->
               <div class="form-row">
+                <h6 class="sub-title">البنك</h6>
                 <div class="form-group col-md-3">{{shar_form.bankID}}</div>
+                <h6 class="sub-title">فرع البنك</h6>
                 <div class="form-group col-md-3">{{shar_form.branchBankID}}</div>
+              </div>
+              <div class="form-row">
+                <h6 class="sub-title">نوع الحساب</h6>
                 <div class="form-group col-md-3">{{shar_form.typeAccBankID}}</div>
-                <div class="form-group col-md-6">{{shar_form.accountNumber}}</div>
+                <h6 class="sub-title">رقم الحساب</h6>
+                <div class="form-group col-md-3">{{shar_form.accountNumber}}</div>
+              </div>
+              <div class="form-row">
+                <h6 class="sub-title">رقم الآي بان</h6>
                 <div class="form-group col-md-3">{{shar_form.IBANNumber}}</div>
+                <h6 class="sub-title">صاحب الحساب</h6>
                 <div class="form-group col-md-3">{{shar_form.ownerAccount}}</div>
               </div>
-   
               <!-- صورة المساهم - رابط المستندات - ملاحظات - المسوق -->
               <div class="form-row">
+                <h6 class="sub-title">المسوق</h6>
+                <div class="form-group col-md-3">{{shar_form.marketerID}}</div>
+                <h6 class="sub-title">صورة شخصية</h6>
                 <div class="form-group col-md-3">{{shar_form.Photo}}</div>
+                <h6 class="sub-title">رابط المستندات</h6>
                 <div class="form-group col-md-3">{{shar_form.documentLink}}</div>
+                <h6 class="sub-title">ملاحظات</h6>
                 <div class="form-group col-md-3">{{shar_form.notes}}</div>
               </div>
             </form>
@@ -103,36 +143,40 @@
           <th scope="col">رقم الهوية</th>
           <th scope="col">السكن</th>
           <th scope="col">رقم الجوال</th>
+          <th scope="col">المهنة</th>
           <th scope="col">المستندات</th>
           <th scope="col">تعديل</th>
           <th scope="col">طباعة</th>
         </tr>
       </thead>
       <tbody>
-        {% for shar in all %}
+        {% for shareholder in all %}
         <tr>
           <!-- لعمل ارقام تسلسلة -->
           <th scope="row">{{forloop.counter}}</th>
           <!-- تفاصيل الجدول -->
-          <td>{{shar.f_Name_ar}}</td>
-          <td>{{shar.typeID}}</td>
-          <td>{{shar.id_number}}</td>
-          <td>{{shar.detailsAddress}}</td>
-          <td>{{shar.mobileNumber}}</td>
+          <td>{{shareholder.f_Name_ar}}</td>
+          <td>{{shareholder.typeID}}</td>
+          <td>{{shareholder.id_number}}</td>
+          <td>{{shareholder.detailsAddress}}</td>
+          <td>{{shareholder.mobileNumber}}</td>
+          <td>{{shareholder.workTradeID}}</td>
           <td>
-            {% if shar.documentLink %}
-            <a href="{{shar.documentLink}}" target="blank">رابط المستندات</a>
+            {% if shareholder.documentLink %}
+            <a href="{{shareholder.documentLink}}" target="blank">رابط المستندات</a>
             {% else %}
             <a style="color: brown">لا يوجد مستندات</a>
             {% endif %}
           </td>
           <td>
-            <a class="btn-link" href="">
-              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+            <a class="btn-link" href="{% url 'share_update' shareholder_id=shareholder.id %}">
+              <!-- <i class="fa-sharp fa-solid fa-pen-to-square"></i> -->
+              <i class="fa-sharp fa-solid fa-print"></i>
+
             </a>
           </td>
           <td>
-            <a href="" class="btn-link">
+            <a href="{% url 'shareholder' shareholder_id=shareholder.id %}" class="btn-link">
               <i class="fa-sharp fa-solid fa-print"></i>
             </a>
           </td>

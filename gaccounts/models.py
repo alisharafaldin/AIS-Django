@@ -59,9 +59,9 @@ class QaydDetails(models.Model):
     desQaydDetails = models.TextField(verbose_name='وصف تصفيل القيد', max_length=250,blank=True, null=True)
     projectID = models.ForeignKey(Project, verbose_name='المشروع', on_delete=models.CASCADE, blank=True, null=True)
     empID = models.ForeignKey(EmpInfo, verbose_name='الموظف', on_delete=models.CASCADE, blank=True, null=True)
-    def __str__(self):
-        return 
-        # return 'User: ' + self.orderID.userID.username + '  | Product: ' + self.productID.name + ' | Order id: ' + str(self.orderID.id)
+    # def __str__(self):
+        # return 
+        # return self.productID.name 
     class Meta:
         #ترتيب العناصر حسب الآي دي
         ordering = ['-id']

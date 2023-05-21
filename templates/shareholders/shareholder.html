@@ -1,0 +1,135 @@
+{% extends 'base.html' %} {% load static %} {% block title %} | Shareholder
+Details{% endblock %} {% block content %}
+{% load humanize %}
+<style>
+  .head-contract {
+    margin-left: 234.5px !important; 
+  }
+  .sub-title-head {
+    background: #343432;
+    color: #a2c734;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 20px;
+    width: fit-content;
+    margin: auto;
+  }
+  .contract_details {
+    font-weight: bold;
+  }
+</style>
+<div class="content-wrapper">
+  <h4 class="main-title">بيانات المساهم  :  {{shareholder.f_Name_ar}} {{shareholder.s_Name_ar}} {{shareholder.t_Name_ar}}
+    {{shareholder.fo_Name_ar}}</h4>
+  <div class="content">
+    <br />
+    <a href="{% url 'shareholders' %}" class="btn btn-main">جميع المساهمين</a>    
+    <a href="{% url 'share_update' shareholder.id %}" class="btn btn-main">تعديل</a>
+    {% include 'partials/_alerts.html' %}
+    <br />
+    <div class="row no-gutters">
+      <div class="card-body">
+          <div class="row" style="margin: auto; max-width: 80%;">
+            <div class="col-md-3">
+              <img src="{% static 'dist/img/Hadena.jpg' %}" class="card-img" alt="" />
+            </div>
+            <div class="col">
+              <h3 class="text-center" style="font-size: 14px;">بسم الله الرحمن الرحيم</h3>
+              <br>
+              <h3 class="text-center">حاضنة البركة للإنتاج الزراعي والحيواني</h3>
+              <br>
+              <h4 class="text-center sub-title-head">بطاقة تعريف مساهم</h4>
+              <br>
+            </div>
+          </div>
+          <div class="col-md-8" style="margin: auto; max-width: 80%;">
+            <div>
+              <div class="col-md-8">
+                <br>
+                <h5 class="text-center">معلومات الأساسية</h5>
+                 <br>
+                <div class="form-row">
+                  <label class="sub-title">ID : </label>
+                  <p class="card-title sub-title-content" style="width: auto">{{shareholder.id}}</p>
+                  <label class="sub-title">الإسم : </label>
+                  <p class="card-title sub-title-content" style="width: auto">{{shareholder.f_Name_ar}} {{shareholder.s_Name_ar}} {{shareholder.t_Name_ar}} {{shareholder.fo_Name_ar}}</p>
+                </div>
+                <div class="form-row">
+                  <label class="sub-title">تاريخ الميلاد : </label>
+                  <p class="card-title sub-title-content" style="width: auto">{{shareholder.dateOfBirth}}</p>
+                  <label class="sub-title">العمر : </label>
+                  <p class="card-title sub-title-content" style="width: auto">{{age}}</p>
+                  <label class="sub-title">الجنس : </label>
+                  <p class="card-title sub-title-content" style="width: auto">{{shareholder.genderID}}</p>
+                </div>
+                <div class="form-row">
+                  <label class="sub-title">الجنسية :</label>
+                  <p class="card-title sub-title-content" style="width: auto">{{shareholder.nationalityID}}</p>
+                  <label class="sub-title">الحالة الإجتماعية : </label>
+                  <p class="card-title sub-title-content" style="width: auto">{{shareholder.socialStatusID}}</p>
+                </div>
+                <div class="form-row">
+                  <label class="sub-title">رقم الهاتف : </label>
+                  <p class="card-title sub-title-content" style="width: auto">{{shareholder.mobileNumber}}</p>
+                  <label class="sub-title">رقم هاتف آخر</label>
+                  <p class="card-title sub-title-content" style="width: auto">{{shareholder.mobileNumberAnother}}</p>
+                </div>
+                 <div class="form-row">
+                  <label class="sub-title">المهنة</label>
+                  <p class="card-title sub-title-content" style="width: auto">{{shareholder.workTradeID}}</p>
+                  <label class="sub-title">التخصص</label>
+                  <p class="card-title sub-title-content" style="width: auto">{{shareholder.workSpecialtyID}}</p>
+                </div>
+                 <div class="form-row">
+                  <label class="sub-title">نوع إثبات الشخصية</label>
+                  <p class="card-title sub-title-content" style="width: auto">{{shareholder.typeID}}</p>
+                  <label class="sub-title">رقم الإثبات</label>
+                  <p class="card-title sub-title-content" style="width: auto">{{shareholder.id_number}}</p>
+                  <label class="sub-title">تاريخ إنتهاء الإثبات</label>
+                  <p class="card-title sub-title-content" style="width: auto">{{shareholder.id_ExpiredDate}}</p>
+                 </div>
+                 <div class="form-row">
+                  <label class="sub-title">المسوق</label>
+                  <p class="card-title sub-title-content" style="width: auto">{{shareholder.marketerID}}</p>
+                  <label class="sub-title">صورة شخصية</label>
+                  <p class="card-title sub-title-content" style="width: auto">{{shareholder.Photo}}</p>
+                 </div>
+                 <div class="form-row">
+                  <label class="sub-title">رابط المستندات</label>
+                  <p class="card-title sub-title-content" style="width: auto">{{shareholder.documentLink}}</p>
+                  <label class="sub-title">ملاحظات</label>
+                  <p class="card-title sub-title-content" style="width: auto">{{shareholder.notes}}</p>
+                 </div>
+                 <div class="form-row">
+                  <label class="sub-title">الولاية</label>
+                  <p class="card-title sub-title-content" style="width: auto">{{shareholder.stateID}}</p>
+                  <label class="sub-title">المدينة</label>
+                  <p class="card-title sub-title-content" style="width: auto">{{shareholder.cityID}}</p>
+                  <label class="sub-title">عنوان السكن</label>
+                  <p class="card-title sub-title-content" style="width: auto">{{shareholder.detailsAddress}}</p>
+                 </div>
+                 <br>
+                 <h5 class="text-center">معلومات الحساب البنكي</h5>
+                  <br>
+                  <div class="form-row">
+                    <label class="sub-title">البنك : </label>
+                    <p class="card-title sub-title-content" style="width: auto">{{shareholder.bankID}}</p>
+                    <label class="sub-title">الفرع : </label>
+                    <p class="card-title sub-title-content" style="width: auto">{{shareholder.branchBankID}}</p>
+                   </div>
+                   <div class="form-row">
+                    <label class="sub-title">رقم الحساب : </label>
+                    <p class="card-title sub-title-content" style="width: auto">{{shareholder.accountNumber}}</p>
+                    <label class="sub-title">رقم الآيبان : </label>
+                    <p class="card-title sub-title-content" style="width: auto">{{shareholder.IBANNumber}}</p>
+                    <label class="sub-title">مالك الحساب</label>
+                    <p class="card-title sub-title-content" style="width: auto">{{shareholder.ownerAccount}}</p> 
+                  </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -50,32 +50,34 @@ def qayd_all(request):
     return render(request,'gaccounts/qayd_all.html', context)
 
 def qayd_add(request):
-
     # debit = request.POST['debit']
     # credit = request.POST['credit']
     # desQaydDetails = request.POST['desQaydDetails']
     # accID = request.POST['accID']
     # projectID = request.POST['projectID']
     # empID = request.POST['empID']
-
     if request.method == 'POST':
         new_qayd = QaydForm(request.POST, request.FILES)
         if new_qayd.is_valid():
             new_qayd.save()
-            # qayddetails = QaydDetails.objects.create(qaydID=new_qayd, debit=debit, credit=credit, desQaydDetails=desQaydDetails, accID=accID, projectID=projectID, empID=empID )
-            messages.success(request, 'تمت الإضافة بنجاح')
-            # if new_qayd.save():
+            if new_qayd.save():
+              # qayddetails = QaydDetails.objects.create(qaydID=new_qayd, debit=debit, credit=credit, desQaydDetails=desQaydDetails, accID=accID, projectID=projectID, empID=empID )
+              # qayddetails.save()
+              messages.success(request, 'تمت الإضافة بنجاح')
     all_qayd = Qayd.objects.all()
+    # totalDebit = request.POST['debit']
+    # totalCredit = request.POST['credit']
     context = {
         'all_qayd': all_qayd,
         'qayd_form': QaydForm(),
-        'qd_form': QaydDetailsForm(),
+        'qayd_details_form': QaydDetailsForm(),
     }    
     return render(request,'gaccounts/qayd_add.html', context)
 
 def qayd_update(request, id):
     if request.user.is_authenticated and not request.user.is_anonymous:
         qayd_id = Qayd.objects.get(id=id)
+        # qayd_details = QaydDetails.objects.get(qaydID=qayd_id)
         if request.method == 'POST':
             qayd_save = QaydForm(request.POST, request.FILES, instance=qayd_id)
             if qayd_save.is_valid():
@@ -86,8 +88,12 @@ def qayd_update(request, id):
                 messages.error(request, 'خطأ في البيانات')  
         else:
             qayd_save = QaydForm(instance=qayd_id)
+
+          # totalDebit = QaydDetails.objects.all().filter(qaydID=qayd_id)
+          # totalCredit = request.POST['credit']
         context = {
             'qayd_form':qayd_save,
+            'qayd_details_form': QaydDetails.objects.filter(qaydID=qayd_id),
         }
         return render(request, 'gaccounts/qayd_update.html', context)
     else:

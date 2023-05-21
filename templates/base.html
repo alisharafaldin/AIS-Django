@@ -73,7 +73,7 @@
     <div class="wrapper">
       {% include 'partials/_navbar.html' %}
       {% if request.user.is_authenticated %}
-        {% include 'partials/_aside.html' %}
+      {% include 'partials/_aside.html' %}
       {% endif %}
       {% block content %}
       {% endblock %}

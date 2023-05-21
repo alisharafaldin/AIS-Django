@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} | Shareholder Update{% endblock %}
+{% block content %}
+<div class="content-wrapper">
+  <h4 class="main-title">تعديل بيانات المساهم :  {{shareholder.f_Name_ar}} {{shareholder.s_Name_ar}} {{shareholder.t_Name_ar}}
+    {{shareholder.fo_Name_ar}}</h4>
+ <div class="content">
+  <br>
+  <form method="POST">
+    <button type="submit" class="btn btn-save">حفظ التعديل</button>
+    <a href="{% url 'shareholder' shareholder_id=shareholder.id %}" class="btn btn-save">طباعة</a>
+    <a href="{% url 'share_delete' shareholder_id=shareholder.id %}" class="btn btn-delete">حذف</a>
+    <a href="{% url 'shareholders' %}" class="btn btn-save">جميع المساهمين</a>
+    <a href="{% url 'shareholders' %}" class="btn btn-close">إلغاء</a>
+    <br>
+    <br>
+    {% csrf_token %}
+    {% include 'partials/_alerts.html' %}
+    <div class="form-row">
+      <h6 class="sub-title">الإسم الكامل</h6>
+      <div class="form-group col-md-2">{{shareholder_form.f_Name_ar}}</div>
+      <div class="form-group col-md-2">{{shareholder_form.s_Name_ar}}</div>
+      <div class="form-group col-md-2">{{shareholder_form.t_Name_ar}}</div>
+      <div class="form-group col-md-2">{{shareholder_form.fo_Name_ar}}</div>
+    </div>
+    <!-- تاريخ الميلا - الجنس - الجنسية - الحالة الإجتماعية -->
+    <div class="form-row">
+      <h6 class="sub-title">تاريخ الميلاد</h6>
+      <div class="form-group col-md-3">{{shareholder_form.dateOfBirth}}</div>
+      <h6 class="sub-title">الجنس</h6>
+      <div class="form-group col-md-3">{{shareholder_form.genderID}}</div>
+    </div>
+    <div class="form-row">
+      <h6 class="sub-title">الجنسية</h6>
+      <div class="form-group col-md-3">{{shareholder_form.nationalityID}}</div>
+      <h6 class="sub-title">الحالة الإجتماعة</h6>
+      <div class="form-group col-md-3">{{shareholder_form.socialStatusID}}</div>
+    </div>
+
+    <!-- نوع الهوية - رقم الهوية - تاريخ إنتهاء الهوية - رقم الجوال - رقم جوال آخر  -->
+    <div class="form-row">
+      <h6 class="sub-title">نوع الهوية</h6>
+      <div class="form-group col-md-3">{{shareholder_form.typeID}}</div>
+      <h6 class="sub-title">رقم الهوية</h6>
+      <div class="form-group col-md-3">{{shareholder_form.id_number}}</div>
+    </div>
+    <div class="form-row">   
+      <h6 class="sub-title">تاريخ إنتهاء الهوية</h6>
+      <div class="form-group col-md-3">{{shareholder_form.id_ExpiredDate}}</div>
+      <h6 class="sub-title">عنوان السكن</h6>
+      <div class="form-group col-md-3">{{shareholder_form.detailsAddress}}</div>
+    </div>
+    <div class="form-row">   
+      <h6 class="sub-title">الولاية</h6>
+      <div class="form-group col-md-3">{{shareholder_form.stateID}}</div>
+      <h6 class="sub-title">المدينة</h6>
+      <div class="form-group col-md-3">{{shareholder_form.cityID}}</div>
+    </div>
+    <div class="form-row">
+      <h6 class="sub-title">رقم الهاتف</h6>
+      <div class="form-group col-md-3">{{shareholder_form.mobileNumber}}</div>
+      <h6 class="sub-title">هاتف آخر</h6>
+      <div class="form-group col-md-3">{{shareholder_form.mobileNumberAnother}}</div>
+    </div>
+    <!--  الولاية -  المدينة - وصف عنوان السكن - المهنة - التخصص  -->
+    <div class="form-row">   
+      <h6 class="sub-title">المهنة</h6>
+      <div class="form-group col-md-3">{{shareholder_form.workTradeID}}</div>
+      <h6 class="sub-title">التخصص</h6>
+      <div class="form-group col-md-3">{{shareholder_form.workSpecialtyID}}</div>
+    </div>
+    <!-- mohamedesmail01022077221 -->
+    <!--صاخي البنك - الفرع - نوع الحساب - رقم الحساب - رقم الآيبان - صاحب الحساب -->
+    <div class="form-row">
+      <h6 class="sub-title">البنك</h6>
+      <div class="form-group col-md-3">{{shareholder_form.bankID}}</div>
+      <h6 class="sub-title">فرع البنك</h6>
+      <div class="form-group col-md-3">{{shareholder_form.branchBankID}}</div>
+    </div>
+    <div class="form-row">
+      <h6 class="sub-title">نوع الحساب</h6>
+      <div class="form-group col-md-3">{{shareholder_form.typeAccBankID}}</div>
+      <h6 class="sub-title">رقم الحساب</h6>
+      <div class="form-group col-md-3">{{shareholder_form.accountNumber}}</div>
+    </div>
+    <div class="form-row">
+      <h6 class="sub-title">رقم الآي بان</h6>
+      <div class="form-group col-md-3">{{shareholder_form.IBANNumber}}</div>
+      <h6 class="sub-title">صاحب الحساب</h6>
+      <div class="form-group col-md-3">{{shareholder_form.ownerAccount}}</div>
+    </div>
+
+    <!-- صورة المساهم - رابط المستندات - ملاحظات - المسوق -->
+    <div class="form-row">
+      <h6 class="sub-title">المسوق</h6>
+      <div class="form-group col-md-3">{{shareholder_form.marketerID}}</div>
+      <h6 class="sub-title">صورة شخصية</h6>
+      <div class="form-group col-md-3">{{shareholder_form.Photo}}</div>
+    </div>
+    <div class="form-row">
+      <h6 class="sub-title">رابط المستندات</h6>
+      <div class="form-group col-md-3">{{shareholder_form.documentLink}}</div>
+      <h6 class="sub-title">ملاحظات</h6>
+      <div class="form-group col-md-3">{{shareholder_form.notes}}</div>
+    </div>
+  </form>
+ </div>
+</div>
+{% endblock %}
