@@ -141,7 +141,8 @@ def update(request, id):
         emp_save = EmpForm(request.POST, request.FILES, instance=emp_id)
         if emp_save.is_valid():
             emp_save.save()
-            messages.success(request, 'تمت تحديث البيانات بنجاح')       
+            messages.success(request, 'تمت تحديث البيانات بنجاح')
+            return redirect('employees')
     else:
         emp_save = EmpForm(instance=emp_id)
     context = {

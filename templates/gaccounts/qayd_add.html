@@ -7,52 +7,26 @@
     <h4 class="form-group col-md-9">قيود يومية جديد</h4>
   </div>
   <form method="GET" class="form-inline my-2 my-lg-0">
-    <!-- <input type="date" class="form-control mr-sm-2 remove-outline"name="search_emp"  placeholder="التاريخ" >
-    <input class="form-control mr-sm-2 remove-outline"name="search_iqama" placeholder="الوصف" >
-    <input class="form-control mr-sm-2 remove-outline"name="search_border" placeholder="بحث برقم الإقامة" >
-    <input class="form-control mr-sm-2 remove-outline"name="search_company" placeholder="تصفية بالشركة" > -->
-    <!-- <div class="form-control mr-sm-2 remove-outline"name="search_company">{{emp_form.companyID}}</div> -->
   </form>
   <div class="content">
-    <!-- Start Search -->
-    <!-- <p class="sub-title">إجمالي حسابات المستوى الأول : {{emp_count.count}}</p>
-    <p class="sub-title">إجمالي حسابات المستوى الثاني : {{emp_count.count}}</p>
-    <p class="sub-title">إجمالي حسابات المستوى الثالث : {{emp_count.count}}</p>
-    <p class="sub-title">إجمالي حسابات المستوى الرابع : {{emp_count.count}}</p> -->
-    <!-- End Search -->
-    <br /><br />
-    <!-- Start Modal -->
-    <!-- Start Modal Countries -->
     {% include 'partials/_alerts.html' %}
     <form method="POST">
       {% csrf_token %}
-      <button type="submit" name="btnempsave" class="btn btn-save">
-        إضافة
-      </button>
-      <a
-        href="{% url 'qayd_all' %}"
-        class="btn btn-close"
-        data-dismiss="modal"
-        aria-label="Close"
-        >إلغاء</a
-      >
+      <br>
+      <button type="submit" name="btnsave" class="btn btn-save">إضافة</button>
+      <a href="{% url 'qayd_all' %}" class="btn btn-close" data-dismiss="modal" aria-label="Close">إلغاء</a>
+      <br>
+      <br>
+      <br>
       <div class="form-row">
         <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
-          <div class="form-row">
-            <h6 style="font-weight: bold" class="col-md-3">المستخدم</h6>
-            <div class="form-group col-md-6">{{qayd_form.userID}}</div>
-          </div>
-          <div class="form-row">
-            <h6 style="font-weight: bold" class="col-md-3">رقم القيد</h6>
-            <div class="form-group col-md-6">{{qayd_form.id}}</div>
-          </div>
-          <div class="form-row">
+            <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">التاريخ</h6>
             <div class="form-group col-md-6">{{qayd_form.dateQayd}}</div>
           </div>
           <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">العملة</h6>
-            <div class="form-group col-md-6">{{qayd_form.accCurrencyID}}</div>
+            <div class="form-group col-md-6">{{qayd_form.currencyID}}</div>
           </div>
         </div>
         <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
@@ -84,25 +58,29 @@
             <!-- لعمل ارقام تسلسلة -->
             <th scope="row">{{forloop.counter}}</th>
             <!-- تفاصيل الجدول -->
-            <td>{{ qayd_details_form.accID }}</td>
-            <td>{{ qayd_details_form.debit }}</td>
-            <td>{{ qayd_details_form.credit }}</td>
-            <td>{{ qayd_details_form.desQaydDetails }}</td>
-            <td>{{ qayd_details_form.projectID }}</td>
-            <td>{{ qayd_details_form.empID }}</td>
+            <td name="accID">{{ qayd_details_form.accID }}</td>
+            <td name="debit">{{ qayd_details_form.debit }}</td>
+            <td name="credit">{{ qayd_details_form.credit }}</td>
+            <td name="desQaydDetails">{{ qayd_details_form.desQaydDetails }}</td>
+            <td name="projectID">{{ qayd_details_form.projectID }}</td>
+            <td name="empID">{{ qayd_details_form.empID }}</td>
           </tr>
         </tbody>
         <tbody>
           <tr>
             <td></td>
             <th>المجموع</th>
-            <th>مجموع مدين : 0.00</th>
-            <th>مجموع الدائن : 0.00</th>
+            <th>مجموع مدين : {{calc.total_d}}</th>
+            <th>مجموع الدائن : {{calc.total_c}}</th>
+            <th>الفرق : {{calc.other}}</th>
           </tr>
         </tbody>
       </table>
     </form>
     <!-- End Modal -->
+    <div class="form-row">
+      <h6 class="form-group col-md-6">مُنشئ القيد : {{qayd_id.userID}} </h6>
+    </div>
   </div>
 </div>
 {% endblock %}

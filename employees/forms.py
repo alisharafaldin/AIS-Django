@@ -7,7 +7,6 @@ class EmpForm(forms.ModelForm):
         fields = '__all__'
         # لعمل إستثناء حقل
         # exclude = ('f_Name_ar')
-        
         widgets = {
             'f_Name_ar': forms.TextInput(attrs={'class':'form-control', 'placeholder':'الإسم الأول'}),
             's_Name_ar': forms.TextInput(attrs={'class':'form-control', 'placeholder':'الإسم الثاني'}),

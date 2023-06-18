@@ -1,11 +1,7 @@
-{% extends 'base.html' %} {% load static %} {% block title %} | Qayd Update ( {{qayd_id.id}} )
+{% extends 'base.html' %} {% load static %} {% block title %} | Qayd Update
 {% endblock %} {% block content %}
 <div class="content-wrapper">
-  <h4 class="main-title">تعديل القيد رقم : ( {{qayd_id.id}} )</h4>
-  <!-- {% for qdf in qayd_id_details %}
-    <h4 class="main-title">تفاصيل القيد  : ( {{qdf}} )</h4>
-  {% endfor %} -->
-
+  <h4 class="main-title">تعديل القيد : {{qayd_form.id}}</h4>
   <div class="content">
     <br />
     <form method="POST" >
@@ -15,6 +11,11 @@
       <a href="{% url 'qayd_all' %}" class="btn btn-close">إلغاء</a>
       <div class="form-row">
         <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
+          <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">رقم القيد</h6>
+            <div class="form-group col-md-6">{{qayd_form.id}}</div>
+            <div class="form-group col-md-6">{{qayd_update}}</div>
+          </div>
           <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">المستخدم</h6>
             <div class="form-group col-md-6">{{qayd_form.userID}}</div>
@@ -35,7 +36,7 @@
           </div>
           <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">المرفقات</h6>
-            <div class="form-group col-md-6">{{qayd_form.attachments}}</div>
+            <input type="file" class="form-group col-md-6" name="attachments">
           </div>
         </div>
       </div>
@@ -53,20 +54,17 @@
           </tr>
         </thead>
         <tbody>
-            {% for qdf in qayd_id_details %}
-            <tr>
-              <!-- لعمل ارقام تسلسلة -->
-              <th scope="row">{{forloop.counter}}</th>
-              <!-- تفاصيل الجدول -->
-              <!-- <td>{{ qdf.pk }}</td> -->
-              <td>{{ qdf.accID }}</td>
-              <td>{{ qdf.debit }}</td>
-              <td>{{ qdf.credit }}</td>
-              <td>{{ qdf.desQaydDetails }}</td>
-              <td>{{ qdf.projectID }}</td>
-              <td>{{ qdf.empID }}</td>
-            </tr>
-            {% endfor %}
+          <tr>
+            <!-- لعمل ارقام تسلسلة -->
+            <th scope="row">{{forloop.counter}}</th>
+            <!-- تفاصيل الجدول -->
+            <td>{{ qayd_details_form.accID }}</td>
+            <td>{{ qayd_details_form.debit }}</td>
+            <td>{{ qayd_details_form.credit }}</td>
+            <td>{{ qayd_details_form.desQaydDetails }}</td>
+            <td>{{ qayd_details_form.projectID }}</td>
+            <td>{{ qayd_details_form.empID }}</td>
+          </tr>
         </tbody>
         <tbody>
           <tr>

@@ -225,8 +225,7 @@
           <th scope="col">السكن</th>
           <th scope="col">رقم الجوال</th>
           <th scope="col">المستندات</th>
-          <th scope="col">تعديل</th>
-          <th scope="col">طباعة</th>
+          <th scope="col">الإجراءات</th>
         </tr>
       </thead>
       <tbody>
@@ -249,12 +248,10 @@
           </td>
           <td>
             <a class="btn-link" href="{% url 'update_emp' emp.id %}">
-              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+              <i class="fas fa-edit"></i>
             </a>
-          </td>
-          <td>
             <a href="{% url 'employee' emp_id=emp.id %}" class="btn-link">
-              <i class="fa-sharp fa-solid fa-print"></i>
+              <i class="fa fa-print" aria-hidden="true"></i>
             </a>
           </td>
         </tr>

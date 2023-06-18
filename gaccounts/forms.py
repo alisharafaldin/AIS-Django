@@ -22,12 +22,12 @@ class QaydForm(forms.ModelForm):
         model = Qayd
         fields = '__all__'
         widgets = {
-            # 'id': forms.TextInput(attrs={'class':'form-control', 'placeholder':'معرف القيد'}),
+            'id': forms.TextInput(attrs={'class':'form-control', 'placeholder':'معرف القيد'}),
             'userID': forms.Select(attrs={'class':'form-control', 'placeholder':'المستخدم'}),
             'dateQayd': forms.TextInput(attrs={'class':'form-control',  'type':'date' , 'placeholder':'تاريخ القيد'}),
             'currencyID': forms.Select(attrs={'class':'form-control', 'placeholder':'العملة'}),
             'desQayd': forms.Textarea(attrs={'class':'form-control', 'placeholder':'وصف القيد', 'style':'height: 50px;'}),
-            'attachments': forms.FileInput(attrs={'class':'form-control', 'placeholder':'مرفقات القي'}),
+            'attachments': forms.FileInput(attrs={'class':'form-control', 'placeholder':'مرفقات القيد', 'value':"{{qayd_form.attachments}}"}),
             'details': forms.TextInput(attrs={'class':'form-control', 'placeholder':'تفاصيل القيد'}),     
         }
 
@@ -36,6 +36,7 @@ class QaydDetailsForm(forms.ModelForm):
         model = QaydDetails
         fields = '__all__'
         widgets = {
+            # 'id': forms.TextInput(attrs={'class':'form-control', 'placeholder':'معرف القيد'}),
             'qaydID': forms.Select(attrs={'class':'form-control', 'placeholder':'رأس القيد'}),
             'debit': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'مدين'}),
             'credit': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'دائن'}),
@@ -45,13 +46,3 @@ class QaydDetailsForm(forms.ModelForm):
             'projectID': forms.Select(attrs={'class':'form-control', 'placeholder':'المشروع'}),
             'empID': forms.Select(attrs={'class':'form-control', 'placeholder':'الموظف'}),       
         }
-
-
-#  new_qayd = Qayd()
-#     new_qayd.userID = request.user
-#     new_qayd.dateQayd = timezone.now()
-#     new_qayd.attachments = request.attachment
-#     new_qayd.accCurrencyID = request.currency
-#     new_qayd.desQayd = request.desqayd
-#     new_qayd.save()
-#     qayddetails = QaydDetails.objects.create(qaydID=new_qayd)

@@ -107,8 +107,7 @@
             <th scope="col">توجيه الميزانية</th>
             <th scope="col">الوصف</th>
             <th scope="col">يمكن الدفع والتحصيل بهذا الحساب</th>
-            <th scope="col">تعديل</th>
-            <th scope="col">حذف</th>
+            <th scope="col">إجراءات</th>
           </tr>
         </thead>
         <tbody>
@@ -128,13 +127,16 @@
             <td>{{acc.is_can_pay}}</td>
             <td>
               <a class="btn-link" href="{% url 'acc_update' acc.id %}">
-                 <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                <i class="fas fa-edit"></i>
+              </a>
+              <a href="" class="btn-link ">
+                <i class="fa fa-print" aria-hidden="true"></i>
+              </a>
+              <a href="" class="btn-link ">
+                <i class="fa fa-trash"></i>
               </a>
             </td>
             <td>
-              <a href="" class="btn-link ">
-                <i class="fa-sharp fa-solid fa-print"></i>
-              </a>
             </td>
         </tr>
         {% endfor %}
