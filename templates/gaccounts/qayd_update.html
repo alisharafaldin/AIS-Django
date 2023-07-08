@@ -15,10 +15,10 @@
       <a href="{% url 'qayd_all' %}" class="btn btn-close">إلغاء</a>
       <div class="form-row">
         <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
-          <div class="form-row">
+          <!-- <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">المستخدم</h6>
             <div class="form-group col-md-6">{{qayd_form.userID}}</div>
-          </div>
+          </div> -->
           <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">التاريخ</h6>
             <div class="form-group col-md-6">{{qayd_form.dateQayd}}</div>
@@ -72,12 +72,20 @@
           <tr>
             <td></td>
             <th>المجموع</th>
-            <th>مجموع مدين : 0.00</th>
-            <th>مجموع الدائن : 0.00</th>
+            <th>مجموع مدين : {{calc.total_d}}</th>
+            <th>مجموع الدائن : {{calc.total_c}}</th>
+            {% if calc.other == 0 %}
+              <th>الفرق : {{calc.other}}</th>
+            {% else %}
+              <th>الفرق : <span style="color: red;">{{calc.other}}</span></th>
+            {% endif %}
           </tr>
         </tbody>
       </table>
     </form>
+    <div class="form-row">
+      <h6 class="form-group col-md-6">مُنشئ القيد : {{qayd_id.userID}} </h6>
+    </div>
   </div>
 </div>
 {% endblock %}

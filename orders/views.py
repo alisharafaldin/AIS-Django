@@ -3,13 +3,11 @@ from django.contrib import messages
 from products.models import Product
 from orders.models import Order, OrderDetails, Payment
 from django.utils import timezone
-
 # Create your views here.
 
 def add_to_cart(request):
     # للتحقق أن المنتج والكمية والسعر موجودين وأن يكون مسجل دخول وغير أنونيموس
     if 'pro_id' in request.GET and 'qty' in request.GET and 'price' in request.GET and  request.user.is_authenticated and not request.user.is_anonymous:
-        
         pro_id = request.GET['pro_id']
         qty = request.GET['qty']
         # للتحقق أن المستخدم ليس له طلب غير مكتمل
@@ -65,6 +63,7 @@ def cart(request):
             context = {
                 'order':order,
                 'orderdetails':orderdetails,
+                'order_count': OrderDetails.objects.all(),
                 'total':total,
             }
     return render(request, 'orders/cart.html', context)

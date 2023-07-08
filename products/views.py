@@ -2,7 +2,6 @@ from django.shortcuts import get_object_or_404, render
 from datetime import datetime
 from .models import Product
 # Create your views here.
-
 def products(request):
     pro = Product.objects.all()
     name = None
@@ -34,7 +33,6 @@ def products(request):
         if pricefrom and priceto: # للتحقق أن البيانات ليست فارغة
             if pricefrom.isdigit() and priceto.isdigit(): #للتأكد أن المدخلات رقم
                 pro = pro.filter(price__gte=pricefrom , price__lte=priceto) # الإختصار gte يعني أكبر من أو يساوي
-                
     context = {
         'products':pro
     }

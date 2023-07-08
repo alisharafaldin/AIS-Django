@@ -4,7 +4,7 @@
 {% block content %}
 <div class="content-wrapper">
   <div class="main-title">
-    <h4 class="form-group col-md-9">قيود يومية جديد</h4>
+    <h4 class="form-group col-md-9">قيد يومية جديد</h4>
   </div>
   <form method="GET" class="form-inline my-2 my-lg-0">
   </form>
@@ -20,6 +20,10 @@
       <br>
       <div class="form-row">
         <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
+            <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">التاريخ</h6>
+            <div class="form-group col-md-6">{{qayd_form.userID}}</div>
+          </div>
             <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">التاريخ</h6>
             <div class="form-group col-md-6">{{qayd_form.dateQayd}}</div>
@@ -54,32 +58,36 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <!-- <tr> -->
             <!-- لعمل ارقام تسلسلة -->
-            <th scope="row">{{forloop.counter}}</th>
+            <!-- <th scope="row">{{forloop.counter}}</th> -->
             <!-- تفاصيل الجدول -->
-            <td name="accID">{{ qayd_details_form.accID }}</td>
-            <td name="debit">{{ qayd_details_form.debit }}</td>
-            <td name="credit">{{ qayd_details_form.credit }}</td>
-            <td name="desQaydDetails">{{ qayd_details_form.desQaydDetails }}</td>
-            <td name="projectID">{{ qayd_details_form.projectID }}</td>
-            <td name="empID">{{ qayd_details_form.empID }}</td>
-          </tr>
-        </tbody>
-        <tbody>
-          <tr>
-            <td></td>
-            <th>المجموع</th>
-            <th>مجموع مدين : {{calc.total_d}}</th>
-            <th>مجموع الدائن : {{calc.total_c}}</th>
-            <th>الفرق : {{calc.other}}</th>
-          </tr>
+            <!-- <td name="accID">{{ qayd_details_form.accID }}</td> -->
+            <!-- <td name="debit">{{ qayd_details_form.debit }}</td> -->
+            <!-- <td name="credit">{{ qayd_details_form.credit }}</td> -->
+            <!-- <td name="desQaydDetails">{{ qayd_details_form.desQaydDetails }}</td> -->
+            <!-- <td name="projectID">{{ qayd_details_form.projectID }}</td> -->
+            <!-- <td name="empID">{{ qayd_details_form.empID }}</td> -->
+          <!-- </tr> -->
+        <!-- </tbody> -->
+        <!-- <tbody> -->
+          <!-- <tr> -->
+            <!-- <td></td> -->
+            <!-- <th>المجموع</th> -->
+            <!-- <th>مجموع مدين : {{calc.total_d}}</th> -->
+            <!-- <th>مجموع الدائن : {{calc.total_c}}</th> -->
+            <!-- {% if calc.other == 0 %} -->
+              <!-- <th>الفرق : {{calc.other}}</th> -->
+            <!-- {% else %} -->
+              <!-- <th>الفرق : <span style="color: red;">{{calc.other}}</span></th> -->
+            <!-- {% endif %} -->
+          <!-- </tr> -->
         </tbody>
       </table>
     </form>
     <!-- End Modal -->
     <div class="form-row">
-      <h6 class="form-group col-md-6">مُنشئ القيد : {{qayd_id.userID}} </h6>
+      <!-- <h6 class="form-group col-md-6">مُنشئ القيد : {{qayd_id.userID}} </h6> -->
     </div>
   </div>
 </div>

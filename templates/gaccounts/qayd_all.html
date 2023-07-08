@@ -47,9 +47,8 @@
               <td>{{qayd.desQayd}}</td>
               <td>{{qayd.attachments}}</td>
               <td>
-                <a class="btn-link" href="{% url 'qayd_update' qayd.id %}"><i class="fas fa-edit"></i></a>
+                <a href="{% url 'qayd_update' qayd.id %}" class="btn-link"><i class="fas fa-edit"></i></a>
                 <a href="{% url 'qayd_print' qayd.id %}" class="btn-link"><i class="fa fa-print" aria-hidden="true"></i></a>
-                <!-- <a href=""  data-toggle="modal" data-target="#staticBackdrop" class="btn-link"><i class="fa fa-trash" aria-hidden="true"></i></a> -->
                 <a href="{% url 'qayd_delete' qayd.id %}" class="btn-link"><i class="fa fa-trash" aria-hidden="true"></i></a>
                 <input type="number" name="qayd_id" value="{{qayd.id}}">
               </td>

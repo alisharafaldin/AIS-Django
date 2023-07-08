@@ -47,7 +47,7 @@ class Qayd(models.Model):
     desQayd = models.TextField(verbose_name='وصف القيد', max_length=250, blank=True, null=True)
     currencyID = models.ForeignKey(Currency , verbose_name='العملة', on_delete=models.CASCADE, null=True)
     attachments = models.FileField(verbose_name='مرفقات القيد', blank=True, null=True)
-    details = models.ManyToManyField(AccountsTree, through='QaydDetails')
+    # details = models.ManyToManyField(AccountsTree, through='QaydDetails')
     def __str__(self):
         # return ' | Qayd id: ' + str(self.id)
         return  str(self.id)
