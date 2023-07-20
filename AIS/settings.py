@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'employees.apps.EmployeesConfig',
     'orders.apps.OrdersConfig',
     'pages.apps.PagesConfig',
-    # 'users.apps.UsersConfig',
+    'users.apps.UsersConfig',
     'accounts.apps.AccountsConfig',
     'gaccounts.apps.GaccountsConfig',
     'products.apps.ProductsConfig',

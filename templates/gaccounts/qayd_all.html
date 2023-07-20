@@ -52,7 +52,7 @@
                 <a href="{% url 'qayd_delete' qayd.id %}" class="btn-link"><i class="fa fa-trash" aria-hidden="true"></i></a>
                 <input type="number" name="qayd_id" value="{{qayd.id}}">
               </td>
-            </tr>
+          </tr>
             <!-- Start Modal -->
             {% if qayd.id == qayd.id %}
             <div class="modal fade " id="staticBackdrop">
@@ -69,9 +69,9 @@
             {% endif %}
             <!-- End Modal -->
             {% endfor %}
-          </tbody>
-        </table>
-      </form>
+        </tbody>
+      </table>
+    </form>
 <!-- End Modal -->
   </div>  
 </div>

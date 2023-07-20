@@ -165,8 +165,8 @@ def qayd_update(request, id):
       # qayd_id.userID = request.user
       # if qayd_form.is_valid():
       #     qayd_form.save()
-          # messages.success(request, 'تم تحديث القيد بنجاح')
-          # return redirect('qayd_all')
+      #     messages.success(request, 'تم تحديث القيد بنجاح')
+      #     return redirect('qayd_all')
     else:
         messages.error(request, 'خطأ في البيانات')
     qayd_form = QaydForm(instance=qayd_id)
