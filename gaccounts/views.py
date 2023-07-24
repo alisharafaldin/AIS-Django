@@ -41,7 +41,11 @@ def acc_update(request, id):
 
 def qayd_all(request):
     
-    return render(request,'gaccounts/qayd_all.html', { 'all_qayd':Qayd.objects.all(),})
+    context = {
+        'all_qayd':Qayd.objects.all(),
+        'all_qayd_details':QaydDetails.objects.all().count(),
+    }
+    return render(request,'gaccounts/qayd_all.html', context)
 
 # def qayd_add(request):
     # new_qayd = Qayd()
@@ -149,16 +153,19 @@ def qayd_add(request):
 
 def qayd_update(request, id):
   if request.user.is_authenticated and not request.user.is_anonymous:
+
     qayd_id = Qayd.objects.get(id=id)
     qayd_id_details = QaydDetails.objects.all().filter(qaydID=qayd_id)
+
+    qayd_form = QaydForm(request.POST, request.FILES, instance=qayd_id)
     qayd_details_form = QaydDetailsForm(instance=qayd_id)
+
     if request.method == 'POST' and 'btnsave' in request.POST:
-      qayd_form = QaydForm(request.POST, request.FILES, instance=qayd_id)
       qayd_update = Qayd(
         #  userID = request.POST['userID'],
-         currencyID = request.POST['currencyID'],
+        #  currencyID = request.POST['currencyID'],
          dateQayd = request.POST['dateQayd'],
-         attachments = request.POST['attachments'],
+        #  attachments = request.POST['attachments'],
          desQayd = request.POST['desQayd'],
       )
       qayd_update.save()
@@ -167,6 +174,7 @@ def qayd_update(request, id):
       #     qayd_form.save()
       #     messages.success(request, 'تم تحديث القيد بنجاح')
       #     return redirect('qayd_all')
+      return redirect('qayd_all')
     else:
         messages.error(request, 'خطأ في البيانات')
     qayd_form = QaydForm(instance=qayd_id)

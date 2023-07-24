@@ -8,7 +8,7 @@
 
   <div class="content">
     <br />
-    <form method="POST" >
+    <form method="POST" action="">
       {% csrf_token %} 
       {% include 'partials/_alerts.html' %}
       <button type="submit" name="btnsave" class="btn btn-save">حفظ التعديل</button>

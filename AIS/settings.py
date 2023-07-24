@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     'employees.apps.EmployeesConfig',
     'orders.apps.OrdersConfig',
     'pages.apps.PagesConfig',
-    'users.apps.UsersConfig',
     'accounts.apps.AccountsConfig',
     'gaccounts.apps.GaccountsConfig',
     'products.apps.ProductsConfig',
@@ -148,7 +147,7 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
 # f = open('test.txt', 'w')
-# f.write( os.path.join(BASE_DIR) )
+# f.write( os.path.join(BASE_DIR))
 # f.close()
 
 # Default primary key field type
