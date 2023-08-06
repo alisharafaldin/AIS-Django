@@ -1,35 +1,144 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta http-equiv="content-type" content="'text/csv; charset=utf-8-sig">
-  <!-- <meta charset="UTF-8"> -->
-  <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <style type='text/css'>
-    @font-face {
-        font-family: "DejaVuSansMono";
-        src: url("/static/fonts/DejaVuSansMono.ttf");
-        }
-        body { font-family: DejaVuSansMono; }
-     </style> -->
-</head>
-<body>
-  <div class="content-wrapper">
-    <div class="content">
-      <p>Dec 7, 2020 at 4:32</p>
-      <h3>السلام عليكم ورحمة الله وبركاته</h3>
-      <P>
-        I have used this exact same code for getting Arabic pdf but it's showing blocked letters instead of Arabic. What might be the reason? Font unsupported
-      </P>
-      <h1>Saran Prasad</h1>
-      <P>
-        Thank you for your response. I have changed the font. Now it's working perfectly fine. – 
-        Saran Prasad
-      </P>
+{% extends 'base.html' %}
+
+{% load static %}
+{% block title %} | {{contract.shareholdersID.f_Name_ar}} {{contract.shareholdersID.s_Name_ar}} {{contract.shareholdersID.t_Name_ar}} {{contract.shareholdersID.fo_Name_ar}} {% endblock %}
+{% block content %}
+{% load humanize %}
+<style>
+  .head-contract {
+    margin-left: 234.5px !important; 
+  }
+  .sub-title-head {
+    background: #343432;
+    color: #a2c734;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 20px;
+    width: fit-content;
+    margin: auto;
+  }
+  .contract_details {
+    font-weight: bold;
+  }
+  .content-wrapper, .main-footer, .main-header {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+.content {
+    margin: 5px;
+  }
+</style>
+<div class="content-wrapper">
+  <div class="content">
+    <div class="row no-gutters">
+      <div class="card-body">
+          <div class="row" style="margin: auto; max-width: 80%;">
+            <div class="col-md-3">
+              <img src="{% static 'dist/img/Hadena.jpg' %}" class="card-img" alt="" />
+            </div>
+            <div class="col">
+              <h3 class="text-center" style="font-size: 14px;">بسم الله الرحمن الرحيم</h3>
+              <br>
+              <h3 class="text-center">حاضنة البركة للإنتاج الزراعي والحيواني</h3>
+              <br>
+              <h4 class="text-center sub-title-head">تذوق بركة الرزق الحلال</h4>
+              <br>
+              <h5 class="text-center">عقد شراكة</h5>
+            </div>
+          </div>
+          <div class="col-md-8" style="margin: auto; max-width: 80%;">
+            <div>
+              <p>
+                التاريخ : <span class="contract_details">{{contract.dateOfContract}}</span> 
+              </p>
+              <P>
+                1- حاضنة البركة للإنتاج الزراعي والحيواني اسم عمل مملوك لشركة شباب بزنس للأنشطة المتكاملة المحدودة المسجلة بالرقم 49074 بموجب قانون الشركات لعام2015 والحاضنة متخصصة في مجال الإنتاج الزراعي والحيواني وتمتلك الخبرة الفنية والإدارية في انشاء وتأسيس وإدارة المشاريع الزراعية بشقيها النباتي والحيواني وتعرف لأغراض هذا العقد بالطرف الأول.
+              </P>
+              <P>
+                2- السيد / <span class="contract_details">{{contract.shareholdersID.f_Name_ar}} {{contract.shareholdersID.s_Name_ar}} {{contract.shareholdersID.t_Name_ar}} {{contract.shareholdersID.fo_Name_ar}}</span> حامل هوية : <span class="contract_details">{{contract.shareholdersID.typeID}}</span> رقمها : <span class="contract_details">{{contract.shareholdersID.id_number}}</span> عنوانه : <span class="contract_details">{{contract.shareholdersID.detailsAddress}}</span> رقم هاتفه : <span class="contract_details">{{contract.shareholdersID.mobileNumber}}</span> ويعرف لأغراض هذا العقد بالطرف الثاني.
+              </P>
+              <p>
+                3- يطرح الطرف الاول اسهما للشراكة معه على سبيل المضاربة في الاستثمار الزراعي والحيواني بجميع مجالاته.
+              </p>
+              <p>
+                4- يرغب الطرف الثاني في الشراكة مع الحاضنة  بشراء عدد <span class="contract_details">{{contract.numberOfShares}}</span> سهم بمبلغ وقدره <span class="contract_details">{{contract.amountOfShare|intcomma}} ج.س </span> بإجمالي قيمة <span class="contract_details">{{totalamountOfShare|intcomma}}</span> بعد إطلاعه على جميع تفاصيل العقد والتزامه بها.
+              </p>
+              <p>
+                5- قام الطرف الثاني بسداد المبلغ المذكور أعلاه واستلم الايصال المالي رقم <span class="contract_details">{{contract.numberReceipt}}</span> من الحاضنة.
+              </p>
+              <p>
+                6- تقسم الأرباح بين الحاضنة والمشتركين على النحو التالي <span class="contract_details"> 60% </span> من صافي الأرباح للمشتركين على حسب نسب مشاركتهم و <span class="contract_details"> 40% </span> من صافي الأرباح للحاضنة وذلك بعد خصم جميع التكاليف التشغيلية.
+              </p>
+              <p>
+                7- يتم توريد نصيب الطرف الثاني من صافي الدخل في حساب <span class="contract_details">{{contract.shareholdersID.typeAccBankID}}</span> رقم <span class="contract_details">{{contract.shareholdersID.accountNumber}}</span> علي بنك <span class="contract_details">{{contract.shareholdersID.bankID}}</span> فرع <span class="contract_details">{{contract.shareholdersID.branchBankID}}</span> باسم : <span class="contract_details">{{contract.shareholdersID.ownerAccount}}</span>
+              </p>
+              
+              <p class="contract_details">أحكام عامة :</p>
+              <p>  </p>
+              <p>
+                8- تعتبر النقاط المذكورة أعلاه جزءا لا يتجزأ من هذا العقد.
+
+              </p>
+              <p>
+                9- للطرف الثاني الحق في بيع أسهمه وقت ما شاء بالسعر الذي يرتضيه على ان يتم البيع عن طريق الحاضنة ليكون المشتري مطلعا على طبيعة الشراكة اطلاعا نافيا للجهالة ويرتضي عقدها ويوقع عليه.
+              </p>           
+              <p>
+                10- هذه الشراكة تقوم على اسس شرعية لتحقيق الكسب الحلال وتخضع لقانون الربح والخسارة والعرض والطلب وليست مراباة بأموال المساهمين فهي مضاربة مطلقة في الاستثمار الزراعي والحيواني وتتولى الحاضنة حصرا الادارة الفنية والمالية. 
+              </p>
+              <p>
+                11- هذه الشراكة تقوم على قاعدة الثقة والشفافية وإدارة الحاضنة تقبل من الشركاء من تأسست عنده الثقة بقدرتها المالية والفنية والاخلاقية وهي تبذل قصارى جهدها في الوفاء بهذه الثقة وللحاضنة الحق في إلغاء شراكة من انشرم جدار الثقة بينها وبينه على ان ترد له قيمة اسهمه بعد بيعها بالسعر الجاري حينها.
+              </p>
+              <p>
+                12- تتولى إدارة الحاضنة تقسيم صافي الدخل الشهري على جميع المشتركين وايداع أنصبتهم  في أرقام الحسابات التي تم ذكرها في عقد الشراكة.
+              </p>
+              <p>
+                13- إذا كانت مساهمة المشترك عبارة عن قرض من مؤسسة مالية تقوم الحاضنة بتوريد القسط الشهري في حساب المؤسسة الدائنة من نصيب المشترك في صافي الدخل وتوريد المتبقي إن وجد في حساب المشترك.
+              </p>
+              <p>
+                14- القروض التي يتلقاها المشتركون للاشتراك في الحاضنة متعلقة بذممهم ولا صلة للحاضنة بها.
+              </p>
+              <p>
+                15- يبدأ توريد الأرباح المتحققة بعد بداية الانتاج.
+              </p>
+              <p>
+                16- في حالة نشوء نزاع بين الطرفين يحل بالطرق الودية أو اللجوء إلى لجنة تحكيم يمثل فيها الطرفين بعضو و يختاران بالتوافق العضو الثالث ولها الحق في الفصل بما تراه مناسباً ومراعياً لمصلحة جميع الأطراف بما في ذلك بقية المشتركين.
+              </p>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-6">
+                <p class="contract_details"> الطرف الأول :</p>  
+                <p class="contract_details"> حاضنة البركة للإنتاج الزراعي والحيواني</p>  
+                <p class="contract_details">ينوب عنها / المدير العام : همام محمد علي</p>  
+                <p class="contract_details">التوقيع: </p>  
+              </div>
+              <div class="col-md-6">
+                <p class="contract_details"> الطرف الثاني :</p>
+                <p class="contract_details"> {{contract.shareholdersID.f_Name_ar}} {{contract.shareholdersID.s_Name_ar}} {{contract.shareholdersID.t_Name_ar}} {{contract.shareholdersID.fo_Name_ar}}</p>
+                <p class="contract_details"> التوقيع :</p>
+              </div>
+            </div>
+            <br>
+            <br>
+            <div class="row">
+              <div class="col-md-6">
+                <p class="contract_details"> الشاهد الأول :</p>
+                <p class="contract_details">{{contract.witnes1ID.f_Name_ar}} {{contract.witnes1ID.s_Name_ar}} {{contract.witnes1ID.t_Name_ar}} {{contract.witnes1ID.fo_Name_ar}}</p>
+                <p class="contract_details">نوع إثبات الشخصية : {{contract.witnes1ID.typeID}}</p>
+                <p class="contract_details">رقم الإثبات : {{contract.witnes1ID.id_number}}</p>
+                <p class="contract_details"> التوقيع :</p>
+              </div>
+              <div class="col-md-6">
+                <p class="contract_details"> الشاهد الثاني :</p>
+                <p class="contract_details">{{contract.witnes1ID.f_Name_ar}} {{contract.witnes1ID.s_Name_ar}} {{contract.witnes1ID.t_Name_ar}} {{contract.witnes1ID.fo_Name_ar}}</p>
+                <p class="contract_details">نوع إثبات الشخصية : {{contract.witnes1ID.typeID}}</p>
+                <p class="contract_details">رقم الإثبات : {{contract.witnes1ID.id_number}}</p>
+                <p class="contract_details"> التوقيع :</p>
+              </div>
+            </div>
+          </div>
+      </div>
     </div>
   </div>
-</body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-</html>
-
+</div>
+{% endblock %}

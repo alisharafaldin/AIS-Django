@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %} | Contract Details{% endblock %}
+{% block title %} | Contract ( {{contract.id}} ){% endblock %}
 {% block content %}
 {% load humanize %}
 <style>
@@ -20,8 +20,11 @@
     font-weight: bold;
   }
 </style>
+
 <div class="content-wrapper">
   <h4 class="main-title">بيانات العقد رقم : {{contract.id}}</h4>
+  <a href="{% url 'pdf' contract.id %}" class="nv-link" target="blank">Download PDF Report</a>
+
   <div class="content">
     <br />
     <a href="{% url 'contracts' %}" class="btn btn-main">جميع العقود</a>

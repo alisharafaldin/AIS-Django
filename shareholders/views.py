@@ -22,11 +22,20 @@ from .pdf import html2pdf
 #             response['Content-Disposition']=content
 #             return response
 #         return HttpResponse("Page Not Found")
-        # return HttpResponse(pdf, content_type='application/pdf')
 
-def pdf(request):
-    pdf=html2pdf("shareholders/pdf.html")
-    return HttpResponse(pdf, content_type='application/pdf')
+def pdf(request, contract_id):
+    # if request.user.is_authenticated:
+    all_contract = Contracts.objects.all()
+    contract = Contracts.objects.get(id=contract_id)
+    totalamountOfShare = contract.amountOfShare * contract.numberOfShares
+    context = {
+        'contract':contract,
+        'all_contract':all_contract,
+        'totalamountOfShare':totalamountOfShare,
+    }
+    # pdf=html2pdf("shareholders/pdf.html")
+    # return HttpResponse(pdf, content_type='application/pdf')
+    return render(request , 'shareholders/pdf.html', context)
  
 def shareholders(request): 
     if request.method == 'POST':

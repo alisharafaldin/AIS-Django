@@ -49,10 +49,52 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="./index3.html" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Dashboard v3</p>
-              </a>
+              <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-chart-pie"></i>
+                  <p>
+                    الحاضنة
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{% url 'shareholders' %}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>المساهمين</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{% url 'contracts' %}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>العقود</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-chart-pie"></i>
+                  <p>
+                    فوركس
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{% url 'shareholders' %}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>المساهمين</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{% url 'contracts' %}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>العقود</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
             </li>
           </ul>
         </li>
@@ -113,29 +155,7 @@
             </li>
           </ul>
         </li>
-        <li class="nav-item has-treeview">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-chart-pie"></i>
-            <p>
-              الأسهم
-              <i class="right fas fa-angle-left"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="{% url 'shareholders' %}" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>إدارة المساهمين</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{% url 'contracts' %}" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>إدارة العقود</p>
-              </a>
-            </li>
-          </ul>
-        </li>
+    
         <li class="nav-item has-treeview">
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-tree"></i>

@@ -41,13 +41,18 @@ class AccountsTree(models.Model):
     def __str__(self):
         return str(self.accName_ar)
 
+class BondsCatch_Pay(models.Model):
+    dateBond = models.DateField(verbose_name='تاريخ السند',)
+    currencyID = models.ForeignKey(Currency , verbose_name='العملة', on_delete=models.CASCADE, null=True)
+    exchangeRate = models.DecimalField(max_digits=6, verbose_name='سعر الصرف', decimal_places=2)
+    
 class Qayd(models.Model):
     userID = models.ForeignKey(User, verbose_name='المستخدم', on_delete=models.CASCADE, null=True)
     dateQayd = models.DateField(verbose_name='تاريخ القيد',)
     desQayd = models.TextField(verbose_name='وصف القيد', max_length=250, blank=True, null=True)
     currencyID = models.ForeignKey(Currency , verbose_name='العملة', on_delete=models.CASCADE, null=True)
     attachments = models.FileField(verbose_name='مرفقات القيد', blank=True, null=True)
-    details = models.ManyToManyField(AccountsTree, through='QaydDetails')
+    details = models.ManyToManyField(AccountsTree, through='QaydDetails', blank=True, null=True)
     def __str__(self):
         # return ' | Qayd id: ' + str(self.id)
         return  str(self.id)

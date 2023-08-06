@@ -15,10 +15,10 @@
       <a href="{% url 'qayd_all' %}" class="btn btn-close">إلغاء</a>
       <div class="form-row">
         <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
-          <!-- <div class="form-row">
+          <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">المستخدم</h6>
             <div class="form-group col-md-6">{{qayd_form.userID}}</div>
-          </div> -->
+          </div>
           <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">التاريخ</h6>
             <div class="form-group col-md-6">{{qayd_form.dateQayd}}</div>
@@ -36,6 +36,10 @@
           <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">المرفقات</h6>
             <div class="form-group col-md-6">{{qayd_form.attachments}}</div>
+          </div>
+          <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">التفاصيل</h6>
+            <div class="form-group col-md-6">{{qayd_form.details}}</div>
           </div>
         </div>
       </div>
