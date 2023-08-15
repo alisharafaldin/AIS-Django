@@ -208,7 +208,6 @@ def emp_profile(request, emp_id):
                 return redirect('index')
             context = {
                         'emp':EmpInfo.objects.get(id=emp_id),
-                       
                 }
             return render(request , 'employees/employee.html', context)
     else:

@@ -31,13 +31,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'shareholders.apps.ShareholdersConfig',
+    'hadena.apps.HadenaConfig',
     'employees.apps.EmployeesConfig',
     'orders.apps.OrdersConfig',
     'pages.apps.PagesConfig',
     'accounts.apps.AccountsConfig',
     'gaccounts.apps.GaccountsConfig',
     'products.apps.ProductsConfig',
+    'forex.apps.ForexConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

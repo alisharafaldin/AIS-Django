@@ -8,7 +8,7 @@ class Currency(models.Model):
     currency_en = models.CharField(verbose_name=' العملة إنجليزي',max_length=100, blank=True, null=True)
     currencyCode = models.CharField(verbose_name=' رمز العملة',max_length=100, blank=True, null=True)
     def __str__(self):
-        return self.currency_ar + ' ' + self.currencyCode
+        return str(self.currency_ar)
 
 class AccType(models.Model):
     accType_ar = models.CharField(verbose_name='نوع الحساب عربي',max_length=100, blank=True, null=True)
@@ -52,14 +52,14 @@ class Qayd(models.Model):
     desQayd = models.TextField(verbose_name='وصف القيد', max_length=250, blank=True, null=True)
     currencyID = models.ForeignKey(Currency , verbose_name='العملة', on_delete=models.CASCADE, null=True)
     attachments = models.FileField(verbose_name='مرفقات القيد', blank=True, null=True)
-    details = models.ManyToManyField(AccountsTree, through='QaydDetails', blank=True, null=True)
+    details = models.ManyToManyField(AccountsTree, through='QaydDetails')
     def __str__(self):
         # return ' | Qayd id: ' + str(self.id)
         return  str(self.id)
 
 class QaydDetails(models.Model):
     qaydID = models.ForeignKey(Qayd, verbose_name='رأس القيد',on_delete=models.CASCADE)
-    accID = models.ForeignKey(AccountsTree, verbose_name='الحساب', on_delete=models.CASCADE)
+    accID = models.ForeignKey(AccountsTree, verbose_name='الحساب', on_delete=models.CASCADE, blank=True, null=True)
     debit = models.DecimalField(max_digits=6, verbose_name='مدين', decimal_places=2)
     credit = models.DecimalField(max_digits=6, verbose_name='دائن', decimal_places=2)
     desQaydDetails = models.TextField(verbose_name='وصف تصفيل القيد', max_length=250,blank=True, null=True)

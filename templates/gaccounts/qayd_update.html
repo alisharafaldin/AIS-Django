@@ -2,10 +2,6 @@
 {% endblock %} {% block content %}
 <div class="content-wrapper">
   <h4 class="main-title">تعديل القيد رقم : ( {{qayd_id.id}} )</h4>
-  <!-- {% for qdf in qayd_id_details %}
-    <h4 class="main-title">تفاصيل القيد  : ( {{qdf}} )</h4>
-  {% endfor %} -->
-
   <div class="content">
     <br />
     <form method="POST" action="">
@@ -15,10 +11,6 @@
       <a href="{% url 'qayd_all' %}" class="btn btn-close">إلغاء</a>
       <div class="form-row">
         <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
-          <div class="form-row">
-            <h6 style="font-weight: bold" class="col-md-3">المستخدم</h6>
-            <div class="form-group col-md-6">{{qayd_form.userID}}</div>
-          </div>
           <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">التاريخ</h6>
             <div class="form-group col-md-6">{{qayd_form.dateQayd}}</div>
@@ -37,10 +29,6 @@
             <h6 style="font-weight: bold" class="col-md-3">المرفقات</h6>
             <div class="form-group col-md-6">{{qayd_form.attachments}}</div>
           </div>
-          <div class="form-row">
-            <h6 style="font-weight: bold" class="col-md-3">التفاصيل</h6>
-            <div class="form-group col-md-6">{{qayd_form.details}}</div>
-          </div>
         </div>
       </div>
       <table class="table table-hover">
@@ -57,20 +45,19 @@
           </tr>
         </thead>
         <tbody>
-            {% for qdf in qayd_id_details %}
+          {% for qdd in qayd_details_form %}
             <tr>
               <!-- لعمل ارقام تسلسلة -->
               <th scope="row">{{forloop.counter}}</th>
               <!-- تفاصيل الجدول -->
-              <!-- <td>{{ qdf.pk }}</td> -->
-              <td>{{ qdf.accID }}</td>
-              <td>{{ qdf.debit }}</td>
-              <td>{{ qdf.credit }}</td>
-              <td>{{ qdf.desQaydDetails }}</td>
-              <td>{{ qdf.projectID }}</td>
-              <td>{{ qdf.empID }}</td>
+              <td>{{qdd.accID }}</td>
+              <td>{{qdd.debit }}</td>
+              <td>{{qdd.credit }}</td>
+              <td>{{qdd.desQaydDetails }}</td>
+              <td>{{qdd.projectID }}</td>
+              <td>{{qdd.empID }}</td>
             </tr>
-            {% endfor %}
+          {% endfor %}
         </tbody>
         <tbody>
           <tr>

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %} 
+{% block title %} | New Qayd {% endblock %}
+{% block content %}
+<div class="content-wrapper">
+  <div class="main-title">
+    <h4 class="form-group col-md-9">قيد يومية جديد</h4>
+  </div>
+  <form method="GET" class="form-inline my-2 my-lg-0">
+  </form>
+  <div class="content">
+    {% include 'partials/_alerts.html' %}
+    <form method="POST">
+      {% csrf_token %}
+      <br>
+      <button type="submit" name="btnsave" class="btn btn-save">إضافة</button>
+      <a href="{% url 'qayd_all' %}" class="btn btn-close" data-dismiss="modal" aria-label="Close">إلغاء</a>
+      <br>
+      <br>
+      <br>
+      <div class="form-row">
+        <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
+            <!-- <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">المستخدم</h6>
+            <div class="form-group col-md-6">{{qayd_form.userID}}</div>
+          </div> -->
+            <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">التاريخ</h6>
+            <div class="form-group col-md-6">{{qayd_form.dateQayd}}</div>
+          </div>
+          <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">العملة</h6>
+            <div class="form-group col-md-6">{{qayd_form.currencyID}}</div>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
+          <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">الوصف</h6>
+            <div class="form-group col-md-6">{{qayd_form.desQayd}}</div>
+          </div>
+          <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">المرفقات</h6>
+            <div class="form-group col-md-6">{{qayd_form.attachments}}</div>
+          </div>
+        </div>
+      </div>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <!-- <th scope="col">رقم القيد</th> -->
+            <th scope="col">الحساب</th>
+            <th scope="col">مدين</th>
+            <th scope="col">دائن</th>
+            <th scope="col">الوصف</th>
+            <th scope="col">المشروع</th>
+            <th scope="col">الموظف</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <!-- لعمل ارقام تسلسلة -->
+            <th scope="row">{{forloop.counter}}</th>
+            <!-- تفاصيل الجدول -->
+            <td name="accID">{{ qayd_details_form.accID }}</td>
+            <td name="debit">{{ qayd_details_form.debit }}</td>
+            <td name="credit">{{ qayd_details_form.credit }}</td>
+            <td name="desQaydDetails">{{ qayd_details_form.desQaydDetails }}</td>
+            <td name="projectID">{{ qayd_details_form.projectID }}</td>
+            <td name="empID">{{ qayd_details_form.empID }}</td>
+          </tr>
+        </tbody>
+        <tbody>
+          <tr>
+            <td></td>
+            <th>المجموع</th>
+            <th>مجموع مدين : {{calc.total_d}}</th>
+            <th>مجموع الدائن : {{calc.total_c}}</th>
+            {% if calc.other == 0 %}
+              <th>الفرق : {{calc.other}}</th>
+            {% else %}
+              <th>الفرق : <span style="color: red;">{{calc.other}}</span></th>
+            {% endif %}
+          </tr>
+        </tbody>
+      </table>
+    </form>
+    <!-- End Modal -->
+    <div class="form-row">
+      <!-- <h6 class="form-group col-md-6">مُنشئ القيد : {{qayd_id.userID}} </h6> -->
+    </div>
+  </div>
+</div>
+{% endblock %}

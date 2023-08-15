@@ -6,7 +6,7 @@ from products.models import Product
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    Product_favorites = models.ManyToManyField(Product, blank=True, null=True)
+    Product_favorites = models.ManyToManyField(Product)
     address = models.CharField(max_length=60)
     address2 = models.CharField(max_length=60)
     city = models.CharField(max_length=60)
