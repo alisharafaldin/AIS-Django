@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'basicinfo.apps.BasicinfoConfig',
     'hadena.apps.HadenaConfig',
     'employees.apps.EmployeesConfig',
     'orders.apps.OrdersConfig',

@@ -3,10 +3,6 @@ from .models import *
 from import_export.admin import ImportExportModelAdmin 
 
 # Register your models here.
-@admin.register(Currency)
-class CurrencyImportExport(ImportExportModelAdmin):
-    pass
-    list_display = ['id','currency_ar','currency_en','currencyCode']
 
 @admin.register(AccType)
 class AccTypeImportExport(ImportExportModelAdmin):
@@ -38,5 +34,9 @@ class QaydDetailsImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id']
 
+@admin.register(BondsCatchPay)
+class BondsCatchPayImportExport(ImportExportModelAdmin):
+    pass
+    list_display = ['id']
 
 

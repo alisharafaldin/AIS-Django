@@ -4,18 +4,7 @@ from . import views
 
 
 urlpatterns = [
-    path('generalsettings', views.generalsettings, name='generalsettings'),
     path('', views.employees, name='employees'),
     path('emp/<int:emp_id>', views.employee, name='employee'),
     path('<int:id>', views.update, name='update_emp'),
-    path('emp_profile', views.emp_profile, name='emp_profile'),
-    path('countrie', views.countrie ,name='countrie'),
-    path('edit_countrie/<countrie_id>', views.edit_countrie ,name='edit_countrie'),
-    path('delete_countrie/<countrie_id>', views.delete_countrie ,name='delete_countrie'),
-    path('gender', views.gender ,name='gender'),
-    path('add_gender', views.add_gender ,name='add_gender'),
-    path('edit/<int:gender_id>', views.edit_gender ,name='edit_gender'),
-    path('delete/<int:gender_id>', views.delete_gender ,name='delete_gender'),  
-    path('sponser', views.sponser ,name='sponser'),  
-    path('add_sponser', views.add_sponser ,name='add_sponser'),
 ]

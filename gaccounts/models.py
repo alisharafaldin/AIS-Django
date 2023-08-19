@@ -1,14 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
-from employees.models import EmpInfo, Project
+from employees.models import EmpInfo
+from basicinfo.models import Project, Currency
+from hadena.models import ShareholdersInfo
 # Create your models here.
-
-class Currency(models.Model):
-    currency_ar = models.CharField(verbose_name=' العملة عربي',max_length=100, blank=True, null=True)
-    currency_en = models.CharField(verbose_name=' العملة إنجليزي',max_length=100, blank=True, null=True)
-    currencyCode = models.CharField(verbose_name=' رمز العملة',max_length=100, blank=True, null=True)
-    def __str__(self):
-        return str(self.currency_ar)
 
 class AccType(models.Model):
     accType_ar = models.CharField(verbose_name='نوع الحساب عربي',max_length=100, blank=True, null=True)
@@ -41,11 +36,6 @@ class AccountsTree(models.Model):
     def __str__(self):
         return str(self.accName_ar)
 
-class BondsCatch_Pay(models.Model):
-    dateBond = models.DateField(verbose_name='تاريخ السند',)
-    currencyID = models.ForeignKey(Currency , verbose_name='العملة', on_delete=models.CASCADE, null=True)
-    exchangeRate = models.DecimalField(max_digits=6, verbose_name='سعر الصرف', decimal_places=2)
-    
 class Qayd(models.Model):
     userID = models.ForeignKey(User, verbose_name='المستخدم', on_delete=models.CASCADE, null=True)
     dateQayd = models.DateField(verbose_name='تاريخ القيد',)
@@ -71,3 +61,24 @@ class QaydDetails(models.Model):
     class Meta:
         #ترتيب العناصر حسب الآي دي
         ordering = ['-id']
+
+class TypeBond(models.Model):
+    typeBond_ar = models.CharField(verbose_name='نوع السند عربي',max_length=100)
+    typeBond_en = models.CharField(verbose_name='نوع السند إنجليزي',max_length=100,blank=True, null=True)
+    def __str__(self):
+        return str(self.typeID_ar)
+    
+class BondsCatchPay(models.Model):
+    userID = models.ForeignKey(User, verbose_name='أمين الصندوق', on_delete=models.CASCADE)
+    typeBondID = models.ForeignKey(TypeBond, verbose_name='نوع السند',on_delete=models.CASCADE)
+    dateBond = models.DateField(verbose_name='تاريخ السند',)
+    currencyID = models.ForeignKey(Currency , verbose_name='العملة', on_delete=models.CASCADE)
+    exchangeRate = models.DecimalField(verbose_name='سعر الصرف', max_digits=6, decimal_places=2)
+    amount = models.DecimalField(verbose_name='المبلغ', max_digits=6, decimal_places=2)
+    description = models.CharField(verbose_name='الوصف',max_length=100)
+    recipient = models.CharField(verbose_name='المستلم',max_length=100, blank=True, null=True)
+    empID = models.ForeignKey(EmpInfo, verbose_name='الموظف', on_delete=models.CASCADE, blank=True, null=True)
+    shareholderID = models.ForeignKey(ShareholdersInfo, verbose_name='المساهم', on_delete=models.CASCADE, blank=True, null=True)
+    projectID = models.ForeignKey(Project, verbose_name='المشروع', on_delete=models.CASCADE, blank=True, null=True)
+    def __str__(self):
+        return str(self.typeBondID)

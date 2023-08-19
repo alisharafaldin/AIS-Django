@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.contrib import messages
 from employees.models import *
 from .models import *
+from basicinfo.models import Person
 from django.views.generic import CreateView
 from .forms import ShareholderForm, ContractsForm
 import io
@@ -47,11 +48,10 @@ def shareholders(request):
             messages.error(request, 'يوجد خطأ في البيانات')
     else:
         messages.error(request, 'الدالة ليست بوست')
-    all_share = ShareholdersInfo.objects.filter(companyID=1)
+    all_share = ShareholdersInfo.objects.filter(person__companyID=1)
+    # all_share = ShareholdersInfo.objects.all()
      # Start Search
     txtsearch = None
-    share_F = None
-    share_H = None
     if 'search_name' in request.GET: # للتحقق من وجود نيم  في الرابط
         txtsearch = request.GET['search_name'] # تغذية المتغير بالمدخلات حسب النيم
         if txtsearch: # للتحقق أن البيانات ليست فارغة
@@ -74,24 +74,7 @@ def shareholders(request):
             all_share = all_share.filter(workTradeID=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف  
     context = {
         'shar_form':ShareholderForm(),
-        'all':all_share,
-    }
-    return render(request , 'hadena/shareholders.html', context)
-
-def share_F(request): 
-    if request.method == 'POST' and 'btnsharsave' in request.POST:
-        add_share = ShareholderForm(request.POST, request.FILES)
-        if add_share.is_valid():
-            add_share.save()
-            messages.success(request, 'تمت الإضافة بنجاح')
-        else:
-            messages.error(request, 'يوجد خطأ في البيانات')
-    else:
-        messages.error(request, 'الدالة ليست بوست')
-    all_share = ShareholdersInfo.objects.filter(companyID=2)
-    context = {
-        'shar_form':ShareholderForm(),
-        'all':all_share,
+        # 'all':all_share,
     }
     return render(request , 'hadena/shareholders.html', context)
 

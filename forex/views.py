@@ -12,17 +12,6 @@ from django.http import HttpResponse
 from django.views.generic import View
 from .pdf import html2pdf
 
-def pdf(request, contract_id):
-    all_contract = Contracts.objects.all()
-    contract = Contracts.objects.get(id=contract_id)
-    totalamountOfShare = contract.amountOfShare * contract.numberOfShares
-    context = {
-        'contract':contract,
-        'all_contract':all_contract,
-        'totalamountOfShare':totalamountOfShare,
-    }
-    return render(request , 'forex/pdf.html', context)
-
 def shareholders(request): 
     if request.method == 'POST' and 'btnsharsave' in request.POST:
         add_share = ShareholderForm(request.POST, request.FILES)
@@ -126,18 +115,22 @@ def contracts(request):
     return render(request , 'forex/contracts.html', context)
 
 def contract(request, contract_id):
-    # if request.user.is_authenticated:
-    all_contract = Contracts.objects.all()
-    contract = Contracts.objects.get(id=contract_id)
+    contract = Contracts.objects.filter(shareholdersID__companyID=2).get(id=contract_id)
     totalamountOfShare = contract.amountOfShare * contract.numberOfShares
     context = {
         'contract':contract,
-        'all_contract':all_contract,
         'totalamountOfShare':totalamountOfShare,
     }
-    # pdf=html2pdf("shareholders/contract.html")
-    # return HttpResponse(pdf, content_type='application/pdf', context)
     return render(request , 'forex/contract.html', context)
+
+def pdf(request, contract_id):
+    contract = Contracts.objects.filter(shareholdersID__companyID=2).get(id=contract_id)
+    totalamountOfShare = contract.amountOfShare * contract.numberOfShares
+    context = {
+        'contract':contract,
+        'totalamountOfShare':totalamountOfShare,
+    }
+    return render(request , 'forex/pdf.html', context)
 
 def contract_print(request, contract_id):
      # Create a file-like buffer to receive PDF data.
