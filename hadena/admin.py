@@ -11,11 +11,11 @@ class ShareholdersInfoImportExport(ImportExportModelAdmin):
 @admin.register(Contracts)
 class ContractsImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'shareholdersID']
+    list_display = ['id']
 
 
 @admin.register(Axis)
 class AxisImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'axis_ar']
+    list_display = ['id']
 

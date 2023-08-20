@@ -23,6 +23,7 @@ class States(models.Model):
     regionID = models.ForeignKey(Region, verbose_name='معرف المنطقة',on_delete=models.PROTECT) #لن يتم حزف الصنف في حالة حذف الموظف
     stateName_ar = models.CharField(verbose_name='إسم الولاية عربي',max_length=50, blank=True, null=True)
     stateName_en = models.CharField(verbose_name='إسم الولاية إنجليزي',max_length=50, blank=True, null=True)
+    capitalState = models.CharField(verbose_name='عاصمةالولاية',max_length=50, blank=True, null=True)
     population = models.IntegerField(verbose_name='عدد السكان', blank=True, null=True)
     def __str__(self):
         return str(self.stateName_ar)
@@ -31,6 +32,7 @@ class Cities(models.Model):
     stateID = models.ForeignKey(States, verbose_name='معرف الولاية',on_delete=models.PROTECT) #لن يتم حزف الصنف في حالة حذف الموظف
     cityName_ar = models.CharField(verbose_name='إسم المدينة عربي',max_length=50, blank=True, null=True)
     cityName_en = models.CharField(verbose_name='إسم المدينة إنجليزي',max_length=50, blank=True, null=True)
+    capitalCity = models.CharField(verbose_name='عاصمةالمحلية',max_length=50, blank=True, null=True)
     population = models.IntegerField(verbose_name='عدد السكان', blank=True, null=True)
     def __str__(self):
         return str(self.cityName_ar)
@@ -187,7 +189,7 @@ class Person(models.Model):
     id_number = models.CharField(verbose_name='رقم الهوية',max_length=100, blank=True, null=True)
     id_ExpiredDate = models.DateField(verbose_name='تاريخ إنتهاء الهوية', blank=True, null=True)    
     countryID = models.ForeignKey(Countries, related_name='countryID', default=1, verbose_name='الدولة', on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
-    regionID = models.ForeignKey(Region, verbose_name='المنطقة', on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
+    regionID = models.ForeignKey(Region, verbose_name='المنطقة', default=1, on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
     stateID = models.ForeignKey(States, verbose_name='الولاية', default=1, on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
     cityID = models.ForeignKey(Cities, verbose_name='المدينة', default=1, on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
     desAddress = models.CharField(verbose_name='وصف عنوان السكن',max_length=100, blank=True, null=True)

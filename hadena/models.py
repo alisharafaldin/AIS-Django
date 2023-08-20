@@ -2,7 +2,7 @@
 from django.db import models
 from datetime import date 
 from employees.models import EmpInfo
-from basicinfo.models import  Countries, States, Person
+from basicinfo.models import  Countries, Region, States, Cities, Person
 
 class Axis(models.Model):
     axis_ar = models.CharField(verbose_name='المحور عربي',max_length=100)
@@ -10,7 +10,9 @@ class Axis(models.Model):
     directSupervisor = models.CharField(verbose_name='المشرف المباشر',max_length=100, blank=True, null=True)
     phoneDirectSupervisor = models.CharField(verbose_name='جوال المشرف المباشر',max_length=100, blank=True, null=True)
     countryID = models.ForeignKey(Countries, verbose_name='الدولة',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
-    statesID = models.ForeignKey(States, verbose_name='المنطقة',on_delete=models.PROTECT, blank=True, null=True)
+    regionID = models.ForeignKey(States, verbose_name='المنطقة',on_delete=models.PROTECT, blank=True, null=True)
+    stateID = models.ForeignKey(Region, verbose_name='الولاية',on_delete=models.PROTECT, blank=True, null=True)
+    cityID = models.ForeignKey(Cities, verbose_name='المدينة',on_delete=models.PROTECT, blank=True, null=True)
     def __str__(self):
         return str(self.axis_ar)
 

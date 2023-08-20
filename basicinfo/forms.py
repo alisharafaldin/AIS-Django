@@ -1,11 +1,14 @@
 from django import forms
-from .models import Person
+from .models import Person, Cities
 
 
 class PersonForm(forms.ModelForm):
     class Meta:
         model = Person
         fields = '__all__'
+        def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          self.fields['cityID'].queryset = Cities.objects.none()
         # لعمل إستثناء حقل
         # exclude = ('f_Name_ar')
         widgets = {
@@ -28,7 +31,7 @@ class PersonForm(forms.ModelForm):
             'regionID': forms.Select(attrs={'class':'form-control', 'placeholder':'المنطقة'}),
             'stateID': forms.Select(attrs={'class':'form-control', 'placeholder':'الولاية'}),
             'cityID': forms.Select(attrs={'class':'form-control', 'placeholder':'المدينة'}),
-            'detailsAddress': forms.TextInput(attrs={'class':'form-control', 'placeholder':'وصف مكان السكن'}),
+            'desAddress': forms.TextInput(attrs={'class':'form-control', 'placeholder':'وصف مكان السكن'}),
             'workTradeID': forms.Select(attrs={'class':'form-control', 'placeholder':'المهنة'}),
             'workSpecialtyID': forms.Select(attrs={'class':'form-control', 'placeholder':'التخصص'}),
             'mobileNumber': forms.TextInput(attrs={'class':'form-control', 'placeholder':'رقم الجوال'}),
@@ -44,3 +47,4 @@ class PersonForm(forms.ModelForm):
             'emp_Photo': forms.FileInput(attrs={'class':'form-control', 'placeholder':'صورة شخصية'}),
             'notes': forms.TextInput(attrs={'class':'form-control', 'placeholder':'ملاحظات'}),
         }
+      
