@@ -66,8 +66,8 @@ def employees(request):
         newPerson = PersonForm(request.POST, request.FILES)
         if newPerson.is_valid():
             newPerson.save()
-            # new_emp = EmpInfo( personID_id=1, companyID_id=companyID, workingStatusID_id=workingStatusID, contractSalary=contractSalary, fixedExtra=fixedExtra, workStartDate=workStartDate, workEndDate=workEndDate)
-            # new_emp.save()
+            new_emp = EmpInfo(personID=newPerson.instance, companyID_id=companyID, workingStatusID_id=workingStatusID, contractSalary=contractSalary, workStartDate=workStartDate, workEndDate=workEndDate, fixedExtra=fixedExtra)
+            new_emp.save()
             messages.success(request, 'تمت الإضافة بنجاح') 
         else :      
             messages.error(request, 'خطأ في البيانات') 
@@ -88,7 +88,7 @@ def employee(request, emp_id):
             'emp':EmpInfo.objects.get(id=emp_id),
             'all_gender':Gender.objects.all(),
             'all_company':Company.objects.all(),
-            'all_sponser':Sponser.objects.all(),
+            # 'all_sponser':Sponser.objects.all(),
             'all_countrie':Countries.objects.all(),
             'all_socialstatus':SocialStatus.objects.all(),
             'all_worktrade':WorkTrade.objects.all(),
@@ -102,17 +102,19 @@ def employee(request, emp_id):
     return redirect('employees')
 
 def update(request, id):
-    emp_id = EmpInfo.objects.get(id=id)
+    emp_id = Person.objects.get(id=id)
     if request.method == 'POST':
-        emp_save = EmpForm(request.POST, request.FILES, instance=emp_id)
+        emp_save = PersonForm(request.POST, request.FILES, instance=emp_id)
         if emp_save.is_valid():
             emp_save.save()
             messages.success(request, 'تمت تحديث البيانات بنجاح')
             return redirect('employees')
     else:
         emp_save = EmpForm(instance=emp_id)
+        person_save = PersonForm(instance=emp_id)
     context = {
         'emp_form':emp_save,
+        'person_form':person_save,
         'emp':emp_id,
     }
     return render(request, 'employees/update_emp.html', context)

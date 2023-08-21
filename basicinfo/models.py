@@ -213,4 +213,4 @@ class Person(models.Model):
     attachments = models.FileField(verbose_name='مرفقات', blank=True, null=True)
 
     def __str__(self):
-        return str(self.f_Name_ar)
+        return str(self.id)

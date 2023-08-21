@@ -12,6 +12,7 @@ class PersonForm(forms.ModelForm):
         # لعمل إستثناء حقل
         # exclude = ('f_Name_ar')
         widgets = {
+            'id': forms.TextInput(attrs={'class':'form-control', 'placeholder':'الإسم الأول'}),
             'f_Name_ar': forms.TextInput(attrs={'class':'form-control', 'placeholder':'الإسم الأول'}),
             's_Name_ar': forms.TextInput(attrs={'class':'form-control', 'placeholder':'الإسم الثاني'}),
             't_Name_ar': forms.TextInput(attrs={'class':'form-control', 'placeholder':'الإسم الثالث'}),
