@@ -42,20 +42,36 @@ def search(request, item_search):
 
 def employees(request):
     if request.method == 'POST':
-        workingStatusID = request.POST['workingStatusID']
-        contractSalary = request.POST['contractSalary']
-        fixedExtra = request.POST['fixedExtra']
-        workStartDate = request.POST['workStartDate']
-        workEndDate = request.POST['workEndDate']
+        companyID = None
+        workingStatusID = None
+        contractSalary = None
+        fixedExtra = None
+        workStartDate = None
+        workEndDate = None
+      
+        #Get Values from the form
+        if 'companyID' in request.POST: companyID = request.POST['companyID']
+        else: messages.error(request, 'Error in companyID')
+        if 'workingStatusID' in request.POST: workingStatusID = request.POST['workingStatusID']
+        else: messages.error(request, 'Error in workingStatusID')
+        if 'contractSalary' in request.POST: contractSalary = request.POST['contractSalary']
+        else: messages.error(request, 'Error in contractSalary')
+        if 'fixedExtra' in request.POST: fixedExtra = request.POST['fixedExtra']
+        else: messages.error(request, 'Error in fixedExtra')
+        if 'workStartDate' in request.POST: workStartDate = request.POST['workStartDate']
+        else: messages.error(request, 'Error in workStartDate')
+        if 'workEndDate' in request.POST: workEndDate = request.POST['workEndDate']
+        else: messages.error(request, 'Error in workEndDate')
+
         newPerson = PersonForm(request.POST, request.FILES)
         if newPerson.is_valid():
             newPerson.save()
-            # new_emp = Person.objects.create( person=newPerson, workingStatusID=workingStatusID, contractSalary=contractSalary, fixedExtra=fixedExtra, workStartDate=workStartDate, workEndDate=workEndDate)
+            # new_emp = EmpInfo( personID_id=1, companyID_id=companyID, workingStatusID_id=workingStatusID, contractSalary=contractSalary, fixedExtra=fixedExtra, workStartDate=workStartDate, workEndDate=workEndDate)
             # new_emp.save()
             messages.success(request, 'تمت الإضافة بنجاح') 
         else :      
             messages.error(request, 'خطأ في البيانات') 
-    all_emp = EmpInfo.objects.all()
+    all_emp = Person.objects.all()
     context = {
         'all_emp': all_emp,
         'emp_form': EmpForm(),

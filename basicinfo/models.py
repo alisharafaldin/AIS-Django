@@ -104,6 +104,7 @@ class Bank(models.Model):
         return str(self.bank_ar)
     
 class BranchBank(models.Model):
+    bankID = models.ForeignKey(Bank, verbose_name='معرف البنك',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
     branchBank_AR = models.CharField(verbose_name='قرع البنك عربي',max_length=100)
     branchBank_EN = models.CharField(verbose_name='قرع البنك إنجليزي',max_length=100,blank=True, null=True)
     bank_Symbol = models.CharField(verbose_name=' رمز البنك',max_length=100,blank=True, null=True)
@@ -138,7 +139,10 @@ class LegalPersonality(models.Model):
     countryID = models.ForeignKey(Countries, default=13, verbose_name='الدولة',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
     regionID = models.CharField(verbose_name='المنطقة',max_length=100, blank=True, null=True)
     bankID = models.ForeignKey(Bank, verbose_name='البنك',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
-    BankAccount = models.CharField(verbose_name='رقم الحساب',max_length=100, blank=True, null=True)
+    branchBankID = models.ForeignKey(BranchBank, verbose_name='فرع البنك', default=1,on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
+    typeAccBankID = models.ForeignKey(TypeAccBank, verbose_name='نوع الحساب', default=1,on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
+    accountNumber = models.CharField(verbose_name='رقم الحساب المصرفي',max_length=100, blank=True, null=True)
+    IBANNumber = models.CharField(verbose_name='رقم الآيبان المصرفي',max_length=100, blank=True, null=True)
     phone = models.CharField(verbose_name='رقم الهاتف',max_length=100, blank=True, null=True)
     owner = models.CharField(verbose_name='المالك',max_length=100, blank=True, null=True)
     owner_Phone = models.CharField(verbose_name='هاتف المالك',max_length=100, blank=True, null=True)

@@ -3,21 +3,21 @@ from datetime import date
 from basicinfo.models import *
 
 class Company(models.Model):
-    company = models.OneToOneField(LegalPersonality, on_delete=models.CASCADE)
+    lpID = models.OneToOneField(LegalPersonality, on_delete=models.CASCADE)
     taxNumber = models.CharField(verbose_name='الرقم الضريبي',max_length=100, blank=True, null=True)
     def __str__(self):
-        return str(self.taxNumber)
+        return str(self.lpID)
 
 class EmpInfo(models.Model):
-    person = models.OneToOneField(Person, on_delete=models.CASCADE)
+    personID = models.OneToOneField(Person, on_delete=models.CASCADE)
     companyID = models.ForeignKey(Company, verbose_name='الشركة', default=1, on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
     workStartDate = models.DateField(verbose_name='تاريخ بداية العمل', blank=True, null=True)
     contractSalary = models.DecimalField(verbose_name="راتب العقد", default=1200, decimal_places=2, max_digits=10, blank=True, null=True)
     fixedExtra = models.DecimalField(verbose_name="إضافي ثابت", default=0, decimal_places=2, max_digits=10, blank=True, null=True)
-    workingStatusID = models.ForeignKey(WorkingStatus, verbose_name='حالة العمل', default=0, on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
+    workingStatusID = models.ForeignKey(WorkingStatus, verbose_name='حالة العمل', default=1, on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
     workEndDate = models.DateField(verbose_name='تاريخ نهاية العمل', blank=True, null=True)
     def __str__(self):
-        return str(self.f_Name_ar)
+        return str(self.personID)
 
 class ProjectRotation(models.Model):
     empID = models.ForeignKey(EmpInfo, verbose_name='العامل', on_delete=models.PROTECT) #لن يتم حزف الصنف في حالة حذف الموظف
