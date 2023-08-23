@@ -7,176 +7,27 @@
     <h4 class="form-group col-md-9">جميع الموظفين</h4>
   </div>
   <form method="GET" class="form-inline my-2 my-lg-0">
-    <button
-      type="button"
-      class="btn btn-main"
-      data-toggle="modal"
-      data-target="#staticBackdrop"
-    >
-      إضافة موظف جديد
-    </button>
-    <button class="btn btn-main" type="submit">
-      بحث
-      <i class="fa-solid fa-magnifying-glass"></i>
-    </button>
-    <a href="{% url 'employees' %}" class="btn btn-main" type="submit">
-      إعادة تعيين
-      <i class="fa-solid fa-rotate-right"></i>
-    </a>
-    <input
-      class="form-control mr-sm-2 remove-outline"
-      name="search_emp"
-      placeholder="بحث بالإسم"
-    />
-    <input
-      class="form-control mr-sm-2 remove-outline"
-      name="search_iqama"
-      placeholder="بحث برقم الحدود"
-    />
-    <input
-      class="form-control mr-sm-2 remove-outline"
-      name="search_border"
-      placeholder="بحث برقم الإقامة"
-    />
-    <input
-      class="form-control mr-sm-2 remove-outline"
-      name="search_company"
-      placeholder="تصفية بالشركة"
-    />
+    <a href="{% url 'new_emp' %}" class="btn btn-main" target="blank">إضافة موظف جديد</a>
+    <!-- Start Search -->
+    <button class="btn btn-main" type="submit">بحث<i class="fa-solid fa-magnifying-glass"></i></button>
+    <a href="{% url 'employees' %}" class="btn btn-main" type="submit">إعادة تعيين<i class="fa-solid fa-rotate-right"></i></a>
+    <input class="form-control mr-sm-2 remove-outline" name="search_emp" placeholder="بحث بالإسم"/>
+    <input class="form-control mr-sm-2 remove-outline" name="search_iqama" placeholder="بحث برقم الحدود"/>
+    <input class="form-control mr-sm-2 remove-outline" name="search_border" placeholder="بحث برقم الإقامة"/>
+    <input class="form-control mr-sm-2 remove-outline" name="search_company" placeholder="تصفية بالشركة"/>
+    <!-- End Search -->
   </form>
+  <br>
   <div class="content">
     <div class="form-inline my-2 my-lg-0"></div>
-
     <p class="sub-title">إجمالي عدد الموظفين : {{emp_count.count}}</p>
     <p class="sub-title">
       إجمالي الموظفين على رأس العمل : {{emp_workingStatus}}
     </p>
-    <br /><br />
-    <!-- Start Search -->
-    <br />
-    <!-- <form action="{% url 'employees' %}" class="form-inline my-2 my-lg-0">
-      <div class="btn-group" role="group">
-        <button class="btn btn-warning my-2 my-sm-0" type="submit">تنفيذ بحث</button>
-        <input class="form-control mr-sm-2 remove-outline" name="search_iqama" type="search" placeholder="بحث برقم الإقامة" aria-label="Search">
-      </div>   
-    </form> -->
-    <!-- End Search -->
+    <br>
+    <br>
 
-    <!-- Start Modal -->
-    <div
-      class="modal fade"
-      id="staticBackdrop"
-      data-backdrop="static"
-      data-keyboard="false"
-      tabindex="-1"
-      aria-labelledby="staticBackdropLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-body">
-            <!-- Start Modal Countries -->
-            {% include 'partials/_alerts.html' %}
-            <form method="POST">
-              <div class="form-row main-title">
-                <h5 class="form-group col-md-9" id="staticBackdropLabel">
-                  إضافة موظف جديد
-                </h5>
-                <button type="submit" name="btnempsave" class="btn btn-save">
-                  إضافة
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  إلغاء
-                </button>
-              </div>
-              <br />
-              {% csrf_token %}
-              <h6 style="font-weight: bold">الإسم الكامل - عربي</h6>
-              <div class="form-row">
-                <div class="form-group col-md-3">{{person_form.f_Name_ar}}</div>
-                <div class="form-group col-md-3">{{person_form.s_Name_ar}}</div>
-                <div class="form-group col-md-3">{{person_form.t_Name_ar}}</div>
-                <div class="form-group col-md-3">{{person_form.fo_Name_ar}}</div>
-              </div>
-              <h6 style="font-weight: bold">الإسم الكامل - إنجليزي</h6>
-              <div class="form-row">
-                <div class="form-group col-md-3">{{person_form.f_Name_en}}</div>
-                <div class="form-group col-md-3">{{person_form.s_Name_en}}</div>
-                <div class="form-group col-md-3">{{person_form.t_Name_en}}</div>
-                <div class="form-group col-md-3">{{person_form.fo_Name_en}}</div>
-              </div>
-              <!-- تاريخ الميلا - الجنس - الجنسية - الحالة الإجتماعية -->
-              <div class="form-row">
-                <div class="form-group col-md-3">{{person_form.dateOfBirth}}</div>
-                <div class="form-group col-md-3">{{person_form.genderID}}</div>
-                <div class="form-group col-md-3">{{person_form.nationalityID}}</div>
-                <div class="form-group col-md-3">{{person_form.socialStatusID}}</div>
-              </div>
-                  <!--  نوع الهوية - رقم الهوية - تاريخ إنتهاء الهوية  -->
-                  <div class="form-row">
-                    <div class="form-group col-md-3">{{person_form.typeID}}</div>
-                    <div class="form-group col-md-3">{{person_form.id_number}}</div>
-                    <div class="form-group col-md-3">{{person_form.id_ExpiredDate}}</div>
-                  </div>
-              <!--  الدولة - الولاية - المدية -  وصف العنوان -->
-              <div class="form-row">
-                <div class="form-group col-md-3">{{person_form.countryID}}</div>
-                <div class="form-group col-md-3">{{person_form.regionID}}</div>
-                <div class="form-group col-md-3">{{person_form.stateID}}</div>
-                <div class="form-group col-md-3">{{person_form.cityID}}</div>
-              </div>
-              <div class="form-row">
-                <div class="form-group col-md-12">{{person_form.desAddress}}</div>
-              </div>
-              <!--البريد الإلكتروني - رقم الجوال - رقم جوال آخر -->
-              <h4>معلومات الإتصال</h4>
-              <div class="form-row">
-                <div class="form-group col-md-3">{{person_form.mobileNumber}}</div>
-                <div class="form-group col-md-3">{{person_form.mobileNumberAnother}}</div>
-                <div class="form-group col-md-6">{{person_form.email}}</div>
-              </div>
-              <h4>معلومات العمل</h4>
-              <!-- حالة العمل - الراتب الأساسي - الإضافي - تاريخ بداية العمل -->
-              <div class="form-row">
-                <div class="form-group col-md-3">{{emp_form.workStartDate}}</div>
-                <div class="form-group col-md-3">{{emp_form.contractSalary}}</div>
-                <div class="form-group col-md-3">{{emp_form.fixedExtra}}</div>
-                <div class="form-group col-md-3">{{emp_form.workingStatusID}}</div>
-              </div>
-              <!-- المهنة - التخصص - الشركة - بداية العمل -->
-              <div class="form-row">
-                <div class="form-group col-md-3">{{emp_form.companyID}}</div>
-                <div class="form-group col-md-3">{{person_form.workTradeID}}</div>
-                <div class="form-group col-md-3">{{person_form.workSpecialtyID}}</div>
-                <div class="form-group col-md-3">{{emp_form.workEndDate}}</div>
-              </div>
-              <!-- البنك - الفرع - نوع الحساب - رقم الحساب - رقم الأيبان ر -->
-              <div class="form-row">
-                <div class="form-group col-md-4">{{person_form.bankID}}</div>
-                <div class="form-group col-md-4">{{person_form.branchBankID}}</div>
-                <div class="form-group col-md-4">{{person_form.typeAccBankID}}</div>
-              </div>
-              <div class="form-row">
-                <div class="form-group col-md-6">{{person_form.accountNumber}}</div>
-                <div class="form-group col-md-6">{{person_form.IBANNumber}}</div>
-              </div>
-              <!-- صورة الموظف - رابط المستندات - ملاحظات -->
-              <div class="form-row">
-                <div class="form-group col-md-4">{{person_form.emp_Photo}}</div>
-                <div class="form-group col-md-4">{{person_form.attachments}}</div>
-                <div class="form-group col-md-4">{{person_form.notes}}</div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- End Modal -->
+    <!-- End Search -->
     <table class="table table-hover">
       <thead>
         <tr>
@@ -196,11 +47,11 @@
           <!-- لعمل ارقام تسلسلة -->
           <th scope="row">{{forloop.counter}}</th>
           <!-- تفاصيل الجدول -->
-          <td>{{emp.f_Name_ar}}</td>
-          <td>{{emp.typeID}}</td>
-          <td>{{emp.id_number}}</td>
-          <td>{{emp.detailsAddress}}</td>
-          <td>{{emp.mobileNumber}}</td>
+          <td>{{emp.personID.f_Name_ar}}</td>
+          <td>{{emp.personID.typeID}}</td>
+          <td>{{emp.personID.id_number}}</td>
+          <td>{{emp.personID.desAddress}}</td>
+          <td>{{emp.personID.mobileNumber}}</td>
           <td>
             {% if emp.documentLink %}
             <a href="{{emp.documentLink}}" target="blank">رابط المستندات</a>
@@ -212,7 +63,7 @@
             <a class="btn-link" href="{% url 'update_emp' emp.id %}">
               <i class="fas fa-edit"></i>
             </a>
-            <a href="{% url 'employee' emp_id=emp.id %}" class="btn-link">
+            <a href="{% url 'view_emp' emp.id %}" class="btn-link">
               <i class="fa fa-print" aria-hidden="true"></i>
             </a>
           </td>
