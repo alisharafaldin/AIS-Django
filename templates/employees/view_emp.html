@@ -1,5 +1,4 @@
-{% extends 'base.html' %} {% load static %} {% block title %} | Employee
-Details{% endblock %} {% block content %}
+{% extends 'base.html' %} {% load static %} {% block title %} | View Emp  ( {{view_emp.id}} ) {% endblock %} {% block content %}
 <div class="content-wrapper">
   <h4 class="main-title">بطاقة تعريف الموظف : {{view_emp.personID.f_Name_ar}} {{view_emp.personID.s_Name_ar}} {{view_emp.personID.t_Name_ar}}
     {{view_emp.personID.fo_Name_ar}}</h4>

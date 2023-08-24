@@ -83,11 +83,15 @@ def update_emp(request, id):
     else: messages.error(request, 'Error in workStartDate')
     if 'workEndDate' in request.POST: workEndDate = request.POST['workEndDate']
     else: messages.error(request, 'Error in workEndDate')
-    if update_person.is_valid():
-      update_person.save()
-      update_emp = EmpInfo(personID=update_person.instance, companyID_id=companyID, workingStatusID_id=workingStatusID, contractSalary=contractSalary, workStartDate=workStartDate, workEndDate=workEndDate, fixedExtra=fixedExtra)
-      update_emp.save()
-      messages.success(request, 'تم التعديل بنجاح') 
+    if update_person_form.is_valid():
+      update_person_form.save()
+      update_emp.companyID_id=companyID 
+      update_emp.workingStatusID_id=workingStatusID
+      update_emp.contractSalary=contractSalary
+      update_emp.workStartDate=workStartDate
+      update_emp.workEndDate=workEndDate
+      update_emp.fixedExtra=fixedExtra
+      messages.success(request, 'تم تحديث البيانات بنجاح') 
       return redirect('employees')
     else :      
       messages.error(request, 'خطأ في البيانات') 
@@ -100,6 +104,21 @@ def update_emp(request, id):
     'update_person_form':update_person_form,
   }
   return render(request, 'employees/update_emp.html', context)
+
+    
+def delete_emp(request, id):
+    if request.user.is_authenticated and not request.user.is_anonymous:
+      delete_emp = EmpInfo.objects.get(id=id)
+      if request.method == 'POST':
+        delete_emp.delete()
+        messages.info(request, 'تم حذف الموظف بنجاح')
+        return redirect('employees')
+    else:
+        messages.error(request, 'الرجاء تسجيل الدخول أولاً')
+    context = {
+        'delete_emp':delete_emp,
+    }
+    return render(request, 'employees/delete_emp.html', context)
 
 def employees(request):
   all_emp = EmpInfo.objects.all()

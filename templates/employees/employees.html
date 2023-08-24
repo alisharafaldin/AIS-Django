@@ -66,6 +66,9 @@
             <a href="{% url 'view_emp' emp.id %}" class="btn-link">
               <i class="fa fa-print" aria-hidden="true"></i>
             </a>
+            <a href="{% url 'delete_emp' emp.id %}" class="btn-link">
+              <i class="fa fa-trash" aria-hidden="true"></i>
+            </a>
           </td>
         </tr>
         {% endfor %}
