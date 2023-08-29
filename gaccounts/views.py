@@ -41,68 +41,46 @@ def acc_update(request, id):
         messages.info(request, 'الرجاء تسجيل الدخول' )
         return redirect('acc_all')
 
-def qayd_all(request):    
-    context = {
-        'all_qayd':Qayd.objects.all(),
-    }
-    return render(request,'gaccounts/qayd_all.html', context)
-
-def qayd_add(request):
-    if request.method == 'POST':
-      new_qayd = QaydForm(request.POST, request.FILES)
-      new_qayd.userID = request.user
-      if new_qayd.is_valid():
-        new_qayd.save()
-        messages.success(request, 'تمت إضافة القيد بنجاح')
-        return redirect('qayd_all')    
-      else:
-        messages.error = (request, 'خطأ في راس القيد') 
-    else:
-      messages.error = (request, 'خطأ في تفاصيل القيد')
-      # return redirect('qayd_all')    
-    context = {
-        'all_qayd': Qayd.objects.all(),
-        'qayd_form': QaydForm(),
-        # 'calc':calc,
-        # 'qayd_details_form': QaydDetails(),
-    }    
-    return render(request,'gaccounts/qayd_add.html', context)
-
 def new_qayd(request):
-    if request.method == 'POST':
-      # new_qayd = QaydForm(request.POST, request.FILES)
-      new_qayd = Qayd()
-      new_qayd.userID = request.user
-      new_qayd.dateQayd = request.POST['dateQayd']
-      new_qayd.desQayd = request.POST['desQayd']
-      new_qayd.currencyID = request.POST['currencyID']
-      new_qayd.attachments = request.POST['attachments']  
-      new_qayd.save()
-      qayddetails = QaydDetails()
-      qayddetails.qaydID = new_qayd
-      # qayddetails.accID = request.POST['accID']
-      qayddetails.debit = request.POST['debit']
-      qayddetails.credit = request.POST['credit']
-      qayddetails.desQaydDetails = request.POST['desQaydDetails']
-      # qayddetails.projectID = request.POST['projectID']
-      # qayddetails.empID = request.POST['empID']
-      qayddetails.save()
-      messages.success(request, 'تمت إضافة القيد بنجاح')
-      return redirect('qayd_all')    
-    else:
-        messages.error = (request, 'خطأ في راس القيد') 
-  
-      # return redirect('qayd_all')    
-    context = {
-        'all_qayd': Qayd.objects.all(),
-        'qayd_form': QaydForm(),
-        'qayd_details_form': QaydDetailsForm(),
-        # 'calc':calc,
-        # 'qayd_details_form': QaydDetails(),
-    }    
-    return render(request,'gaccounts/new_qayd.html', context)
+  if request.method == 'POST':
+    debit  = request.POST['debit']
+    credit = request.POST['credit']
+    desQaydDetails = request.POST['desQaydDetails']
+    accID = request.POST['accID']
+    projectID = request.POST['projectID']
+    empID = request.POST['empID']
+    if 'debit' in request.POST: debit = request.POST['debit']
+    else: messages.error(request, 'Error in debit')
+    if 'credit' in request.POST: credit = request.POST['credit']
+    else: messages.error(request, 'Error in credit')
+    if 'desQaydDetails' in request.POST: desQaydDetails = request.POST['desQaydDetails']
+    else: messages.error(request, 'Error in desQaydDetails')
+    if 'accID' in request.POST: accID = request.POST['accID']
+    else: messages.error(request, 'Error in accID')
+    if 'projectID' in request.POST: projectID = request.POST['projectID']
+    else: messages.error(request, 'Error in ')
+    if 'empID' in request.POST: empID = request.POST['empID']
+    else: messages.error(request, 'Error in empID')
+    newqayd = QaydForm(request.POST, request.FILES)
+    if newqayd.is_valid():
+      newqayd.save()
+      newqayd_d = QaydDetails(qaydID=newqayd.instance, debit=debit, credit=credit, desQaydDetails=desQaydDetails, accID_id=accID, projectID_id=projectID, empID_id=empID)
+      newqayd_d.save()
+      messages.success(request, 'تمت الإضافة بنجاح') 
+      return redirect('qayds')
+    else :      
+      messages.error(request, 'خطأ في البيانات') 
+  context = {
+      'all_qayd': Qayd.objects.all(),
+      'qayd_form': QaydForm(),
+      'qayd_details_form': QaydDetailsForm(),
+  }    
+  return render(request,'gaccounts/new_qayd.html', context)
 
-def qayd_update(request, id):
+def view_qayd(request, qayd_id):
+    return redirect('qayd_print')
+
+def update_qayd(request, id):
   if request.user.is_authenticated and not request.user.is_anonymous:
     qayd_id = Qayd.objects.get(id=id)
     qayd_form = QaydForm(request.POST, request.FILES, instance=qayd_id)
@@ -113,11 +91,11 @@ def qayd_update(request, id):
         qayd_id.userID = request.user
         qayd_id.dateQayd = request.POST['dateQayd']
         qayd_id.desQayd = request.POST['desQayd']
-        # qayd_id.currencyID = request.POST['currencyID']
+        qayd_id.currencyID_id = request.POST['currencyID']
         qayd_id.attachments = request.POST['attachments']  
         qayd_id.save()
         # qayd_id_details.qaydID = qayd_id
-        # # qayd_id_details.accID = request.POST['accID']
+        # qayd_id_details.accID = request.POST['accID']
         # qayd_id_details.debit = request.POST['debit']
         # qayd_id_details.credit = request.POST['credit']
         # qayd_id_details.desQaydDetails = request.POST['desQaydDetails']
@@ -125,7 +103,7 @@ def qayd_update(request, id):
         # qayd_id_details.empID = request.POST['empID']
         # qayd_id_details.save()
         messages.success(request, 'تم تحديث القيد بنجاح')
-        return redirect('qayd_all')
+        return redirect('qayds')
       else:
         messages.error(request, 'خطأ في البيانات')   
     qayd_form = QaydForm(instance=qayd_id)
@@ -145,12 +123,12 @@ def qayd_update(request, id):
         'qayd_details_form':qayd_details_form,
         'calc':calc,
     }
-    return render(request, 'gaccounts/qayd_update.html', context)
+    return render(request, 'gaccounts/update_qayd.html', context)
   else:
     messages.info(request, 'الرجاء تسجيل الدخول')
     return redirect('signin')
     
-def qayd_delete(request, id):
+def delete_qayd(request, id):
     if request.user.is_authenticated and not request.user.is_anonymous:
       qayd_id = Qayd.objects.get(id=id)
       if 'btndelete' in request.POST:
@@ -175,7 +153,10 @@ def qayd_delete(request, id):
         # 'total_c':total_c,
         'calc':calc,
     }
-    return render(request, 'gaccounts/qayd_delete.html', context)
+    return render(request, 'gaccounts/delete_qayd.html', context)
 
-def qayd_print(request, qayd_id):
-    return redirect('qayd_print')
+def qayds(request):    
+    context = {
+        'all_qayd':Qayd.objects.all(),
+    }
+    return render(request,'gaccounts/qayds.html', context)

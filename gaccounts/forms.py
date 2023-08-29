@@ -36,7 +36,6 @@ class QaydDetailsForm(forms.ModelForm):
         model = QaydDetails
         fields = '__all__'
         widgets = {
-            # 'id': forms.TextInput(attrs={'class':'form-control', 'placeholder':'معرف القيد'}),
             'qaydID': forms.Select(attrs={'class':'form-control', 'placeholder':'رأس القيد'}),
             'debit': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'مدين'}),
             'credit': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'دائن'}),

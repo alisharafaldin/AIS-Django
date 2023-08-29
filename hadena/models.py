@@ -17,10 +17,10 @@ class Axis(models.Model):
         return str(self.axis_ar)
 
 class ShareholdersInfo(models.Model):
-    person = models.OneToOneField(Person, on_delete=models.CASCADE)
+    personID = models.OneToOneField(Person, on_delete=models.CASCADE)
     marketerID = models.ForeignKey(EmpInfo , verbose_name='المسووق',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الموظف في حالة حذف المسوق
     def __str__(self):
-        return str(self.f_Name_ar) + " " + str(self.s_Name_ar)
+        return str(self.personID)
 
 class Contracts(models.Model):
     shareholdersID = models.ForeignKey(ShareholdersInfo, related_name='Shareholders', verbose_name='المساهم', on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف

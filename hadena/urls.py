@@ -3,7 +3,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.shareholders, name='hadena_shareholders'),
+    path('', views.shareholders, name='shareholders'),
+    path('new_shareholder', views.new_shareholder, name='new_shareholder'),
     path('shareholder/<int:shareholder_id>', views.shareholder, name='hadena_shareholder'),
     path('share_update/<int:shareholder_id>', views.share_update, name='hadena_share_update'),
     path('share_delete/<int:shareholder_id>', views.share_delete, name='hadena_share_delete'),

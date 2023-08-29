@@ -104,7 +104,6 @@ def update_emp(request, id):
     'update_person_form':update_person_form,
   }
   return render(request, 'employees/update_emp.html', context)
-
     
 def delete_emp(request, id):
     if request.user.is_authenticated and not request.user.is_anonymous:
@@ -112,7 +111,7 @@ def delete_emp(request, id):
       if request.method == 'POST':
         delete_emp.delete()
         messages.info(request, 'تم حذف الموظف بنجاح')
-        return redirect('employees')
+        return redirect('qayd_all')
     else:
         messages.error(request, 'الرجاء تسجيل الدخول أولاً')
     context = {

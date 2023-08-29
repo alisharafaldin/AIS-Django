@@ -7,7 +7,7 @@
     <h4 class="form-group col-md-9">قيود اليومية</h4>
   </div>
   <form method="GET" class="form-inline my-2 my-lg-0">  
-    <a href="{% url 'qayd_add' %}" class="btn btn-main">إضافة قيد جديد</a>
+    <a href="{% url 'new_qayd' %}" class="btn btn-main">إضافة قيد جديد</a>
     <button class="btn btn-main" type="submit">
       بحث 
       <i class="fa-solid fa-magnifying-glass"></i>
@@ -49,9 +49,9 @@
               <td>{{qayd.details.count}}</td>
               <td>{{qayd.attachments}}</td>
               <td>
-                <a href="{% url 'qayd_update' qayd.id %}" class="btn-link"><i class="fas fa-edit"></i></a>
-                <a href="{% url 'qayd_print' qayd.id %}" class="btn-link"><i class="fa fa-print" aria-hidden="true"></i></a>
-                <a href="{% url 'qayd_delete' qayd.id %}" class="btn-link"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                <a href="{% url 'update_qayd' qayd.id %}" class="btn-link"><i class="fas fa-edit"></i></a>
+                <a href="{% url 'view_qayd' qayd.id %}" class="btn-link"><i class="fa fa-print" aria-hidden="true"></i></a>
+                <a href="{% url 'delete_qayd' qayd.id %}" class="btn-link"><i class="fa fa-trash" aria-hidden="true"></i></a>
                 <input type="number" name="qayd_id" value="{{qayd.id}}">
               </td>
           </tr>
@@ -63,7 +63,7 @@
                   <div class="modal-header">
                     <h6 class="modal-title" id="staticBackdropLabel">هل أنت متأكد من رغبتك حذف القيد رقم ( {{qayd.id}} )</h6>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnclose">إلغاء</button>
-                    <a href="{% url 'qayd_delete' qayd.id %}" id="toCart" class="btn btn-danger" >نعم</a>
+                    <a href="{% url 'delete_qayd' qayd.id %}" id="toCart" class="btn btn-danger" >نعم</a>
                   </div>              
                 </div>
               </div>

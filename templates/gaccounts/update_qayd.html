@@ -1,25 +1,16 @@
-{% extends 'base.html' %} {% load static %} {% block title %} | Qayd Update
+{% extends 'base.html' %} {% load static %} {% block title %} | Qayd Update ( {{qayd_id.id}} )
 {% endblock %} {% block content %}
 <div class="content-wrapper">
-  <h4 class="main-title">تعديل القيد : {{qayd_form.id}}</h4>
+  <h4 class="main-title">تعديل القيد رقم : ( {{qayd_id.id}} )</h4>
   <div class="content">
     <br />
-    <form method="POST" >
+    <form method="POST" action="">
       {% csrf_token %} 
       {% include 'partials/_alerts.html' %}
       <button type="submit" name="btnsave" class="btn btn-save">حفظ التعديل</button>
-      <a href="{% url 'qayd_all' %}" class="btn btn-close">إلغاء</a>
+      <a href="{% url 'qayds' %}" class="btn btn-close">إلغاء</a>
       <div class="form-row">
         <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
-          <div class="form-row">
-            <h6 style="font-weight: bold" class="col-md-3">رقم القيد</h6>
-            <div class="form-group col-md-6">{{qayd_form.id}}</div>
-            <div class="form-group col-md-6">{{qayd_update}}</div>
-          </div>
-          <div class="form-row">
-            <h6 style="font-weight: bold" class="col-md-3">المستخدم</h6>
-            <div class="form-group col-md-6">{{qayd_form.userID}}</div>
-          </div>
           <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">التاريخ</h6>
             <div class="form-group col-md-6">{{qayd_form.dateQayd}}</div>
@@ -36,7 +27,7 @@
           </div>
           <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">المرفقات</h6>
-            <input type="file" class="form-group col-md-6" name="attachments">
+            <div class="form-group col-md-6">{{qayd_form.attachments}}</div>
           </div>
         </div>
       </div>
@@ -54,28 +45,38 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <!-- لعمل ارقام تسلسلة -->
-            <th scope="row">{{forloop.counter}}</th>
-            <!-- تفاصيل الجدول -->
-            <td>{{ qayd_details_form.accID }}</td>
-            <td>{{ qayd_details_form.debit }}</td>
-            <td>{{ qayd_details_form.credit }}</td>
-            <td>{{ qayd_details_form.desQaydDetails }}</td>
-            <td>{{ qayd_details_form.projectID }}</td>
-            <td>{{ qayd_details_form.empID }}</td>
-          </tr>
+          {% for qdd in qayd_details_form %}
+            <tr>
+              <!-- لعمل ارقام تسلسلة -->
+              <th scope="row">{{forloop.counter}}</th>
+              <!-- تفاصيل الجدول -->
+              <td>{{qdd.accID }}</td>
+              <td>{{qdd.debit }}</td>
+              <td>{{qdd.credit }}</td>
+              <td>{{qdd.desQaydDetails }}</td>
+              <td>{{qdd.projectID }}</td>
+              <td>{{qdd.empID }}</td>
+            </tr>
+          {% endfor %}
         </tbody>
         <tbody>
           <tr>
             <td></td>
             <th>المجموع</th>
-            <th>مجموع مدين : 0.00</th>
-            <th>مجموع الدائن : 0.00</th>
+            <th>مجموع مدين : {{calc.total_d}}</th>
+            <th>مجموع الدائن : {{calc.total_c}}</th>
+            {% if calc.other == 0 %}
+              <th>الفرق : {{calc.other}}</th>
+            {% else %}
+              <th>الفرق : <span style="color: red;">{{calc.other}}</span></th>
+            {% endif %}
           </tr>
         </tbody>
       </table>
     </form>
+    <div class="form-row">
+      <h6 class="form-group col-md-6">مُنشئ القيد : {{qayd_id.userID}} </h6>
+    </div>
   </div>
 </div>
 {% endblock %}

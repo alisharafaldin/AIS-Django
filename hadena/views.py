@@ -3,6 +3,7 @@ from django.contrib import messages
 from employees.models import *
 from .models import *
 from basicinfo.models import Person
+from basicinfo.forms import PersonForm
 from django.views.generic import CreateView
 from .forms import ShareholderForm, ContractsForm
 import io
@@ -13,16 +14,6 @@ from django.views.generic import View
 from .pdf import html2pdf
 
 # Create your views here.
-# class GeneratePdf(View):
-#     def get(self, request, *args, **kwargs):
-#         pdf = render_to_pdf('report.html')
-#         if pdf:
-#             response=HttpResponse(pdf, content_type='application/pdf')
-#             filename = "AbnetBirkineh_%s.pdf" %("CV")
-#             content = "inline; filename= %s" %(filename)
-#             response['Content-Disposition']=content
-#             return response
-#         return HttpResponse("Page Not Found")
 
 def pdf(request, contract_id):
     # if request.user.is_authenticated:
@@ -39,44 +30,55 @@ def pdf(request, contract_id):
     return render(request , 'hadena/pdf.html', context)
  
 def shareholders(request): 
-    if request.method == 'POST' and 'btnsharsave' in request.POST:
-        add_share = ShareholderForm(request.POST, request.FILES)
-        if add_share.is_valid():
-            add_share.save()
-            messages.success(request, 'تمت الإضافة بنجاح')
-        else:
-            messages.error(request, 'يوجد خطأ في البيانات')
-    else:
-        messages.error(request, 'الدالة ليست بوست')
-    all_share = ShareholdersInfo.objects.filter(person__companyID=1)
-    # all_share = ShareholdersInfo.objects.all()
-     # Start Search
-    txtsearch = None
-    if 'search_name' in request.GET: # للتحقق من وجود نيم  في الرابط
-        txtsearch = request.GET['search_name'] # تغذية المتغير بالمدخلات حسب النيم
-        if txtsearch: # للتحقق أن البيانات ليست فارغة
-            all_share = all_share.filter(f_Name_ar__icontains=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
-    if 'search_id_number' in request.GET: # للتحقق من وجود نيم  في الرابط
-        txtsearch = request.GET['search_id_number'] # تغذية المتغير بالمدخلات حسب النيم
-        if txtsearch: # للتحقق أن البيانات ليست فارغة
-            all_share = all_share.filter(id_number__icontains=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
-    if 'search_mobileNumber' in request.GET: # للتحقق من وجود نيم  في الرابط
-        txtsearch = request.GET['search_mobileNumber'] # تغذية المتغير بالمدخلات حسب النيم
-        if txtsearch: # للتحقق أن البيانات ليست فارغة
-            all_share = all_share.filter(mobileNumber__icontains=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
-    if 'typeID' in request.GET: # للتحقق من وجود نيم  في الرابط
-        txtsearch = request.GET['typeID'] # تغذية المتغير بالمدخلات حسب النيم
-        if txtsearch: # للتحقق أن البيانات ليست فارغة
-            all_share = all_share.filter(typeID=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
-    if 'workTradeID' in request.GET: # للتحقق من وجود نيم  في الرابط
-        txtsearch = request.GET['workTradeID'] # تغذية المتغير بالمدخلات حسب النيم
-        if txtsearch: # للتحقق أن البيانات ليست فارغة
-            all_share = all_share.filter(workTradeID=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف  
+  all_share = ShareholdersInfo.objects.all()
+  txtsearch = None
+  if 'search_name' in request.GET: # للتحقق من وجود نيم  في الرابط
+      txtsearch = request.GET['search_name'] # تغذية المتغير بالمدخلات حسب النيم
+      if txtsearch: # للتحقق أن البيانات ليست فارغة
+          all_share = all_share.filter(f_Name_ar__icontains=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
+  if 'search_id_number' in request.GET: # للتحقق من وجود نيم  في الرابط
+      txtsearch = request.GET['search_id_number'] # تغذية المتغير بالمدخلات حسب النيم
+      if txtsearch: # للتحقق أن البيانات ليست فارغة
+          all_share = all_share.filter(id_number__icontains=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
+  if 'search_mobileNumber' in request.GET: # للتحقق من وجود نيم  في الرابط
+      txtsearch = request.GET['search_mobileNumber'] # تغذية المتغير بالمدخلات حسب النيم
+      if txtsearch: # للتحقق أن البيانات ليست فارغة
+          all_share = all_share.filter(mobileNumber__icontains=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
+  if 'typeID' in request.GET: # للتحقق من وجود نيم  في الرابط
+      txtsearch = request.GET['typeID'] # تغذية المتغير بالمدخلات حسب النيم
+      if txtsearch: # للتحقق أن البيانات ليست فارغة
+          all_share = all_share.filter(typeID=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
+  if 'workTradeID' in request.GET: # للتحقق من وجود نيم  في الرابط
+      txtsearch = request.GET['workTradeID'] # تغذية المتغير بالمدخلات حسب النيم
+      if txtsearch: # للتحقق أن البيانات ليست فارغة
+          all_share = all_share.filter(workTradeID=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف  
+  context = {
+      'shar_form':ShareholderForm(),
+      'shareholders':all_share,
+  }
+  return render(request, 'hadena/shareholders.html', context)
+
+def new_shareholder(request): 
+    if request.method == 'POST':
+      marketerID = None
+      #Get Values from the form
+      if 'marketerID' in request.POST: marketerID = request.POST['marketerID']
+      else: messages.error(request, 'Error in marketerID')
+      newPerson = PersonForm(request.POST, request.FILES)
+      if newPerson.is_valid():
+        newPerson.save()
+        new_shareholder = ShareholdersInfo(personID=newPerson.instance, marketerID_id=marketerID)
+        new_shareholder.save()
+        messages.success(request, 'تمت الإضافة بنجاح') 
+        return redirect('shareholders')
+      else :      
+        messages.error(request, 'خطأ في البيانات') 
+        return redirect('new_shareholder')
     context = {
-        'shar_form':ShareholderForm(),
-        # 'all':all_share,
+      'share_form': ShareholderForm(),
+      'person_form': PersonForm(),
     }
-    return render(request , 'hadena/shareholders.html', context)
+    return render(request , 'hadena/new_shareholder.html', context)
 
 def shareholder(request, shareholder_id):
     shareholders = ShareholdersInfo.objects.all()
