@@ -62,7 +62,6 @@ def update_emp(request, id):
   update_person = Person.objects.get(id=update_emp.personID_id)
   update_emp_form = EmpForm(instance=update_emp)
   update_person_form = PersonForm(request.POST, request.FILES, instance=update_person)
-
   if request.method == 'POST':
     companyID = None
     workingStatusID = None
@@ -95,7 +94,7 @@ def update_emp(request, id):
       return redirect('employees')
     else :      
       messages.error(request, 'خطأ في البيانات') 
-      return redirect('new_emp')
+      return redirect('update_emp')
   update_person_form = PersonForm(instance=update_person)
   context = {
     'update_emp':update_emp,
@@ -103,21 +102,21 @@ def update_emp(request, id):
     'update_person':update_person,
     'update_person_form':update_person_form,
   }
-  return render(request, 'employees/update_emp.html', context)
-    
+  return render(request, 'employees/update_emp.html', context)    
+
 def delete_emp(request, id):
-    if request.user.is_authenticated and not request.user.is_anonymous:
-      delete_emp = EmpInfo.objects.get(id=id)
-      if request.method == 'POST':
-        delete_emp.delete()
-        messages.info(request, 'تم حذف الموظف بنجاح')
-        return redirect('qayd_all')
-    else:
-        messages.error(request, 'الرجاء تسجيل الدخول أولاً')
-    context = {
-        'delete_emp':delete_emp,
-    }
-    return render(request, 'employees/delete_emp.html', context)
+  if request.user.is_authenticated and not request.user.is_anonymous:
+    delete_emp = EmpInfo.objects.get(id=id)
+    if request.method == 'POST':
+      delete_emp.delete()
+      messages.info(request, 'تم حذف الموظف بنجاح')
+      return redirect('qayd_all')
+  else:
+      messages.error(request, 'الرجاء تسجيل الدخول أولاً')
+  context = {
+      'delete_emp':delete_emp,
+  }
+  return render(request, 'employees/delete_emp.html', context)
 
 def employees(request):
   all_emp = EmpInfo.objects.all()

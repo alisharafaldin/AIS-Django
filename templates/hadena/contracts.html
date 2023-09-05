@@ -8,11 +8,11 @@
     <h4 class="form-group col-md-9">حاضنة البركة | جميع العقود</h4>
   </div>
   <form method="GET" class="form-inline my-2 my-lg-0">
-    <button type="button" class="btn btn-main" data-toggle="modal" data-target="#staticBackdrop">إضافة عقد جديد</button>
+    <a href="{% url 'contract_new' %}" class="btn btn-main" >إضافة عقد جديد</a>
     <button class="btn btn-main" type="submit">بحث
       <i class="fa-solid fa-magnifying-glass"></i>
     </button>
-    <a href="{% url 'hadena_contracts' %}" class="btn btn-main" type="submit">
+    <a href="{% url 'contracts' %}" class="btn btn-main" type="submit">
       إعادة تعيين
       <i class="fa-solid fa-rotate-right"></i>
     </a>
@@ -23,63 +23,8 @@
   </form>
   <div class="content">
     <div class="form-inline my-2 my-lg-0"></div>
-    <p class="sub-title">إجمالي عدد العقود : {{shar_count.count}}</p>
+    <p class="sub-title">إجمالي عدد العقود : {{contract.count}}</p>
     <br /><br />
-    <!-- Start Modal -->
-    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-body">
-            <!-- Start Modal Countries -->
-            {% include 'partials/_alerts.html' %}
-            <form method="POST">
-              <div class="form-row main-title">
-                <h5 class="form-group col-md-9" id="staticBackdropLabel">إضافة عقد جديد</h5>
-                <button type="submit" name="btnsharsave" class="btn btn-save">إضافة</button>
-                <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close">إلغاء</button>
-              </div>
-              <br />
-              {% csrf_token %}
-              <div class="form-row">
-                <h6 class="sub-title">إسم المساهم</h6>
-                <div class="form-group col-md-3">{{contract_form.shareholdersID}}</div>
-                <h6 class="sub-title"> تاريخ العقد </h6>
-                <div class="form-group col-md-3">{{contract_form.dateOfContract}}</div>  
-              </div>
-              <!-- تاريخ الميلا - الجنس - الجنسية - الحالة الإجتماعية -->
-              <div class="form-row">
-               <h6 class="sub-title"> رقم العقد</h6>
-                <div class="form-group col-md-3">{{contract_form.contractNumber}}</div>
-                <h6 class="sub-title"> المحور </h6>
-                <div class="form-group col-md-3">{{contract_form.axisID}}</div>
-              </div>
-              <!-- تاريخ الميلا - الجنس - الجنسية - الحالة الإجتماعية -->
-              <div class="form-row">
-                <h6 class="sub-title"> ربحية السهم </h6>
-                <div class="form-group col-md-3">{{contract_form.profitOfShare}}</div>
-                <h6 class="sub-title"> تاريخ توزيع الأرباح </h6>
-                <div class="form-group col-md-3">{{contract_form.dateOfDividend}}</div>
-              </div>
-              <div class="form-row">
-                <h6 class="sub-title"> عدد الأسهم </h6>
-                <div class="form-group col-md-3">{{contract_form.numberOfShares}}</div>
-                <h6 class="sub-title"> سعر السهم </h6>
-                <div class="form-group col-md-3">{{contract_form.amountOfShare}}</div>
-              </div>
-              <!-- نوع الهوية - رقم الهوية - تاريخ إنتهاء الهوية - رقم الجوال - رقم جوال آخر  -->
-              <div class="form-row">
-                <h6 class="sub-title"> رقم الإيصال </h6>
-                <div class="form-group col-md-3">{{contract_form.numberReceipt}}</div>
-                <h6 class="sub-title"> الشاهد الأول </h6>
-                <div class="form-group col-md-3">{{contract_form.witnes1ID}}</div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- End Modal -->
-
     <table class="table table-hover">
       <thead>
         <tr>
@@ -95,12 +40,11 @@
           <th scope="col">تاريخ توزيع الأرباح</th>
           <th scope="col">الشاهد الأول</th>
           <th scope="col">الشاهد الثاني</th>
-          <th scope="col">تعديل</th>
-          <th scope="col">طباعة</th>
+          <th scope="col">الإجراءات</th>
         </tr>
       </thead>
       <tbody>
-        {% for contract in all_contract %}
+        {% for contract in contracts %}
         <tr>
           <!-- لعمل ارقام تسلسلة -->
           <th scope="row">{{forloop.counter}}</th>
@@ -117,15 +61,9 @@
           <td>{{contract.witnes1ID}}</td>
           <td>{{contract.witnes1ID}}</td>
           <td>
-            <a class="btn-link" href="{% url 'hadena_update' contract.id %}">
-              <!-- <i class="fa-sharp fa-solid fa-pen-to-square"></i> -->
-              <i class="fa-sharp fa-solid fa-print"></i>
-            </a>
-          </td>
-          <td>
-            <a href="{% url 'hadena_contract' contract_id=contract.id %}" class="btn-link">
-              <i class="fa-sharp fa-solid fa-print"></i>
-            </a>
+            <a href="{% url 'contract_view' contract.id %}" class="btn-link"><i class="fa fa-print"></i></a>
+            <a href="{% url 'contract_update' contract.id %}" class="btn-link"><i class="fas fa-edit"></i></a>
+            <a href="{% url 'contract_delete' contract.id %}" class="btn-link"><i class="fa fa-trash"></i></a>
           </td>
         </tr>
         {% endfor %}

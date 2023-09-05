@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %} | Update Employee ( {{update_emp.id}} ){% endblock %}
+{% block title %} | Update Shareholders ( {{update_share.id}} ){% endblock %}
 {% block content %}
 <div class="content-wrapper">
-  <h4 class="main-title">تعديل بيانات الموظف : {{update_emp.personID.f_Name_ar}} {{update_emp.personID.s_Name_ar}} {{update_emp.personID.t_Name_ar}} </h4>
+  <h4 class="main-title">تعديل بيانات المساهم : {{update_share.personID.f_Name_ar}} {{update_share.personID.s_Name_ar}} {{update_share.personID.t_Name_ar}} </h4>
  <div class="content">
   <br>
   <form method="POST">
     {% csrf_token %}
     {% include 'partials/_alerts.html' %}
     <button type="submit" class="btn btn-save">حفظ التعديل</button>
-    <a href="{% url 'employees' %}" class="btn btn-close">إلغاء</a>
+    <a href="{% url 'shareholders' %}" class="btn btn-close">إلغاء</a>
     <br>
     <br>
     <br>
@@ -59,26 +59,19 @@
       <div class="form-group col-md-6">{{update_person_form.email}}</div>
     </div>
     <h4>معلومات العمل</h4>
-    <!-- المهنة - التخصص - الشركة - بداية العمل -->
+    <!-- المهنة - التخصص - المشرف -->
     <div class="form-row">
-      <div class="form-group col-md-3">{{update_emp_form.companyID}}</div>
       <div class="form-group col-md-3">{{update_person_form.workTradeID}}</div>
       <div class="form-group col-md-3">{{update_person_form.workSpecialtyID}}</div>
-      <div class="form-group col-md-3">{{update_emp_form.workStartDate}}</div>
+      <div class="form-group col-md-3">{{update_share_form.marketerID}}</div>
     </div>
-    <!-- حالة العمل - الراتب الأساسي - الإضافي - تاريخ بداية العمل -->
-    <div class="form-row">
-      <div class="form-group col-md-3">{{update_emp_form.workingStatusID}}</div>
-      <div class="form-group col-md-3">{{update_emp_form.contractSalary}}</div>
-      <div class="form-group col-md-3">{{update_emp_form.fixedExtra}}</div>
-      <div class="form-group col-md-3">{{update_emp_form.workEndDate}}</div>
-    </div>
-    <!-- البنك - الفرع - نوع الحساب - رقم الحساب - رقم الأيبان ر -->
+    <!--البنك - الفرع - نوع الحساب -->
     <div class="form-row">
       <div class="form-group col-md-4">{{update_person_form.bankID}}</div>
       <div class="form-group col-md-4">{{update_person_form.branchBankID}}</div>
       <div class="form-group col-md-4">{{update_person_form.typeAccBankID}}</div>
     </div>
+    <!-- رقم الحساب - رقم الأيبان ر -->
     <div class="form-row">
       <div class="form-group col-md-6">{{update_person_form.accountNumber}}</div>
       <div class="form-group col-md-6">{{update_person_form.IBANNumber}}</div>

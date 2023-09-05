@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} | Delete Shareholders ( {{delete_share.id}} ) {% endblock %}
+{% block content %}
+<div class="content-wrapper">
+  <h4 class="main-title">حذف بيانات المساهم : {{delete_share.personID.f_Name_ar}} {{delete_share.personID.s_Name_ar}} {{delete_share.personID.t_Name_ar}} {{delete_share.personID.fo_Name_ar}} </h4>
+ <div class="content">
+  <br>
+  <form method="POST">
+    {% csrf_token %}
+    {% include 'partials/_alerts.html' %}
+    <button type="submit" class="btn btn-danger">تأكيد الحذف</button>
+    <a href="{% url 'update' delete_share.id %}" name="btnupdate" class="btn btn-save">تعديل</a>
+    <a href="{% url 'shareholders' %}" class="btn btn-close">إلغاء</a>
+    <br>
+    <br>
+    <br>
+    <h6 style="font-weight: bold">الإسم الكامل - عربي</h6>
+    <div class="form-row">
+      <div class="form-group col-md-3">{{delete_share.personID.f_Name_ar}}</div>
+      <div class="form-group col-md-3">{{delete_share.personID.s_Name_ar}}</div>
+      <div class="form-group col-md-3">{{delete_share.personID.t_Name_ar}}</div>
+      <div class="form-group col-md-3">{{delete_share.personID.fo_Name_ar}}</div>
+    </div>
+    <h6 style="font-weight: bold">الإسم الكامل - إنجليزي</h6>
+    <div class="form-row">
+      <div class="form-group col-md-3">{{delete_share.personID.f_Name_en}}</div>
+      <div class="form-group col-md-3">{{delete_share.personID.s_Name_en}}</div>
+      <div class="form-group col-md-3">{{delete_share.personID.t_Name_en}}</div>
+      <div class="form-group col-md-3">{{delete_share.personID.fo_Name_en}}</div>
+    </div>
+    <!-- تاريخ الميلا - الجنس - الجنسية - الحالة الإجتماعية -->
+    <div class="form-row">
+      <div class="form-group col-md-3">{{delete_share.personID.dateOfBirth}}</div>
+      <div class="form-group col-md-3">{{delete_share.personID.genderID}}</div>
+      <div class="form-group col-md-3">{{delete_share.personID.nationalityID}}</div>
+      <div class="form-group col-md-3">{{delete_share.personID.socialStatusID}}</div>
+    </div>
+    <!--  نوع الهوية - رقم الهوية - تاريخ إنتهاء الهوية  -->
+    <div class="form-row">
+      <div class="form-group col-md-3">{{delete_share.personID.typeID}}</div>
+      <div class="form-group col-md-3">{{delete_share.personID.id_number}}</div>
+      <div class="form-group col-md-3">{{delete_share.personID.id_ExpiredDate}}</div>
+    </div>
+    <!--  الدولة - الولاية - المدية -  وصف العنوان -->
+    <div class="form-row">
+      <div class="form-group col-md-3">{{delete_share.personID.countryID}}</div>
+      <div class="form-group col-md-3">{{delete_share.personID.regionID}}</div>
+      <div class="form-group col-md-3">{{delete_share.personID.stateID}}</div>
+      <div class="form-group col-md-3">{{delete_share.personID.cityID}}</div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-12">{{delete_share.personID.desAddress}}</div>
+    </div>
+    <h4>معلومات الإتصال</h4>
+    <!--البريد الإلكتروني - رقم الجوال - رقم جوال آخر -->
+    <div class="form-row">
+      <div class="form-group col-md-3">{{delete_share.personID.mobileNumber}}</div>
+      <div class="form-group col-md-3">{{delete_share.personID.mobileNumberAnother}}</div>
+      <div class="form-group col-md-6">{{delete_share.personID.email}}</div>
+    </div>
+    <h4>معلومات العمل</h4>
+    <!-- المهنة - التخصص - الشركة - بداية العمل -->
+    <div class="form-row">
+      <div class="form-group col-md-3">{{delete_share.personID.workTradeID}}</div>
+      <div class="form-group col-md-3">{{delete_share.personID.workSpecialtyID}}</div>
+      <div class="form-group col-md-3">{{delete_share.marketerID}}</div>
+    </div>
+    <!-- البنك - الفرع - نوع الحساب - رقم الحساب - رقم الأيبان ر -->
+    <div class="form-row">
+      <div class="form-group col-md-4">{{delete_share.personID.bankID}}</div>
+      <div class="form-group col-md-4">{{delete_share.personID.branchBankID}}</div>
+      <div class="form-group col-md-4">{{delete_share.personID.typeAccBankID}}</div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">{{delete_share.personID.accountNumber}}</div>
+      <div class="form-group col-md-6">{{delete_share.personID.IBANNumber}}</div>
+    </div>
+    <!-- صورة الموظف - رابط المستندات - ملاحظات -->
+    <div class="form-row">
+      <div class="form-group col-md-4">{{delete_share.personID.photo}}</div>
+      <div class="form-group col-md-4">{{delete_share.personID.attachments}}</div>
+      <div class="form-group col-md-4">{{delete_share.personID.notes}}</div>
+    </div>  
+  </form>
+ </div>
+</div>
+{% endblock %}

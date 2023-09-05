@@ -45,7 +45,7 @@ class PersonForm(forms.ModelForm):
             'IBANNumber': forms.TextInput(attrs={'class':'form-control', 'placeholder':'رقم الآيبان'}),
             'ownerAccount': forms.TextInput(attrs={'class':'form-control', 'placeholder':'صاحب الحساب'}),
             'attachments': forms.FileInput(attrs={'class':'form-control', 'placeholder':'مرفقات'}),
-            'emp_Photo': forms.FileInput(attrs={'class':'form-control', 'placeholder':'صورة شخصية'}),
+            'photo': forms.FileInput(attrs={'class':'form-control', 'placeholder':'صورة شخصية'}),
             'notes': forms.TextInput(attrs={'class':'form-control', 'placeholder':'ملاحظات'}),
         }
       

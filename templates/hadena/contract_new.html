@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %} 
+{% block title %} | Hadina | New Contract {% endblock %}
+{% block content %}
+<div class="content-wrapper">
+  <div class="content">
+    <div class="modal-content">
+      <div class="modal-body">
+        {% include 'partials/_alerts.html' %}
+        <!-- Start Modal Countries -->
+        <form method="POST">
+          <div class="form-row main-title">
+            <h5 class="form-group" id="staticBackdropLabel">إضافة عقد جديد</h5>
+            <button type="submit" class="btn btn-save" name="btnempsave">إضافة</button>
+            <a href="{% url 'shareholders' %}" class="btn btn-close">إلغاء</a>
+          </div>
+          {% csrf_token %}
+          <br/>
+          <div class="form-row">
+            <h6 class="sub-title">إسم المساهم</h6>
+            <div class="form-group col-md-3">{{contract_form.shareholdersID}}</div>
+            <h6 class="sub-title"> تاريخ العقد </h6>
+            <div class="form-group col-md-3">{{contract_form.dateOfContract}}</div>  
+          </div>
+          <!-- تاريخ الميلا - الجنس - الجنسية - الحالة الإجتماعية -->
+          <div class="form-row">
+           <h6 class="sub-title"> رقم العقد</h6>
+            <div class="form-group col-md-3">{{contract_form.contractNumber}}</div>
+            <h6 class="sub-title"> المحور </h6>
+            <div class="form-group col-md-3">{{contract_form.axisID}}</div>
+          </div>
+          <!-- تاريخ الميلا - الجنس - الجنسية - الحالة الإجتماعية -->
+          <div class="form-row">
+            <h6 class="sub-title"> ربحية السهم </h6>
+            <div class="form-group col-md-3">{{contract_form.profitOfShare}}</div>
+            <h6 class="sub-title"> تاريخ توزيع الأرباح </h6>
+            <div class="form-group col-md-3">{{contract_form.dateOfDividend}}</div>
+          </div>
+          <div class="form-row">
+            <h6 class="sub-title"> عدد الأسهم </h6>
+            <div class="form-group col-md-3">{{contract_form.numberOfShares}}</div>
+            <h6 class="sub-title"> سعر السهم </h6>
+            <div class="form-group col-md-3">{{contract_form.amountOfShare}}</div>
+          </div>
+          <!-- نوع الهوية - رقم الهوية - تاريخ إنتهاء الهوية - رقم الجوال - رقم جوال آخر  -->
+          <div class="form-row">
+            <h6 class="sub-title"> رقم الإيصال </h6>
+            <div class="form-group col-md-3">{{contract_form.numberReceipt}}</div>
+            <h6 class="sub-title"> الشاهد الأول </h6>
+            <div class="form-group col-md-3">{{contract_form.witnes1ID}}</div>
+            <h6 class="sub-title"> الشاهد الأول </h6>
+            <div class="form-group col-md-3">{{contract_form.witnes2ID}}</div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+

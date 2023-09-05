@@ -208,9 +208,10 @@ class Person(models.Model):
     accountNumber = models.CharField(verbose_name='رقم الحساب المصرفي',max_length=100, blank=True, null=True)
     IBANNumber = models.CharField(verbose_name='رقم الآيبان المصرفي',max_length=100, blank=True, null=True)
     ownerAccount = models.CharField(verbose_name='إسم صاحب الحساب',max_length=100, blank=True, null=True)
-    emp_Photo = models.ImageField(verbose_name='صورة شخصية', upload_to='photos/%Y/%m/%d/', null=True, blank=True)
+    photo = models.ImageField(verbose_name='صورة شخصية', upload_to='photos/%Y/%m/%d/', null=True, blank=True)
     notes = models.TextField(verbose_name='ملاحظات', blank=True, null=True)
     attachments = models.FileField(verbose_name='مرفقات', blank=True, null=True)
+    documentLink = models.CharField(verbose_name='رابط المستندات',max_length=100, blank=True, null=True)
 
     def __str__(self):
         return str(self.f_Name_ar)

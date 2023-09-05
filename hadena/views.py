@@ -58,106 +58,155 @@ def shareholders(request):
   }
   return render(request, 'hadena/shareholders.html', context)
 
-def new_shareholder(request): 
-    if request.method == 'POST':
-      marketerID = None
-      #Get Values from the form
-      if 'marketerID' in request.POST: marketerID = request.POST['marketerID']
-      else: messages.error(request, 'Error in marketerID')
-      newPerson = PersonForm(request.POST, request.FILES)
-      if newPerson.is_valid():
-        newPerson.save()
-        new_shareholder = ShareholdersInfo(personID=newPerson.instance, marketerID_id=marketerID)
-        new_shareholder.save()
-        messages.success(request, 'تمت الإضافة بنجاح') 
-        return redirect('shareholders')
-      else :      
-        messages.error(request, 'خطأ في البيانات') 
-        return redirect('new_shareholder')
-    context = {
-      'share_form': ShareholderForm(),
-      'person_form': PersonForm(),
-    }
-    return render(request , 'hadena/new_shareholder.html', context)
+def shareholder_new(request): 
+  if request.method == 'POST':
+    marketerID = None
+    #Get Values from the form
+    if 'marketerID' in request.POST: marketerID = request.POST['marketerID']
+    else: messages.error(request, 'Error in marketerID')
+    newPerson = PersonForm(request.POST, request.FILES)
+    if newPerson.is_valid():
+      newPerson.save()
+      new_shareholder = ShareholdersInfo(personID=newPerson.instance, marketerID_id=marketerID)
+      new_shareholder.save()
+      messages.success(request, 'تمت الإضافة بنجاح') 
+      return redirect('shareholders')
+    else :      
+      messages.error(request, 'خطأ في البيانات') 
+      return redirect('new_shareholder')
+  context = {
+    'share_form': ShareholderForm(),
+    'person_form': PersonForm(),
+  }
+  return render(request , 'hadena/shareholder_new.html', context)
 
-def shareholder(request, shareholder_id):
-    shareholders = ShareholdersInfo.objects.all()
-    shareholder = ShareholdersInfo.objects.get(id=shareholder_id)
+def view(request, id):
+    shareholder_view = ShareholdersInfo.objects.get(id=id)
     context = {
-        'shareholder':shareholder,
-        'shareholders':shareholders,
+        'shareholder_view':shareholder_view,
     }
-    return render(request , 'hadena/shareholder.html', context)
+    return render(request , 'hadena/shareholder_view.html', context)
 
-def share_update(request, shareholder_id):
-    shareholder_id = ShareholdersInfo.objects.get(id=shareholder_id)
-    if request.method == 'POST':
-        shareholder_save = ShareholderForm(request.POST, request.FILES, instance=shareholder_id)
-        if shareholder_save.is_valid():
-            shareholder_save.save()
-            messages.success(request, 'تم تحديث البيانات بنجاح')       
-        return redirect('shareholders') 
+def update(request, id):
+  update_share = ShareholdersInfo.objects.get(id=id)
+  update_person = Person.objects.get(id=update_share.personID_id)
+  update_share_form = ShareholderForm(instance=update_share)
+  update_person_form = PersonForm(request.POST, request.FILES, instance=update_person)
+  if request.method == 'POST':
+    marketerID = None
+    if 'marketerID' in request.POST: marketerID = request.POST['marketerID']
+    else: messages.error(request, 'Error in marketerID')
+    if update_person_form.is_valid():
+      update_person_form.save()
+      update_share.marketerID.pk=marketerID 
+      messages.success(request, 'تم تحديث البيانات بنجاح')       
+      return redirect('shareholders') 
     else:
-        shareholder_save = ShareholderForm(instance=shareholder_id)
-    context = {
-        'shareholder_form':shareholder_save,
-        'shareholder':shareholder_id,
-    }
-    return render(request, 'hadena/share_update.html', context)
-    # return redirect('shareholders/contract/' + str(contract_id), context)
+      messages.error(request, 'خطأ في تحديث البيانات بنجاح')       
+      return redirect('update_share') 
+  update_person_form = PersonForm(instance=update_person)
+  context = {
+    'update_share':update_share,
+    'update_share_form':update_share_form,
+    'update_person':update_person,
+    'update_person_form':update_person_form,
+  }
+  return render(request, 'hadena/shareholder_update.html', context)
+  # return redirect('shareholders/contract/' + str(contract_id), context)
 
-def share_delete(request, shareholder_id):
-    if request.user.is_authenticated and not request.user.is_anonymous and shareholder_id:
-        shareholder = ShareholdersInfo.objects.get(id=shareholder_id)
-        shareholder.delete()
-        messages.success(request, 'تم الحذف بنجاح')
+def delete(request, id):
+  if request.user.is_authenticated and not request.user.is_anonymous:
+    delete_share = ShareholdersInfo.objects.get(id=id)
+    if request.method == 'POST':
+      delete_share.delete()
+      messages.success(request, 'تم الحذف بنجاح')
+      return redirect('shareholders')
+  else:
+      messages.error(request, 'خطأ في البيانات بنجاح')       
+      return redirect('delete_share')
+  context = {
+      'delete_share':delete_share,
+  }
+  return render(request, 'hadena/shareholder_delete.html', context)
+  # return redirect('shareholders') 
+
+def contract_new(request):
+  if request.method == 'POST':
+    contract_new = ContractsForm(request.POST, request.FILES)
+    if contract_new.is_valid():
+      contract_new.save()
+      messages.success(request, 'تمت الإضافة بنجاح') 
+      return redirect('contracts')
+    else :      
+      messages.error(request, 'خطأ في البيانات') 
+      return redirect('contract_new')
+  context = {
+    'contract_form': ContractsForm(),
+  }
+  return render(request, 'hadena/contract_new.html', context)
+
+def contract_view(request, id):
+    contract_view = Contracts.objects.get(id=id)
+    context = {
+        'contract_view':contract_view,
+    }
+    return render(request , 'hadena/contract_view.html', context)
+
+def contract_update(request, id):
+  contract_update = Contracts.objects.get(id=id)
+  contract_update_form = ContractsForm(request.POST, request.FILES, instance=contract_update)
+  if request.method == 'POST':
+    if contract_update_form.is_valid():
+      contract_update_form.save()
+      messages.success(request, 'تم تحديث البيانات بنجاح')       
+      return redirect('contracts') 
     else:
-        messages.error(request, 'الرجاء تسجيل الدخول')
-    # return render(request, 'shareholders/share_update.html', context)
-    return redirect('shareholders') 
+      messages.error(request, 'خطأ في تحديث البيانات بنجاح')       
+      return redirect('contract_updatet') 
+  contract_update_form = ContractsForm(instance=contract_update)
+  context = {
+    'contract_update':contract_update,
+    'contract_update_form':contract_update_form,
+  }
+  return render(request, 'hadena/contract_update.html', context)
+  # return redirect('shareholders/contract/' + str(contract_id), context)
+
+def contract_delete(request, id):
+  if request.user.is_authenticated and not request.user.is_anonymous:
+    contract_delete = Contracts.objects.get(id=id)
+    if request.method == 'POST':
+      contract_delete.delete()
+      messages.success(request, 'تم الحذف بنجاح')
+      return redirect('contracts')
+  else:
+    messages.error(request, 'خطأ في البيانات بنجاح')       
+    return redirect('contract_delete')
+  context = {
+    'contract':contract_delete,
+  }
+  return render(request, 'hadena/contract_delete.html', context)
+  # return redirect('shareholders') 
 
 def contracts(request):
-    if request.method == 'POST':
-        add_contract = ContractsForm(request.POST, request.FILES)
-        if add_contract.is_valid():
-            add_contract.save()
-            messages.success(request, 'تمت الإضافة بنجاح')
-    all_contract = Contracts.objects.filter(shareholdersID__companyID=1)
-     # Start Search
-    txtsearch = None
-    if 'search_name' in request.GET: # للتحقق من وجود نيم  في الرابط
-        txtsearch = request.GET['search_name'] # تغذية المتغير بالمدخلات حسب النيم
+  contracts = Contracts.objects.all()
+  contracts_form = ContractsForm()
+    # Start Search
+  txtsearch = None
+  if 'search_shareholdersID' in request.GET: # للتحقق من وجود نيم  في الرابط
+      txtsearch = request.GET['search_shareholdersID'] # تغذية المتغير بالمدخلات حسب النيم
+      if txtsearch: # للتحقق أن البيانات ليست فارغة
+          contracts = contracts.filter(shareholdersID__icontains=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
+  if 'search_contractNumber' in request.GET: # للتحقق من وجود نيم  في الرابط
+        txtsearch = request.GET['search_contractNumber'] # تغذية المتغير بالمدخلات حسب النيم
         if txtsearch: # للتحقق أن البيانات ليست فارغة
-            all_contract = all_contract.filter(f_Name_ar__icontains=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
-    if 'search_id_number' in request.GET: # للتحقق من وجود نيم  في الرابط
-        txtsearch = request.GET['search_id_number'] # تغذية المتغير بالمدخلات حسب النيم
-        if txtsearch: # للتحقق أن البيانات ليست فارغة
-            all_contract = all_contract.filter(id_number__icontains=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
-    if 'search_mobileNumber' in request.GET: # للتحقق من وجود نيم  في الرابط
-        txtsearch = request.GET['search_mobileNumber'] # تغذية المتغير بالمدخلات حسب النيم
-        if txtsearch: # للتحقق أن البيانات ليست فارغة
-            all_contract = all_contract.filter(mobileNumber__icontains=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
-    context = {
-        'contract_form':ContractsForm(),
-        'all_contract':all_contract,
-    }
-    return render(request , 'hadena/contracts.html', context)
+            contracts = contracts.filter(contractNumber__icontains=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
+  context = {
+    'contracts':contracts,
+    'contracts_form':contracts_form,
+  }
+  return render(request, 'hadena/contracts.html', context)
 
-def contract(request, contract_id):
-    # if request.user.is_authenticated:
-    all_contract = Contracts.objects.all()
-    contract = Contracts.objects.get(id=contract_id)
-    totalamountOfShare = contract.amountOfShare * contract.numberOfShares
-    context = {
-        'contract':contract,
-        'all_contract':all_contract,
-        'totalamountOfShare':totalamountOfShare,
-    }
-    # pdf=html2pdf("shareholders/contract.html")
-    # return HttpResponse(pdf, content_type='application/pdf', context)
-    return render(request , 'hadena/contract.html', context)
-
-def contract_print(request, contract_id):
+def contract_print(request, id):
      # Create a file-like buffer to receive PDF data.
     buffer = io.BytesIO()
     # Create the PDF object, using the buffer as its "file."
@@ -173,18 +222,3 @@ def contract_print(request, contract_id):
     buffer.seek(0)
     return FileResponse(buffer, as_attachment=True, filename='hello.pdf')
 
-def update(request, contract_id):
-    contract_id = Contracts.objects.get(id=contract_id)
-    if request.method == 'POST':
-        contract_save = ContractsForm(request.POST, request.FILES, instance=contract_id)
-        if contract_save.is_valid():
-            contract_save.save()
-            messages.success(request, 'تم تحديث البيانات بنجاح')       
-    else:
-        contract_save = ContractsForm(instance=contract_id)
-    context = {
-        'contract_form':contract_save,
-        'contract':contract_id,
-    }
-    return render(request, 'hadena/update.html', context)
-    # return redirect('shareholders/contract/' + str(contract_id), context)

@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} | Hadina | Delete Contract ( {{delete_contract.id}} ) {% endblock %}
+{% block content %}
+<div class="content-wrapper">
+  <h4 class="main-title">حذف بيانات العقد رقم : {{delete_contract.id}} </h4>
+  <div class="content">
+    <br>
+    <form method="POST">
+      {% csrf_token %}
+      {% include 'partials/_alerts.html' %}
+      <button type="submit" class="btn btn-danger">تأكيد الحذف</button>
+      <a href="{% url 'update_contract' delete_contract.id %}" name="btnupdate" class="btn btn-save">تعديل</a>
+      <a href="{% url 'contracts' %}" class="btn btn-close">إلغاء</a>
+      <br>
+      <br>
+      <br>
+      <!-- Start Modal -->
+      <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-body">
+              <!-- Start Modal Countries -->
+              {% include 'partials/_alerts.html' %}
+              <form method="POST">
+                <div class="form-row main-title">
+                  <h5 class="form-group col-md-9" id="staticBackdropLabel">إضافة عقد جديد</h5>
+                  <button type="submit" name="btnsharsave" class="btn btn-save">إضافة</button>
+                  <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close">إلغاء</button>
+                </div>
+                <br />
+                {% csrf_token %}
+                <div class="form-row">
+                  <h6 class="sub-title">إسم المساهم</h6>
+                  <div class="form-group col-md-3">{{contract.shareholdersID}}</div>
+                  <h6 class="sub-title"> تاريخ العقد </h6>
+                  <div class="form-group col-md-3">{{contract.dateOfContract}}</div>  
+                </div>
+                <!-- تاريخ الميلا - الجنس - الجنسية - الحالة الإجتماعية -->
+                <div class="form-row">
+                <h6 class="sub-title"> رقم العقد</h6>
+                  <div class="form-group col-md-3">{{contract.contractNumber}}</div>
+                  <h6 class="sub-title"> المحور </h6>
+                  <div class="form-group col-md-3">{{contract.axisID}}</div>
+                </div>
+                <!-- تاريخ الميلا - الجنس - الجنسية - الحالة الإجتماعية -->
+                <div class="form-row">
+                  <h6 class="sub-title"> ربحية السهم </h6>
+                  <div class="form-group col-md-3">{{contract.profitOfShare}}</div>
+                  <h6 class="sub-title"> تاريخ توزيع الأرباح </h6>
+                  <div class="form-group col-md-3">{{contract.dateOfDividend}}</div>
+                </div>
+                <div class="form-row">
+                  <h6 class="sub-title"> عدد الأسهم </h6>
+                  <div class="form-group col-md-3">{{contract.numberOfShares}}</div>
+                  <h6 class="sub-title"> سعر السهم </h6>
+                  <div class="form-group col-md-3">{{contract.amountOfShare}}</div>
+                </div>
+                <!-- نوع الهوية - رقم الهوية - تاريخ إنتهاء الهوية - رقم الجوال - رقم جوال آخر  -->
+                <div class="form-row">
+                  <h6 class="sub-title"> رقم الإيصال </h6>
+                  <div class="form-group col-md-3">{{contract.numberReceipt}}</div>
+                  <h6 class="sub-title"> الشاهد الأول </h6>
+                  <div class="form-group col-md-3">{{contract.witnes1ID}}</div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
