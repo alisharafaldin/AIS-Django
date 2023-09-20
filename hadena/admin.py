@@ -14,8 +14,8 @@ class ContractsImportExport(ImportExportModelAdmin):
     list_display = ['id']
 
 
-@admin.register(Axis)
-class AxisImportExport(ImportExportModelAdmin):
+@admin.register(Cycle)
+class CycleImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id']
 

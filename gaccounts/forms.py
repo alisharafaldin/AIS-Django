@@ -1,5 +1,5 @@
 from django import forms
-from .models import Qayd, QaydDetails , AccountsTree, BondsCatchPay
+from .models import Qayd, QaydDetails , AccountsTree, Bond
 
 class AccountsTreeForm(forms.ModelForm):
     class Meta:
@@ -46,13 +46,13 @@ class QaydDetailsForm(forms.ModelForm):
             'empID': forms.Select(attrs={'class':'form-control', 'placeholder':'الموظف'}),       
         }
 
-class BondsCatchPayForm(forms.ModelForm):
+class BondForm(forms.ModelForm):
     class Meta:
-        model = BondsCatchPay
+        model = Bond
         fields = '__all__'
         widgets = {
             'userID': forms.Select(attrs={'class':'form-control', 'placeholder':'أمين الصندوق'}),
-            'dateBond': forms.TextInput(attrs={'class':'form-control',  'type':'date' , 'placeholder':'تاريخ السند'}),
+            'date': forms.TextInput(attrs={'class':'form-control',  'type':'date' , 'placeholder':'تاريخ السند'}),
             'typeBondID': forms.Select(attrs={'class':'form-control', 'placeholder':'نوع السند'}),
             'currencyID': forms.Select(attrs={'class':'form-control', 'placeholder':'العملة'}),
             'exchangeRate': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'سعر الصرف'}),

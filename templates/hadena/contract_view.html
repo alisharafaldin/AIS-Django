@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %} | Contract ( {{contract.id}} ){% endblock %}
+{% block title %} | Contract ( {{contract_view.id}} ){% endblock %}
 {% block content %}
 {% load humanize %}
 <style>
@@ -22,13 +22,13 @@
 </style>
 
 <div class="content-wrapper">
-  <h4 class="main-title">بيانات العقد رقم : {{contract.id}}</h4>
-  <a href="{% url 'hadena_pdf' contract.id %}" class="nv-link" target="blank">Download PDF Report</a>
+  <h4 class="main-title">بيانات العقد رقم : {{contract_view.id}}</h4>
+  <a href="" class="nv-link" target="blank">Download PDF Report</a>
 
   <div class="content">
     <br />
-    <a href="{% url 'hadena_contracts' %}" class="btn btn-main">جميع العقود</a>
-    <a href="{% url 'hadena_update' contract.id %}" class="btn btn-main">تعديل</a>
+    <a href="{% url 'contracts' %}" class="btn btn-main">جميع العقود</a>
+    <a href="{% url 'contract_update' contract_view.id %}" class="btn btn-main">تعديل</a>
     {% include 'partials/_alerts.html' %}
     <br />
     <div class="row no-gutters">
@@ -50,28 +50,28 @@
           <div class="col-md-8" style="margin: auto; max-width: 80%;">
             <div>
               <p>
-                التاريخ : <span class="contract_details">{{contract.dateOfContract}}</span> 
+                التاريخ : <span class="contract_details">{{contract_view.dateOfContract}}</span> 
               </p>
               <P>
                 1- حاضنة البركة للإنتاج الزراعي والحيواني اسم عمل مملوك لشركة شباب بزنس للأنشطة المتكاملة المحدودة المسجلة بالرقم 49074 بموجب قانون الشركات لعام2015 والحاضنة متخصصة في مجال الإنتاج الزراعي والحيواني وتمتلك الخبرة الفنية والإدارية في انشاء وتأسيس وإدارة المشاريع الزراعية بشقيها النباتي والحيواني وتعرف لأغراض هذا العقد بالطرف الأول.
               </P>
               <P>
-                2- السيد / <span class="contract_details">{{contract.shareholdersID.f_Name_ar}} {{contract.shareholdersID.s_Name_ar}} {{contract.shareholdersID.t_Name_ar}} {{contract.shareholdersID.fo_Name_ar}}</span> حامل هوية : <span class="contract_details">{{contract.shareholdersID.typeID}}</span> رقمها : <span class="contract_details">{{contract.shareholdersID.id_number}}</span> عنوانه : <span class="contract_details">{{contract.shareholdersID.detailsAddress}}</span> رقم هاتفه : <span class="contract_details">{{contract.shareholdersID.mobileNumber}}</span> ويعرف لأغراض هذا العقد بالطرف الثاني.
+                2- السيد / <span class="contract_details">{{contract_view.shareholdersID.personID.f_Name_ar}} {{contract.shareholdersID.personID.s_Name_ar}} {{contract_view.shareholdersID.t_Name_ar}} {{contract_view.shareholdersID.personID.fo_Name_ar}}</span> حامل هوية : <span class="contract_details">{{contract_view.shareholdersID.personID.typeID}}</span> رقمها : <span class="contract_details">{{contract_view.shareholdersID.personID.id_number}}</span> عنوانه : <span class="contract_details">{{contract_view.shareholdersID.personID.detailsAddress}}</span> رقم هاتفه : <span class="contract_details">{{contract_view.shareholdersID.personID.mobileNumber}}</span> ويعرف لأغراض هذا العقد بالطرف الثاني.
               </P>
               <p>
                 3- يطرح الطرف الاول اسهما للشراكة معه على سبيل المضاربة في الاستثمار الزراعي والحيواني بجميع مجالاته.
               </p>
               <p>
-                4- يرغب الطرف الثاني في الشراكة مع الحاضنة  بشراء عدد <span class="contract_details">{{contract.numberOfShares}}</span> سهم بمبلغ وقدره <span class="contract_details">{{contract.amountOfShare|intcomma}} ج.س </span> بإجمالي قيمة <span class="contract_details">{{totalamountOfShare|intcomma}}</span> بعد إطلاعه على جميع تفاصيل العقد والتزامه بها.
+                4- يرغب الطرف الثاني في الشراكة مع الحاضنة  بشراء عدد <span class="contract_details">{{contract_view.numberOfShares}}</span> سهم بمبلغ وقدره <span class="contract_details">{{contract_view.amountOfShare|intcomma}} ج.س </span> بإجمالي قيمة <span class="contract_details">{{totalamountOfShare|intcomma}}</span> بعد إطلاعه على جميع تفاصيل العقد والتزامه بها.
               </p>
               <p>
-                5- قام الطرف الثاني بسداد المبلغ المذكور أعلاه واستلم الايصال المالي رقم <span class="contract_details">{{contract.numberReceipt}}</span> من الحاضنة.
+                5- قام الطرف الثاني بسداد المبلغ المذكور أعلاه واستلم الايصال المالي رقم <span class="contract_details">{{contract_view.numberReceipt}}</span> من الحاضنة.
               </p>
               <p>
                 6- تقسم الأرباح بين الحاضنة والمشتركين على النحو التالي <span class="contract_details"> 60% </span> من صافي الأرباح للمشتركين على حسب نسب مشاركتهم و <span class="contract_details"> 40% </span> من صافي الأرباح للحاضنة وذلك بعد خصم جميع التكاليف التشغيلية.
               </p>
               <p>
-                7- يتم توريد نصيب الطرف الثاني من صافي الدخل في حساب <span class="contract_details">{{contract.shareholdersID.typeAccBankID}}</span> رقم <span class="contract_details">{{contract.shareholdersID.accountNumber}}</span> علي بنك <span class="contract_details">{{contract.shareholdersID.bankID}}</span> فرع <span class="contract_details">{{contract.shareholdersID.branchBankID}}</span> باسم : <span class="contract_details">{{contract.shareholdersID.ownerAccount}}</span>
+                7- يتم توريد نصيب الطرف الثاني من صافي الدخل في حساب <span class="contract_details">{{contract.shareholdersID.personID.typeAccBankID}}</span> رقم <span class="contract_details">{{contract_view.shareholdersID.personID.accountNumber}}</span> علي بنك <span class="contract_details">{{contract_view.shareholdersID.personID.bankID}}</span> فرع <span class="contract_details">{{contract_view.shareholdersID.personID.branchBankID}}</span> باسم : <span class="contract_details">{{contract_view.shareholdersID.personID.ownerAccount}}</span>
               </p>
               
               <p class="contract_details">أحكام عامة :</p>
@@ -115,7 +115,7 @@
               </div>
               <div class="col-md-6">
                 <p class="contract_details"> الطرف الثاني :</p>
-                <p class="contract_details"> {{contract.shareholdersID.f_Name_ar}} {{contract.shareholdersID.s_Name_ar}} {{contract.shareholdersID.t_Name_ar}} {{contract.shareholdersID.fo_Name_ar}}</p>
+                <p class="contract_details"> {{contract_view.shareholdersID.personID.f_Name_ar}} {{contract_view.shareholdersID.personID.s_Name_ar}} {{contract_view.shareholdersID.personID.t_Name_ar}} {{contract_view.shareholdersID.personID.fo_Name_ar}}</p>
                 <p class="contract_details"> التوقيع :</p>
               </div>
             </div>
@@ -124,16 +124,16 @@
             <div class="row">
               <div class="col-md-6">
                 <p class="contract_details"> الشاهد الأول :</p>
-                <p class="contract_details">{{contract.witnes1ID.f_Name_ar}} {{contract.witnes1ID.s_Name_ar}} {{contract.witnes1ID.t_Name_ar}} {{contract.witnes1ID.fo_Name_ar}}</p>
-                <p class="contract_details">نوع إثبات الشخصية : {{contract.witnes1ID.typeID}}</p>
-                <p class="contract_details">رقم الإثبات : {{contract.witnes1ID.id_number}}</p>
+                <p class="contract_details">{{contract_view.witnes1ID.EmpInfo.personID.f_Name_ar}} {{contract_view.witnes1ID.personID.s_Name_ar}} {{contract_view.witnes1ID.shareholdersID.personID.t_Name_ar}} {{contract_view.witnes1ID.shareholdersID.personID.fo_Name_ar}}</p>
+                <p class="contract_details">نوع إثبات الشخصية : {{contract_view.witnes1ID.shareholdersID.personID.typeID}}</p>
+                <p class="contract_details">رقم الإثبات : {{contract_view.witnes1ID.shareholdersID.personID.id_number}}</p>
                 <p class="contract_details"> التوقيع :</p>
               </div>
               <div class="col-md-6">
                 <p class="contract_details"> الشاهد الثاني :</p>
-                <p class="contract_details">{{contract.witnes1ID.f_Name_ar}} {{contract.witnes1ID.s_Name_ar}} {{contract.witnes1ID.t_Name_ar}} {{contract.witnes1ID.fo_Name_ar}}</p>
-                <p class="contract_details">نوع إثبات الشخصية : {{contract.witnes1ID.typeID}}</p>
-                <p class="contract_details">رقم الإثبات : {{contract.witnes1ID.id_number}}</p>
+                <p class="contract_details">{{contract_view.witnes1ID.personID.f_Name_ar}} {{contract_view.witnes1ID.personID.s_Name_ar}} {{contract_view.witnes1ID.t_Name_ar}} {{contract_view.witnes1ID.fo_Name_ar}}</p>
+                <p class="contract_details">نوع إثبات الشخصية : {{contract_view.witnes1ID.personID.typeID}}</p>
+                <p class="contract_details">رقم الإثبات : {{contract_view.witnes1ID.personID.id_number}}</p>
                 <p class="contract_details"> التوقيع :</p>
               </div>
             </div>

@@ -4,20 +4,20 @@ from import_export.admin import ImportExportModelAdmin
 
 # Register your models here.
 
-@admin.register(AccType)
-class AccTypeImportExport(ImportExportModelAdmin):
+@admin.register(AccountType)
+class AccountTypeImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id','accType_ar']
+    list_display = ['id','Type_ar']
 
-@admin.register(AccDorC)
-class AccDorCImportExport(ImportExportModelAdmin):
+@admin.register(AccountNature)
+class AccountNatureImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id','accDorC_ar']
+    list_display = ['id','nature_ar']
 
-@admin.register(AccBudget)
-class AccBudgetImportExport(ImportExportModelAdmin):
+@admin.register(AccountBudget)
+class AccountBudgetImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id','accBudget_ar']
+    list_display = ['id','budget_ar']
 
 @admin.register(AccountsTree)
 class AccountsTreeImportExport(ImportExportModelAdmin):
@@ -34,9 +34,6 @@ class QaydDetailsImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id']
 
-@admin.register(BondsCatchPay)
-class BondsCatchPayImportExport(ImportExportModelAdmin):
-    pass
-    list_display = ['id']
+
 
 
