@@ -1,5 +1,5 @@
 from django import forms
-from .models import Qayd, QaydDetails , AccountsTree, Bond
+from .models import Qayd, QaydDetails , AccountsTree
 
 class AccountsTreeForm(forms.ModelForm):
     class Meta:
@@ -46,20 +46,3 @@ class QaydDetailsForm(forms.ModelForm):
             'empID': forms.Select(attrs={'class':'form-control', 'placeholder':'الموظف'}),       
         }
 
-class BondForm(forms.ModelForm):
-    class Meta:
-        model = Bond
-        fields = '__all__'
-        widgets = {
-            'userID': forms.Select(attrs={'class':'form-control', 'placeholder':'أمين الصندوق'}),
-            'date': forms.TextInput(attrs={'class':'form-control',  'type':'date' , 'placeholder':'تاريخ السند'}),
-            'typeBondID': forms.Select(attrs={'class':'form-control', 'placeholder':'نوع السند'}),
-            'currencyID': forms.Select(attrs={'class':'form-control', 'placeholder':'العملة'}),
-            'exchangeRate': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'سعر الصرف'}),
-            'amount': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'المبلغ'}),
-            'description': forms.Textarea(attrs={'class':'form-control', 'placeholder':'وصف السند', 'style':'height: 50px;'}),
-            'recipient': forms.TextInput(attrs={'class':'form-control', 'placeholder':'المستلم'}),
-            'empID': forms.Select(attrs={'class':'form-control', 'placeholder':'الموظف'}), 
-            'projectID': forms.Select(attrs={'class':'form-control', 'placeholder':'المشروع'}),        
-            'shareholderID': forms.Select(attrs={'class':'form-control', 'placeholder':'المشروع'}),   
-        }

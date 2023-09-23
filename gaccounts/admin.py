@@ -7,22 +7,22 @@ from import_export.admin import ImportExportModelAdmin
 @admin.register(AccountType)
 class AccountTypeImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id','Type_ar']
+    list_display = ['id']
 
 @admin.register(AccountNature)
 class AccountNatureImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id','nature_ar']
+    list_display = ['id']
 
 @admin.register(AccountBudget)
 class AccountBudgetImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id','budget_ar']
+    list_display = ['id']
 
 @admin.register(AccountsTree)
 class AccountsTreeImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'accName_ar']
+    list_display = ['id']
 
 @admin.register(Qayd)
 class QaydImportExport(ImportExportModelAdmin):

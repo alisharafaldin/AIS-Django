@@ -18,8 +18,8 @@ class Cycle(models.Model):
     return str(self.cycle_ar)
 
 class ShareholdersInfo(models.Model):
-  personID = models.OneToOneField(Person, on_delete=models.CASCADE)
-  marketerID = models.ForeignKey(EmpInfo, verbose_name='المسووق',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الموظف في حالة حذف المسوق
+  personID = models.OneToOneField(Person, related_name='personID', on_delete=models.CASCADE)
+  marketerID = models.ForeignKey(EmpInfo, related_name='marketerID', verbose_name='المسووق',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الموظف في حالة حذف المسوق
   def __str__(self):
     return str(self.personID)
   
