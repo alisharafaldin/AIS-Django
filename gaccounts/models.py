@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from basicinfo.models import Project, Currency
+from basicinfo.models import Project, Countries
 from employees.models import EmpInfo
 # from hadena.models import ShareholdersInfo, Cycle
 # Create your models here.
@@ -47,7 +47,7 @@ class Qayd(models.Model):
   typeTransactionID = models.ForeignKey(TypeTransaction , verbose_name='نوع العملية', default=1, on_delete=models.CASCADE, null=True)
   date = models.DateField(verbose_name='تاريخ القيد',)
   description = models.TextField(verbose_name='وصف القيد', max_length=250, blank=True, null=True)
-  currencyID = models.ForeignKey(Currency , verbose_name='العملة', default=1, on_delete=models.CASCADE, null=True)
+  currencyID = models.ForeignKey(Countries , verbose_name='العملة', default=1, on_delete=models.CASCADE, null=True)
   attachments = models.FileField(verbose_name='مرفقات القيد', blank=True, null=True)
   details = models.ManyToManyField(AccountsTree, through='QaydDetails')
   projectID = models.ForeignKey(Project, verbose_name='المشروع', default=1, on_delete=models.CASCADE, blank=True, null=True)

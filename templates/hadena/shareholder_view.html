@@ -1,12 +1,12 @@
-{% extends 'base.html' %} {% load static %} {% block title %} | View Shareholders  ( {{view_share.id}} ) {% endblock %} {% block content %}
+{% extends 'base.html' %} {% load static %} {% block title %} | View Shareholders  ( {{shareholder_view.id}} ) {% endblock %} {% block content %}
 <div class="content-wrapper">
-  <h4 class="main-title">بطاقة تعريف المساهم : {{view_share.personID.f_Name_ar}} {{view_share.personID.s_Name_ar}} {{view_share.personID.t_Name_ar}}
-    {{view_share.personID.fo_Name_ar}}</h4>
+  <h4 class="main-title">بطاقة تعريف المساهم : {{shareholder_view.personID.f_Name_ar}} {{shareholder_view.personID.s_Name_ar}} {{shareholder_view.personID.t_Name_ar}}
+    {{shareholder_view.personID.fo_Name_ar}}</h4>
  <div class="content">
   <br />
   <!-- <a href="{% url 'index' %}" class="btn btn-warning">الرئيسة</a> -->
   <a href="{% url 'shareholders' %}" class="btn btn-main">جميع الموظفين</a>
-  <a href="{% url 'update' view_share.id %}" class="btn btn-main">تعديل</a>
+  <a href="{% url 'update' shareholder_view.id %}" class="btn btn-main">تعديل</a>
   {% include 'partials/_alerts.html' %}
   <div class="">
     <br />
@@ -25,27 +25,27 @@
           <div class="form-row">
             <label class="sub-title">ID : </label>
             <p class="card-title sub-title-content" style="width: auto">
-              {{view_share.id}}
+              {{shareholder_view.id}}
             </p>
           </div>
           <div class="form-row">
             <label class="sub-title">الإسم عربي : </label>
             <p class="card-title sub-title-content" style="width: auto">
-              {{view_share.personID.f_Name_ar}} {{view_share.personID.s_Name_ar}} {{view_share.personID.t_Name_ar}}
-              {{view_share.personID.fo_Name_ar}}
+              {{shareholder_view.personID.f_Name_ar}} {{shareholder_view.personID.s_Name_ar}} {{shareholder_view.personID.t_Name_ar}}
+              {{shareholder_view.personID.fo_Name_ar}}
             </p>
           </div>
           <div class="form-row">
             <label class="sub-title">الإسم إنجليزي : </label>
             <p class="card-title sub-title-content" style="width: auto">
-              {{view_share.personID.f_Name_en|lower|capfirst }} {{view_share.personID.s_Name_en|lower|capfirst }} {{view_share.personID.t_Name_en|lower|capfirst }}
-              {{view_share.personID.fo_Name_en|lower|capfirst }}
+              {{shareholder_view.personID.f_Name_en|lower|capfirst }} {{shareholder_view.personID.s_Name_en|lower|capfirst }} {{shareholder_view.personID.t_Name_en|lower|capfirst }}
+              {{shareholder_view.personID.fo_Name_en|lower|capfirst }}
             </p>
           </div>
           <div class="form-row">
             <label class="sub-title">تاريخ الميلاد : </label>
             <p class="card-title sub-title-content" style="width: auto">
-              {{view_share.personID.dateOfBirth}}
+              {{shareholder_view.personID.dateOfBirth}}
             </p>
             <label class="sub-title">العمر : </label>
             <p class="card-title sub-title-content" style="width: auto">
@@ -53,33 +53,33 @@
             </p>
             <label class="sub-title">الجنس : </label>
             <p class="card-title sub-title-content" style="width: auto">
-              {{view_share.personID.genderID}}
+              {{shareholder_view.personID.genderID}}
             </p>
           </div>
           <div class="form-row">
             <label class="sub-title">الجنسية :</label>
             <p class="card-title sub-title-content" style="width: auto">
-              {{view_share.personID.nationalityID}}
+              {{shareholder_view.personID.nationalityID}}
             </p>
             <label class="sub-title">الحالة الإجتماعية : </label>
             <p class="card-title sub-title-content" style="width: auto">
-              {{view_share.personID.socialStatusID}}
+              {{shareholder_view.personID.socialStatusID}}
             </p>
           </div>
           <div class="form-row">
             <label class="sub-title">رقم الهاتف : </label>
             <p class="card-title sub-title-content" style="width: auto">
-              {{view_share.personID.mobileNumber}}
+              {{shareholder_view.personID.mobileNumber}}
             </p>
             <label class="sub-title">البنك : </label>
             <p class="card-title sub-title-content" style="width: auto">
-              {{view_share.personID.bankID}}
+              {{shareholder_view.personID.bankID}}
             </p>
           </div>
           <div class="form-row">
             <label class="sub-title">رقم الحساب : </label>
             <p class="card-title sub-title-content" style="width: auto">
-              {{view_share.personID.accountNumber}}
+              {{shareholder_view.personID.accountNumber}}
             </p>
           </div>
         </div>
@@ -90,42 +90,42 @@
         <br />
         <div class="form-row">
           <label class="sub-title">الشركة</label>
-          <p class="card-title sub-title-content">{{view_share.personID.companyID}}</p>
+          <p class="card-title sub-title-content">{{shareholder_view.personID.companyID}}</p>
         </div>
         <div class="form-row">
           <label class="sub-title">المهنة</label>
-          <p class="card-title sub-title-content">{{view_share.personID.workTradeID}}</p>
+          <p class="card-title sub-title-content">{{shareholder_view.personID.workTradeID}}</p>
         </div>
         <div class="form-row">
           <label class="sub-title">التخصص</label>
           <p class="card-title sub-title-content">
-            {{view_share.personID.workSpecialtyID}}
+            {{shareholder_view.personID.workSpecialtyID}}
           </p>
         </div>
         <div class="form-row">
           <label class="sub-title">حالة العمل </label>
           <p class="card-title sub-title-content">
-            {{view_share.personID.workingStatusID}}
+            {{shareholder_view.personID.workingStatusID}}
           </p>
         </div>
         <div class="form-row">
           <label class="sub-title">تاريخ بداية العمل</label>
           <p class="card-title sub-title-content">
-            {{view_share.personID.workStartingDate}}
+            {{shareholder_view.personID.workStartingDate}}
           </p>
         </div>
         <div class="form-row">
           <label class="sub-title">راتب العقد</label>
-          <p class="card-title sub-title-content">{{view_share.personID.contractSalary}}</p>
+          <p class="card-title sub-title-content">{{shareholder_view.personID.contractSalary}}</p>
         </div>
         <div class="form-row">
           <label class="sub-title">إضافي ثابت</label>
-          <p class="card-title sub-title-content">{{view_share.personID.fixedExtra}}</p>
+          <p class="card-title sub-title-content">{{shareholder_view.personID.fixedExtra}}</p>
         </div>
         <div class="form-row">
           <label class="sub-title">تاريخ إنتهاء العمل</label>
           <p class="card-title sub-title-content">
-            {{view_share.personID.endDateOfService}}
+            {{shareholder_view.personID.endDateOfService}}
           </p>
         </div>
       </div>
@@ -135,17 +135,17 @@
         <br />
         <div class="form-row">
           <label class="sub-title">رقم الجواز</label>
-          <p class="card-title sub-title-content">{{view_share.personID.passportNumber}}</p>
+          <p class="card-title sub-title-content">{{shareholder_view.personID.passportNumber}}</p>
         </div>
         <div class="form-row">
           <label class="sub-title">تاريخ إنتهاء الجواز</label>
           <p class="card-title sub-title-content">
-            {{view_share.personID.passportExpiryDate}}
+            {{shareholder_view.personID.passportExpiryDate}}
           </p>
         </div>
         <div class="form-row">
           <label class="sub-title">ملاحظات</label>
-          <p class="card-title sub-title-content">{{view_share.personID.notes}}</p>
+          <p class="card-title sub-title-content">{{shareholder_view.personID.notes}}</p>
         </div>
       </div>
     </div>

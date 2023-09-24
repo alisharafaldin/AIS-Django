@@ -45,7 +45,7 @@ def new_qayd(request):
   if request.method == 'POST':
     debit  = request.POST['debit']
     credit = request.POST['credit']
-    desQaydDetails = request.POST['desQaydDetails']
+    description = request.POST['description']
     accID = request.POST['accID']
     projectID = request.POST['projectID']
     empID = request.POST['empID']
@@ -53,8 +53,8 @@ def new_qayd(request):
     else: messages.error(request, 'Error in debit')
     if 'credit' in request.POST: credit = request.POST['credit']
     else: messages.error(request, 'Error in credit')
-    if 'desQaydDetails' in request.POST: desQaydDetails = request.POST['desQaydDetails']
-    else: messages.error(request, 'Error in desQaydDetails')
+    if 'description' in request.POST: description = request.POST['description']
+    else: messages.error(request, 'Error in description')
     if 'accID' in request.POST: accID = request.POST['accID']
     else: messages.error(request, 'Error in accID')
     if 'projectID' in request.POST: projectID = request.POST['projectID']
@@ -64,7 +64,7 @@ def new_qayd(request):
     newqayd = QaydForm(request.POST, request.FILES)
     if newqayd.is_valid():
       newqayd.save()
-      newqayd_d = QaydDetails(qaydID=newqayd.instance, debit=debit, credit=credit, desQaydDetails=desQaydDetails, accID_id=accID, projectID_id=projectID, empID_id=empID)
+      newqayd_d = QaydDetails(qaydID=newqayd.instance, debit=debit, credit=credit, description=description, accID_id=accID, projectID_id=projectID, empID_id=empID)
       newqayd_d.save()
       messages.success(request, 'تمت الإضافة بنجاح') 
       return redirect('qayds')

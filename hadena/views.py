@@ -98,7 +98,7 @@ def update(request, id):
     else: messages.error(request, 'Error in marketerID')
     if update_person_form.is_valid():
       update_person_form.save()
-      update_share.marketerID.pk=marketerID 
+      # update_share.marketerID.pk=marketerID 
       messages.success(request, 'تم تحديث البيانات بنجاح')       
       return redirect('shareholders') 
     else:

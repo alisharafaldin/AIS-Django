@@ -3,20 +3,15 @@ from .models import *
 from import_export.admin import ImportExportModelAdmin 
 # Register your models here.
 
-@admin.register(Currency)
-class CurrencyImportExport(ImportExportModelAdmin):
-    pass
-    list_display = ['id','currency_ar','currency_en','currencyCode']
-
 @admin.register(Project)
 class ProjectImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'proName_ar']
+    list_display = ['id', 'name_ar']
 
 @admin.register(SubProject)
 class SubProjectImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'subProName_ar']
+    list_display = ['id', 'name_ar']
 
 @admin.register(CalendarYears)
 class CalendarYearsImportExport(ImportExportModelAdmin):
@@ -49,12 +44,12 @@ class GenderImportExport(ImportExportModelAdmin):
 @admin.register(Cities)
 class CitiesImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'cityName_ar']
+    list_display = ['id', 'name_ar']
 
 @admin.register(Countries)
 class CountriesImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'countryName_ar']
+    list_display = ['id', 'name_ar']
 
 @admin.register(TypeAccBank)
 class TypeAccBankImportExport(ImportExportModelAdmin):
@@ -79,12 +74,12 @@ class LegalPersonalityImportExport(ImportExportModelAdmin):
 @admin.register(Region)
 class RegionImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'RegionName_ar']
+    list_display = ['id', 'name_ar']
 
 @admin.register(States)
 class statesImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'stateName_ar']
+    list_display = ['id', 'name_ar']
 
 @admin.register(SocialStatus)
 class RSocialStatusImportExport(ImportExportModelAdmin):
