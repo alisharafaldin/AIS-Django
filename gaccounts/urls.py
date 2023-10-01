@@ -2,13 +2,14 @@ from django.urls import path
 from . import views
 
 urlpatterns = [  
-    # path('test', views.test, name='test'),
-    path('acc_all', views.acc_add, name='acc_all'),
-    path('acc_update/<int:id>', views.acc_update, name='acc_update'),
-    # path('qayd_add', views.qayd_add, name='qayd_add'),
-    path('new_qayd', views.new_qayd, name='new_qayd'),
+    path('account_new', views.account_new, name='account_new'),
+    path('account_view/<int:id>', views.account_view, name='account_view'),
+    path('account_update/<int:id>', views.account_update, name='account_update'),
+    path('account_delete/<int:id>', views.account_delete, name='account_delete'),
+    path('', views.accounts, name='accounts'),
+    path('qayd_new', views.qayd_new, name='qayd_new'),
+    path('qayd_view/<int:id>', views.qayd_view, name='qayd_view'),
+    path('qayd_update/<int:id>', views.qayd_update, name='qayd_update'),
+    path('qayd_delete/<int:id>', views.qayd_delete, name='qayd_delete'),
     path('qayds', views.qayds, name='qayds'),
-    path('update_qayd/<int:id>', views.update_qayd, name='update_qayd'),
-    path('delete_qayd/<int:id>', views.delete_qayd, name='delete_qayd'),
-    path('view_qayd/<int:id>', views.view_qayd, name='view_qayd'),
 ]

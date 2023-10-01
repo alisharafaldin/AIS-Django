@@ -33,14 +33,6 @@ class GenderImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id', 'gender_ar']
 
-
-
-
-# @admin.register()
-# class ImportExport(ImportExportModelAdmin):
-#     pass
-#     list_display = ['id', '']
-
 @admin.register(Cities)
 class CitiesImportExport(ImportExportModelAdmin):
     pass

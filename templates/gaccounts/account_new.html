@@ -1,0 +1,58 @@
+
+    {% extends 'base.html' %}
+    {% load static %} 
+    {% block title %} | Accounts | New Account {% endblock %}
+    {% block content %}
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="modal-content">
+          <div class="modal-body">
+            {% include 'partials/_alerts.html' %}
+            <!-- Start Modal Countries -->
+            <form method="POST">
+              <div class="form-row main-title">
+                <h5 class="form-group" id="staticBackdropLabel" target="blank">إضافة حساب جديد</h5>
+                <button type="submit" class="btn btn-save" name="btnempsave">إضافة</button>
+                <a href="{% url 'accounts' %}" class="btn btn-close">إلغاء</a>
+              </div>
+              {% csrf_token %}
+              <br/>
+                
+              <div class=" form-row"> 
+                <h6 style="font-weight: bold;" class="col-md-3">إسم الحساب عربي</h6>
+                <div class="form-group col-md-6">{{acc_form.name_ar}}</div>
+              </div>
+              <div class=" form-row"> 
+                <h6 style="font-weight: bold;" class="col-md-3">إسم الحساب إنجليزي</h6>
+                <div class="form-group col-md-6">{{acc_form.name_en}}</div>
+              </div>
+              <div class=" form-row"> 
+                <h6 style="font-weight: bold;" class="col-md-3">رمز الحساب</h6>
+                <div class="form-group col-md-6">{{acc_form.code}}</div>
+              </div>
+              <div class=" form-row"> 
+                <h6 style="font-weight: bold;" class="col-md-3">نوع الحساب</h6>
+                <div class="form-group col-md-6">{{acc_form.typeID}}</div>
+              </div>
+              <div class=" form-row"> 
+                <h6 style="font-weight: bold;" class="col-md-3">طبيعةالحساب</h6>
+                <div class="form-group col-md-6">{{acc_form.natureID}}</div>
+              </div>
+              <div class=" form-row"> 
+                <h6 style="font-weight: bold;" class="col-md-3">تصنيف الحساب</h6>
+                <div class="form-group col-md-6">{{acc_form.categoryID}}</div>
+              </div>
+              <div class=" form-row"> 
+                <h6 style="font-weight: bold;" class="col-md-3">وصف الحساب</h6>
+                <div class="form-group col-md-6">{{acc_form.description}}</div>
+              </div>
+              <div class=" form-row"> 
+                <h6 style="font-weight: bold;" class="col-md-3">إمكانية الدفع و السداد من الحساب</h6>
+                <div class="form-group col-md-6">{{acc_form.is_can_pay}}</div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endblock %}

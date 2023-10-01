@@ -14,8 +14,8 @@ class AccountNatureImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id']
 
-@admin.register(AccountBudget)
-class AccountBudgetImportExport(ImportExportModelAdmin):
+@admin.register(AccountCategory)
+class AccountCategoryImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id']
 

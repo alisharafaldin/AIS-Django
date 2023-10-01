@@ -2,39 +2,39 @@ from django.db import models
 from datetime import date 
 
 class Countries(models.Model):
-    name_ar = models.CharField(verbose_name='إسم الدولة عربي',max_length=50)
-    name_en = models.CharField(verbose_name='إسم الدولة إنجليزي',max_length=50)
-    code = models.CharField(verbose_name='الرمز الموحد',max_length=50)
-    callKey = models.CharField(verbose_name='مفتاح الإتصال',max_length=50)
-    nationality_ar = models.CharField(verbose_name='الجنسية عربي',max_length=50, blank=True, null=True)
-    nationality_en = models.CharField(verbose_name='الجنسية إنجليزي',max_length=50, blank=True, null=True)
-    currency_ar = models.CharField(verbose_name='العملة عربي',max_length=50, blank=True, null=True)
-    currency_en = models.CharField(verbose_name='العملة إنجليزي',max_length=50, blank=True, null=True)
-    fractional_ar = models.CharField(verbose_name='الكسر عربي',max_length=50, blank=True, null=True)
-    fractional_en = models.CharField(verbose_name='الكسر إنجليزي',max_length=50, blank=True, null=True)
-    symbol_ar = models.CharField(verbose_name='الرمز عربي',max_length=50, blank=True, null=True)
-    symbol_en = models.CharField(verbose_name='الرمز إنجليزي',max_length=50, blank=True, null=True)
-    def __str__(self):
-        return str(self.name_ar)
+  name_ar = models.CharField(verbose_name='إسم الدولة عربي',max_length=50)
+  name_en = models.CharField(verbose_name='إسم الدولة إنجليزي',max_length=50)
+  code = models.CharField(verbose_name='الرمز الموحد',max_length=50)
+  callKey = models.CharField(verbose_name='مفتاح الإتصال',max_length=50)
+  nationality_ar = models.CharField(verbose_name='الجنسية عربي',max_length=50, blank=True, null=True)
+  nationality_en = models.CharField(verbose_name='الجنسية إنجليزي',max_length=50, blank=True, null=True)
+  currency_ar = models.CharField(verbose_name='العملة عربي',max_length=50, blank=True, null=True)
+  currency_en = models.CharField(verbose_name='العملة إنجليزي',max_length=50, blank=True, null=True)
+  fractional_ar = models.CharField(verbose_name='الكسر عربي',max_length=50, blank=True, null=True)
+  fractional_en = models.CharField(verbose_name='الكسر إنجليزي',max_length=50, blank=True, null=True)
+  symbol_ar = models.CharField(verbose_name='الرمز عربي',max_length=50, blank=True, null=True)
+  symbol_en = models.CharField(verbose_name='الرمز إنجليزي',max_length=50, blank=True, null=True)
+  def __str__(self):
+      return str(self.name_ar)
     
 class Region(models.Model):
-    countryID = models.ForeignKey(Countries, verbose_name='معرف الدولة',on_delete=models.PROTECT) #لن يتم حزف الصنف في حالة حذف الموظف
-    name_ar = models.CharField(verbose_name='إسم المنطقة عربي',max_length=50, blank=True, null=True)
-    name_en = models.CharField(verbose_name='إسم المنطقة إنجليزي',max_length=50, blank=True, null=True)
-    capitalRegion = models.CharField(verbose_name='عاصمة المنطقة',max_length=50, blank=True, null=True)
-    imageRegion = models.ImageField(verbose_name=' صورة للمنطقة', upload_to='photos/%Y/%m/%d/', null=True, blank=True)
-    def __str__(self):
-        return str(self.name_ar)
+  countryID = models.ForeignKey(Countries, verbose_name='معرف الدولة',on_delete=models.PROTECT) #لن يتم حزف الصنف في حالة حذف الموظف
+  name_ar = models.CharField(verbose_name='إسم المنطقة عربي',max_length=50, blank=True, null=True)
+  name_en = models.CharField(verbose_name='إسم المنطقة إنجليزي',max_length=50, blank=True, null=True)
+  capitalRegion = models.CharField(verbose_name='عاصمة المنطقة',max_length=50, blank=True, null=True)
+  imageRegion = models.ImageField(verbose_name=' صورة للمنطقة', upload_to='photos/%Y/%m/%d/', null=True, blank=True)
+  def __str__(self):
+    return str(self.name_ar)
     
 class States(models.Model):
-    regionID = models.ForeignKey(Region, verbose_name='معرف المنطقة',on_delete=models.PROTECT) #لن يتم حزف الصنف في حالة حذف الموظف
-    name_ar = models.CharField(verbose_name='إسم الولاية عربي',max_length=50, blank=True, null=True)
-    name_en = models.CharField(verbose_name='إسم الولاية إنجليزي',max_length=50, blank=True, null=True)
-    capitalState = models.CharField(verbose_name='عاصمةالولاية',max_length=50, blank=True, null=True)
-    population = models.IntegerField(verbose_name='عدد السكان', blank=True, null=True)
-    def __str__(self):
-        return str(self.name_ar)
-    
+  regionID = models.ForeignKey(Region, verbose_name='معرف المنطقة',on_delete=models.PROTECT) #لن يتم حزف الصنف في حالة حذف الموظف
+  name_ar = models.CharField(verbose_name='إسم الولاية عربي',max_length=50, blank=True, null=True)
+  name_en = models.CharField(verbose_name='إسم الولاية إنجليزي',max_length=50, blank=True, null=True)
+  capitalState = models.CharField(verbose_name='عاصمةالولاية',max_length=50, blank=True, null=True)
+  population = models.IntegerField(verbose_name='عدد السكان', blank=True, null=True)
+  def __str__(self):
+    return str(self.name_ar)
+  
 class Cities(models.Model):
     stateID = models.ForeignKey(States, verbose_name='معرف الولاية',on_delete=models.PROTECT) #لن يتم حزف الصنف في حالة حذف الموظف
     name_ar = models.CharField(verbose_name='إسم المدينة عربي',max_length=50, blank=True, null=True)

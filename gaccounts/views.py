@@ -8,9 +8,7 @@ from . forms import AccountsTreeForm, QaydForm, QaydDetailsForm
 from django.utils import timezone
 from django.forms import modelform_factory
 
-# Create your views here.
-
-def acc_add(request):
+def account_new(request):
     if request.method == 'POST':
         add_acc = AccountsTreeForm(request.POST, request.FILES)
         if add_acc.is_valid():
@@ -18,30 +16,53 @@ def acc_add(request):
             messages.success(request, 'تمت الإضافة بنجاح') 
     context = {
         'acc_form': AccountsTreeForm(),
-        'acc_all':AccountsTree.objects.all(),  
     }    
-    return render(request,'gaccounts/acc_all.html', context)
+    return render(request,'gaccounts/account_new.html', context)
 
-def acc_update(request, id):
+def account_view(request, id):
+    pass
+
+def account_update(request, id):
     if request.user.is_authenticated and not request.user.is_anonymous:
-        acc_id = AccountsTree.objects.get(id=id)
+        account_id = AccountsTree.objects.get(id=id)
         if request.method == 'POST':
-            acc_save = AccountsTreeForm(request.POST, request.FILES, instance=acc_id)
-            if acc_save.is_valid():
-                acc_save.save()
+            account_save = AccountsTreeForm(request.POST, request.FILES, instance=account_id)
+            if account_save.is_valid():
+                account_save.save()
                 messages.success(request, 'تمت تحديث البيانات بنجاح')       
-                return redirect('acc_all')
+                return redirect('account')
         else:
-            acc_save = AccountsTreeForm(instance=acc_id)
+            acc_save = AccountsTreeForm(instance=account_id)
         context = {
-            'acc_form':acc_save,
+            'account_form':account_save,
         }
-        return render(request, 'gaccounts/acc_update.html', context)
+        return render(request, 'gaccounts/account_update.html', context)
     else:
         messages.info(request, 'الرجاء تسجيل الدخول' )
         return redirect('acc_all')
 
-def new_qayd(request):
+def account_delete(request, id):
+    if request.user.is_authenticated and not request.user.is_anonymous:
+      account_id = AccountsTree.objects.get(id=id)
+      if 'btndelete' in request.POST:
+        account_id.delete()
+        messages.info(request, 'تم حذف القيد بنجاح')
+        return redirect('accounts')
+    else:
+        messages.error(request, 'الرجاء تسجيل الدخول أولاً')
+    context = {
+        'account_id':account_id,
+    }
+    return render(request, 'gaccounts/account_delete.html', context)
+
+def accounts(request):
+    context = {
+        'acc_form': AccountsTreeForm(),
+        'accounts':AccountsTree.objects.all(),  
+    }    
+    return render(request,'gaccounts/accounts.html', context)
+
+def qayd_new(request):
   if request.method == 'POST':
     debit  = request.POST['debit']
     credit = request.POST['credit']
@@ -75,12 +96,12 @@ def new_qayd(request):
       'qayd_form': QaydForm(),
       'qayd_details_form': QaydDetailsForm(),
   }    
-  return render(request,'gaccounts/new_qayd.html', context)
+  return render(request,'gaccounts/qayd_new.html', context)
 
-def view_qayd(request, qayd_id):
+def qayd_view(request, id):
     return redirect('qayd_print')
 
-def update_qayd(request, id):
+def qayd_update(request, id):
   if request.user.is_authenticated and not request.user.is_anonymous:
     qayd_id = Qayd.objects.get(id=id)
     qayd_form = QaydForm(request.POST, request.FILES, instance=qayd_id)
@@ -123,12 +144,12 @@ def update_qayd(request, id):
         'qayd_details_form':qayd_details_form,
         'calc':calc,
     }
-    return render(request, 'gaccounts/update_qayd.html', context)
+    return render(request, 'gaccounts/qayd_update.html', context)
   else:
     messages.info(request, 'الرجاء تسجيل الدخول')
     return redirect('signin')
     
-def delete_qayd(request, id):
+def qayd_delete(request, id):
     if request.user.is_authenticated and not request.user.is_anonymous:
       qayd_id = Qayd.objects.get(id=id)
       if 'btndelete' in request.POST:
@@ -153,7 +174,7 @@ def delete_qayd(request, id):
         # 'total_c':total_c,
         'calc':calc,
     }
-    return render(request, 'gaccounts/delete_qayd.html', context)
+    return render(request, 'gaccounts/qayd_delete.html', context)
 
 def qayds(request):    
     context = {

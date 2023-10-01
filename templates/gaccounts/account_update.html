@@ -6,7 +6,7 @@ Update{% endblock %} {% block content %}
     <br />
     <form method="POST">
       <button type="submit" class="btn btn-save">حفظ التعديل</button>
-      <a href="{% url 'acc_all' %}" class="btn btn-close">إلغاء</a>
+      <a href="{% url 'accounts' %}" class="btn btn-close">إلغاء</a>
       <br />
       <br />
       {% csrf_token %} {% include 'partials/_alerts.html' %}

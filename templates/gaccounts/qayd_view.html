@@ -2,43 +2,13 @@
 {% endblock %} {% block content %}
 <div class="content-wrapper">
   <h4 class="main-title">طياعة القيد رقم : ( {{qayd_id.id}} )</h4>
-  <!-- {% for qdf in qayd_id_details %}
-    <h4 class="main-title">تفاصيل القيد  : ( {{qdf}} )</h4>
-  {% endfor %} -->
-
   <div class="content">
     <br />
     <form method="POST" >
       {% csrf_token %} 
       {% include 'partials/_alerts.html' %}
       <button type="submit" name="btnsave" class="btn btn-save">طباعة PDF</button>
-      <a href="{% url 'qayd_all' %}" class="btn btn-close">إلغاء</a>
-      <div class="form-row">
-        <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
-          <div class="form-row">
-            <h6 style="font-weight: bold" class="col-md-3">المستخدم</h6>
-            <div class="form-group col-md-6">{{qayd_form.userID}}</div>
-          </div>
-          <div class="form-row">
-            <h6 style="font-weight: bold" class="col-md-3">التاريخ</h6>
-            <div class="form-group col-md-6">{{qayd_form.dateQayd}}</div>
-          </div>
-          <div class="form-row">
-            <h6 style="font-weight: bold" class="col-md-3">العملة</h6>
-            <div class="form-group col-md-6">{{qayd_form.currencyID}}</div>
-          </div>
-        </div>
-        <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
-          <div class="form-row">
-            <h6 style="font-weight: bold" class="col-md-3">الوصف</h6>
-            <div class="form-group col-md-6">{{qayd_form.desQayd}}</div>
-          </div>
-          <div class="form-row">
-            <h6 style="font-weight: bold" class="col-md-3">المرفقات</h6>
-            <div class="form-group col-md-6">{{qayd_form.attachments}}</div>
-          </div>
-        </div>
-      </div>
+      <a href="{% url 'qayds' %}" class="btn btn-close">إلغاء</a>
       <table class="table table-hover">
         <thead>
           <tr>
