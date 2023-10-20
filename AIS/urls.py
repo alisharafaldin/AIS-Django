@@ -10,9 +10,11 @@ urlpatterns = [
     path('basicinfo/',include('basicinfo.urls')),
     path('hadena/',include('hadena.urls')),
     path('forex/',include('forex.urls')),
-    path('gaccounts/',include('gaccounts.urls')),
+    path('profiles/',include('profiles.urls')),
     path('accounts/',include('accounts.urls')),
     path('products/',include('products.urls')),
     path('orders/',include('orders.urls')),
     path('employees/',include('employees.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] 
+if settings.DEBUG:
+  urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

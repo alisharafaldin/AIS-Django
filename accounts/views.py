@@ -1,212 +1,175 @@
-from django.shortcuts import render , redirect
+
+from django.shortcuts import render , redirect, HttpResponse
 from django.contrib import messages
-from django.contrib.auth.models import User
-from django.contrib import auth
-from .models import UserProfile
-from products.models import Product 
-from employees.models import EmpInfo 
-import re
-# Create your views here.
-def signin(request):
+from django.views.generic import CreateView
+from . models import AccountsTree , Qayd ,QaydDetails
+from employees.models import EmpInfo
+from . forms import AccountsTreeForm, QaydForm, QaydDetailsForm
+from django.utils import timezone
+from django.forms import modelform_factory
+
+def account_new(request):
+    if request.method == 'POST':
+        add_acc = AccountsTreeForm(request.POST, request.FILES)
+        if add_acc.is_valid():
+            add_acc.save()
+            messages.success(request, 'تمت الإضافة بنجاح') 
     context = {
-        'emp_count': EmpInfo.objects.all(),
-    }   
-    if request.method == 'POST' and 'btnlogin' in request.POST:
-        username = request.POST['user']
-        password = request.POST['pass']
-        user = auth.authenticate(username=username, password=password)
-        if user is not None:
-            if 'rememberme' not in request.POST:
-                request.session.set_expiry(0)
-            auth.login(request, user)
-            # messages.success(request, 'You are now logged in')
-        else:
-            messages.error(request, 'Username or Password in valid')    
-        return render(request , 'pages/index.html', context)
-    else:
-        return render(request , 'accounts/signin.html', context)
-        # return redirect('signin')
+        'acc_form': AccountsTreeForm(),
+    }    
+    return render(request,'accounts/account_new.html', context)
 
-def logout(request):
-    if request.user.is_authenticated:
-        auth.logout(request)
+def account_view(request, id):
+    pass
+
+def account_update(request, id):
+    if request.user.is_authenticated and not request.user.is_anonymous:
+        account_id = AccountsTree.objects.get(id=id)
+        if request.method == 'POST':
+            account_save = AccountsTreeForm(request.POST, request.FILES, instance=account_id)
+            if account_save.is_valid():
+                account_save.save()
+                messages.success(request, 'تمت تحديث البيانات بنجاح')       
+                return redirect('account')
+        else:
+            account_save = AccountsTreeForm(instance=account_id)
+        context = {
+            'account_form':account_save,
+        }
+        return render(request, 'accounts/account_update.html', context)
+    else:
+        messages.info(request, 'الرجاء تسجيل الدخول' )
+        return redirect('acc_all')
+
+def account_delete(request, id):
+    if request.user.is_authenticated and not request.user.is_anonymous:
+      account_id = AccountsTree.objects.get(id=id)
+      if 'btndelete' in request.POST:
+        account_id.delete()
+        messages.info(request, 'تم حذف القيد بنجاح')
+        return redirect('accounts')
+    else:
+        messages.error(request, 'الرجاء تسجيل الدخول أولاً')
+    context = {
+        'account_id':account_id,
+    }
+    return render(request, 'accounts/account_delete.html', context)
+
+def accounts(request):
+    context = {
+        'acc_form': AccountsTreeForm(),
+        'accounts':AccountsTree.objects.all(),  
+    }    
+    return render(request,'accounts/accounts.html', context)
+
+def qayd_new(request):
+  if request.method == 'POST':
+    debit  = request.POST['debit']
+    credit = request.POST['credit']
+    description = request.POST['description']
+    accID = request.POST['accID']
+    projectID = request.POST['projectID']
+    empID = request.POST['empID']
+    if 'debit' in request.POST: debit = request.POST['debit']
+    else: messages.error(request, 'Error in debit')
+    if 'credit' in request.POST: credit = request.POST['credit']
+    else: messages.error(request, 'Error in credit')
+    if 'description' in request.POST: description = request.POST['description']
+    else: messages.error(request, 'Error in description')
+    if 'accID' in request.POST: accID = request.POST['accID']
+    else: messages.error(request, 'Error in accID')
+    if 'projectID' in request.POST: projectID = request.POST['projectID']
+    else: messages.error(request, 'Error in ')
+    if 'empID' in request.POST: empID = request.POST['empID']
+    else: messages.error(request, 'Error in empID')
+    newqayd = QaydForm(request.POST, request.FILES)
+    if newqayd.is_valid():
+      newqayd.save()
+      newqayd_d = QaydDetails(qaydID=newqayd.instance, debit=debit, credit=credit, description=description, accID_id=accID, projectID_id=projectID, empID_id=empID)
+      newqayd_d.save()
+      messages.success(request, 'تمت الإضافة بنجاح') 
+      return redirect('qayds')
+    else :      
+      messages.error(request, 'خطأ في البيانات') 
+  context = {
+      'all_qayd': Qayd.objects.all(),
+      'qayd_form': QaydForm(),
+      'qayd_details_form': QaydDetailsForm(),
+  }    
+  return render(request,'accounts/qayd_new.html', context)
+
+def qayd_view(request, id):
+    return redirect('qayd_print')
+
+def qayd_update(request, id):
+  if request.user.is_authenticated and not request.user.is_anonymous:
+    qayd_id = Qayd.objects.get(id=id)
+    qayd_form = QaydForm(request.POST, request.FILES, instance=qayd_id)
+    qayd_id_details = QaydDetails.objects.filter(qaydID=id)
+    qayd_details_form = QaydDetailsForm(request.POST, request.FILES, instance=qayd_id)
+    if 'btnsave' in request.POST:
+      if request.method == 'POST':
+        qayd_id.userID = request.user
+        qayd_id.dateQayd = request.POST['dateQayd']
+        qayd_id.desQayd = request.POST['desQayd']
+        qayd_id.currencyID_id = request.POST['currencyID']
+        qayd_id.attachments = request.POST['attachments']  
+        qayd_id.save()
+        messages.success(request, 'تم تحديث القيد بنجاح')
+        return redirect('qayds')
+      else:
+        messages.error(request, 'خطأ في البيانات')   
+    qayd_form = QaydForm(instance=qayd_id)
+    class calc:
+      qdd = QaydDetails.objects.filter(qaydID=id)
+      total_d = 0
+      total_c = 0
+      other = 0
+      for td in qdd:
+        total_d += td.debit 
+        total_c += td.credit 
+        other = total_d - total_c
+    context = {
+        'qayd_id':qayd_id,
+        'qayd_form':qayd_form,
+        'qayd_id_details':qayd_id_details,
+        'qayd_details_form':qayd_details_form,
+        'calc':calc,
+    }
+    return render(request, 'accounts/qayd_update.html', context)
+  else:
+    messages.info(request, 'الرجاء تسجيل الدخول')
     return redirect('signin')
-
-def singup(request):
-    # في حال أن الرابط بوست وتم الضغط على زر حفظ
-    if request.method == 'POST' and 'btnsignup' in request.POST:
-        #variables for fildes
-        fname = None
-        lname = None
-        address = None
-        address2 = None
-        city = None
-        state = None
-        zip_number = None
-        email = None
-        username = None
-        password = None
-        terms = None
-        is_added = None
-        #Get Values from the form
-        if 'lname' in request.POST: lname = request.POST['lname']
-        else: messages.error(request, 'Error in last name')
-        if 'address' in request.POST: address = request.POST['address']
-        else: messages.error(request, 'Error in Address')
-        if 'address2' in request.POST: address2 = request.POST['address2']
-        else: messages.error(request, 'Error in Address 2')
-        if 'city' in request.POST: city = request.POST['city']
-        else: messages.error(request, 'Error in City')
-        if 'state' in request.POST: state = request.POST['state']
-        else: messages.error(request, 'Error in State')
-        if 'zip' in request.POST: zip_number = request.POST['zip']
-        else: messages.error(request, 'Error in Zip')
-        if 'email' in request.POST: email = request.POST['email']
-        else: messages.error(request, 'Error in Emila')
-        if 'user' in request.POST: username = request.POST['user']
-        else: messages.error(request, 'Error in username')
-        if 'pass' in request.POST: password = request.POST['pass']
-        else: messages.error(request, 'Error in password')
-        if 'terms' in request.POST: terms = request.POST['terms']
-        
-        #Check the Values
-        if fname and lname and address and address2 and city and state and zip_number and email and username and password: 
-            if terms == 'on':
-                #Check if username is taken
-                if User.objects.filter(username=username).exists():
-                    messages.error(request, 'This username is taken')
-                else:
-                    #Check if email is taken
-                    if User.objects.filter(email=email).exists():
-                        messages.error(request, 'This Email is taken')
-                    else:
-                       patt = "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" 
-                       if re.match(patt, email):
-                            #add user
-                            user = User.objects.create_user(
-                                first_name=fname,
-                                last_name=lname,
-                                email=email, 
-                                username=username, 
-                                password=password)
-                            user.save()
-                            #add user profile
-                            userprofile = UserProfile(
-                                user=user,
-                                address=address,
-                                address2=address2,
-                                city=city,
-                                state=state,
-                                zip_number=zip_number)
-                            userprofile.save()
-                            #Clear fields
-                            fname = ''
-                            lname = ''
-                            address = ''
-                            address2 = ''
-                            city = ''
-                            state = ''
-                            zip_number = ''
-                            email = ''
-                            username = ''
-                            password = ''
-                            terms = None
-                            #Success Message
-                            messages.success(request, 'Your Account is Created')
-                            is_added = True
-                       else:
-                        messages.error(request, 'Invalid Email')
-            else:
-                messages.error(request, 'you must agree to the terms')
-        else:
-            messages.error(request, 'Check Empty Fieldes')
-        return render(request , 'accounts/signup.html', {
-            'fname' : fname,
-            'lname':   lname,
-            'address':  address,
-            'address2': address2,
-            'city': city,
-            'state': state,
-            'zip': zip_number,
-            'email': email,
-            'user': username,
-            'pass': password,
-            'is_added':is_added,
-        })
-    else:
-        return render(request , 'accounts/signup.html')
-
-def profile(request):
-    # تعديل الملف الشخصي
-    if request.method == 'POST' and 'btnsave' in request.POST:
-        # في حال التحقق من وجود مستخدم ولديه أي دي
-        if request.user is not None and request.user.id != None:
-            userprofile = UserProfile.objects.get(user=request.user)
-            # في حال وجود بيانات في الصفحة
-            if request.POST['fname'] and request.POST['lname'] and request.POST['address'] and request.POST['address2'] and request.POST['city'] and request.POST['state'] and request.POST['zip'] and request.POST['email'] and request.POST['user'] and request.POST['pass']:
-                request.user.firest_name = request.POST['fname']
-                request.user.last_name = request.POST['lname']
-                userprofile.address = request.POST['address']
-                userprofile.address2 = request.POST['address2']
-                userprofile.city = request.POST['city']
-                userprofile.state = request.POST['state']
-                userprofile.zip_number = request.POST['zip']
-                # request.user.email = request.POST['email']
-                # request.user.username = request.POST['user']
-                # في حال أن الباسوورد يبدأ بـ 'pbkdf2_sha256$'
-                if not request.POST['pass'].startswith('pbkdf2_sha256$'):
-                    request.user.set_password(request.POST['pass'])
-                request.user.save()
-                userprofile.save()
-                # auth.login(request, request.user)
-                messages.success(request, 'تم تحديث البيانات بنجاح')
-            else:
-                messages.error(request, 'Check your values and elements')
-        return redirect('profile')
-    else:
-        # في حال وجود مستخدم
-        if request.user is not None:
-            context = None
-            # في حال أن المستخدم ليس مجهول
-            if not request.user.is_anonymous:
-                userprofile = UserProfile.objects.get(user=request.user)
-                context = {
-                    'fname':request.user.first_name,
-                    'lname':request.user.last_name,
-                    'address':userprofile.address,
-                    'address2':userprofile.address2,
-                    'city':userprofile.city,
-                    'state':userprofile.state,
-                    'zip':userprofile.zip_number,
-                    'email':request.user.email,
-                    'user':request.user.username,
-                    'pass':request.user.password
-                }
-            return render(request , 'accounts/profile.html', context)
-        else:
-            return redirect('profile')
-
-def pro_fav(request, pro_id):
-    # في حال تم تسجيل الدخول ولا يوجد مستخدم مجهول
-    if request.user.is_authenticated and not request.user.is_anonymous:
-        pro_fav = Product.objects.get(pk=pro_id)
-        # للتحقق أن المنتج لم يتم إضافته في المفضلة من قبل نفس المستخدم
-        if UserProfile.objects.filter(user=request.user ,Product_favorites=pro_fav).exists():
-            messages.info(request, 'Already Product in the favorite list')
-            messages.info(request, 'المنتج بالفعل في قائمة المفضلة')
-        else:
-            userprofile = UserProfile.objects.get(user=request.user)
-            userprofile.Product_favorites.add(pro_fav)
-            messages.success(request, 'Product has been favorited')
-    else:
-        messages.info(request, 'لإضافة المنتج في المفضلة يجب تسجيل الدخول أولاً')
-    return redirect('/products/' + str(pro_id))
     
-def show_pro_fav(request):
-    context = None
-    # في حال تم تسجيل الدخول ولا يوجد مستخدم مجهول
+def qayd_delete(request, id):
     if request.user.is_authenticated and not request.user.is_anonymous:
-        userInfo = UserProfile.objects.get(user=request.user)
-        pro = userInfo.Product_favorites.all()
-        context = { 'products':pro }
-    return render(request, 'products/products.html', context)
+      qayd_id = Qayd.objects.get(id=id)
+      if 'btndelete' in request.POST:
+        qayd_id.delete()
+        messages.info(request, 'تم حذف القيد بنجاح')
+        return redirect('qayd_all')
+    else:
+        messages.error(request, 'الرجاء تسجيل الدخول أولاً')
+    qayd_id_details = QaydDetails.objects.filter(qaydID=id)
+    class calc:
+      total_d = 0
+      total_c = 0
+      other = 0
+      for td in qayd_id_details:
+        total_d += td.debit 
+        total_c += td.credit 
+        other = total_d - total_c
+    context = {
+        'qayd_id':qayd_id,
+        'qayd_id_details':qayd_id_details,
+        # 'total_d':total_d,
+        # 'total_c':total_c,
+        'calc':calc,
+    }
+    return render(request, 'accounts/qayd_delete.html', context)
+
+def qayds(request):    
+    context = {
+        'qayds':Qayd.objects.all(),
+    }
+    return render(request,'accounts/qayds.html', context)

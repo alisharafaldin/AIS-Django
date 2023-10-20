@@ -80,17 +80,17 @@ def shareholder_new(request):
   }
   return render(request , 'hadena/shareholder_new.html', context)
 
-def view(request, id):
+def shareholder_view(request, id):
     shareholder_view = ShareholdersInfo.objects.get(id=id)
     context = {
         'shareholder_view':shareholder_view,
     }
     return render(request , 'hadena/shareholder_view.html', context)
 
-def update(request, id):
-  update_share = ShareholdersInfo.objects.get(id=id)
-  update_person = Person.objects.get(id=update_share.personID_id)
-  update_share_form = ShareholderForm(instance=update_share)
+def shareholder_update(request, id):
+  shareholder_update = ShareholdersInfo.objects.get(id=id)
+  update_person = Person.objects.get(id=shareholder_update.personID_id)
+  update_share_form = ShareholderForm(instance=shareholder_update)
   update_person_form = PersonForm(request.POST, request.FILES, instance=update_person)
   if request.method == 'POST':
     marketerID = None
@@ -103,18 +103,17 @@ def update(request, id):
       return redirect('shareholders') 
     else:
       messages.error(request, 'خطأ في تحديث البيانات بنجاح')       
-      return redirect('update_share') 
+      return redirect('shareholder_update') 
   update_person_form = PersonForm(instance=update_person)
   context = {
-    'update_share':update_share,
-    'update_share_form':update_share_form,
-    'update_person':update_person,
-    'update_person_form':update_person_form,
+    'shareholder_update': shareholder_update,
+    'share_form': update_share_form,
+    'person_form': update_person_form,
   }
   return render(request, 'hadena/shareholder_update.html', context)
   # return redirect('shareholders/contract/' + str(contract_id), context)
 
-def delete(request, id):
+def shareholder_delete(request, id):
   if request.user.is_authenticated and not request.user.is_anonymous:
     delete_share = ShareholdersInfo.objects.get(id=id)
     if request.method == 'POST':
@@ -125,7 +124,7 @@ def delete(request, id):
       messages.error(request, 'خطأ في البيانات بنجاح')       
       return redirect('delete_share')
   context = {
-      'delete_share':delete_share,
+      'person_form':delete_share,
   }
   return render(request, 'hadena/shareholder_delete.html', context)
   # return redirect('shareholders') 
@@ -143,7 +142,7 @@ def contract_new(request):
   context = {
     'contract_form': ContractsForm(),
   }
-  return render(request, 'hadena/contract_new.html', context)
+  return render(request, 'hadena/contracts.html', context)
 
 def contract_view(request, id):
     contract_view = Contracts.objects.get(id=id)

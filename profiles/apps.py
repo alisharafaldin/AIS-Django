@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class GaccountsConfig(AppConfig):
+class ProfilesConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'gaccounts'
+    name = 'profiles'

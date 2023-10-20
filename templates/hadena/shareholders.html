@@ -64,9 +64,9 @@
             {% endif %}
           </td>
           <td>
-            <a href="{% url 'update' shareholder.id %}" class="btn-link"><i class="fas fa-edit"></i></a>
-            <a href="{% url 'view' shareholder.id %}" class="btn-link"><i class="fa fa-print"></i></a>
-            <a href="{% url 'delete' shareholder.id %}" class="btn-link"><i class="fa fa-trash"></i></a>
+            <a href="{% url 'shareholder_update' shareholder.id %}" class="btn-link"><i class="fas fa-edit"></i></a>
+            <a href="{% url 'shareholder_view' shareholder.id %}" class="btn-link"><i class="fa fa-print"></i></a>
+            <a href="{% url 'shareholder_delete' shareholder.id %}" class="btn-link"><i class="fa fa-trash"></i></a>
           </td>
         </tr>
         {% endfor %}

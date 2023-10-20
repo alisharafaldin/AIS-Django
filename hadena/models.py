@@ -3,7 +3,7 @@ from django.db import models
 from datetime import date 
 from employees.models import EmpInfo
 from basicinfo.models import Countries, Region, States, Cities, Person
-from gaccounts.models import Qayd
+from accounts.models import Qayd
 
 class Cycle(models.Model):
   cycle_ar = models.CharField(verbose_name='الدورة عربي',max_length=100)
@@ -38,8 +38,9 @@ class Contracts(models.Model):
   amountOfShare = models.IntegerField(verbose_name='سعر السهم', default=1200000)
   profitRate = models.IntegerField(verbose_name='معدل الربح', default=8)
   dateOfDividend = models.DateField(verbose_name='تاريخ توزيع الأرباح', blank=True, null=True)
-  witnes1ID = models.ForeignKey(EmpInfo ,related_name='witnes1ID', verbose_name='الشاهد الأول',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الموظف في حالة حذف المسوق
-  witnes2ID = models.ForeignKey(EmpInfo ,related_name='witnes2ID', verbose_name='الشاهد الثاني',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الموظف في حالة حذف المسوق
+  witnes1ID = models.ForeignKey(EmpInfo, related_name='witnes1ID', verbose_name='الشاهد الأول',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الموظف في حالة حذف المسوق
+  witnes2ID = models.ForeignKey(EmpInfo, related_name='witnes2ID', verbose_name='الشاهد الثاني',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الموظف في حالة حذف المسوق
+  notes = models.TextField(verbose_name='ملاحظات', blank=True, null=True)
   def __str__(self):
     return str(self.shareholdersID)
   

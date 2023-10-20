@@ -2,6 +2,16 @@
 {% load static %} 
 {% block title %} | Hadina | New Shareholder {% endblock %}
 {% block content %}
+<style>
+  .title-label {
+        background:#ececec;
+        color: rgb(88, 88, 88);
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+</style>
 <div class="content-wrapper">
   <div class="content">
     <div class="modal-content">
@@ -16,72 +26,99 @@
           </div>
           {% csrf_token %}
           <br/>
-          <h6 style="font-weight: bold">الإسم الكامل - عربي</h6>
           <div class="form-row">
-            <div class="form-group col-md-3">{{person_form.f_Name_ar}}</div>
+            <label class="form-group col-md-1 title-label">الإسم عربي</label>
+            <div class="form-group col-md-2">{{person_form.f_Name_ar}}</div>
             <div class="form-group col-md-3">{{person_form.s_Name_ar}}</div>
             <div class="form-group col-md-3">{{person_form.t_Name_ar}}</div>
             <div class="form-group col-md-3">{{person_form.fo_Name_ar}}</div>
           </div>
-          <h6 style="font-weight: bold">الإسم الكامل - إنجليزي</h6>
           <div class="form-row">
-            <div class="form-group col-md-3">{{person_form.f_Name_en}}</div>
+            <label class="form-group col-md-1 title-label">الإسم إنجليزي</label>
+            <div class="form-group col-md-2">{{person_form.f_Name_en}}</div>
             <div class="form-group col-md-3">{{person_form.s_Name_en}}</div>
             <div class="form-group col-md-3">{{person_form.t_Name_en}}</div>
             <div class="form-group col-md-3">{{person_form.fo_Name_en}}</div>
           </div>
           <!-- تاريخ الميلا - الجنس - الجنسية - الحالة الإجتماعية -->
           <div class="form-row">
-            <div class="form-group col-md-3">{{person_form.dateOfBirth}}</div>
-            <div class="form-group col-md-3">{{person_form.genderID}}</div>
-            <div class="form-group col-md-3">{{person_form.nationalityID}}</div>
-            <div class="form-group col-md-3">{{person_form.socialStatusID}}</div>
-          </div>
-          <!--  نوع الهوية - رقم الهوية - تاريخ إنتهاء الهوية  -->
-          <div class="form-row">
-            <div class="form-group col-md-3">{{person_form.typeID}}</div>
-            <div class="form-group col-md-3">{{person_form.id_number}}</div>
-            <div class="form-group col-md-3">{{person_form.id_ExpiredDate}}</div>
+            <label class="form-group col-md-1 title-label">تاريخ الميلاد</label>
+            <div class="form-group col-md-2">{{person_form.dateOfBirth}}</div>
+            <label class="form-group col-md-1 title-label">الجنس</label>
+            <div class="form-group col-md-2">{{person_form.genderID}}</div>
+            <label class="form-group col-md-1 title-label">الجنسية</label>
+            <div class="form-group col-md-2">{{person_form.nationalityID}}</div>
+            <label class="form-group col-md-1 title-label">الحالة الإجتماعية</label>
+            <div class="form-group col-md-2">{{person_form.socialStatusID}}</div>
           </div>
           <!--  الدولة - الولاية - المدية -  وصف العنوان -->
           <div class="form-row">
-            <div class="form-group col-md-3">{{person_form.countryID}}</div>
-            <div class="form-group col-md-3">{{person_form.regionID}}</div>
-            <div class="form-group col-md-3">{{person_form.stateID}}</div>
-            <div class="form-group col-md-3">{{person_form.cityID}}</div>
+            <label class="form-group col-md-1 title-label">الدولة</label>
+            <div class="form-group col-md-2">{{person_form.countryID}}</div>
+            <label class="form-group col-md-1 title-label">المنطقة</label>
+            <div class="form-group col-md-2">{{person_form.regionID}}</div>
+            <label class="form-group col-md-1 title-label">الولاية</label>
+            <div class="form-group col-md-2">{{person_form.stateID}}</div>
+            <label class="form-group col-md-1 title-label">المدينة</label>
+            <div class="form-group col-md-2">{{person_form.cityID}}</div>
           </div>
           <div class="form-row">
-            <div class="form-group col-md-12">{{person_form.desAddress}}</div>
           </div>
           <!-- المهنة - التخصص - المسوق -->
           <div class="form-row">
+            <label class="form-group col-md-1 title-label">المهنة</label>
             <div class="form-group col-md-3">{{person_form.workTradeID}}</div>
+            <label class="form-group col-md-1 title-label">التخصص</label>
             <div class="form-group col-md-3">{{person_form.workSpecialtyID}}</div>
-            <div class="form-group col-md-3">{{share_form.marketerID}}</div>
+            <label class="form-group col-md-1 title-label">عنوان المنزل</label>
+            <div class="form-group col-md-3">{{person_form.desAddress}}</div>
+          </div>
+          <!--  نوع الهوية - رقم الهوية - تاريخ إنتهاء الهوية  -->
+          <div class="form-row">
+            <label class="form-group col-md-1 title-label">نوع الهوية</label>
+            <div class="form-group col-md-2">{{person_form.typeID}}</div>
+            <label class="form-group col-md-1 title-label">رقم الهوية</label>
+            <div class="form-group col-md-2">{{person_form.id_number}}</div>
+            <label class="form-group col-md-1 title-label">تاريخ الإنتهاء</label>
+            <div class="form-group col-md-2">{{person_form.id_ExpiredDate}}</div>
+            <label class="form-group col-md-1 title-label">المشرف</label>
+            <div class="form-group col-md-2">{{share_form.marketerID}}</div>
           </div>
           <!--البريد الإلكتروني - رقم الجوال - رقم جوال آخر -->
-          <h4>معلومات الإتصال</h4>
+          <br>
           <div class="form-row">
+            <label class="form-group col-md-1 title-label">رقم الجوال</label>
             <div class="form-group col-md-3">{{person_form.mobileNumber}}</div>
+            <label class="form-group col-md-1 title-label">جوال آخر</label>
             <div class="form-group col-md-3">{{person_form.mobileNumberAnother}}</div>
-            <div class="form-group col-md-6">{{person_form.email}}</div>
+            <label class="form-group col-md-1 title-label">البريد الإلكتروني</label>
+            <div class="form-group col-md-3">{{person_form.email}}</div>
           </div>
-          <h4>معلومات تحويل الأرباح</h4>
+          <br>
           <!-- البنك - الفرع - نوع الحساب - رقم الحساب - رقم الأيبان ر -->
           <div class="form-row">
-            <div class="form-group col-md-4">{{person_form.bankID}}</div>
-            <div class="form-group col-md-4">{{person_form.branchBankID}}</div>
-            <div class="form-group col-md-4">{{person_form.typeAccBankID}}</div>
+            <label class="form-group col-md-1 title-label">البنك</label>
+            <div class="form-group col-md-3">{{person_form.bankID}}</div>
+            <label class="form-group col-md-1 title-label">الفرع</label>
+            <div class="form-group col-md-3">{{person_form.branchBankID}}</div>
+            <label class="form-group col-md-1 title-label">نوع الحساب</label>
+            <div class="form-group col-md-3">{{person_form.typeAccBankID}}</div>
           </div>
           <div class="form-row">
-            <div class="form-group col-md-6">{{person_form.accountNumber}}</div>
+            <label class="form-group col-md-1 title-label">رقم الحساب</label>
+            <div class="form-group col-md-4">{{person_form.accountNumber}}</div>
+            <label class="form-group col-md-1 title-label">رقم الآي بان</label>
             <div class="form-group col-md-6">{{person_form.IBANNumber}}</div>
           </div>
+          <br>
           <!-- صورة الموظف - رابط المستندات - ملاحظات -->
           <div class="form-row">
-            <div class="form-group col-md-4">{{person_form.photo}}</div>
-            <div class="form-group col-md-4">{{person_form.attachments}}</div>
-            <div class="form-group col-md-4">{{person_form.notes}}</div>
+            <label class="form-group col-md-1 title-label">صورة شخصية</label>
+            <div class="form-group col-md-3">{{person_form.photo}}</div>
+            <label class="form-group col-md-1 title-label">مرفقات</label>
+            <div class="form-group col-md-3">{{person_form.attachments}}</div>
+            <label class="form-group col-md-1 title-label">ملاحظات</label>
+            <div class="form-group col-md-3">{{person_form.notes}}</div>
           </div>
         </form>
       </div>
