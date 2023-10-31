@@ -1,12 +1,12 @@
-{% extends 'base.html' %} {% load static %} {% block title %} | View Shareholders  ( {{shareholder_view.id}} ) {% endblock %} {% block content %}
+{% extends 'base.html' %} {% load static %} {% block title %} | Reade Employee  ( {{employee_reade.id}} ) {% endblock %} {% block content %}
 <div class="content-wrapper">
-  <h4 class="main-title">بطاقة تعريف المساهم : {{shareholder_view.personID.f_Name_ar}} {{shareholder_view.personID.s_Name_ar}} {{shareholder_view.personID.t_Name_ar}}
-    {{shareholder_view.personID.fo_Name_ar}}</h4>
+  <h4 class="main-title">بطاقة تعريف الموظف : {{employee_reade.personID.f_Name_ar}} {{employee_reade.personID.s_Name_ar}} {{employee_reade.personID.t_Name_ar}}
+    {{employee_reade.personID.fo_Name_ar}}</h4>
  <div class="content">
   <br />
   <!-- <a href="{% url 'index' %}" class="btn btn-warning">الرئيسة</a> -->
-  <a href="{% url 'shareholders' %}" class="btn btn-main">جميع الموظفين</a>
-  <a href="{% url 'update' shareholder_view.id %}" class="btn btn-main">تعديل</a>
+  <a href="{% url 'employees' %}" class="btn btn-main">جميع الموظفين</a>
+  <a href="{% url 'employee_update' employee_reade.id %}" class="btn btn-main">تعديل</a>
   {% include 'partials/_alerts.html' %}
   <div class="">
     <br />
@@ -25,27 +25,27 @@
           <div class="form-row">
             <label class="sub-title">ID : </label>
             <p class="card-title sub-title-content" style="width: auto">
-              {{shareholder_view.id}}
+              {{employee_reade.id}}
             </p>
           </div>
           <div class="form-row">
             <label class="sub-title">الإسم عربي : </label>
             <p class="card-title sub-title-content" style="width: auto">
-              {{shareholder_view.personID.f_Name_ar}} {{shareholder_view.personID.s_Name_ar}} {{shareholder_view.personID.t_Name_ar}}
-              {{shareholder_view.personID.fo_Name_ar}}
+              {{employee_reade.personID.f_Name_ar}} {{employee_reade.personID.s_Name_ar}} {{employee_reade.personID.t_Name_ar}}
+              {{employee_reade.personID.fo_Name_ar}}
             </p>
           </div>
           <div class="form-row">
             <label class="sub-title">الإسم إنجليزي : </label>
             <p class="card-title sub-title-content" style="width: auto">
-              {{shareholder_view.personID.f_Name_en|lower|capfirst }} {{shareholder_view.personID.s_Name_en|lower|capfirst }} {{shareholder_view.personID.t_Name_en|lower|capfirst }}
-              {{shareholder_view.personID.fo_Name_en|lower|capfirst }}
+              {{employee_reade.personID.f_Name_en|lower|capfirst }} {{employee_reade.personID.s_Name_en|lower|capfirst }} {{employee_reade.personID.t_Name_en|lower|capfirst }}
+              {{employee_reade.personID.fo_Name_en|lower|capfirst }}
             </p>
           </div>
           <div class="form-row">
             <label class="sub-title">تاريخ الميلاد : </label>
             <p class="card-title sub-title-content" style="width: auto">
-              {{shareholder_view.personID.dateOfBirth}}
+              {{employee_reade.personID.dateOfBirth}}
             </p>
             <label class="sub-title">العمر : </label>
             <p class="card-title sub-title-content" style="width: auto">
@@ -53,33 +53,33 @@
             </p>
             <label class="sub-title">الجنس : </label>
             <p class="card-title sub-title-content" style="width: auto">
-              {{shareholder_view.personID.genderID}}
+              {{employee_reade.personID.genderID}}
             </p>
           </div>
           <div class="form-row">
             <label class="sub-title">الجنسية :</label>
             <p class="card-title sub-title-content" style="width: auto">
-              {{shareholder_view.personID.nationalityID}}
+              {{employee_reade.personID.nationalityID}}
             </p>
             <label class="sub-title">الحالة الإجتماعية : </label>
             <p class="card-title sub-title-content" style="width: auto">
-              {{shareholder_view.personID.socialStatusID}}
+              {{employee_reade.personID.socialStatusID}}
             </p>
           </div>
           <div class="form-row">
             <label class="sub-title">رقم الهاتف : </label>
             <p class="card-title sub-title-content" style="width: auto">
-              {{shareholder_view.personID.mobileNumber}}
+              {{employee_reade.personID.mobileNumber}}
             </p>
             <label class="sub-title">البنك : </label>
             <p class="card-title sub-title-content" style="width: auto">
-              {{shareholder_view.personID.bankID}}
+              {{employee_reade.personID.bankID}}
             </p>
           </div>
           <div class="form-row">
             <label class="sub-title">رقم الحساب : </label>
             <p class="card-title sub-title-content" style="width: auto">
-              {{shareholder_view.personID.accountNumber}}
+              {{employee_reade.personID.accountNumber}}
             </p>
           </div>
         </div>
@@ -90,42 +90,54 @@
         <br />
         <div class="form-row">
           <label class="sub-title">الشركة</label>
-          <p class="card-title sub-title-content">{{shareholder_view.personID.companyID}}</p>
+          <p class="card-title sub-title-content">{{employee_reade.personID.companyID}}</p>
         </div>
         <div class="form-row">
           <label class="sub-title">المهنة</label>
-          <p class="card-title sub-title-content">{{shareholder_view.personID.workTradeID}}</p>
+          <p class="card-title sub-title-content">{{employee_reade.personID.workTradeID}}</p>
         </div>
         <div class="form-row">
           <label class="sub-title">التخصص</label>
           <p class="card-title sub-title-content">
-            {{shareholder_view.personID.workSpecialtyID}}
+            {{employee_reade.personID.workSpecialtyID}}
           </p>
         </div>
         <div class="form-row">
           <label class="sub-title">حالة العمل </label>
           <p class="card-title sub-title-content">
-            {{shareholder_view.personID.workingStatusID}}
+            {{employee_reade.personID.workingStatusID}}
+          </p>
+        </div>
+        <div class="form-row">
+          <label class="sub-title">رقم مكتب العمل</label>
+          <p class="card-title sub-title-content">
+            {{employee_reade.personID.businessOfficeNumber}}
           </p>
         </div>
         <div class="form-row">
           <label class="sub-title">تاريخ بداية العمل</label>
           <p class="card-title sub-title-content">
-            {{shareholder_view.personID.workStartingDate}}
+            {{employee_reade.personID.workStartingDate}}
+          </p>
+        </div>
+        <div class="form-row">
+          <label class="sub-title">راتب التأمينات</label>
+          <p class="card-title sub-title-content">
+            {{employee_reade.personID.salaryInsurance}}
           </p>
         </div>
         <div class="form-row">
           <label class="sub-title">راتب العقد</label>
-          <p class="card-title sub-title-content">{{shareholder_view.personID.contractSalary}}</p>
+          <p class="card-title sub-title-content">{{employee_reade.personID.contractSalary}}</p>
         </div>
         <div class="form-row">
           <label class="sub-title">إضافي ثابت</label>
-          <p class="card-title sub-title-content">{{shareholder_view.personID.fixedExtra}}</p>
+          <p class="card-title sub-title-content">{{employee_reade.personID.fixedExtra}}</p>
         </div>
         <div class="form-row">
           <label class="sub-title">تاريخ إنتهاء العمل</label>
           <p class="card-title sub-title-content">
-            {{shareholder_view.personID.endDateOfService}}
+            {{employee_reade.personID.endDateOfService}}
           </p>
         </div>
       </div>
@@ -135,17 +147,18 @@
         <br />
         <div class="form-row">
           <label class="sub-title">رقم الجواز</label>
-          <p class="card-title sub-title-content">{{shareholder_view.personID.passportNumber}}</p>
+          <p class="card-title sub-title-content">{{employee_reade.personID.passportNumber}}</p>
         </div>
         <div class="form-row">
           <label class="sub-title">تاريخ إنتهاء الجواز</label>
           <p class="card-title sub-title-content">
-            {{shareholder_view.personID.passportExpiryDate}}
+            {{employee_reade.personID.passportExpiryDate}}
           </p>
         </div>
+      
         <div class="form-row">
           <label class="sub-title">ملاحظات</label>
-          <p class="card-title sub-title-content">{{shareholder_view.personID.notes}}</p>
+          <p class="card-title sub-title-content">{{employee_reade.personID.notes}}</p>
         </div>
       </div>
     </div>

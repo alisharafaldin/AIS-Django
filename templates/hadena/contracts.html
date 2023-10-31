@@ -8,7 +8,7 @@
     <h4 class="form-group col-md-9">حاضنة البركة | جميع العقود</h4>
   </div>
   <form method="GET" class="form-inline my-2 my-lg-0">
-    <a href="{% url 'contract_new' %}" class="btn btn-main" >إضافة عقد جديد</a>
+    <a href="{% url 'contract_create' %}" class="btn btn-main" >إضافة عقد جديد</a>
     <button class="btn btn-main" type="submit">بحث
       <i class="fa-solid fa-magnifying-glass"></i>
     </button>
@@ -61,7 +61,7 @@
           <td>{{contract.witnes1ID}}</td>
           <td>{{contract.witnes2ID}}</td>
           <td>
-            <a href="{% url 'contract_view' contract.id %}" class="btn-link"><i class="fa fa-print"></i></a>
+            <a href="{% url 'contract_reade' contract.id %}" class="btn-link"><i class="fa fa-print"></i></a>
             <a href="{% url 'contract_update' contract.id %}" class="btn-link"><i class="fas fa-edit"></i></a>
             <a href="{% url 'contract_delete' contract.id %}" class="btn-link"><i class="fa fa-trash"></i></a>
           </td>

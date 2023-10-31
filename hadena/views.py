@@ -15,7 +15,7 @@ from .pdf import html2pdf
 
 # Create your views here.
 
-def pdf(request, contract_id):
+def contract_print_pdf(request, contract_id):
     # if request.user.is_authenticated:
     all_contract = Contracts.objects.all()
     contract = Contracts.objects.get(id=contract_id)
@@ -27,7 +27,7 @@ def pdf(request, contract_id):
     }
     # pdf=html2pdf("shareholders/pdf.html")
     # return HttpResponse(pdf, content_type='application/pdf')
-    return render(request , 'hadena/pdf.html', context)
+    return render(request , 'hadena/contract_print.html', context)
  
 def shareholders(request): 
   all_share = ShareholdersInfo.objects.all()
@@ -58,7 +58,7 @@ def shareholders(request):
   }
   return render(request, 'hadena/shareholders.html', context)
 
-def shareholder_new(request): 
+def shareholder_create(request): 
   if request.method == 'POST':
     marketerID = None
     #Get Values from the form
@@ -73,19 +73,19 @@ def shareholder_new(request):
       return redirect('shareholders')
     else :      
       messages.error(request, 'خطأ في البيانات') 
-      return redirect('new_shareholder')
+      return redirect('shareholder_create')
   context = {
     'share_form': ShareholderForm(),
     'person_form': PersonForm(),
   }
-  return render(request , 'hadena/shareholder_new.html', context)
+  return render(request , 'hadena/shareholder_create.html', context)
 
-def shareholder_view(request, id):
-    shareholder_view = ShareholdersInfo.objects.get(id=id)
+def shareholder_reade(request, id):
+    shareholder_reade = ShareholdersInfo.objects.get(id=id)
     context = {
-        'shareholder_view':shareholder_view,
+        'shareholder_reade':shareholder_reade,
     }
-    return render(request , 'hadena/shareholder_view.html', context)
+    return render(request, 'hadena/shareholder_reade.html', context)
 
 def shareholder_update(request, id):
   shareholder_update = ShareholdersInfo.objects.get(id=id)
@@ -129,7 +129,7 @@ def shareholder_delete(request, id):
   return render(request, 'hadena/shareholder_delete.html', context)
   # return redirect('shareholders') 
 
-def contract_new(request):
+def contract_create(request):
   if request.method == 'POST':
     contract_new = ContractsForm(request.POST, request.FILES)
     if contract_new.is_valid():
@@ -138,18 +138,18 @@ def contract_new(request):
       return redirect('contracts')
     else :      
       messages.error(request, 'خطأ في البيانات') 
-      return redirect('contract_new')
+      return redirect('contract_create')
   context = {
     'contract_form': ContractsForm(),
   }
-  return render(request, 'hadena/contracts.html', context)
+  return render(request, 'hadena/contract_create.html', context)
 
-def contract_view(request, id):
-    contract_view = Contracts.objects.get(id=id)
+def contract_reade(request, id):
+    contract_reade = Contracts.objects.get(id=id)
     context = {
-        'contract_view':contract_view,
+        'contract_reade':contract_reade,
     }
-    return render(request , 'hadena/contract_view.html', context)
+    return render(request, 'hadena/contract_reade.html', context)
 
 def contract_update(request, id):
   contract_update = Contracts.objects.get(id=id)
@@ -165,7 +165,7 @@ def contract_update(request, id):
   contract_update_form = ContractsForm(instance=contract_update)
   context = {
     'contract_update':contract_update,
-    'contract_update_form':contract_update_form,
+    'contract_form':contract_update_form,
   }
   return render(request, 'hadena/contract_update.html', context)
   # return redirect('shareholders/contract/' + str(contract_id), context)

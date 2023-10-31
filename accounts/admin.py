@@ -14,6 +14,11 @@ class AccountNatureImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id']
 
+@admin.register(AccountStatement)
+class AccountStatementImportExport(ImportExportModelAdmin):
+    pass
+    list_display = ['id']
+
 @admin.register(AccountCategory)
 class AccountCategoryImportExport(ImportExportModelAdmin):
     pass
@@ -21,6 +26,11 @@ class AccountCategoryImportExport(ImportExportModelAdmin):
 
 @admin.register(AccountsTree)
 class AccountsTreeImportExport(ImportExportModelAdmin):
+    pass
+    list_display = ['id']
+
+@admin.register(TypeTransaction)
+class TypeTransactionImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id']
 

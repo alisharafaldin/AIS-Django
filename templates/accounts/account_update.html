@@ -1,7 +1,9 @@
-{% extends 'base.html' %} {% load static %} {% block title %} | Accounts
-Update{% endblock %} {% block content %}
+{% extends 'base.html' %} 
+{% load static %} 
+{% block title %} | Accounts Update ( {{account.id}} ) 
+{% endblock %} {% block content %}
 <div class="content-wrapper">
-  <h4 class="main-title">تعديل الحساب : {{allAcc.accName_ar}}</h4>
+  <h4 class="main-title">تعديل حساب / {{account.name_ar}}</h4>
   <div class="content">
     <br />
     <form method="POST">
@@ -11,43 +13,37 @@ Update{% endblock %} {% block content %}
       <br />
       {% csrf_token %} {% include 'partials/_alerts.html' %}
       <br />
-      <div class="form-row">
-        <h6 style="font-weight: bold" class="col-md-3">إسم الحساب عربي</h6>
-        <div class="form-group col-md-6">{{acc_form.accName_ar}}</div>
+      <div class=" form-row"> 
+        <label class="form-group col-md-1 title-label">إسم الحساب عربي</label>
+        <div class="form-group col-md-6">{{account_form.name_ar}}</div>
       </div>
-      <div class="form-row">
-        <h6 style="font-weight: bold" class="col-md-3">إسم الحساب إنجليزي</h6>
-        <div class="form-group col-md-6">{{acc_form.accName_en}}</div>
+      <div class=" form-row"> 
+        <label class="form-group col-md-1 title-label">إسم الحساب إنجليزي</label>
+        <div class="form-group col-md-6">{{account_form.name_en}}</div>
       </div>
-      <div class="form-row">
-        <h6 style="font-weight: bold" class="col-md-3">رمز الحساب</h6>
-        <div class="form-group col-md-6">{{acc_form.accCode}}</div>
+      <div class=" form-row"> 
+        <label class="form-group col-md-1 title-label">رمز الحساب</label>
+        <div class="form-group col-md-6">{{account_form.code}}</div>
       </div>
-      <div class="form-row">
-        <h6 style="font-weight: bold" class="col-md-3">نوع الحساب</h6>
-        <div class="form-group col-md-6">{{acc_form.accTypeID}}</div>
+      <div class=" form-row"> 
+        <label class="form-group col-md-1 title-label">نوع الحساب</label>
+        <div class="form-group col-md-6">{{account_form.typeID}}</div>
       </div>
-      <div class="form-row">
-        <h6 style="font-weight: bold" class="col-md-3">طبيعة الحساب</h6>
-        <div class="form-group col-md-6">{{acc_form.accDorCID}}</div>
+      <div class=" form-row"> 
+        <label class="form-group col-md-1 title-label">طبيعةالحساب</label>
+        <div class="form-group col-md-6">{{account_form.natureID}}</div>
       </div>
-      <div class="form-row">
-        <h6 style="font-weight: bold" class="col-md-3">الحساب الأب</h6>
-        <div class="form-group col-md-6">{{acc_form.accParentID}}</div>
+      <div class=" form-row"> 
+        <label class="form-group col-md-1 title-label">تصنيف الحساب</label>
+        <div class="form-group col-md-6">{{account_form.categoryID}}</div>
       </div>
-      <div class="form-row">
-        <h6 style="font-weight: bold" class="col-md-3">حساب الميزانية</h6>
-        <div class="form-group col-md-6">{{acc_form.accBudgetID}}</div>
+      <div class=" form-row"> 
+        <label class="form-group col-md-1 title-label">وصف الحساب</label>
+        <div class="form-group col-md-6">{{account_form.description}}</div>
       </div>
-      <div class="form-row">
-        <h6 style="font-weight: bold" class="col-md-3">وصف الحساب</h6>
-        <div class="form-group col-md-6">{{acc_form.accDes}}</div>
-      </div>
-      <div class="form-row">
-        <h6 style="font-weight: bold" class="col-md-3">
-          إمكانية الدفع و السداد من الحساب
-        </h6>
-        <div class="form-group col-md-6">{{acc_form.is_can_pay}}</div>
+      <div class=" form-row"> 
+        <label class="form-group col-md-1 title-label">إمكانية الدفع و السداد من الحساب</label>
+        <div class="form-group col-md-6">{{account_form.is_can_pay}}</div>
       </div>
     </form>
   </div>

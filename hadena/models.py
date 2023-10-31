@@ -33,7 +33,7 @@ class Contracts(models.Model):
   contractNumber = models.CharField(verbose_name='رقم العقد',max_length=100, blank=True, null=True)
   typeContractID = models.ForeignKey(TypeContract, verbose_name='نوع العقد', on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
   cycleID = models.ForeignKey(Cycle, verbose_name='الدورة', on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
-  receiptID = models.ForeignKey(Qayd, verbose_name='رقم القيد', on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
+  receiptID = models.ForeignKey(Qayd, verbose_name='رقم الإيصال', on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
   numberOfShares = models.IntegerField(verbose_name='عدد الأسهم', default=1)
   amountOfShare = models.IntegerField(verbose_name='سعر السهم', default=1200000)
   profitRate = models.IntegerField(verbose_name='معدل الربح', default=8)

@@ -7,7 +7,7 @@
     <h4 class="form-group col-md-9">جميع الموظفين</h4>
   </div>
   <form method="GET" class="form-inline my-2 my-lg-0">
-    <a href="{% url 'new_emp' %}" class="btn btn-main" target="blank">إضافة موظف جديد</a>
+    <a href="{% url 'employee_create' %}" class="btn btn-main" target="blank">إضافة موظف جديد</a>
     <!-- Start Search -->
     <button class="btn btn-main" type="submit">بحث<i class="fa-solid fa-magnifying-glass"></i></button>
     <a href="{% url 'employees' %}" class="btn btn-main" type="submit">إعادة تعيين<i class="fa-solid fa-rotate-right"></i></a>
@@ -60,13 +60,13 @@
             {% endif %}
           </td>
           <td>
-            <a class="btn-link" href="{% url 'update_emp' emp.id %}">
+            <a class="btn-link" href="{% url 'employee_update' emp.id %}">
               <i class="fas fa-edit"></i>
             </a>
-            <a href="{% url 'view_emp' emp.id %}" class="btn-link">
+            <a href="{% url 'employee_reade' emp.id %}" class="btn-link">
               <i class="fa fa-print" aria-hidden="true"></i>
             </a>
-            <a href="{% url 'delete_emp' emp.id %}" class="btn-link">
+            <a href="{% url 'employee_delete' emp.id %}" class="btn-link">
               <i class="fa fa-trash" aria-hidden="true"></i>
             </a>
           </td>

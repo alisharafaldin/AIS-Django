@@ -21,7 +21,7 @@ class ContractsForm(forms.ModelForm):
       'contractNumber': forms.TextInput(attrs={'placeholder':'رقم العقد','class':'form-control'}),
       'cycleID': forms.Select(attrs={'placeholder':'الدورة','class':'form-control'}),
       'typeContractID': forms.Select(attrs={'placeholder':'نوع العقد','class':'form-control'}),
-      'receiptID': forms.TextInput(attrs={'placeholder':'رقم الإيصال','class':'form-control'}),
+      'receiptID': forms.Select(attrs={'placeholder':'رقم الإيصال','class':'form-control'}),
       'numberOfShares': forms.TextInput(attrs={'placeholder':'عدد الأسهم','class':'form-control'}),
       'amountOfShare': forms.TextInput(attrs={'placeholder':'سعر السهم','class':'form-control'}),
       'profitRate': forms.TextInput(attrs={'placeholder':'معدل الربحية % ','class':'form-control'}),

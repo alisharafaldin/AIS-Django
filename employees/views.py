@@ -13,7 +13,7 @@ from basicinfo.forms import PersonForm
 #         if txtsearch: # للتحقق أن البيانات ليست فارغة
 #             all_emp = all_emp.filter(item_search__icontains=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
 
-def new_emp(request):
+def employee_create(request):
   if request.method == 'POST':
     companyID = None
     workingStatusID = None
@@ -43,21 +43,21 @@ def new_emp(request):
       return redirect('employees')
     else :      
       messages.error(request, 'خطأ في البيانات') 
-      return redirect('new_emp')
+      return redirect('employee_create')
   context = {
     'emp_form': EmpForm(),
     'person_form': PersonForm(),
   }
-  return render(request, 'employees/new_emp.html', context)
+  return render(request, 'employees/employee_create.html', context)
 
-def view_emp(request, id):
+def employee_reade(request, id):
   emp_id = EmpInfo.objects.get(id=id)
   context = {
-    'view_emp':emp_id,
+    'employee_reade':emp_id,
   }
-  return render(request, 'employees/view_emp.html', context)
+  return render(request, 'employees/employee_reade.html', context)
 
-def update_emp(request, id):
+def employee_update(request, id):
   update_emp = EmpInfo.objects.get(id=id)
   update_person = Person.objects.get(id=update_emp.personID_id)
   update_emp_form = EmpForm(instance=update_emp)
@@ -94,17 +94,17 @@ def update_emp(request, id):
       return redirect('employees')
     else :      
       messages.error(request, 'خطأ في البيانات') 
-      return redirect('update_emp')
+      return redirect('employee_update')
   update_person_form = PersonForm(instance=update_person)
   context = {
-    'update_emp':update_emp,
-    'update_emp_form':update_emp_form,
-    'update_person':update_person,
-    'update_person_form':update_person_form,
+    'employee_update':update_emp,
+    'emp_form':update_emp_form,
+    'person_update':update_person,
+    'person_form':update_person_form,
   }
-  return render(request, 'employees/update_emp.html', context)    
+  return render(request, 'employees/employee_update.html', context)    
 
-def delete_emp(request, id):
+def employee_delete(request, id):
   if request.user.is_authenticated and not request.user.is_anonymous:
     delete_emp = EmpInfo.objects.get(id=id)
     if request.method == 'POST':
@@ -116,7 +116,7 @@ def delete_emp(request, id):
   context = {
       'delete_emp':delete_emp,
   }
-  return render(request, 'employees/delete_emp.html', context)
+  return render(request, 'employees/employee_delete.html', context)
 
 def employees(request):
   all_emp = EmpInfo.objects.all()

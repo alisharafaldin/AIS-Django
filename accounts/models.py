@@ -19,7 +19,14 @@ class AccountNature(models.Model):
   def __str__(self):
     return str(self.nature_ar)
 
+class AccountStatement(models.Model):
+  statement_ar = models.CharField(verbose_name='القائمة عربي',max_length=100, blank=True, null=True)
+  statement_en = models.CharField(verbose_name='القائمة نجليزي',max_length=100, blank=True, null=True)
+  def __str__(self):
+    return str(self.statement_ar)
+
 class AccountCategory(models.Model):
+  statementID = models.ForeignKey(AccountStatement, verbose_name='القائمة', default=1, on_delete=models.CASCADE)
   category_ar = models.CharField(verbose_name=' تصنيف الحساب عربي',max_length=100, blank=True, null=True)
   category_en = models.CharField(verbose_name=' تصنيف الحساب نجليزي',max_length=100, blank=True, null=True)
   def __str__(self):
@@ -29,8 +36,8 @@ class AccountsTree(models.Model):
   name_ar = models.CharField(verbose_name='إسم الحساب عربي',max_length=100, blank=True, null=True)
   name_en = models.CharField(verbose_name='إسم الحساب إنجليزي',max_length=100, blank=True, null=True)
   typeID = models.ForeignKey(AccountType, verbose_name='نوع الحساب', default=1, on_delete=models.CASCADE)
-  categoryID = models.ForeignKey(AccountCategory , verbose_name='تصنيف حساب ', default=1, on_delete=models.CASCADE)
   natureID = models.ForeignKey(AccountNature , verbose_name='طبيعة الحساب', default=1, on_delete=models.CASCADE)
+  categoryID = models.ForeignKey(AccountCategory , verbose_name='تصنيف حساب ', default=1, on_delete=models.CASCADE)
   code = models.CharField(verbose_name='رمز الحساب',max_length=100, blank=True, null=True)
   description = models.CharField(verbose_name='وصف الحساب',max_length=100, blank=True, null=True)
   is_can_pay = models.BooleanField(verbose_name='إمكانية الدفع والتحصيل بهذا الحساب')

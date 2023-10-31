@@ -12,8 +12,12 @@
       <div class="form-row">
         <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
           <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">المستخدم</h6>
+            <div class="form-group col-md-6">{{qayd_form.userID}}</div>
+          </div>
+            <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">التاريخ</h6>
-            <div class="form-group col-md-6">{{qayd_form.dateQayd}}</div>
+            <div class="form-group col-md-6">{{qayd_form.date}}</div>
           </div>
           <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">العملة</h6>
@@ -22,8 +26,12 @@
         </div>
         <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
           <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">العملية</h6>
+            <div class="form-group col-md-6">{{qayd_form.typeTransactionID}}</div>
+          </div>
+          <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">الوصف</h6>
-            <div class="form-group col-md-6">{{qayd_form.desQayd}}</div>
+            <div class="form-group col-md-6">{{qayd_form.description}}</div>
           </div>
           <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">المرفقات</h6>
@@ -45,19 +53,17 @@
           </tr>
         </thead>
         <tbody>
-          {% for qdd in qayd_details_form %}
             <tr>
               <!-- لعمل ارقام تسلسلة -->
               <th scope="row">{{forloop.counter}}</th>
               <!-- تفاصيل الجدول -->
-              <td>{{qdd.accID }}</td>
-              <td>{{qdd.debit }}</td>
-              <td>{{qdd.credit }}</td>
-              <td>{{qdd.desQaydDetails }}</td>
-              <td>{{qdd.projectID }}</td>
-              <td>{{qdd.empID }}</td>
+              <td>{{qayd_details_form.accountID }}</td>
+              <td>{{qayd_details_form.debit }}</td>
+              <td>{{qayd_details_form.credit }}</td>
+              <td>{{qayd_details_form.description }}</td>
+              <td>{{qayd_details_form.projectID }}</td>
+              <td>{{qayd_details_form.empID }}</td>
             </tr>
-          {% endfor %}
         </tbody>
         <tbody>
           <tr>

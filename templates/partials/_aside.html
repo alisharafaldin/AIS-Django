@@ -48,12 +48,92 @@
             </p>
           </a>
           <ul class="nav nav-treeview">
+                 <!-- Start G Accounts -->
+         <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-edit"></i>
+            <p>
+              الحسابات العامة
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{% url 'accounts' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>شجرة الحسابات</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'qayds' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>قيود اليومية</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="pages/forms/editors.html" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>مراكز التكلة</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="pages/forms/editors.html" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>كشف حساب</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <!-- End G Accounts -->
+        <!-- Start Emp -->
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-edit"></i>
+            <p>
+              الموظفين
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{% url 'employees' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>جميع الموظفين</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="pages/forms/advanced.html" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>مسير الرواتب</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="pages/forms/editors.html" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>المكافئات</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="pages/forms/editors.html" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>السلف</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="pages/forms/editors.html" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>الخصومات</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <!-- End Emp -->
             <li class="nav-item">
               <li class="nav-item has-treeview">
                 <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-chart-pie"></i>
                   <p>
-                    الحاضنة
+                    المساهمين
                     <i class="right fas fa-angle-left"></i>
                   </p>
                 </a>
@@ -61,13 +141,13 @@
                   <li class="nav-item">
                     <a href="{% url 'shareholders' %}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>المساهمين</p>
+                      <p>جميع المساهمين</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="{% url 'contracts' %}" class="nav-link">
+                    <a href="{% url 'shareholder_create' %}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>العقود</p>
+                      <p>مساهم جديد</p>
                     </a>
                   </li>
                 </ul>
@@ -76,21 +156,21 @@
                 <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-chart-pie"></i>
                   <p>
-                    فوركس
+                    العقود
                     <i class="right fas fa-angle-left"></i>
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="{% url 'forex_shareholders' %}" class="nav-link" name="share_F">
+                    <a href="{% url 'contracts' %}" class="nav-link" name="share_F">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>المساهمين</p>
+                      <p>جميع العقود</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="{% url 'forex_contracts' %}" class="nav-link" name="contracts_F">
+                    <a href="{% url 'contract_create' %}" class="nav-link" name="contracts_F">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>العقود</p>
+                      <p>عقد جديد</p>
                     </a>
                   </li>
                 </ul>
@@ -179,86 +259,7 @@
             </li>
           </ul>
         </li>
-         <!-- Start G Accounts -->
-         <li class="nav-item has-treeview">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-edit"></i>
-            <p>
-              الحسابات العامة
-              <i class="fas fa-angle-left right"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="{% url 'accounts' %}" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>شجرة الحسابات</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{% url 'qayds' %}" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>قيود اليومية</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="pages/forms/editors.html" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>مراكز التكلة</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="pages/forms/editors.html" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>كشف حساب</p>
-              </a>
-            </li>
-          </ul>
-        </li>
-        <!-- End G Accounts -->
-        <!-- Start Emp -->
-        <li class="nav-item has-treeview">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-edit"></i>
-            <p>
-              الموظفين
-              <i class="fas fa-angle-left right"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="{% url 'employees' %}" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>معلومات الموظفين</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="pages/forms/advanced.html" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>مسير الرواتب</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="pages/forms/editors.html" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>المكافئات</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="pages/forms/editors.html" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>السلف</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="pages/forms/editors.html" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>الخصومات</p>
-              </a>
-            </li>
-          </ul>
-        </li>
-        <!-- End Emp -->
+    
         <!-- <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-table"></i>

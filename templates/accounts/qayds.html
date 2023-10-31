@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %} | All Qayd {% endblock %}
+{% block title %} | Qayds {% endblock %}
 {% block content %}
 <div class=" content-wrapper">
   <div class="main-title">
     <h4 class="form-group col-md-9">قيود اليومية</h4>
   </div>
   <form method="GET" class="form-inline my-2 my-lg-0">  
-    <a href="{% url 'qayd_new' %}" class="btn btn-main" target="blank">إضافة قيد جديد</a>
+    <a href="{% url 'qayd_create' %}" class="btn btn-main" target="blank">إضافة قيد جديد</a>
     <button class="btn btn-main" type="submit">
       بحث 
       <i class="fa-solid fa-magnifying-glass"></i>
@@ -23,7 +23,6 @@
     <!-- <div class="form-control mr-sm-2 remove-outline"name="search_company">{{emp_form.companyID}}</div> -->
   </form>
   <div class="content">
-
     {% include 'partials/_alerts.html' %}
     <form method="POST">
       {% csrf_token %}
@@ -44,33 +43,17 @@
             <!-- لعمل ارقام تسلسلة -->
               <th scope="row">{{forloop.counter}}</th>
               <!-- تفاصيل الجدول -->
-              <td>{{qayd.dateQayd}}</td>
-              <td>{{qayd.desQayd}}</td>
+              <td>{{qayd.date}}</td>
+              <td>{{qayd.description}}</td>
               <td>{{qayd.details.count}}</td>
               <td>{{qayd.attachments}}</td>
               <td>
                 <a href="{% url 'qayd_update' qayd.id %}" class="btn-link"><i class="fas fa-edit"></i></a>
-                <a href="{% url 'qayd_view' qayd.id %}" class="btn-link"><i class="fa fa-print" aria-hidden="true"></i></a>
+                <a href="{% url 'qayd_reade' qayd.id %}" class="btn-link"><i class="fa fa-print" aria-hidden="true"></i></a>
                 <a href="{% url 'qayd_delete' qayd.id %}" class="btn-link"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                <input type="number" name="qayd_id" value="{{qayd.id}}">
               </td>
           </tr>
-            <!-- Start Modal -->
-            {% if qayd.id == qayd.id %}
-            <div class="modal fade " id="staticBackdrop">
-              <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h6 class="modal-title" id="staticBackdropLabel">هل أنت متأكد من رغبتك حذف القيد رقم ( {{qayd.id}} )</h6>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnclose">إلغاء</button>
-                    <a href="{% url 'qayd_delete' qayd.id %}" id="toCart" class="btn btn-danger" >نعم</a>
-                  </div>              
-                </div>
-              </div>
-            </div>
-            {% endif %}
-            <!-- End Modal -->
-            {% endfor %}
+          {% endfor %}
         </tbody>
       </table>
     </form>
