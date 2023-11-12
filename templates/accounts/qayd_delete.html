@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% load static %} {% block title %} | Qayd Update ( {{qayd_id.id}} )
+{% extends 'base.html' %} {% load static %} {% block title %} | Qayd Delete ( {{qayd_id.id}} )
 {% endblock %} {% block content %}
 <div class="content-wrapper">
   <h4 class="main-title">حذف القيد رقم : ( {{qayd_id.id}} )</h4>
@@ -11,7 +11,7 @@
         <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
           <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">التاريخ</h6>
-            <div class="form-group col-md-6">{{qayd_id.dateQayd}}</div>
+            <div class="form-group col-md-6">{{qayd_id.date}}</div>
           </div>
           <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">العملة</h6>
@@ -21,7 +21,7 @@
         <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
           <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">الوصف</h6>
-            <div class="form-group col-md-6">{{qayd_id.desQayd}}</div>
+            <div class="form-group col-md-6">{{qayd_id.description}}</div>
           </div>
           <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">المرفقات</h6>
@@ -75,7 +75,7 @@
       <br>
       <button type="submit" name="btndelete" class="btn btn-danger">تأكيد الحذف</button>
       <a href="{% url 'qayd_update' qayd_id %}" name="btnupdate" class="btn btn-save">تعديل</a>
-      <a href="{% url 'qayd_all' %}" class="btn btn-close">إلغاء</a>
+      <a href="{% url 'qayds' %}" class="btn btn-close">إلغاء</a>
     </form>
     <br>
     <div class="form-row">

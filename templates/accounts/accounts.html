@@ -43,7 +43,7 @@
         </thead>
         <tbody>
         {% for account in accounts %}
-          {% if account.typeID %}
+          {% if account.typeID.type_ar == "رئيس" %}
             <tr style="font-weight: bold;">
               <!-- لعمل ارقام تسلسلة -->
               <th scope="row">{{forloop.counter}}</th>
@@ -68,7 +68,7 @@
                 </a>
               </td>
             </tr>
-          {% elif %}
+          {% else %}
             <tr>
               <!-- لعمل ارقام تسلسلة -->
               <th scope="row">{{forloop.counter}}</th>

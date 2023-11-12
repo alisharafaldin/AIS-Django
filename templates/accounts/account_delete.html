@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% load static %} {% block title %} | Account Delete ( {{account.id}} )
 {% endblock %} {% block content %}
 <div class="content-wrapper">
-  <h4 class="main-title">حذف الحساب رقم : ( {{account.code}} )</h4>
+  <h4 class="main-title">حذف حساب : {{account.name_ar}} {{account.code}}</h4>
   <div class="content">
     <br />
     <form method="POST" >
