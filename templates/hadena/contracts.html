@@ -32,14 +32,10 @@
           <th scope="col">المساهم</th>
           <th scope="col">تاريخ العقد</th>
           <th scope="col">رقم العقد</th>
-          <th scope="col">المحور</th>
+          <th scope="col">الدورة</th>
           <th scope="col">رقم الإيصال</th>
           <th scope="col">عدد الأسهم</th>
-          <th scope="col">سعر السهم</th>
-          <th scope="col">ربح السهم</th>
-          <th scope="col">تاريخ توزيع الأرباح</th>
-          <th scope="col">الشاهد الأول</th>
-          <th scope="col">الشاهد الثاني</th>
+          <th scope="col">إجمالي الأسهم</th>
           <th scope="col">الإجراءات</th>
         </tr>
       </thead>
@@ -52,14 +48,10 @@
           <td>{{contract.shareholdersID}}</td>
           <td>{{contract.dateOfContract}}</td>
           <td>{{contract.contractNumber}}</td>
-          <td>{{contract.axisID}}</td>
+          <td>{{contract.cycleID}}</td>
           <td>{{contract.numberReceipt}}</td>
           <td>{{contract.numberOfShares}}</td>
-          <td>{{contract.amountOfShare|intcomma}}</td>
-          <td>{{contract.profitOfShare|intcomma}}</td>
-          <td>{{contract.dateOfDividend}}</td>
-          <td>{{contract.witnes1ID}}</td>
-          <td>{{contract.witnes2ID}}</td>
+          <td>{{contract.amountOfShare}}</td>
           <td>
             <a href="{% url 'contract_reade' contract.id %}" class="btn-link"><i class="fa fa-print"></i></a>
             <a href="{% url 'contract_update' contract.id %}" class="btn-link"><i class="fas fa-edit"></i></a>

@@ -10,7 +10,7 @@
     {% csrf_token %}
     {% include 'partials/_alerts.html' %}
     <button type="submit" class="btn btn-danger">تأكيد الحذف</button>
-    <a href="{% url 'update_emp' delete_emp.id %}" name="btnupdate" class="btn btn-save">تعديل</a>
+    <a href="{% url 'employee_update' employee_delete.id %}" name="btnupdate" class="btn btn-save">تعديل</a>
     <a href="{% url 'employees' %}" class="btn btn-close">إلغاء</a>
     <br>
     <br>

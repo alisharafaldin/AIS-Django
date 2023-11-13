@@ -148,6 +148,7 @@ def contract_reade(request, id):
     contract_reade = Contracts.objects.get(id=id)
     context = {
         'contract_reade':contract_reade,
+        'totalamountOfShare': contract_reade.amountOfShare * contract_reade.numberOfShares
     }
     return render(request, 'hadena/contract_reade.html', context)
 
