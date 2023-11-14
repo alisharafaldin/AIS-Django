@@ -98,23 +98,26 @@ def employee_update(request, id):
   update_person_form = PersonForm(instance=update_person)
   context = {
     'employee_update':update_emp,
-    'emp_form':update_emp_form,
+    'employee_update_form':update_emp_form,
     'person_update':update_person,
-    'person_form':update_person_form,
+    'person_update_form':update_person_form,
   }
   return render(request, 'employees/employee_update.html', context)    
 
 def employee_delete(request, id):
   if request.user.is_authenticated and not request.user.is_anonymous:
-    delete_emp = EmpInfo.objects.get(id=id)
+    employee_delete = EmpInfo.objects.get(id=id)
+    # person_delete = Person.objects.get(id=employee_delete)
     if request.method == 'POST':
-      delete_emp.delete()
+      employee_delete.delete()
+      # if employee_delete.delete():
+      #   person_delete.delete()
       messages.info(request, 'تم حذف الموظف بنجاح')
-      return redirect('qayd_all')
+      return redirect('qayds')
   else:
       messages.error(request, 'الرجاء تسجيل الدخول أولاً')
   context = {
-      'delete_emp':delete_emp,
+      'employee_delete':employee_delete,
   }
   return render(request, 'employees/employee_delete.html', context)
 

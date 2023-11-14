@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% load static %} 
-{% block title %} | Hadena | Contracts {% endblock %}
+{% block title %} | Contracts {% endblock %}
 {% block content %}
 {% load humanize %}
 <div class="content-wrapper">
   <div class="main-title">
-    <h4 class="form-group col-md-9">حاضنة البركة | جميع العقود</h4>
+    <h4 class="form-group col-md-9">جميع العقود</h4>
   </div>
   <form method="GET" class="form-inline my-2 my-lg-0">
     <a href="{% url 'contract_create' %}" class="btn btn-main" >إضافة عقد جديد</a>

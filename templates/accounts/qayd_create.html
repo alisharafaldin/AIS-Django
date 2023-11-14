@@ -29,15 +29,11 @@
             <div class="form-group col-md-6">{{qayd_form.date}}</div>
           </div>
           <div class="form-row">
-            <h6 style="font-weight: bold" class="col-md-3">العملة</h6>
-            <div class="form-group col-md-6">{{qayd_form.currencyID}}</div>
-          </div>
-        </div>
-        <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
-          <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">العملية</h6>
             <div class="form-group col-md-6">{{qayd_form.typeTransactionID}}</div>
           </div>
+        </div>
+        <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
           <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">الوصف</h6>
             <div class="form-group col-md-6">{{qayd_form.description}}</div>
@@ -53,7 +49,10 @@
           <tr>
             <th scope="col">#</th>
             <!-- <th scope="col">رقم القيد</th> -->
+            <th scope="col">التاريخ</th>
             <th scope="col">الحساب</th>
+            <th scope="col">العملة</th>
+            <th scope="col">سعر الصرف</th>
             <th scope="col">مدين</th>
             <th scope="col">دائن</th>
             <th scope="col">الوصف</th>
@@ -66,10 +65,13 @@
             <!-- لعمل ارقام تسلسلة -->
             <th scope="row">{{forloop.counter}}</th>
             <!-- تفاصيل الجدول -->
+            <td name="date">{{ qayd_details_form.date }}</td>
             <td name="accID">{{ qayd_details_form.accountID }}</td>
+            <td name="currencyID">{{ qayd_details_form.currencyID }}</td>
+            <td name="rate">{{ qayd_details_form.rate }}</td>
             <td name="debit">{{ qayd_details_form.debit }}</td>
             <td name="credit">{{ qayd_details_form.credit }}</td>
-            <td name="desQaydDetails">{{ qayd_details_form.description }}</td>
+            <td name="description">{{ qayd_details_form.description }}</td>
             <td name="projectID">{{ qayd_details_form.projectID }}</td>
             <td name="empID">{{ qayd_details_form.empID }}</td>
           </tr>

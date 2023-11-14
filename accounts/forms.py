@@ -24,11 +24,9 @@ class QaydForm(forms.ModelForm):
             'id': forms.TextInput(attrs={'class':'form-control', 'placeholder':'معرف القيد'}),
             'userID': forms.Select(attrs={'class':'form-control', 'placeholder':'المستخدم'}),
             'date': forms.TextInput(attrs={'class':'form-control',  'type':'date' , 'placeholder':'تاريخ القيد'}),
-            'currencyID': forms.Select(attrs={'class':'form-control', 'placeholder':'العملة'}),
             'typeTransactionID': forms.Select(attrs={'class':'form-control', 'placeholder':'العملية'}),
             'description': forms.Textarea(attrs={'class':'form-control', 'placeholder':'وصف القيد', 'style':'height: 50px;'}),
             'attachments': forms.FileInput(attrs={'class':'form-control', 'placeholder':'مرفقات القيد', 'value':"{{qayd_form.attachments}}"}),
-            'details': forms.TextInput(attrs={'class':'form-control', 'placeholder':'تفاصيل القيد'}),     
         }
 
 class QaydDetailsForm(forms.ModelForm):
@@ -37,12 +35,13 @@ class QaydDetailsForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'qaydID': forms.Select(attrs={'class':'form-control', 'placeholder':'رأس القيد'}),
+            'date': forms.TextInput(attrs={'class':'form-control',  'type':'date' , 'placeholder':'تاريخ القيد'}),
             'accountID': forms.Select(attrs={'class':'form-control', 'placeholder':'الحساب'}),
+            'rate': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'سعر الصرف'}),
             'debit': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'مدين'}),
             'credit': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'دائن'}),
             'currencyID': forms.Select(attrs={'class':'form-control', 'placeholder':'العملة'}),
             'description': forms.TextInput(attrs={'class':'form-control', 'placeholder':'وصف القيد'}),
-            'qaydID': forms.Select(attrs={'class':'form-control', 'placeholder':'راس القيد'}),
             'projectID': forms.Select(attrs={'class':'form-control', 'placeholder':'المشروع'}),
             'empID': forms.Select(attrs={'class':'form-control', 'placeholder':'الموظف'}),       
         }

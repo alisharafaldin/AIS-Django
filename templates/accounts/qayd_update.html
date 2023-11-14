@@ -1,7 +1,7 @@
-{% extends 'base.html' %} {% load static %} {% block title %} | Qayd Update ( {{qayd_id.id}} )
+{% extends 'base.html' %} {% load static %} {% block title %} | Qayd Update ( {{qayd_update.id}} )
 {% endblock %} {% block content %}
 <div class="content-wrapper">
-  <h4 class="main-title">تعديل القيد رقم : ( {{qayd_id.id}} )</h4>
+  <h4 class="main-title">تعديل القيد رقم : ( {{qayd_update.id}} )</h4>
   <div class="content">
     <br />
     <form method="POST" action="">
@@ -11,31 +11,23 @@
       <a href="{% url 'qayds' %}" class="btn btn-close">إلغاء</a>
       <div class="form-row">
         <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
-          <div class="form-row">
-            <h6 style="font-weight: bold" class="col-md-3">المستخدم</h6>
-            <div class="form-group col-md-6">{{qayd_form.userID}}</div>
-          </div>
             <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">التاريخ</h6>
-            <div class="form-group col-md-6">{{qayd_form.date}}</div>
+            <div class="form-group col-md-6">{{qayd_update_form.date}}</div>
           </div>
           <div class="form-row">
-            <h6 style="font-weight: bold" class="col-md-3">العملة</h6>
-            <div class="form-group col-md-6">{{qayd_form.currencyID}}</div>
+            <h6 style="font-weight: bold" class="col-md-3">العملية</h6>
+            <div class="form-group col-md-6">{{qayd_update_form.typeTransactionID}}</div>
           </div>
         </div>
         <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
           <div class="form-row">
-            <h6 style="font-weight: bold" class="col-md-3">العملية</h6>
-            <div class="form-group col-md-6">{{qayd_form.typeTransactionID}}</div>
-          </div>
-          <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">الوصف</h6>
-            <div class="form-group col-md-6">{{qayd_form.description}}</div>
+            <div class="form-group col-md-6">{{qayd_update_form.description}}</div>
           </div>
           <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">المرفقات</h6>
-            <div class="form-group col-md-6">{{qayd_form.attachments}}</div>
+            <div class="form-group col-md-6">{{qayd_update_form.attachments}}</div>
           </div>
         </div>
       </div>
@@ -57,12 +49,12 @@
               <!-- لعمل ارقام تسلسلة -->
               <th scope="row">{{forloop.counter}}</th>
               <!-- تفاصيل الجدول -->
-              <td>{{qayd_details_form.accountID }}</td>
-              <td>{{qayd_details_form.debit }}</td>
-              <td>{{qayd_details_form.credit }}</td>
-              <td>{{qayd_details_form.description }}</td>
-              <td>{{qayd_details_form.projectID }}</td>
-              <td>{{qayd_details_form.empID }}</td>
+              <td>{{qayd_update_details_form.accountID }}</td>
+              <td>{{qayd_update_details_form.debit }}</td>
+              <td>{{qayd_update_details_form.credit }}</td>
+              <td>{{qayd_update_details_form.description }}</td>
+              <td>{{qayd_update_details_form.projectID }}</td>
+              <td>{{qayd_update_details_form.empID }}</td>
             </tr>
         </tbody>
         <tbody>

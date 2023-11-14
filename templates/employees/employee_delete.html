@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %} | Delete Emp ( {{delete_emp.id}} ) {% endblock %}
+{% block title %} | Delete Employee ( {{employee_delete.id}} ) {% endblock %}
 {% block content %}
 <div class="content-wrapper">
-  <h4 class="main-title">حذف بيانات الموظف : {{delete_emp.personID.f_Name_ar}} {{delete_emp.personID.s_Name_ar}} {{delete_emp.personID.t_Name_ar}} {{delete_emp.personID.fo_Name_ar}} </h4>
+  <h4 class="main-title">حذف بيانات الموظف : {{employee_delete.personID.f_Name_ar}} {{employee_delete.personID.s_Name_ar}} {{employee_delete.personID.t_Name_ar}} {{employee_delete.personID.fo_Name_ar}} </h4>
  <div class="content">
   <br>
   <form method="POST">
@@ -15,81 +15,116 @@
     <br>
     <br>
     <br>
-    <h6 style="font-weight: bold">الإسم الكامل - عربي</h6>
     <div class="form-row">
-      <div class="form-group col-md-3">{{delete_emp.personID.f_Name_ar}}</div>
-      <div class="form-group col-md-3">{{delete_emp.personID.s_Name_ar}}</div>
-      <div class="form-group col-md-3">{{delete_emp.personID.t_Name_ar}}</div>
-      <div class="form-group col-md-3">{{delete_emp.personID.fo_Name_ar}}</div>
+      <label class="form-group col-md-1 title-label">الإسم عربي</label>
+      <div class="form-group col-md-2">{{employee_delete.personID.f_Name_ar}}</div>
+      <div class="form-group col-md-3">{{employee_delete.personID.s_Name_ar}}</div>
+      <div class="form-group col-md-3">{{employee_delete.personID.t_Name_ar}}</div>
+      <div class="form-group col-md-3">{{employee_delete.personID.fo_Name_ar}}</div>
     </div>
-    <h6 style="font-weight: bold">الإسم الكامل - إنجليزي</h6>
     <div class="form-row">
-      <div class="form-group col-md-3">{{delete_emp.personID.f_Name_en}}</div>
-      <div class="form-group col-md-3">{{delete_emp.personID.s_Name_en}}</div>
-      <div class="form-group col-md-3">{{delete_emp.personID.t_Name_en}}</div>
-      <div class="form-group col-md-3">{{delete_emp.personID.fo_Name_en}}</div>
+      <label class="form-group col-md-1 title-label">الإسم إنجليزي</label>
+      <div class="form-group col-md-2">{{employee_delete.personID.f_Name_en}}</div>
+      <div class="form-group col-md-3">{{employee_delete.personID.s_Name_en}}</div>
+      <div class="form-group col-md-3">{{employee_delete.personID.t_Name_en}}</div>
+      <div class="form-group col-md-3">{{employee_delete.personID.fo_Name_en}}</div>
     </div>
     <!-- تاريخ الميلا - الجنس - الجنسية - الحالة الإجتماعية -->
     <div class="form-row">
-      <div class="form-group col-md-3">{{delete_emp.personID.dateOfBirth}}</div>
-      <div class="form-group col-md-3">{{delete_emp.personID.genderID}}</div>
-      <div class="form-group col-md-3">{{delete_emp.personID.nationalityID}}</div>
-      <div class="form-group col-md-3">{{delete_emp.personID.socialStatusID}}</div>
-    </div>
-    <!--  نوع الهوية - رقم الهوية - تاريخ إنتهاء الهوية  -->
-    <div class="form-row">
-      <div class="form-group col-md-3">{{delete_emp.personID.typeID}}</div>
-      <div class="form-group col-md-3">{{delete_emp.personID.id_number}}</div>
-      <div class="form-group col-md-3">{{delete_emp.personID.id_ExpiredDate}}</div>
+      <label class="form-group col-md-1 title-label">تاريخ الميلاد</label>
+      <div class="form-group col-md-2">{{employee_delete.personID.dateOfBirth}}</div>
+      <label class="form-group col-md-1 title-label">الجنس</label>
+      <div class="form-group col-md-2">{{employee_delete.personID.genderID}}</div>
+      <label class="form-group col-md-1 title-label">الجنسية</label>
+      <div class="form-group col-md-2">{{employee_delete.personID.nationalityID}}</div>
+      <label class="form-group col-md-1 title-label">الحالة الإجتماعية</label>
+      <div class="form-group col-md-2">{{employee_delete.personID.socialStatusID}}</div>
     </div>
     <!--  الدولة - الولاية - المدية -  وصف العنوان -->
     <div class="form-row">
-      <div class="form-group col-md-3">{{delete_emp.personID.countryID}}</div>
-      <div class="form-group col-md-3">{{delete_emp.personID.regionID}}</div>
-      <div class="form-group col-md-3">{{delete_emp.personID.stateID}}</div>
-      <div class="form-group col-md-3">{{delete_emp.personID.cityID}}</div>
+      <label class="form-group col-md-1 title-label">الدولة</label>
+      <div class="form-group col-md-2">{{employee_delete.personID.countryID}}</div>
+      <label class="form-group col-md-1 title-label">المنطقة</label>
+      <div class="form-group col-md-2">{{employee_delete.personID.regionID}}</div>
+      <label class="form-group col-md-1 title-label">الولاية</label>
+      <div class="form-group col-md-2">{{employee_delete.personID.stateID}}</div>
+      <label class="form-group col-md-1 title-label">المدينة</label>
+      <div class="form-group col-md-2">{{employee_delete.personID.cityID}}</div>
     </div>
+    <!-- المهنة - التخصص - المسوق -->
     <div class="form-row">
-      <div class="form-group col-md-12">{{delete_emp.personID.desAddress}}</div>
+      <label class="form-group col-md-1 title-label">المهنة</label>
+      <div class="form-group col-md-3">{{employee_delete.personID.workTradeID}}</div>
+      <label class="form-group col-md-1 title-label">التخصص</label>
+      <div class="form-group col-md-3">{{employee_delete.personID.workSpecialtyID}}</div>
+      <label class="form-group col-md-1 title-label">عنوان المنزل</label>
+      <div class="form-group col-md-3">{{employee_delete.personID.desAddress}}</div>
     </div>
-    <h4>معلومات الإتصال</h4>
+    <!--  نوع الهوية - رقم الهوية - تاريخ إنتهاء الهوية  -->
+    <div class="form-row">
+      <label class="form-group col-md-1 title-label">نوع الهوية</label>
+      <div class="form-group col-md-2">{{employee_delete.personID.typeID}}</div>
+      <label class="form-group col-md-1 title-label">رقم الهوية</label>
+      <div class="form-group col-md-2">{{employee_delete.personID.id_number}}</div>
+      <label class="form-group col-md-1 title-label">تاريخ الإنتهاء</label>
+      <div class="form-group col-md-2">{{employee_delete.personID.id_ExpiredDate}}</div>
+      <label class="form-group col-md-1 title-label">المشرف</label>
+      <div class="form-group col-md-2">{{share_form.marketerID}}</div>
+    </div>
     <!--البريد الإلكتروني - رقم الجوال - رقم جوال آخر -->
+    <br>
     <div class="form-row">
-      <div class="form-group col-md-3">{{delete_emp.personID.mobileNumber}}</div>
-      <div class="form-group col-md-3">{{delete_emp.personID.mobileNumberAnother}}</div>
-      <div class="form-group col-md-6">{{delete_emp.personID.email}}</div>
+      <label class="form-group col-md-1 title-label">رقم الجوال</label>
+      <div class="form-group col-md-3">{{employee_delete.personID.mobileNumber}}</div>
+      <label class="form-group col-md-1 title-label">جوال آخر</label>
+      <div class="form-group col-md-3">{{employee_delete.personID.mobileNumberAnother}}</div>
+      <label class="form-group col-md-1 title-label">البريد الإلكتروني</label>
+      <div class="form-group col-md-3">{{employee_delete.personID.email}}</div>
     </div>
-    <h4>معلومات العمل</h4>
+    <br>
+    <!-- البنك - الفرع - نوع الحساب - رقم الحساب - رقم الأيبان ر -->
+    <div class="form-row">
+      <label class="form-group col-md-1 title-label">البنك</label>
+      <div class="form-group col-md-3">{{employee_delete.personID.bankID}}</div>
+      <label class="form-group col-md-1 title-label">الفرع</label>
+      <div class="form-group col-md-3">{{employee_delete.personID.branchBankID}}</div>
+      <label class="form-group col-md-1 title-label">نوع الحساب</label>
+      <div class="form-group col-md-3">{{employee_delete.personID.typeAccBankID}}</div>
+    </div>
+    <div class="form-row">
+      <label class="form-group col-md-1 title-label">رقم الحساب</label>
+      <div class="form-group col-md-4">{{employee_delete.personID.accountNumber}}</div>
+      <label class="form-group col-md-1 title-label">رقم الآي بان</label>
+      <div class="form-group col-md-6">{{employee_delete.personID.IBANNumber}}</div>
+    </div>
+    <br>
+    <!-- صورة الموظف - رابط المستندات - ملاحظات -->
+    <div class="form-row">
+      <label class="form-group col-md-1 title-label">صورة شخصية</label>
+      <div class="form-group col-md-3">{{employee_delete.personID.photo}}</div>
+      <label class="form-group col-md-1 title-label">مرفقات</label>
+      <div class="form-group col-md-3">{{employee_delete.personID.attachments}}</div>
+      <label class="form-group col-md-1 title-label">ملاحظات</label>
+      <div class="form-group col-md-3">{{employee_delete.personID.notes}}</div>
+    </div>
     <!-- المهنة - التخصص - الشركة - بداية العمل -->
     <div class="form-row">
-      <div class="form-group col-md-3">{{delete_emp.companyID}}</div>
-      <div class="form-group col-md-3">{{delete_emp.personID.workTradeID}}</div>
-      <div class="form-group col-md-3">{{delete_emp.personID.workSpecialtyID}}</div>
-      <div class="form-group col-md-3">{{delete_emp.workStartDate}}</div>
+      <label class="form-group col-md-1 title-label">الشركة</label>
+      <div class="form-group col-md-3">{{employee_delete.companyID}}</div>
+      <label class="form-group col-md-1 title-label">بداية العمل</label>
+      <div class="form-group col-md-3">{{employee_delete.workStartDate}}</div>
+      <label class="form-group col-md-1 title-label">نهاية العمل</label>
+      <div class="form-group col-md-3">{{employee_delete.workEndDate}}</div>
     </div>
     <!-- حالة العمل - الراتب الأساسي - الإضافي - تاريخ بداية العمل -->
     <div class="form-row">
-      <div class="form-group col-md-3">{{delete_emp.workingStatusID}}</div>
-      <div class="form-group col-md-3">{{delete_emp.contractSalary}}</div>
-      <div class="form-group col-md-3">{{delete_emp.fixedExtra}}</div>
-      <div class="form-group col-md-3">{{delete_emp.workEndDate}}</div>
-    </div>
-    <!-- البنك - الفرع - نوع الحساب - رقم الحساب - رقم الأيبان ر -->
-    <div class="form-row">
-      <div class="form-group col-md-4">{{delete_emp.personID.bankID}}</div>
-      <div class="form-group col-md-4">{{delete_emp.personID.branchBankID}}</div>
-      <div class="form-group col-md-4">{{delete_emp.personID.typeAccBankID}}</div>
-    </div>
-    <div class="form-row">
-      <div class="form-group col-md-6">{{delete_emp.personID.accountNumber}}</div>
-      <div class="form-group col-md-6">{{delete_emp.personID.IBANNumber}}</div>
-    </div>
-    <!-- صورة الموظف - رابط المستندات - ملاحظات -->
-    <div class="form-row">
-      <div class="form-group col-md-4">{{delete_emp.personID.photo}}</div>
-      <div class="form-group col-md-4">{{delete_emp.personID.attachments}}</div>
-      <div class="form-group col-md-4">{{delete_emp.personID.notes}}</div>
-    </div>  
+      <label class="form-group col-md-1 title-label">حالة العمل</label>
+      <div class="form-group col-md-3">{{employee_delete.workingStatusID}}</div>
+      <label class="form-group col-md-1 title-label">الراتب الأساسي</label>
+      <div class="form-group col-md-3">{{employee_delete.contractSalary}}</div>
+      <label class="form-group col-md-1 title-label">الإضافي</label>
+      <div class="form-group col-md-3">{{employee_delete.fixedExtra}}</div>
+    </div> 
   </form>
  </div>
 </div>

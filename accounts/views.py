@@ -18,6 +18,7 @@ def account_create(request):
         'acc_form': AccountsTreeForm(),
     }    
     return render(request,'accounts/account_create.html', context)
+
 def account_reade(request, id):
     if request.user.is_authenticated and not request.user.is_anonymous:
       account_id = AccountsTree.objects.get(id=id)
@@ -25,6 +26,7 @@ def account_reade(request, id):
         'account':account_id,
     }
     return render(request, 'accounts/account_reade.html', context)
+
 def account_update(request, id):
     if request.user.is_authenticated and not request.user.is_anonymous:
         account_id = AccountsTree.objects.get(id=id)
@@ -44,6 +46,7 @@ def account_update(request, id):
     else:
         messages.info(request, 'الرجاء تسجيل الدخول' )
         return redirect('acc_all')
+
 def account_delete(request, id):
     if request.user.is_authenticated and not request.user.is_anonymous:
       account_id = AccountsTree.objects.get(id=id)
@@ -57,6 +60,7 @@ def account_delete(request, id):
         'account':account_id,
     }
     return render(request, 'accounts/account_delete.html', context)
+
 def accounts(request):
     accounts = AccountsTree.objects.all().order_by("typeID")
     accounts2 = accounts.order_by("code")
@@ -64,14 +68,24 @@ def accounts(request):
         'accounts':accounts2,
     }    
     return render(request,'accounts/accounts.html', context)
+
 def qayd_create(request):
   if request.method == 'POST':
+    date = request.POST['date']
+    rate = request.POST['rate']
     debit = request.POST['debit']
     credit = request.POST['credit']
     description = request.POST['description']
     accountID = request.POST['accountID']
+    currencyID = request.POST['currencyID']
     projectID = request.POST['projectID']
     empID = request.POST['empID']
+    if 'date' in request.POST: date = request.POST['date']
+    else: messages.error(request, 'Error in date')
+    if 'rate' in request.POST: rate = request.POST['rate']
+    else: messages.error(request, 'Error in rate')
+    if 'currencyID' in request.POST: currencyID = request.POST['currencyID']
+    else: messages.error(request, 'Error in currencyID')
     if 'debit' in request.POST: debit = request.POST['debit']
     else: messages.error(request, 'Error in debit')
     if 'credit' in request.POST: credit = request.POST['credit']
@@ -87,8 +101,8 @@ def qayd_create(request):
     newqayd = QaydForm(request.POST, request.FILES)
     if newqayd.is_valid():
       newqayd.save()
-      newqayd_details = QaydDetails(qaydID=newqayd.instance, debit=debit, credit=credit, description=description, accountID_id=accountID, projectID_id=projectID, empID_id=empID)
-      newqayd_details.save()
+      # newqayd_details = QaydDetails(qaydID=newqayd.instance, debit=debit, credit=credit, description=description, accountID_id=accountID, currencyID_id=currencyID, date=date, rate=rate, projectID_id=projectID, empID_id=empID)
+      # newqayd_details.save()
       messages.success(request, 'تمت الإضافة بنجاح') 
       return redirect('qayds')
     else :      
@@ -100,6 +114,7 @@ def qayd_create(request):
       'qayd_details_form': QaydDetailsForm(),
   }    
   return render(request,'accounts/qayd_create.html', context)
+
 def qayd_reade(request, id):
   if request.user.is_authenticated and not request.user.is_anonymous:
     qayd_id = Qayd.objects.get(id=id)
@@ -120,26 +135,27 @@ def qayd_reade(request, id):
         'calc':calc,
     }
     return render(request, 'accounts/qayd_reade.html', context)
+
 def qayd_update(request, id):
   if request.user.is_authenticated and not request.user.is_anonymous:
-    qayd_id = Qayd.objects.get(id=id)
-    qayd_form = QaydForm(request.POST, request.FILES, instance=qayd_id)
-    qayd_id_details = QaydDetails.objects.filter(qaydID=id)
-    qayd_details_form = QaydDetailsForm(request.POST, request.FILES, instance=qayd_id)
+    qayd_update = Qayd.objects.get(id=id)
+    qayd_update_form = QaydForm(request.POST, request.FILES, instance=qayd_update)
+    qayd_update_details = QaydDetails.objects.filter(qaydID=id)
+    qayd_update_details_form = QaydDetailsForm(request.POST, request.FILES, instance=qayd_update)
     if 'btnsave' in request.POST:
       if request.method == 'POST':
-        qayd_id.userID = request.user
-        qayd_id.dateQayd = request.POST['dateQayd']
-        qayd_id.desQayd = request.POST['desQayd']
-        qayd_id.currencyID_id = request.POST['currencyID']
-        qayd_id.attachments = request.POST['attachments']  
-        qayd_id.save()
+        qayd_update.userID = request.user
+        qayd_update.date = request.POST['date']
+        qayd_update.description = request.POST['description']
+        qayd_update.typeTransactionID_id = request.POST['typeTransactionID']
+        qayd_update.attachments = request.POST['attachments']  
+        qayd_update.save()
         messages.success(request, 'تم التحديث بنجاح')
         return redirect('qayds')
       else:
         messages.error(request, 'خطأ في البيانات')   
-    qayd_form = QaydForm(instance=qayd_id)
-    qayd_details_form = QaydDetailsForm(instance=qayd_id)
+    qayd_update_form = QaydForm(instance=qayd_update)
+    qayd_update_details_form = QaydDetailsForm(instance=qayd_update)
     class calc:
       qdd = QaydDetails.objects.filter(qaydID=id)
       total_d = 0
@@ -150,23 +166,24 @@ def qayd_update(request, id):
         total_c += td.credit 
         other = total_d - total_c
     context = {
-        'qayd_id':qayd_id,
-        'qayd_form':qayd_form,
-        'qayd_id_details':qayd_id_details,
-        'qayd_details_form':qayd_details_form,
+        'qayd_update':qayd_update,
+        'qayd_update_form':qayd_update_form,
+        'qayd_update_details':qayd_update_details,
+        'qayd_update_details_form':qayd_update_details_form,
         'calc':calc,
     }
     return render(request, 'accounts/qayd_update.html', context)
   else:
     messages.info(request, 'الرجاء تسجيل الدخول')
     return redirect('signin')  
+
 def qayd_delete(request, id):
     if request.user.is_authenticated and not request.user.is_anonymous:
       qayd_id = Qayd.objects.get(id=id)
       if 'btndelete' in request.POST:
         qayd_id.delete()
         messages.info(request, 'تم الحذف بنجاح')
-        return redirect('qayd_all')
+        return redirect('qayds')
     else:
         messages.error(request, 'الرجاء تسجيل الدخول أولاً')
     qayd_id_details = QaydDetails.objects.filter(qaydID=id)
@@ -186,6 +203,7 @@ def qayd_delete(request, id):
         'calc':calc,
     }
     return render(request, 'accounts/qayd_delete.html', context)
+
 def qayds(request):
     context = {
         'qayds':Qayd.objects.all(),
