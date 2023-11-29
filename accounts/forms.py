@@ -46,3 +46,4 @@ class QaydDetailsForm(forms.ModelForm):
             'empID': forms.Select(attrs={'class':'form-control', 'placeholder':'الموظف'}),       
         }
 
+

@@ -9,6 +9,9 @@
       {% include 'partials/_alerts.html' %}
       <button type="submit" name="btnsave" class="btn btn-save">حفظ التعديل</button>
       <a href="{% url 'qayds' %}" class="btn btn-close">إلغاء</a>
+      <br>
+      <br>
+
       <div class="form-row">
         <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
             <div class="form-row">
@@ -16,7 +19,7 @@
             <div class="form-group col-md-6">{{qayd_update_form.date}}</div>
           </div>
           <div class="form-row">
-            <h6 style="font-weight: bold" class="col-md-3">العملية</h6>
+            <h6 style="font-weight: bold" class="col-md-3">مصدر القيد</h6>
             <div class="form-group col-md-6">{{qayd_update_form.typeTransactionID}}</div>
           </div>
         </div>
@@ -73,7 +76,7 @@
       </table>
     </form>
     <div class="form-row">
-      <h6 class="form-group col-md-6">مُنشئ القيد : {{qayd_id.userID}} </h6>
+      <h6 class="form-group col-md-6">مُنشئ القيد : {{qayd_update.userID}} </h6>
     </div>
   </div>
 </div>

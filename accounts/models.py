@@ -53,10 +53,10 @@ class TypeTransaction(models.Model):
 class Qayd(models.Model):
   userID = models.ForeignKey(User, verbose_name='المستخدم', on_delete=models.CASCADE, null=True)
   typeTransactionID = models.ForeignKey(TypeTransaction , verbose_name='نوع العملية', default=1, on_delete=models.CASCADE, null=True)
-  date = models.DateField(verbose_name='تاريخ القيد', default=timezone.now)
+  date = models.DateField(verbose_name='تاريخ القيد', default=timezone.now(), blank=True, null=True)
   description = models.TextField(verbose_name='وصف القيد', max_length=250, blank=True, null=True)
   attachments = models.FileField(verbose_name='مرفقات القيد', blank=True, null=True)
-  # details = models.ManyToManyField(AccountsTree, through='QaydDetails')
+  details = models.ManyToManyField(AccountsTree, through='QaydDetails')
   # currencyID = models.ForeignKey(Countries , verbose_name='العملة', default=1, on_delete=models.CASCADE, null=True)
   # projectID = models.ForeignKey(Project, verbose_name='المشروع', default=1, on_delete=models.CASCADE, blank=True, null=True)
   # empID = models.ForeignKey(EmpInfo, verbose_name='الموظف', on_delete=models.CASCADE, blank=True, null=True)

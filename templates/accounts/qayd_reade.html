@@ -1,14 +1,34 @@
 {% extends 'base.html' %} {% load static %} {% block title %} | Reade Qayd ( {{qayd_id.id}} )
 {% endblock %} {% block content %}
 <div class="content-wrapper">
-  <h4 class="main-title">طياعة القيد رقم : ( {{qayd_id.id}} )</h4>
+  <h4 class="main-title">طباعة القيد رقم : ( {{qayd_id.id}} )</h4>
   <div class="content">
     <br />
     <form method="POST" >
       {% csrf_token %} 
       {% include 'partials/_alerts.html' %}
-      <button type="submit" name="btnsave" class="btn btn-save">طباعة PDF</button>
-      <a href="{% url 'qayds' %}" class="btn btn-close">إلغاء</a>
+      <div class="form-row">
+        <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
+          <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">التاريخ</h6>
+            <div class="form-group col-md-6">{{qayd_id.date}}</div>
+          </div>
+          <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">مصدر القيد</h6>
+            <div class="form-group col-md-6">{{qayd_id.typeTransactionID}}</div>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
+          <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">الوصف</h6>
+            <div class="form-group col-md-6">{{qayd_id.description}}</div>
+          </div>
+          <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">المرفقات</h6>
+            <div class="form-group col-md-6">{{qayd_id.attachments}}</div>
+          </div>
+        </div>
+      </div>
       <table class="table table-hover">
         <thead>
           <tr>
@@ -48,7 +68,13 @@
           </tr>
         </tbody>
       </table>
+      <button type="submit" name="btnsave" class="btn btn-save">طباعة PDF</button>
+      <a href="{% url 'qayds' %}" class="btn btn-close">إلغاء</a>
     </form>
+    <br>
+    <div class="form-row">
+      <h6 class="form-group col-md-6" name="user">مُنشئ القيد : {{qayd_id.userID}} </h6>
+    </div>
   </div>
 </div>
 {% endblock %}
