@@ -30,44 +30,44 @@ def contract_print_pdf(request, contract_id):
     return render(request , 'hadena/contract_print.html', context)
  
 def shareholders(request): 
-  all_share = ShareholdersInfo.objects.all()
+  shareholders = ShareholdersInfo.objects.all()
   txtsearch = None
   if 'search_name' in request.GET: # للتحقق من وجود نيم  في الرابط
       txtsearch = request.GET['search_name'] # تغذية المتغير بالمدخلات حسب النيم
       if txtsearch: # للتحقق أن البيانات ليست فارغة
-          all_share = all_share.filter(f_Name_ar__icontains=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
+          shareholders = shareholders.filter(f_Name_ar__icontains=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
   if 'search_id_number' in request.GET: # للتحقق من وجود نيم  في الرابط
       txtsearch = request.GET['search_id_number'] # تغذية المتغير بالمدخلات حسب النيم
       if txtsearch: # للتحقق أن البيانات ليست فارغة
-          all_share = all_share.filter(id_number__icontains=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
+          shareholders = shareholders.filter(id_number__icontains=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
   if 'search_mobileNumber' in request.GET: # للتحقق من وجود نيم  في الرابط
       txtsearch = request.GET['search_mobileNumber'] # تغذية المتغير بالمدخلات حسب النيم
       if txtsearch: # للتحقق أن البيانات ليست فارغة
-          all_share = all_share.filter(mobileNumber__icontains=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
+          shareholders = shareholders.filter(mobileNumber__icontains=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
   if 'typeID' in request.GET: # للتحقق من وجود نيم  في الرابط
       txtsearch = request.GET['typeID'] # تغذية المتغير بالمدخلات حسب النيم
       if txtsearch: # للتحقق أن البيانات ليست فارغة
-          all_share = all_share.filter(typeID=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
+          shareholders = shareholders.filter(typeID=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
   if 'workTradeID' in request.GET: # للتحقق من وجود نيم  في الرابط
       txtsearch = request.GET['workTradeID'] # تغذية المتغير بالمدخلات حسب النيم
       if txtsearch: # للتحقق أن البيانات ليست فارغة
-          all_share = all_share.filter(workTradeID=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف  
+          shareholders = shareholders.filter(workTradeID=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف  
   context = {
+      'shareholders':shareholders,
       'shar_form':ShareholderForm(),
-      'shareholders':all_share,
   }
   return render(request, 'hadena/shareholders.html', context)
 
 def shareholder_create(request): 
   if request.method == 'POST':
-    marketerID = None
+    supervisorID = None
     #Get Values from the form
-    if 'marketerID' in request.POST: marketerID = request.POST['marketerID']
-    else: messages.error(request, 'Error in marketerID')
+    if 'supervisorID' in request.POST: supervisorID = request.POST['supervisorID']
+    else: messages.error(request, 'Error in supervisorID')
     newPerson = PersonForm(request.POST, request.FILES)
     if newPerson.is_valid():
       newPerson.save()
-      new_shareholder = ShareholdersInfo(personID=newPerson.instance, marketerID_id=marketerID)
+      new_shareholder = ShareholdersInfo(personID=newPerson.instance, supervisorID_id=supervisorID)
       new_shareholder.save()
       messages.success(request, 'تمت الإضافة بنجاح') 
       return redirect('shareholders')
@@ -93,12 +93,12 @@ def shareholder_update(request, id):
   update_share_form = ShareholderForm(instance=shareholder_update)
   update_person_form = PersonForm(request.POST, request.FILES, instance=update_person)
   if request.method == 'POST':
-    marketerID = None
-    if 'marketerID' in request.POST: marketerID = request.POST['marketerID']
-    else: messages.error(request, 'Error in marketerID')
+    supervisorID = None
+    if 'supervisorID' in request.POST: supervisorID = request.POST['supervisorID']
+    else: messages.error(request, 'Error in supervisorID')
     if update_person_form.is_valid():
       update_person_form.save()
-      # update_share.marketerID.pk=marketerID 
+      # update_share.supervisorID.pk=supervisorID 
       messages.success(request, 'تم تحديث البيانات بنجاح')       
       return redirect('shareholders') 
     else:
@@ -107,6 +107,7 @@ def shareholder_update(request, id):
   update_person_form = PersonForm(instance=update_person)
   context = {
     'shareholder_update': shareholder_update,
+    'shareholders': shareholder_update,
     'share_form': update_share_form,
     'person_form': update_person_form,
   }

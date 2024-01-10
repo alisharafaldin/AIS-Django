@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} | Qayds {% endblock %}
+{% block content %}
+<div class=" content-wrapper">
+  <div class="main-title">
+    <h4 class="form-group col-md-9">قيود اليومية</h4>
+  </div>
+  <form method="GET" class="form-inline my-2 my-lg-0">  
+    <a href="{% url 'qayd_create' %}" class="btn btn-main">إضافة قيد جديد</a>
+    <button class="btn btn-main" type="submit">
+      بحث 
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+    <a href="{% url 'accounts' %}" class="btn btn-main" type="submit">
+      إعادة تعيين
+      <i class="fa-solid fa-rotate-right"></i>
+    </a>
+    <input class="form-control mr-sm-2 remove-outline"name="search_emp"  placeholder="بحث برقم القيد" >
+    <input class="form-control mr-sm-2 remove-outline"name="search_iqama" placeholder="بحث بالوصف" >
+    <input class="form-control mr-sm-2 remove-outline"name="search_border" placeholder="بحث بالمبلغ مدين" >
+    <input class="form-control mr-sm-2 remove-outline"name="search_company" placeholder="بحث بالمبلغ الدائن" >
+    <!-- <div class="form-control mr-sm-2 remove-outline"name="search_company">{{emp_form.companyID}}</div> -->
+  </form>
+  <div class="content">
+    {% include 'partials/_alerts.html' %}
+    <form method="POST">
+      {% csrf_token %}
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">تاريخ القيد</th>
+            <th scope="col">الوصف</th>
+            <th scope="col">عدد الأسطر</th>
+            <th scope="col">المرفقات</th>
+            <th scope="col">إجراءات</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for qayd in qayd_list %}
+          <tr>
+            <!-- لعمل ارقام تسلسلة -->
+              <th scope="row">{{forloop.counter}}</th>
+              <!-- تفاصيل الجدول -->
+              <td>{{qayd.date}}</td>
+              <td>{{qayd.description}}</td>
+              <td>{{qayd.details.count}}</td>
+              <td>{{qayd.attachments}}</td>
+              <td>
+                <a href="/accounts/qayd_update/{{qayd.id}}" class="btn-link"><i class="fas fa-edit"></i></a>
+                <a href="/accounts/qayd_detail/{{qayd.id}}" class="btn-link"><i class="fa fa-print" aria-hidden="true"></i></a>
+                <a href="/accounts/qayd_delete/{{qayd.id}}" class="btn-link"><i class="fa fa-trash" aria-hidden="true"></i></a>
+              </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </form>
+<!-- End Modal -->
+  </div>  
+</div>
+{% endblock %}

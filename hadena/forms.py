@@ -8,7 +8,9 @@ class ShareholderForm(forms.ModelForm):
     # لعمل إستثناء حقل
     # exclude = ('f_Name_ar')
     widgets = {
-      'marketerID': forms.Select(attrs={'class':'form-control', 'placeholder':'المسوق'}),
+      'supervisorID': forms.Select(attrs={'class':'form-control', 'placeholder':'المشرف'}),
+      'someoneToReferTo': forms.TextInput(attrs={'placeholder':'شخص للرجوع إليه','class':'form-control'}),
+      'phoneSomeoneToReferTo': forms.TextInput(attrs={'placeholder':'هاتف شخص للرجوع إليه','class':'form-control'}),
     }
 
 class ContractsForm(forms.ModelForm):

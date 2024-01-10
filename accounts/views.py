@@ -1,12 +1,54 @@
 
+from typing import Any
 from django.shortcuts import render , redirect, HttpResponse
 from django.contrib import messages
 from django.views.generic import CreateView
-from . models import AccountsTree , Qayd ,QaydDetails
+from . models import AccountsTree, Qayd, QaydDetails
 from employees.models import EmpInfo
 from . forms import AccountsTreeForm, QaydForm, QaydDetailsForm
 from django.utils import timezone
 from django.forms import modelformset_factory
+from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+
+class qaydCreate(CreateView):
+   model = Qayd
+   fields = "__all__" #تعبئة كل الحقول
+  #  fields = ['date','description'] #تعبئة جزء من الحقول
+   success_url = reverse_lazy({'qayd_list'}) #لإعادة توجيه إلى صفحة أخرى
+   form_class = QaydForm
+  #  success_url = reverse_lazy('qayds')
+  #  template_name = 'qayd_create' #لتحديد صفحة القالب 
+   pass
+   
+class qaydDetail(DetailView):
+   model = Qayd
+  #  context_object_name = 'qayd' #المتغير الذي يستخدم في القالب
+
+class qaydUpdate(UpdateView):
+   model = Qayd
+   form_class = QaydForm
+  #  fields = ['description'] #تعبئة كل الحقول
+   template_name = 'accounts/qayd_update.html'
+   success_url = reverse_lazy({'qayd_list'}) #لإعادة توجيه إلى صفحة أخرى
+   def get_context_data(self, **kwargs):
+      context = super().get_context_data(**kwargs)
+      context['qayd_update_form'] = QaydForm()
+      context['qayd_update_details_form'] = QaydDetailsForm()
+      return context
+
+class qaydDelete(DeleteView):
+   model = Qayd
+   success_url = reverse_lazy({'qayd_list'}) #لإعادة توجيه إلى صفحة أخرى
+   
+class qaydList(ListView):
+   model = Qayd
+  # queryset = Qayd.objects.order_by('date') #لترتيب البيانات
+  # ordering = ["-date"] #لترتيب البيانات
+  # context_object_name = 'qayds' #المتغير الذي يستخدم في القالب
+  # paginate_by = 
+
+
 
 def account_create(request):
     if request.method == 'POST':
@@ -71,39 +113,9 @@ def accounts(request):
 
 def qayd_create(request):
   if request.method == 'POST':
-    # if 'date' in request.POST: date = request.POST['date']
-    # else: messages.error(request, 'Error in date')
-    # if 'rate' in request.POST: rate = request.POST['rate']
-    # else: messages.error(request, 'Error in rate')
-    # if 'currencyID' in request.POST: currencyID = request.POST['currencyID']
-    # else: messages.error(request, 'Error in currencyID')
-    # if 'debit' in request.POST: debit = request.POST['debit']
-    # else: messages.error(request, 'Error in debit')
-    # if 'credit' in request.POST: credit = request.POST['credit']
-    # else: messages.error(request, 'Error in credit')
-    # if 'description' in request.POST: description = request.POST['description']
-    # else: messages.error(request, 'Error in description')
-    # if 'accountID' in request.POST: accountID = request.POST['accountID']
-    # else: messages.error(request, 'Error in accountID')
-    # if 'projectID' in request.POST: projectID = request.POST['projectID']
-    # else: messages.error(request, 'Error in ')
-    # if 'empID' in request.POST: empID = request.POST['empID']
-    # else: messages.error(request, 'Error in empID')
     qayd = QaydForm(request.POST, request.FILES)
     if qayd.is_valid():
       qayd.save()
-      # qayd_details = QaydDetails()
-      # qayd_details.qaydID=qayd.instance
-      # qayd_details.date = request.POST['date']
-      # qayd_details.rate = request.POST['rate']
-      # qayd_details.debit = request.POST['debit']
-      # qayd_details.credit = request.POST['credit']
-      # qayd_details.description = request.POST['description']
-      # qayd_details.accountID = request.POST['accountID']
-      # qayd_details.currencyID = request.POST['currencyID']
-      # qayd_details.projectID = request.POST['projectID']
-      # qayd_details.empID = request.POST['empID']
-      # qayd_details.save()
       messages.success(request, 'تمت الإضافة بنجاح') 
       return redirect('qayds')
     else :      
@@ -138,31 +150,20 @@ def qayd_reade(request, id):
     }
     return render(request, 'accounts/qayd_reade.html', context)
 
-# def qayd_update(request, id):
-#     qayd_update = Qayd.objects.get(id=id)
-#     qayd_update_details = modelformset_factory(QaydDetails, fields=('qaydID',))
-#     formset = qayd_update_details(queryset=QaydDetails.objects.filter(qaydID=id))
-#     context = {
-#       'qayd_update':formset,
-#     }
-#     return render(request, 'accounts/qayd_update.html', context)
-
 def qayd_update(request, id):
   if request.user.is_authenticated and not request.user.is_anonymous:
     qayd_update = Qayd.objects.get(id=id)
     qayd_update_form = QaydForm(request.POST, request.FILES, instance=qayd_update)
-    qayd_update_details = QaydDetails.objects.get(qaydID=id)
+    qayd_update_details = QaydDetails.objects.filter(qaydID=id)
     qayd_update_details_form = QaydDetailsForm(request.POST, request.FILES, instance=qayd_update)
     if 'btnsave' in request.POST:
       if request.method == 'POST':
         qayd_update.userID = request.user
         qayd_update.date = request.POST['date']
-        qayd_update.descrpition = request.POST['description']
+        qayd_update.description = request.POST['description']
         qayd_update.typeTransactionID_id = request.POST['typeTransactionID']
         qayd_update.attachments = request.POST['attachments']  
         qayd_update.save()
-        # if qayd_update_details_form.is_valid():
-        # qayd_update_details_form.save()
         qayd_update_details.accountID_id = request.POST['accountID']
         qayd_update_details.debit = request.POST['debit']
         qayd_update_details.credit = request.POST['credit']
@@ -174,8 +175,8 @@ def qayd_update(request, id):
         return redirect('qayds')
       else:
         messages.error(request, 'خطأ في البيانات')   
-    qayd_update_form = QaydForm(instance=qayd_update)
-    qayd_update_details_form = QaydDetailsForm(instance=qayd_update_details)
+    qayd_update_form=  QaydForm(instance=qayd_update)
+    qayd_update_details_form = QaydDetailsForm(instance=qayd_update)
     class calc:
       qdd = QaydDetails.objects.filter(qaydID=id)
       total_d = 0
@@ -224,8 +225,9 @@ def qayd_delete(request, id):
     }
     return render(request, 'accounts/qayd_delete.html', context)
 
+ # -------- Class----------
+
 def qayds(request):
-    context = {
-        'qayds':Qayd.objects.all(),
-    }
+    context = {'qayds':Qayd.objects.all(),}    
     return render(request,'accounts/qayds.html', context)
+

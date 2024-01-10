@@ -1,5 +1,8 @@
 from django.db import models
 from datetime import date 
+from django.utils import timezone
+from datetime import datetime
+
 
 class Countries(models.Model):
   name_ar = models.CharField(verbose_name='إسم الدولة عربي',max_length=50)
@@ -155,6 +158,7 @@ class LegalPersonality(models.Model):
     image = models.ImageField(verbose_name='شعار الشركة', upload_to='photos/%Y/%m/%d/', null=True, blank=True)
     active = models.BooleanField(default=False, verbose_name="نشط", blank=True, null=True)
     Notes = models.CharField(verbose_name='ملاحظات',max_length=100, blank=True, null=True)
+    # created_dt = models.DateTimeField(verbose_name='تاريخ الإنشاء',auto_now_add=True)
     def __str__(self):
         return str(self.name_ar)
 
@@ -212,6 +216,6 @@ class Person(models.Model):
     notes = models.TextField(verbose_name='ملاحظات', blank=True, null=True)
     attachments = models.FileField(verbose_name='مرفقات', blank=True, null=True)
     documentLink = models.CharField(verbose_name='رابط المستندات',max_length=100, blank=True, null=True)
-
+    # created_dt = models.DateTimeField(verbose_name='تاريخ الإنشاء', auto_now_add=True)
     def __str__(self):
         return str(self.f_Name_ar)

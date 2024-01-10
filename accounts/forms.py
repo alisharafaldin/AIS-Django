@@ -21,8 +21,7 @@ class QaydForm(forms.ModelForm):
         model = Qayd
         fields = '__all__'
         widgets = {
-            'id': forms.TextInput(attrs={'class':'form-control', 'placeholder':'معرف القيد'}),
-            'userID': forms.Select(attrs={'class':'form-control', 'placeholder':'المستخدم'}),
+            # 'created_py': forms.Select(attrs={'class':'form-control', 'placeholder':'المستخدم'}),
             'date': forms.TextInput(attrs={'class':'form-control',  'type':'date' , 'placeholder':'تاريخ القيد'}),
             'typeTransactionID': forms.Select(attrs={'class':'form-control', 'placeholder':'العملية'}),
             'description': forms.Textarea(attrs={'class':'form-control', 'placeholder':'وصف القيد', 'style':'height: 50px;'}),

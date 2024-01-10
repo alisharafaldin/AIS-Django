@@ -1,10 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 from basicinfo.models import Project, Countries
+# from hadena.models import ShareholdersInfo, Cycle
 from employees.models import EmpInfo
 from datetime import datetime
 from django.utils import timezone
-# from hadena.models import ShareholdersInfo, Cycle
 # Create your models here.
 
 class AccountType(models.Model):
@@ -51,17 +51,15 @@ class TypeTransaction(models.Model):
     return str(self.typeTransaction_ar)
     
 class Qayd(models.Model):
-  userID = models.ForeignKey(User, verbose_name='المستخدم', on_delete=models.CASCADE, null=True)
   typeTransactionID = models.ForeignKey(TypeTransaction , verbose_name='نوع العملية', default=1, on_delete=models.CASCADE, null=True)
   date = models.DateField(verbose_name='تاريخ القيد', default=timezone.now(), blank=True, null=True)
   description = models.TextField(verbose_name='وصف القيد', max_length=250, blank=True, null=True)
   attachments = models.FileField(verbose_name='مرفقات القيد', blank=True, null=True)
-  details = models.ManyToManyField(AccountsTree, through='QaydDetails')
-  # currencyID = models.ForeignKey(Countries , verbose_name='العملة', default=1, on_delete=models.CASCADE, null=True)
-  # projectID = models.ForeignKey(Project, verbose_name='المشروع', default=1, on_delete=models.CASCADE, blank=True, null=True)
-  # empID = models.ForeignKey(EmpInfo, verbose_name='الموظف', on_delete=models.CASCADE, blank=True, null=True)
-  # shareholdersID = models.ForeignKey(ShareholdersInfo, related_name='shareholdersID', verbose_name='المساهم', default=1, on_delete=models.CASCADE, blank=True, null=True)
-  # cycleID = models.ForeignKey(Cycle,related_name='cycleID', verbose_name='الدورة', default=1, on_delete=models.CASCADE, blank=True, null=True)
+  # details = models.ManyToManyField(AccountsTree, through='QaydDetails')
+  created_py = models.ForeignKey(User, verbose_name='المُنشئ', related_name='qayds', on_delete=models.CASCADE)
+  created_dt = models.DateTimeField(verbose_name='تاريخ الإنشاء',auto_now_add=True)
+  updated_py = models.ForeignKey(User, verbose_name='المُعدل', related_name='+', on_delete=models.CASCADE, blank=True, null=True)
+  updated_dt = models.DateTimeField(verbose_name='تاريخ التعديل', blank=True, null=True)
   def __str__(self):
     # return ' | Qayd id: ' + str(self.id)
     return  str(self.id)
@@ -77,8 +75,8 @@ class QaydDetails(models.Model):
   description = models.TextField(verbose_name='وصف تفصيل القيد', max_length=250,blank=True, null=True)
   projectID = models.ForeignKey(Project, verbose_name='المشروع', default=1, on_delete=models.CASCADE, blank=True, null=True)
   empID = models.ForeignKey(EmpInfo, verbose_name='الموظف',on_delete=models.CASCADE, blank=True, null=True)
-  # shareholdersID = models.ForeignKey(ShareholdersInfo, related_name='shareholdersID', verbose_name='المساهم', default=1, on_delete=models.CASCADE, blank=True, null=True)
-  # cycleID = models.ForeignKey(Cycle,related_name='cycleID', verbose_name='الدورة', default=1, on_delete=models.CASCADE, blank=True, null=True)
+  # shareholdersID = models.ForeignKey(ShareholdersInfo, related_name='المساهم', verbose_name='المساهم', default=1, on_delete=models.CASCADE, blank=True, null=True)
+  # cycleID = models.ForeignKey(Cycle, related_name='cycleID', verbose_name='الدورة', default=1, on_delete=models.CASCADE, blank=True, null=True)
   def __str__(self):
     # return 
     return str(self.id)

@@ -12,6 +12,8 @@
     {% include 'partials/_alerts.html' %}
     <form method="POST">
       {% csrf_token %}
+      {{form.as_p}}
+      <input type="submit" value="create">
       <br>
       <button type="submit" name="btnsave" class="btn btn-save">إضافة</button>
       <a href="{% url 'qayds' %}" class="btn btn-close" data-dismiss="modal" aria-label="Close">إلغاء</a>

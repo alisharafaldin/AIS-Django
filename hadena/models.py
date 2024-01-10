@@ -19,7 +19,10 @@ class Cycle(models.Model):
 
 class ShareholdersInfo(models.Model):
   personID = models.OneToOneField(Person, related_name='personID', on_delete=models.CASCADE)
-  marketerID = models.ForeignKey(EmpInfo, related_name='marketerID', verbose_name='المسووق',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الموظف في حالة حذف المسوق
+  supervisorID = models.ForeignKey(EmpInfo, related_name='المشرف', verbose_name='المشرف',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الموظف في حالة حذف المسوق
+  someoneToReferTo = models.CharField(verbose_name='شخص للرجوع إليه',max_length=100, blank=True, null=True)
+  phoneSomeoneToReferTo = models.CharField(verbose_name='هاتف شخص للرجوع إليه',max_length=100, blank=True, null=True)
+
   def __str__(self):
     return str(self.personID)
   
