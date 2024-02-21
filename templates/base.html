@@ -7,6 +7,7 @@
     <title>AIS{% block title %}{% endblock %}</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <!-- Font Awesome -->
     <link
       rel="stylesheet"
@@ -88,6 +89,7 @@
     <script>
       $.widget.bridge("uibutton", $.ui.button);
     </script>
+    <script src="{% static 'dist/js/learn.js' %}"></script>
     <!-- Bootstrap 4 rtl -->
     <script src="https://cdn.rtlcss.com/bootstrap/v4.2.1/js/bootstrap.min.js"></script>
     <!-- Bootstrap 4 -->
@@ -116,5 +118,6 @@
     <script src="{% static 'dist/js/pages/dashboard.js' %}"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{% static 'dist/js/demo.js' %}"></script>
+    <script src="{% static 'dist/js/learn.js' %}"></script>
   </body>
 </html>

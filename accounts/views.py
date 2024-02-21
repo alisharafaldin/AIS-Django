@@ -11,43 +11,42 @@ from django.forms import modelformset_factory
 from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
-class qaydCreate(CreateView):
-   model = Qayd
-   fields = "__all__" #تعبئة كل الحقول
-  #  fields = ['date','description'] #تعبئة جزء من الحقول
-   success_url = reverse_lazy({'qayd_list'}) #لإعادة توجيه إلى صفحة أخرى
-   form_class = QaydForm
-  #  success_url = reverse_lazy('qayds')
-  #  template_name = 'qayd_create' #لتحديد صفحة القالب 
-   pass
+# class qaydCreate(CreateView):
+#    model = Qayd
+#    fields = "__all__" #تعبئة كل الحقول
+#   #  fields = ['date','description'] #تعبئة جزء من الحقول
+#    success_url = reverse_lazy({'qayd_list'}) #لإعادة توجيه إلى صفحة أخرى
+#    form_class = QaydForm
+#   #  success_url = reverse_lazy('qayds')
+#   #  template_name = 'qayd_create' #لتحديد صفحة القالب 
+#    pass
    
-class qaydDetail(DetailView):
-   model = Qayd
-  #  context_object_name = 'qayd' #المتغير الذي يستخدم في القالب
+# class qaydDetail(DetailView):
+#    model = Qayd
+#   #  context_object_name = 'qayd' #المتغير الذي يستخدم في القالب
 
-class qaydUpdate(UpdateView):
-   model = Qayd
-   form_class = QaydForm
-  #  fields = ['description'] #تعبئة كل الحقول
-   template_name = 'accounts/qayd_update.html'
-   success_url = reverse_lazy({'qayd_list'}) #لإعادة توجيه إلى صفحة أخرى
-   def get_context_data(self, **kwargs):
-      context = super().get_context_data(**kwargs)
-      context['qayd_update_form'] = QaydForm()
-      context['qayd_update_details_form'] = QaydDetailsForm()
-      return context
+# class qaydUpdate(UpdateView):
+#    model = Qayd
+#    form_class = QaydForm
+#   #  fields = ['description'] #تعبئة كل الحقول
+#    template_name = 'accounts/qayd_update.html'
+#    success_url = reverse_lazy({'qayd_list'}) #لإعادة توجيه إلى صفحة أخرى
+#    def get_context_data(self, **kwargs):
+#       context = super().get_context_data(**kwargs)
+#       context['qayd_update_form'] = QaydForm()
+#       context['qayd_update_details_form'] = QaydDetailsForm()
+#       return context
 
-class qaydDelete(DeleteView):
-   model = Qayd
-   success_url = reverse_lazy({'qayd_list'}) #لإعادة توجيه إلى صفحة أخرى
+# class qaydDelete(DeleteView):
+#    model = Qayd
+#    success_url = reverse_lazy({'qayd_list'}) #لإعادة توجيه إلى صفحة أخرى
    
-class qaydList(ListView):
-   model = Qayd
-  # queryset = Qayd.objects.order_by('date') #لترتيب البيانات
-  # ordering = ["-date"] #لترتيب البيانات
-  # context_object_name = 'qayds' #المتغير الذي يستخدم في القالب
-  # paginate_by = 
-
+# class qaydList(ListView):
+#    model = Qayd
+#   # queryset = Qayd.objects.order_by('date') #لترتيب البيانات
+#   # ordering = ["-date"] #لترتيب البيانات
+#   # context_object_name = 'qayds' #المتغير الذي يستخدم في القالب
+#   # paginate_by = 
 
 
 def account_create(request):

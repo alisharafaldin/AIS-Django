@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     path('', views.shareholders, name='shareholders'),
+    path('shareholder_FG', views.shareholder_FG, name='shareholder_FG'),
     path('shareholder_create', views.shareholder_create, name='shareholder_create'),
     path('shareholder_reade/<int:id>', views.shareholder_reade, name='shareholder_reade'),
     path('shareholder_update/<int:id>', views.shareholder_update, name='shareholder_update'),

@@ -80,6 +80,9 @@ def shareholder_create(request):
   }
   return render(request , 'hadena/shareholder_create.html', context)
 
+def shareholder_FG(request): 
+  return render(request , 'hadena/shareholder_FG.html')
+
 def shareholder_reade(request, id):
     shareholder_reade = ShareholdersInfo.objects.get(id=id)
     context = {

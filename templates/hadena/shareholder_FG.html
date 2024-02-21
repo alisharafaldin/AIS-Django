@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %} 
+{% block title %} | Hadina | New Shareholder {% endblock %}
+{% block content %}
+<style>
+  .title-label {
+        background:#ececec;
+        color: rgb(88, 88, 88);
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+</style>
+<div class="content-wrapper">
+  <div class="content">
+    <div class="modal-content">
+      <div class="modal-body">
+        {% include 'partials/_alerts.html' %}
+        <!-- Start Modal Countries -->
+        <form method="POST">
+          <div class="form-row main-title">
+            <h5 class="form-group" id="staticBackdropLabel">إضافة مساهم جديد</h5>
+            <button type="submit" class="btn btn-save" name="btnempsave">إضافة</button>
+            <a href="{% url 'shareholders' %}" class="btn btn-close">إلغاء</a>
+          </div>
+          {% csrf_token %}
+          <br/>
+          <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSceWF9PLkdOlhpNgXbquimS3xQuC1J9qqhnKGwSsdWaeLqL9w/viewform?embedded=true" width="700" height="520" frameborder="0" marginheight="0" marginwidth="0">جارٍ التحميل…</iframe>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
