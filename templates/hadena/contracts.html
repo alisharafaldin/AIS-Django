@@ -53,7 +53,7 @@
           <td>{{contract.numberOfShares}}</td>
           <td>{{contract.amountOfShare}}</td>
           <td>
-            <a href="{% url 'contract_reade' contract.id %}" class="btn-link"><i class="fa fa-print"></i></a>
+            <a href="{% url 'contract_print' contract.id %}" class="btn-link"><i class="fa fa-print"></i></a>
             <a href="{% url 'contract_update' contract.id %}" class="btn-link"><i class="fas fa-edit"></i></a>
             <a href="{% url 'contract_delete' contract.id %}" class="btn-link"><i class="fa fa-trash"></i></a>
           </td>

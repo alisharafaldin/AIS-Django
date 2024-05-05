@@ -112,19 +112,18 @@ def accounts(request):
 
 def qayd_create(request):
   if request.method == 'POST':
-    qayd = QaydForm(request.POST, request.FILES)
-    if qayd.is_valid():
-      qayd.save()
+    qayd_new = QaydForm(request.POST, request.FILES)
+    if qayd_new.is_valid():
+      qayd_new.save()
       messages.success(request, 'تمت الإضافة بنجاح') 
       return redirect('qayds')
     else :      
       messages.error(request, 'خطأ في البيانات') 
       return redirect('qayd_create')
-
   context = {
-      'all_qayd': Qayd.objects.all(),
+      # 'all_qayd': Qayd.objects.all(),
       'qayd_form': QaydForm(),
-      'qayd_details_form': QaydDetailsForm(),
+      # 'qayd_details_form': QaydDetailsForm(),
   }    
   return render(request,'accounts/qayd_create.html', context)
 
@@ -153,7 +152,7 @@ def qayd_update(request, id):
   if request.user.is_authenticated and not request.user.is_anonymous:
     qayd_update = Qayd.objects.get(id=id)
     qayd_update_form = QaydForm(request.POST, request.FILES, instance=qayd_update)
-    qayd_update_details = QaydDetails.objects.filter(qaydID=id)
+    qayd_update_details = QaydDetails.objects.get(qaydID=id)
     qayd_update_details_form = QaydDetailsForm(request.POST, request.FILES, instance=qayd_update)
     if 'btnsave' in request.POST:
       if request.method == 'POST':
@@ -229,4 +228,43 @@ def qayd_delete(request, id):
 def qayds(request):
     context = {'qayds':Qayd.objects.all(),}    
     return render(request,'accounts/qayds.html', context)
+
+
+def qayd_create_test(request):
+  if request.method == 'POST':
+    companyID = None
+    workingStatusID = None
+    contractSalary = None
+    fixedExtra = None
+    workStartDate = None
+    workEndDate = None
+    #Get Values from the form
+    if 'companyID' in request.POST: companyID = request.POST['companyID']
+    else: messages.error(request, 'Error in companyID')
+    if 'workingStatusID' in request.POST: workingStatusID = request.POST['workingStatusID']
+    else: messages.error(request, 'Error in workingStatusID')
+    if 'contractSalary' in request.POST: contractSalary = request.POST['contractSalary']
+    else: messages.error(request, 'Error in contractSalary')
+    if 'fixedExtra' in request.POST: fixedExtra = request.POST['fixedExtra']
+    else: messages.error(request, 'Error in fixedExtra')
+    if 'workStartDate' in request.POST: workStartDate = request.POST['workStartDate']
+    else: messages.error(request, 'Error in workStartDate')
+    if 'workEndDate' in request.POST: workEndDate = request.POST['workEndDate']
+    else: messages.error(request, 'Error in workEndDate')
+    newPerson = PersonForm(request.POST, request.FILES)
+    if newPerson.is_valid():
+      newPerson.save()
+      new_emp = EmpInfo(personID=newPerson.instance, companyID_id=companyID, workingStatusID_id=workingStatusID, contractSalary=contractSalary, workStartDate=workStartDate, workEndDate=workEndDate, fixedExtra=fixedExtra)
+      new_emp.save()
+      messages.success(request, 'تمت الإضافة بنجاح') 
+      return redirect('employees')
+    else :      
+      messages.error(request, 'خطأ في البيانات') 
+      return redirect('employee_create')
+  context = {
+    'emp_form': EmpForm(),
+    'person_form': PersonForm(),
+  }
+  return render(request, 'employees/employee_create.html', context)
+
 

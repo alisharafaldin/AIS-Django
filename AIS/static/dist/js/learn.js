@@ -6,7 +6,7 @@
 // date1.innerHTML = "Datedd"
 // console.table(["Ali","Ola","Hind"]);
 
-var l = 'Im Love'
+var l = 'I Love'
 var i = 'Python'
 document.write(``)
 test.innerHTML = l +" "+ i

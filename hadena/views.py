@@ -150,6 +150,13 @@ def contract_create(request):
 
 def contract_reade(request, id):
     contract_reade = Contracts.objects.get(id=id)
+    buffer = io.BytesIO()
+    p = canvas.Canvas(buffer)
+    p.drawString(100, 100, "Hello world.")
+    p.showPage()
+    p.save()
+    buffer.seek(0)
+    printPDF = FileResponse(buffer, as_attachment=True, filename='hlo.pdf')
     context = {
         'contract_reade':contract_reade,
         'totalamountOfShare': contract_reade.amountOfShare * contract_reade.numberOfShares
@@ -224,5 +231,7 @@ def contract_print(request, id):
     # FileResponse sets the Content-Disposition header so that browsers
     # present the option to save the file.
     buffer.seek(0)
-    return FileResponse(buffer, as_attachment=True, filename='hello.pdf')
+    return FileResponse(buffer, as_attachment=True, filename='hlo.pdf')
+
+
 

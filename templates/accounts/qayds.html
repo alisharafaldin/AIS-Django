@@ -21,11 +21,16 @@
     <input class="form-control mr-sm-2 remove-outline"name="search_border" placeholder="بحث بالمبلغ مدين" >
     <input class="form-control mr-sm-2 remove-outline"name="search_company" placeholder="بحث بالمبلغ الدائن" >
     <!-- <div class="form-control mr-sm-2 remove-outline"name="search_company">{{emp_form.companyID}}</div> -->
+    
   </form>
   <div class="content">
     {% include 'partials/_alerts.html' %}
     <span  id="test"></span>
-
+<script>
+  $(document).ready(function(){
+    $("span").hide()
+  })
+</script>
     <form method="POST">
       {% csrf_token %}
       <table class="table table-hover">
