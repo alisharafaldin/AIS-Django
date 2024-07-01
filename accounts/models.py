@@ -55,7 +55,6 @@ class Qayd(models.Model):
   date = models.DateField(verbose_name='تاريخ القيد', default=timezone.now() , blank=True, null=True)
   description = models.TextField(verbose_name='وصف القيد', max_length=250, blank=True, null=True)
   attachments = models.FileField(verbose_name='مرفقات القيد', blank=True, null=True)
-  # details = models.ManyToManyField(AccountsTree, through='QaydDetails')
   created_py = models.ForeignKey(User, verbose_name='المُنشئ', related_name='qayds', on_delete=models.CASCADE)
   created_dt = models.DateTimeField(verbose_name='تاريخ الإنشاء',auto_now_add=True)
   updated_py = models.ForeignKey(User, verbose_name='المُعدل', related_name='+', on_delete=models.CASCADE, blank=True, null=True)
@@ -66,20 +65,20 @@ class Qayd(models.Model):
 
 class QaydDetails(models.Model):
   qaydID = models.ForeignKey(Qayd, verbose_name='رأس القيد', default=1, on_delete=models.CASCADE)
-  date = models.DateField(verbose_name='التاريخ', default=datetime.now, blank=True, null=True)
+  date_details = models.DateField(verbose_name='التاريخ', default=datetime.now(), blank=True, null=True)
   accountID = models.ForeignKey(AccountsTree, verbose_name='الحساب', default=1, on_delete=models.CASCADE, blank=True, null=True)
   currencyID = models.ForeignKey(Countries , verbose_name='العملة', default=1, on_delete=models.CASCADE, null=True)
   rate = models.DecimalField(max_digits=6, verbose_name='سعر الصرف', default=1, decimal_places=2)
   debit = models.DecimalField(max_digits=6, verbose_name='مدين', default=0, decimal_places=2)
   credit = models.DecimalField(max_digits=6, verbose_name='دائن', default=0, decimal_places=2)
-  description = models.TextField(verbose_name='وصف تفصيل القيد', max_length=250,blank=True, null=True)
+  description_details = models.TextField(verbose_name='وصف تفصيل القيد', max_length=250,blank=True, null=True)
   projectID = models.ForeignKey(Project, verbose_name='المشروع', default=1, on_delete=models.CASCADE, blank=True, null=True)
   empID = models.ForeignKey(EmpInfo, verbose_name='الموظف',on_delete=models.CASCADE, blank=True, null=True)
   # shareholdersID = models.ForeignKey(ShareholdersInfo, related_name='المساهم', verbose_name='المساهم', default=1, on_delete=models.CASCADE, blank=True, null=True)
   # cycleID = models.ForeignKey(Cycle, related_name='cycleID', verbose_name='الدورة', default=1, on_delete=models.CASCADE, blank=True, null=True)
   def __str__(self):
     # return 
-    return str(self.id)
+    return str(self.qaydID)
   class Meta:
     #ترتيب العناصر حسب الآي دي
     ordering = ['-id']

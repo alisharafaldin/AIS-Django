@@ -1,7 +1,6 @@
 {% extends 'base.html' %} {% load static %} {% block title %} | Reade Employee  ( {{employee_reade.id}} ) {% endblock %} {% block content %}
 <div class="content-wrapper">
-  <h4 class="main-title">بطاقة تعريف الموظف : {{employee_reade.personID.f_Name_ar}} {{employee_reade.personID.s_Name_ar}} {{employee_reade.personID.t_Name_ar}}
-    {{employee_reade.personID.fo_Name_ar}}</h4>
+  <h4 class="main-title">بطاقة تعريف الموظف :  {{employee_reade.personID.fullName_ar}}</h4>
  <div class="content">
   <br />
   <!-- <a href="{% url 'index' %}" class="btn btn-warning">الرئيسة</a> -->
@@ -18,7 +17,7 @@
           {% if emp.emp_Photo %}
           <img src="{{ emp.emp_Photo.url }}" class="card-img" alt="..." />
           {% else %}
-          <img src="{% static 'dist/img/TS.png' %}" class="card-img" alt="" />
+          <img src="{% static 'dist/img/AIS.png' %}" class="card-img" alt="" />
           {% endif %}
         </div>
         <div class="col-md-8">
@@ -31,15 +30,13 @@
           <div class="form-row">
             <label class="sub-title">الإسم عربي : </label>
             <p class="card-title sub-title-content" style="width: auto">
-              {{employee_reade.personID.f_Name_ar}} {{employee_reade.personID.s_Name_ar}} {{employee_reade.personID.t_Name_ar}}
-              {{employee_reade.personID.fo_Name_ar}}
+              {{employee_reade.personID.fullName_ar}}
             </p>
           </div>
           <div class="form-row">
             <label class="sub-title">الإسم إنجليزي : </label>
             <p class="card-title sub-title-content" style="width: auto">
-              {{employee_reade.personID.f_Name_en|lower|capfirst }} {{employee_reade.personID.s_Name_en|lower|capfirst }} {{employee_reade.personID.t_Name_en|lower|capfirst }}
-              {{employee_reade.personID.fo_Name_en|lower|capfirst }}
+              {{employee_reade.personID.fullName_en|lower|capfirst }} 
             </p>
           </div>
           <div class="form-row">

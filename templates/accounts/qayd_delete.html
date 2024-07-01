@@ -35,7 +35,10 @@
           <tr>
             <th scope="col">#</th>
             <!-- <th scope="col">رقم القيد</th> -->
+            <th scope="col">التاريخ</th>
             <th scope="col">الحساب</th>
+            <th scope="col">العملة</th>
+            <th scope="col">سعر الصرف</th>
             <th scope="col">مدين</th>
             <th scope="col">دائن</th>
             <th scope="col">الوصف</th>
@@ -49,10 +52,13 @@
             <!-- لعمل ارقام تسلسلة -->
             <th scope="row">{{forloop.counter}}</th>
             <!-- تفاصيل الجدول -->
+            <td>{{ qdf.date_details }}</td>
             <td>{{ qdf.accountID }}</td>
+            <td>{{ qdf.currencyID }}</td>
+            <td>{{ qdf.rate }}</td>
             <td>{{ qdf.debit }}</td>
             <td>{{ qdf.credit }}</td>
-            <td>{{ qdf.desQaydDetails }}</td>
+            <td>{{ qdf.description_details }}</td>
             <td>{{ qdf.projectID }}</td>
             <td>{{ qdf.empID }}</td>
           </tr>
@@ -61,20 +67,22 @@
         <tbody>
           <tr>
             <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
             <th>المجموع</th>
-            <th>مجموع مدين : {{calc.total_d}}</th>
-            <th>مجموع الدائن : {{calc.total_c}}</th>
-            {% if calc.other == 0 %}
-              <th>الفرق : {{calc.other}}</th>
+            <th>مجموع مدين : {{total_d}}</th>
+            <th>مجموع الدائن : {{total_c}}</th>
+            {% if difference == 0 %}
+              <th>الفرق : <span style="color: green;">{{difference}}</span></th>
             {% else %}
-              <th>الفرق : <span style="color: red;">{{calc.other}}</span></th>
+              <th>الفرق : <span style="color: red;">{{difference}}</span></th>
             {% endif %}
           </tr>
         </tbody>
       </table>
       <br>
       <button type="submit" name="btndelete" class="btn btn-danger">تأكيد الحذف</button>
-      <a href="{% url 'qayd_update' qayd_id %}" name="btnupdate" class="btn btn-save">تعديل</a>
       <a href="{% url 'qayds' %}" class="btn btn-close">إلغاء</a>
     </form>
     <br>

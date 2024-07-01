@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['192.168.0.133', 'localhost', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    'shrfntod.apps.ShrfntodConfig',
     'basicinfo.apps.BasicinfoConfig',
     'hadena.apps.HadenaConfig',
     'employees.apps.EmployeesConfig',
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'import_export',
     'django.contrib.humanize',
+    'taggit',
 ]
 
 MIDDLEWARE = [
@@ -144,7 +146,10 @@ STATICFILES_DIRS = [
 MEDIA_ROOT =  os.path.join(BASE_DIR , 'media')
 MEDIA_URL = '/media/'
 
+LOGIN_URL = '/profiles/signin'
+
 #Custom Messages
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',

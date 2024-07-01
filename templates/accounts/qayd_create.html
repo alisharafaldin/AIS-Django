@@ -18,8 +18,6 @@
   <div class="main-title">
     <h4 class="form-group col-md-9">قيد يومية جديد</h4>
   </div>
-  <form method="GET" class="form-inline my-2 my-lg-0">
-  </form>
   <div class="content">
     {% include 'partials/_alerts.html' %}
     <form method="POST">
@@ -33,8 +31,9 @@
       <div class="form-row">
         <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
           <div class="form-row">
-            <!-- <h6 style="font-weight: bold" class="col-md-3">المستخدم</h6> -->
-            <!-- <div class="form-group col-md-6">{{qayd_form.created_py}}</div> -->
+          <h6 style="font-weight: bold" class="col-md-3">المستخدم</h6>
+          <div class="form-group col-md-6">{{qayd_form.created_py}}</div>
+        </div>
           </div>
             <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">التاريخ</h6>
@@ -56,10 +55,12 @@
           </div>
         </div>
       </div>
-      <!-- <table class="table table-hover">
+      <table class="table table-hover">
         <thead>
           <tr>
-            <th scope="col">#</th>
+            <th scope="col">{{ qayd_details_form.total_form_count }}</th>
+            <th scope="col">ID</th>
+            <th scope="col">التاريخ</th>
             <th scope="col">الحساب</th>
             <th scope="col">العملة</th>
             <th scope="col">سعر الصرف</th>
@@ -71,17 +72,26 @@
           </tr>
         </thead>
         <tbody id="tbody">
-          <tr id="row1">
-            <td><a class="btn btn-danger" style="background-color: rgb(192, 0, 0);" id="delete-qayd1">-</a></td>
-            <td name="accID">{{ qayd_details_form.accountID }}</td>
-            <td name="currencyID">{{ qayd_details_form.currencyID }}</td>
-            <td name="rate">{{ qayd_details_form.rate }}</td>
-            <td name="debit">{{ qayd_details_form.debit }}</td>
-            <td name="credit">{{ qayd_details_form.credit }}</td>
-            <td name="description">{{ qayd_details_form.description }}</td>
-            <td name="projectID">{{ qayd_details_form.projectID }}</td>
-            <td name="empID">{{ qayd_details_form.empID }}</td>
-          </tr>
+          {{ qayd_details_form.management_form }} 
+          <div id="formset-container">
+            {% for qayd_details_form in qayd_details_form %}
+            <div class="form-container">
+              <tr>
+                <td><a class="btn btn-danger" style="background-color: rgb(192, 0, 0);" id="delete-qayd1">-{{forloop.counter}}</a></td>
+                <td>{{ qayd_details_form.qaydID }}</td>
+                <td>{{ qayd_details_form.date_details }}</td>
+                <td>{{ qayd_details_form.accountID }}</td>
+                <td>{{ qayd_details_form.currencyID }}</td>
+                <td>{{ qayd_details_form.rate }}</td>
+                <td>{{ qayd_details_form.debit }}</td>
+                <td>{{ qayd_details_form.credit }}</td>
+                <td>{{ qayd_details_form.description_details }}</td>
+                <td>{{ qayd_details_form.projectID }}</td>
+                <td>{{ qayd_details_form.empID }}</td>
+              </tr>
+            </div>
+            {% endfor %}
+          </div>
         </tbody>
         <tbody>
           <tr>
@@ -89,18 +99,17 @@
             <td></td>
             <td></td>
             <td></td>
-         <th>المجموع</th>
-            <th>مجموع مدين : {{calc.total_d}}</th>
-            <th>مجموع الدائن : {{calc.total_c}}</th>
-            {% if calc.other == 0 %}
-            <th>الفرق : {{calc.other}}</th>
+            <th>المجموع</th>
+            <th id="total-d">مجموع مدين : {{total_d}}</th>
+            <th id="total-c">مجموع الدائن : {{total_c}}</th>
+            {% if difference == 0 %}
+            <th id="result">الفرق : <span style="color: green;">{{difference}}</span></th>
             {% else %}
-            <th>الفرق : <span style="color: red;">{{calc.other}}</span></th>
+            <th id="result">الفرق : <span style="color: red;">{{difference}}</span></th>
             {% endif %}
-            <a class="btn-qayd btn btn-save" style="background-color: green;" id="add-qayd">+</a>
           </tr>
         </tbody>
-      </table> -->
+      </table>
     </form>
     <!-- End Modal -->
     <div class="form-row">
@@ -108,38 +117,40 @@
     </div>
   </div>
 </div>
-<script>
 
-  let counter = 1;
-  function add_row(){
-    counter +=1
-    html = `
-      <tr id="row${counter}">
-        <td><a class="btn-qayd" style="background-color: rgb(192, 0, 0);" id="delete-qayd${counter}">-</a></td>
-        <td name="accID">{{ qayd_details_form.accountID }}</td>
-        <td name="currencyID">{{ qayd_details_form.currencyID }}</td>
-        <td name="rate">{{ qayd_details_form.rate }}</td>
-        <td name="debit">{{ qayd_details_form.debit }}</td>
-        <td name="credit">{{ qayd_details_form.credit }}</td>
-        <td name="description">{{ qayd_details_form.description }}</td>
-        <td name="projectID">{{ qayd_details_form.projectID }}</td>
-        <td name="empID">{{ qayd_details_form.empID }}</td>
-      </tr>
-    `
-    document.getElementById("tbody").innerHTML += html
-      console.log(counter)
-  }
-  document.getElementById("add-qayd").addEventListener("click", function(){
-    add_row()
-  })
+<script> 
+  document.addEventListener('DOMContentLoaded', function() {
+      // الحصول على عنصر الحاوية لنماذج formset
+      const container = document.getElementById('formset-container');
+      // الحصول على قالب النموذج لإضافته
+      const formTemplate = container.querySelectorAll('.form-container').outerHTML;
+      // عدد النماذج الحالية
+      let formCount = "{{ qayd_details_form.total_form_count }}";
+      // إضافة نموذج جديد عند النقر على الزر
+      document.getElementById('add-form').addEventListener('click', function() {
+          formCount++;
+          const newForm = formTemplate.replace(/__prefix__/g, formCount - 1);
+          container.insertAdjacentHTML('beforeend', newForm);
+          console.log(newForm)
 
-  function remove(btn) {
-    let num = btn.id
-    let row = document.getElementById("row"+num)
-    console.log(row)
-  }
-  document.getElementById(`"delete-qayd${counter}"`).addEventListener("click", function(){
-    remove() 
-  })
+          // تحديث قيم الحقول المخفية
+          document.querySelector('input[name="form-TOTAL_FORMS"]').value = formCount;
+          if (!document.querySelector('input[name="form-TOTAL_FORMS"]')) {
+              console.error('Form management element not found!');
+          }
+      });
+      // تحديث الأرقام في نماذج جديدة بعد إضافتها
+      container.addEventListener('change', function(event) {
+                if (event.target.name && event.target.name.startsWith('form-')) {
+                    const formIndex = event.target.name.match(/\d+/)[0];
+                    const newIndex = formCount - 1;
+                    event.target.name = event.target.name.replace(formIndex, newIndex);
+                    event.target.id = event.target.id.replace(formIndex, newIndex);
+                }
+            });
+    });
+
 </script>
+<script src="{% static 'dist/js/total.js' %}"></script>
+
 {% endblock %}

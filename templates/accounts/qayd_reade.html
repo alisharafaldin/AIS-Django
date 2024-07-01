@@ -35,7 +35,10 @@
           <tr>
             <th scope="col">#</th>
             <!-- <th scope="col">رقم القيد</th> -->
+            <th scope="col">التاريخ</th>
             <th scope="col">الحساب</th>
+            <th scope="col">العملة</th>
+            <th scope="col">سعر الصرف</th>
             <th scope="col">مدين</th>
             <th scope="col">دائن</th>
             <th scope="col">الوصف</th>
@@ -50,10 +53,13 @@
               <th scope="row">{{forloop.counter}}</th>
               <!-- تفاصيل الجدول -->
               <!-- <td>{{ qdf.pk }}</td> -->
-              <td>{{ qdf.accID }}</td>
+              <td>{{ qdf.date_details }}</td>
+              <td>{{ qdf.accountID }}</td>
+              <td>{{ qdf.currencyID }}</td>
+              <td>{{ qdf.rate }}</td>
               <td>{{ qdf.debit }}</td>
               <td>{{ qdf.credit }}</td>
-              <td>{{ qdf.desQaydDetails }}</td>
+              <td>{{ qdf.description_details }}</td>
               <td>{{ qdf.projectID }}</td>
               <td>{{ qdf.empID }}</td>
             </tr>
@@ -62,10 +68,17 @@
         <tbody>
           <tr>
             <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
             <th>المجموع</th>
-            <th>مجموع مدين : {{calc.total_d}}</th>
-            <th>مجموع الدائن : {{calc.total_c}}</th>
-            <th>الفرق : {{calc.other}}</th>
+            <th>مجموع مدين : {{total_d}}</th>
+            <th>مجموع الدائن : {{total_c}}</th>
+            {% if difference == 0 %}
+              <th>الفرق : <span style="color: green;">{{difference}}</span></th>
+            {% else %}
+              <th>الفرق : <span style="color: red;">{{difference}}</span></th>
+            {% endif %}
           </tr>
         </tbody>
       </table>
@@ -73,8 +86,9 @@
       <a href="{% url 'qayds' %}" class="btn btn-close">إلغاء</a>
     </form>
     <br>
-    <div class="form-row">
-      <h6 class="form-group col-md-6" name="user">مُنشئ القيد : {{qayd_id.userID}} </h6>
+    <div class="form-col">
+      <h6 class="form-group col-md-6">مُنشئ القيد : {{qayd_id.created_py}} </h6>
+      <h6 class="form-group col-md-6">تاريخ الإنشاء : {{qayd_id.created_dt}} </h6>
     </div>
   </div>
 </div>

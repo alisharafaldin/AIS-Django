@@ -1,0 +1,89 @@
+{% extends 'base_blog.html' %}
+{% load static %} 
+{% block title %} | Home{% endblock %} 
+{% block content %}
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <nav id="navbar">
+        <div class="logo">
+          <a href="index.html"><img src="img/logo.png" alt=""></a>
+        </div>
+        <div class="menu-wrap">
+          <input type="checkbox" class="toggle" />
+          <div class="hamburger"><div></div></div>
+          <div class="menu">
+            <div>
+              <div>
+                <ul>
+                  <li><a href="postes-money.html">قروشنا</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <!-- End Navbar -->
+      <!-- Start Par -->
+      <div id="art-par"class="par .box-shadow">
+          <ul class="ul-par ">
+            <li class="li-par"><a href="#art63" class="a-par">كأس العالم</a></h1>
+        </ul>
+      </div>
+      <!-- End Par -->
+      <!-- Start Postes -->
+      <div class="postes-contaner" >
+        {% for poste in all_postes %}
+        <article id="art32" class="post-content bg-light py-1 box-shadow">
+          <h2 class="post-title m-heading text-center">{{poste.title}}</h2>
+          <img src="{{poste.photo}}" alt="{{poste.title}}" class="post-img box-shadow" />
+          <h6> ✍️ شرفنتود | {{poste.dateHijri}} | {{poste.date}}-- </h6>
+          <div class="post-text">
+            <p>
+             {{poste.content}}
+            </p>
+            <div class="post-info">
+              <br><p>للتفاعل وإثراء محتوى البوست إضغط هنا 👇</p>
+              <a href="{{poste.linke}}"target="_blank"><span class="text-primary">{{poste.title}}</span></a><br>
+            </div>
+        </div>
+        </article>
+        {% endfor %}
+      </div>
+      <!-- End Postes -->
+      <span class="up">Up</span>
+      <!-- Start Footer -->
+      <footer dir="auto" class="bg-dark py-1 text-center">
+        <div class="social">
+          <ul>
+            <li><a href="https://www.facebook.com/alisharafaldin" target="blank"><i class="fab fa-facebook-square"></i></a></li>
+            <li><a href="https://twitter.com/alisharafaldin" target="blank"><i class="fab fa-twitter-square"></i></a></li>
+            <li><a href="alisharafaldin@gmail.com" target="blank"><i class="fas fa-envelope-open-text"></i></a></li>
+            <li><a href="https://www.linkedin.com/in/alisharafaldin" target="blank"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="https://github.com/alisharafaldin" target="blank"><i class="fab fa-github-square"></i></a></li>
+            <li><a href="https://www.youtube.com/c/%D8%B4%D8%B1%D9%81%D9%86%D8%AA%D9%88%D8%AF" target="blank"><i class="fab fa-youtube-square"></i></a></li>
+          </ul>
+          <p>برمجة وتطوير/ علي شرف الدين</p>
+        </div>
+        <div class="Copyrights">
+        يسمح بنسخ المحتوى وإعادة نشره مع ذكر رابط الموقع 
+        <br>
+        جميع الحقوق محفوظة موقع <span>شرفنتود  &copy; 2021</span> 
+        <br> 
+        <a href="https://www.shrfntod.com" target="blank">www.shrfntod.com</a>
+        </div>
+      </footer>
+      <!-- End Footer -->
+      <!-- Font Awesome أيقونات من موقع فونت ووسم-->
+      <script
+        src="https://kit.fontawesome.com/5857c27ad9.js"
+        crossorigin="anonymous"
+      ></script>
+      <script src="js/postes.js"></script>
+    </div>
+    <!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+</div>
+{% endblock %}

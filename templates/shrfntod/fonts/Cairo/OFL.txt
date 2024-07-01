@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One Nation Library مكتبة الأمة الواحدة</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <img src="logo.jpg" alt="">
+        </div>
+        <ul>
+            <li><a href="#">الرئيسية</a></li>
+            <li><a href="#">اتصل بنا</a></li>
+            <li><a href="#">من نحن</a></li>
+            <li><a href="#">جميع المحاضرات</a></li>
+
+        </ul>
+    </nav>
+   <h1>جميع المحاضرات</h1>
+   <div class="container">
+    <div class="content">
+    <h2>الحقوق السياسية للأمة فروض لا هبات</h2>
+        <div class="box">
+            <h3 class="title">مقدمة ضرورية + برومو</h3>
+            <!-- <img src="logo.jpg" alt="logo"> -->
+            <audio controls src="1.mp3"></audio>
+            <p>نص توضيحي مختصر عن المحاضرة</p>
+            <a href="bookdetails.html">للتحميل</a>
+        </div> 
+        <div class="box">
+            <h3 class="title">الحقوق السياسية للأمة فروض لا هبات ج2</h3>
+            <!-- <img src="logo.jpg" alt="logo"> -->
+            <audio controls src="2.mp3"></audio>
+            <p>نص توضيحي مختصر عن المحاضرة</p>
+            <a href="bookdetails.html">للتحميل</a>
+        </div> 
+        <div class="box">
+            <h3 class="title">ج3 الإجتهاد العمري في تنظيم الشورى</h3>
+            <!-- <img src="logo.jpg" alt="logo"> -->
+            <audio controls src="3.mp3"></audio>
+            <p>نص توضيحي مختصر عن المحاضرة</p>
+            <a href="bookdetails.html">للتحميل</a>
+        </div> 
+        <div class="box">
+            <h3 class="title">ج4 - بذرة إنشقاقات الإسلاميين</h3>
+            <!-- <img src="logo.jpg" alt="logo"> -->
+            <audio controls src="4.mp3"></audio>
+            <p>نص توضيحي مختصر عن المحاضرة</p>
+            <a href="bookdetails.html">للتحميل</a>
+        </div> 
+        <div class="box">
+            <3 class="title"> ج5 - معركة الجمل أخطاء وخطايا</3>
+            <!-- <img src="logo.jpg" alt="logo"> -->
+            <audio controls src="5.mp3"></audio>
+            <p>نص توضيحي مختصر عن المحاضرة</p>
+            <a href="bookdetails.html">للتحميل</a>
+        </div> 
+        <div class="box">
+            <h3 class="title">ج6 - بطلان قصة التحكيم</h3>
+            <!-- <img src="logo.jpg" alt="logo"> -->
+            <audio controls src="6.mp3"></audio>
+            <p>نص توضيحي مختصر عن المحاضرة</p>
+            <a href="bookdetails.html">للتحميل</a>
+        </div> 
+        <div class="box">
+            <h3 class="title">ج7 - كيف بدأت سُلطة الجبر؟</h3>
+            <!-- <img src="logo.jpg" alt="logo"> -->
+            <audio controls src="7.mp3"></audio>
+            <p>نص توضيحي مختصر عن المحاضرة</p>
+            <a href="bookdetails.html">للتحميل</a>
+        </div> 
+        <div class="box">
+            <h3 class="title">ج8 - الحق في الحرية السياسية</h3>
+            <!-- <img src="logo.jpg" alt="logo"> -->
+            <audio controls src="8.mp3"></audio>
+            <p>نص توضيحي مختصر عن المحاضرة</p>
+            <a href="bookdetails.html">للتحميل</a>
+        </div> 
+        <div class="box">
+            <h3 class="title">ج9 - الإنكار العلني على الحاكم هو الشفافية</h3>
+            <!-- <img src="logo.jpg" alt="logo"> -->
+            <audio controls src="9.mp3"></audio>
+            <p>نص توضيحي مختصر عن المحاضرة</p>
+            <a href="bookdetails.html">للتحميل</a>
+        </div> 
+        <div class="box">
+            <h3 class="title"> ج10 الفقهاء والقطيعة مع ثقافة الحقوق</h3>
+            <!-- <img src="logo.jpg" alt="logo"> -->
+            <audio controls src="10.mp3"></audio>
+            <p>نص توضي�

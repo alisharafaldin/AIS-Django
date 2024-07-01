@@ -219,3 +219,9 @@ class Person(models.Model):
     # created_dt = models.DateTimeField(verbose_name='تاريخ الإنشاء', auto_now_add=True)
     def __str__(self):
         return str(self.f_Name_ar)
+    
+    def fullName_ar(self):
+        return f"{self.f_Name_ar} {self.s_Name_ar} {self.t_Name_ar} {self.fo_Name_ar}"
+    
+    def fullName_en(self):
+        return f"{self.f_Name_en} {self.s_Name_en} {self.t_Name_en} {self.fo_Name_en}"

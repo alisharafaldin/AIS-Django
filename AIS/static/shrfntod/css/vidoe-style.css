@@ -1,0 +1,94 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* Roboto Font  من قوقل فونت*/
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,700;1,400&display=swap');
+/* Colors Uses: #08D9D6 - #252A34 - #FF2E63 - #EAEAEA */
+
+/* Main Style */
+html, body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.5;
+    background-color: var(--main-Color)
+}
+
+a{text-decoration: none;}
+
+/* Utility Classes */
+.bg-whitgh{background-color: var(--whitgh-Color)}
+.mb10px {margin-bottom: 10px}
+.m-heading {margin: 20px 0;}
+.text-primary {color: var(--primary-color);}
+.text-center {text-align: center;}
+.l-heading {font-size: 3rem;}
+.m-heading {font-size: 2rem;}
+.lead {font-size: 1.6rem;}
+.py-1 {padding: 1.5rem 0;}
+.p-1 {padding: 1.5rem;}
+.box-shadow {box-shadow: 0 0 2px var(--dark-Color);}
+.bg-dark {background-color: var(--dark-Color);}
+
+.bg-light {
+    background-color: var(--main-Color);
+    color: var(--dark-Color);
+}
+.bg-primary {
+    background-color: var(--bottom-Color) ;
+    color: var(--whitgh-Color);
+}
+.btn {
+    background-color: var(--bottom-Color);
+    color: var(--black-Color);
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.btn-dark {
+    background-color: var(--dark-Color);
+    color: var(--whitgh-Color);
+}
+.btn:hover {
+    background-color: var(--highlight-Color);
+    color: var(--whitgh-Color)
+}
+
+/* Start vidoe */
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    /* border: 1px solid rebeccapurple; */
+    width: 95%;
+    margin-top: 100px;
+    font-family: 'Cairo', sans-serif;
+    
+    
+}
+.container .video {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid;
+    width: 80%;
+    height: 539px;
+    margin-bottom: 50px;
+    background-color: #fff;
+
+}
+.container .video h2 {
+    color: var(--highlight-Color);
+    /* cursor:crosshair; */
+    padding: 10px;
+}
+.container .video .myiframe {  
+    width: 100% -10px;
+    height: 100%;
+    margin: 10px;
+}
+
+/* End vidoe */
