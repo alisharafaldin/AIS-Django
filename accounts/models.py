@@ -5,6 +5,8 @@ from basicinfo.models import Project, Countries
 from employees.models import EmpInfo
 from datetime import datetime
 from django.utils import timezone
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 # Create your models here.
 
 class AccountType(models.Model):
@@ -51,31 +53,42 @@ class TypeTransaction(models.Model):
     return str(self.typeTransaction_ar)
     
 class Qayd(models.Model):
-  typeTransactionID = models.ForeignKey(TypeTransaction , verbose_name='نوع العملية', default=1, on_delete=models.CASCADE, null=True)
-  date = models.DateField(verbose_name='تاريخ القيد', default=timezone.now() , blank=True, null=True)
-  description = models.TextField(verbose_name='وصف القيد', max_length=250, blank=True, null=True)
+  typeTransactionID = models.ForeignKey(TypeTransaction , verbose_name='نوع العملية', default=1, on_delete=models.PROTECT, null=True)
+  date = models.DateTimeField(verbose_name='تاريخ القيد', default=timezone.now , blank=True, null=True)
+  description = models.TextField(verbose_name='وصف القيد', default="قيد يومية جديد", max_length=250, blank=True, null=True)
   attachments = models.FileField(verbose_name='مرفقات القيد', blank=True, null=True)
-  created_py = models.ForeignKey(User, verbose_name='المُنشئ', related_name='qayds', on_delete=models.CASCADE)
-  created_dt = models.DateTimeField(verbose_name='تاريخ الإنشاء',auto_now_add=True)
-  updated_py = models.ForeignKey(User, verbose_name='المُعدل', related_name='+', on_delete=models.CASCADE, blank=True, null=True)
-  updated_dt = models.DateTimeField(verbose_name='تاريخ التعديل', blank=True, null=True)
+  details = models.ManyToManyField(AccountsTree, through='QaydDetails', blank=True, null=True)
+  created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name='qayds_created', null=True, blank=True)
+  created_at = models.DateTimeField(verbose_name='تاريخ الإنشاء',auto_now_add=True)
+  updated_by = models.ForeignKey(User, verbose_name='المُعدِل', related_name='updated_qayds', on_delete=models.PROTECT, blank=True, null=True)
+  updated_at = models.DateTimeField(verbose_name='تاريخ التعديل', auto_now=True)
   def __str__(self):
     # return ' | Qayd id: ' + str(self.id)
     return  str(self.id)
-
+  
+  def get_details_count(self):
+        return QaydDetails.objects.filter(qaydID=self).count()
+  
 class QaydDetails(models.Model):
-  qaydID = models.ForeignKey(Qayd, verbose_name='رأس القيد', default=1, on_delete=models.CASCADE)
-  date_details = models.DateField(verbose_name='التاريخ', default=datetime.now(), blank=True, null=True)
-  accountID = models.ForeignKey(AccountsTree, verbose_name='الحساب', default=1, on_delete=models.CASCADE, blank=True, null=True)
-  currencyID = models.ForeignKey(Countries , verbose_name='العملة', default=1, on_delete=models.CASCADE, null=True)
-  rate = models.DecimalField(max_digits=6, verbose_name='سعر الصرف', default=1, decimal_places=2)
-  debit = models.DecimalField(max_digits=6, verbose_name='مدين', default=0, decimal_places=2)
-  credit = models.DecimalField(max_digits=6, verbose_name='دائن', default=0, decimal_places=2)
-  description_details = models.TextField(verbose_name='وصف تفصيل القيد', max_length=250,blank=True, null=True)
-  projectID = models.ForeignKey(Project, verbose_name='المشروع', default=1, on_delete=models.CASCADE, blank=True, null=True)
-  empID = models.ForeignKey(EmpInfo, verbose_name='الموظف',on_delete=models.CASCADE, blank=True, null=True)
+  qaydID = models.ForeignKey(Qayd, on_delete=models.CASCADE, null=True, blank=True)
+  date_details = models.DateTimeField(verbose_name='التاريخ', default=datetime.now, blank=True, null=True)
+  accountID = models.ForeignKey(AccountsTree, verbose_name='الحساب', default=1, on_delete=models.PROTECT, blank=True, null=True)
+  currencyID = models.ForeignKey(Countries , verbose_name='العملة', default=1, on_delete=models.PROTECT, null=True)
+  rate = models.DecimalField(verbose_name='سعر الصرف', default=1, max_digits=6, decimal_places=2)
+  quantity = models.DecimalField(max_digits=6, verbose_name='الكمية', default=1, decimal_places=2, blank=True, null=True)
+  debit = models.DecimalField(verbose_name='مدين', default=0, max_digits=6, decimal_places=2)
+  credit = models.DecimalField(verbose_name='دائن', default=0, max_digits=6, decimal_places=2)
+  description_details = models.TextField(verbose_name='وصف تفصيل القيد', default="تفاصيل قيد يومية جديد", max_length=250,blank=True, null=True)
+  projectID = models.ForeignKey(Project, verbose_name='المشروع', default=1, on_delete=models.PROTECT, blank=True, null=True)
+  empID = models.ForeignKey(EmpInfo, verbose_name='الموظف', default=1, on_delete=models.PROTECT, blank=True, null=True)
   # shareholdersID = models.ForeignKey(ShareholdersInfo, related_name='المساهم', verbose_name='المساهم', default=1, on_delete=models.CASCADE, blank=True, null=True)
   # cycleID = models.ForeignKey(Cycle, related_name='cycleID', verbose_name='الدورة', default=1, on_delete=models.CASCADE, blank=True, null=True)
+  
+  # @property
+  # def total_debit(self):
+  #     return self.rate * self.debit * self.quantity 
+
+
   def __str__(self):
     # return 
     return str(self.qaydID)

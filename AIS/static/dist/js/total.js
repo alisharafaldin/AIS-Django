@@ -7,7 +7,7 @@ function sumValues(inputs) {
   return total;
 }
 // دالة لحساب المجموعات والفرق بينها
-function calculateTotals() {
+export function calculateTotals() {
   const creditInputs = document.querySelectorAll(".credit-input");
   const debitInputs = document.querySelectorAll(".debit-input");
 
@@ -17,14 +17,18 @@ function calculateTotals() {
 
   const result = document.getElementById("result");
   if (difference !== 0) {
-    result.style.color = "red";
-  } else {
-    result.style.color = "green";
-  }
+      result.style.color = "red";
+      result.textContent = `التوازن غير صحيح. فرق ${difference.toFixed(2)}`;
+    } else {
+      result.style.color = "green";
+      result.textContent = `التوازن صحيح.`;
+    }
 
-  updateTotal("total-c", totalCredit);
-  updateTotal("total-d", totalDebit);
-  updateTotal("result", difference);
+    updateTotal("total-c", totalCredit);
+    updateTotal("total-d", totalDebit);
+    updateTotal("result", difference);
+
+    return difference === 0;  // نحتاج إلى إعادة قيمة صحيحة إذا كان التوازن صحيحًا
 }
 // دالة لتحديث النتيجة على الصفحة
 function updateTotal(elementId, total) {
@@ -36,3 +40,4 @@ function updateTotal(elementId, total) {
 document.addEventListener("DOMContentLoaded", (event) => {
   calculateTotals();
 });
+

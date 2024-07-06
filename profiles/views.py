@@ -22,10 +22,9 @@ def signin(request):
             # messages.success(request, 'You are now logged in')
         else:
             messages.error(request, 'Username or Password in valid')    
-        return render(request, 'pages/index.html', context)
+        return render(request, 'profiles/signin.html', context)
     else:
         return render(request, 'profiles/signin.html', context)
-        # return redirect('signin')
 
 def logout(request):
     if request.user.is_authenticated:
@@ -49,6 +48,8 @@ def singup(request):
         terms = None
         is_added = None
         #Get Values from the form
+        if 'fname' in request.POST: fname = request.POST['fname']
+        else: messages.error(request, 'Error in first name')
         if 'lname' in request.POST: lname = request.POST['lname']
         else: messages.error(request, 'Error in last name')
         if 'address' in request.POST: address = request.POST['address']
@@ -122,8 +123,8 @@ def singup(request):
             messages.error(request, 'Check Empty Fieldes')
         return render(request , 'profiles/signup.html', {
             'fname' : fname,
-            'lname':   lname,
-            'address':  address,
+            'lname': lname,
+            'address': address,
             'address2': address2,
             'city': city,
             'state': state,

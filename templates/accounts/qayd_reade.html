@@ -1,7 +1,9 @@
-{% extends 'base.html' %} {% load static %} {% block title %} | Reade Qayd ( {{qayd_id.id}} )
-{% endblock %} {% block content %}
+{% extends 'base.html' %} {% load static %} {% block title %} | Reade Qayd ( {{qayd_reade.id}} )
+{% endblock %} 
+
+{% block content %}
 <div class="content-wrapper">
-  <h4 class="main-title">طباعة القيد رقم : ( {{qayd_id.id}} )</h4>
+  <h4 class="main-title">طباعة القيد رقم : ( {{qayd_reade.id}} )</h4>
   <div class="content">
     <br />
     
@@ -12,21 +14,21 @@
         <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
           <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">التاريخ</h6>
-            <div class="form-group col-md-6">{{qayd_id.date}}</div>
+            <div class="form-group col-md-6">{{qayd_reade.date}}</div>
           </div>
           <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">مصدر القيد</h6>
-            <div class="form-group col-md-6">{{qayd_id.typeTransactionID}}</div>
+            <div class="form-group col-md-6">{{qayd_reade.typeTransactionID}}</div>
           </div>
         </div>
         <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
           <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">الوصف</h6>
-            <div class="form-group col-md-6">{{qayd_id.description}}</div>
+            <div class="form-group col-md-6">{{qayd_reade.description}}</div>
           </div>
           <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">المرفقات</h6>
-            <div class="form-group col-md-6">{{qayd_id.attachments}}</div>
+            <div class="form-group col-md-6">{{qayd_reade.attachments}}</div>
           </div>
         </div>
       </div>
@@ -35,7 +37,6 @@
           <tr>
             <th scope="col">#</th>
             <!-- <th scope="col">رقم القيد</th> -->
-            <th scope="col">التاريخ</th>
             <th scope="col">الحساب</th>
             <th scope="col">العملة</th>
             <th scope="col">سعر الصرف</th>
@@ -47,13 +48,12 @@
           </tr>
         </thead>
         <tbody>
-            {% for qdf in qayd_id_details %}
+            {% for qdf in qayd_reade_details %}
             <tr>
               <!-- لعمل ارقام تسلسلة -->
               <th scope="row">{{forloop.counter}}</th>
               <!-- تفاصيل الجدول -->
               <!-- <td>{{ qdf.pk }}</td> -->
-              <td>{{ qdf.date_details }}</td>
               <td>{{ qdf.accountID }}</td>
               <td>{{ qdf.currencyID }}</td>
               <td>{{ qdf.rate }}</td>
@@ -83,12 +83,13 @@
         </tbody>
       </table>
       <button type="submit" name="btnsave" class="btn btn-save">طباعة PDF</button>
+      <a href="{% url 'qayd_update' qayd_reade.id %}" class="btn-link"><i class="fas fa-edit"></i></a>
       <a href="{% url 'qayds' %}" class="btn btn-close">إلغاء</a>
     </form>
     <br>
     <div class="form-col">
-      <h6 class="form-group col-md-6">مُنشئ القيد : {{qayd_id.created_py}} </h6>
-      <h6 class="form-group col-md-6">تاريخ الإنشاء : {{qayd_id.created_dt}} </h6>
+      <h6 class="form-group col-md-6">تم إنشاء القيد بواسطة  : {{qayd_reade.created_by}} بتاريخ : {{qayd_reade.created_at}}</h6>
+      <h6 class="form-group col-md-6"> آخر تحديث بواسطة : {{qayd_reade.updated_by}} بتاريخ : {{qayd_reade.updated_at}}</h6>
     </div>
   </div>
 </div>

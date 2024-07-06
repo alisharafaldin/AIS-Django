@@ -35,7 +35,6 @@
           <tr>
             <th scope="col">#</th>
             <!-- <th scope="col">رقم القيد</th> -->
-            <th scope="col">التاريخ</th>
             <th scope="col">الحساب</th>
             <th scope="col">العملة</th>
             <th scope="col">سعر الصرف</th>
@@ -52,7 +51,6 @@
             <!-- لعمل ارقام تسلسلة -->
             <th scope="row">{{forloop.counter}}</th>
             <!-- تفاصيل الجدول -->
-            <td>{{ qdf.date_details }}</td>
             <td>{{ qdf.accountID }}</td>
             <td>{{ qdf.currencyID }}</td>
             <td>{{ qdf.rate }}</td>
@@ -87,7 +85,7 @@
     </form>
     <br>
     <div class="form-row">
-      <h6 class="form-group col-md-6" name="user">مُنشئ القيد : {{qayd_id.userID}} </h6>
+      <h6 class="form-group col-md-6" name="user">مُنشئ القيد : {{qayd_id.created_by}} </h6>
     </div>
   </div>
 </div>

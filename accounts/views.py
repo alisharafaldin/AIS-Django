@@ -129,13 +129,18 @@ def calculate_totals(details_queryset):
     total_d = sum(item.debit for item in details_queryset)
     total_c = sum(item.credit for item in details_queryset)
     return total_d, total_c, total_d - total_c
+
 # دالة إنشاء قيد جديد
 def qayd_create(request):
     if request.method == 'POST':
       head_form = QaydForm(request.POST, request.FILES)
-      formset = QaydDetailsFormSet(request.POST, request.FILES)
+      formset = QaydDetailsFormSet(request.POST)
+
       if head_form.is_valid() and formset.is_valid():
-        head = head_form.save()
+        head = head_form.save(commit=False)
+        head.created_by = request.user  # تعيين created_by فقط عند إنشاء قيد جديد
+        head.save()
+
         for form in formset:
           if form.cleaned_data:  # تأكد من أن النموذج يحتوي على بيانات صالحة
             body = form.save(commit=False)
@@ -148,33 +153,34 @@ def qayd_create(request):
         handle_form_errors(head_form, formset, request)
         # إعادة عرض النماذج مع الأخطاء
         return render(request, 'accounts/qayd_create.html', {
-            'qayd_form': head_form,
-            'qayd_details_form': formset,
+            'head_form': head_form,
+            'formset': formset,
         })
     else:
         # إعداد النماذج عند طلب GET
         head_form = QaydForm()
         formset = QaydDetailsFormSet(queryset=QaydDetails.objects.none())
     context = {
-        'qayd_form': head_form,
-        'qayd_details_form': formset,
+       'head_form': head_form,
+       'formset': formset,
     }
     return render(request, 'accounts/qayd_create.html', context)
+
 # دالة عرض وقراءة قيد موجود مسبقاَ
 def qayd_reade(request, id):
     if request.user.is_authenticated and not request.user.is_anonymous:
-        qayd_id = Qayd.objects.get(id=id)
-        qayd_id_details = QaydDetails.objects.filter(qaydID=id)
-        total_d, total_c, difference = calculate_totals(qayd_id_details)
-
+        qayd_reade = Qayd.objects.get(id=id)
+        qayd_reade_details = QaydDetails.objects.filter(qaydID=id)
+        total_d, total_c, difference = calculate_totals(qayd_reade_details)
         context = {
-            'qayd_id': qayd_id,
-            'qayd_id_details': qayd_id_details,
+            'qayd_reade': qayd_reade,
+            'qayd_reade_details': qayd_reade_details,
             'total_d': total_d,
             'total_c': total_c,
             'difference': difference,
         }
         return render(request, 'accounts/qayd_reade.html', context)
+
 # دالة حذف قيد
 def qayd_delete(request, id):
     if request.user.is_authenticated and not request.user.is_anonymous:
@@ -197,6 +203,7 @@ def qayd_delete(request, id):
         'difference': difference,
     }
     return render(request, 'accounts/qayd_delete.html', context)
+
 # دالة تحديث بيانات قيد موجود
 @login_required
 def qayd_update(request, id):
@@ -204,17 +211,26 @@ def qayd_update(request, id):
     # استخدام formset للحصول على جميع نماذج QaydDetails المرتبطة بـ Qayd المحدد
     QaydDetailsFormSet = modelformset_factory(QaydDetails, form=QaydDetailsForm, extra=1)
     queryset = QaydDetails.objects.filter(qaydID=qayd_update)
+
     if request.method == 'POST':
         head_form = QaydForm(request.POST, request.FILES, instance=qayd_update)
-        formset = QaydDetailsFormSet(request.POST, request.FILES, queryset=queryset)
+        formset = QaydDetailsFormSet(request.POST, queryset=queryset)
+
         if head_form.is_valid() and formset.is_valid():
-          head = head_form.save()
+          head = head_form.save(commit=False)
+          head.updated_by = request.user
+          head.save()
+
           for form in formset:
-            if form.cleaned_data:  # تأكد من أن النموذج يحتوي على بيانات صالحة
-              body = form.save(commit=False)
-              body.qaydID = head  # استخدام head مباشرة بدلاً من head.instance
-              body.save()
-          messages.success(request, 'تمت الإضافة بنجاح')
+            if form.cleaned_data.get('DELETE', False):
+                if form.instance.pk:
+                    form.instance.delete()  # حذف النموذج من قاعدة البيانات
+            else:
+                body = form.save(commit=False)
+                body.qaydID = head
+                body.save()
+
+          messages.success(request, 'تم التحديث بنجاح')
           return redirect('qayds')
         else:
             # دالة عرض الأخطاء
@@ -222,13 +238,11 @@ def qayd_update(request, id):
     else:
         head_form = QaydForm(instance=qayd_update)
         formset = QaydDetailsFormSet(queryset=queryset)
-
     total_d, total_c, difference = calculate_totals(queryset)
-
     context = {
         'qayd_update': qayd_update,
-        'qayd_update_form': head_form,
-        'qayd_update_details_formset':formset,
+        'head_form': head_form,
+        'formset':formset,
         'total_d': total_d,
         'total_c': total_c,
         'difference': difference,
@@ -244,6 +258,7 @@ def qayds(request):
     """
     try:
         qayds_list = Qayd.objects.all()  # استعلام عن جميع الكائنات من نموذج Qayd
+
     except Qayd.DoesNotExist:
         qayds_list = []  # إذا لم يكن هناك أي كائنات، العودة إلى قائمة فارغة
     context = {
@@ -251,108 +266,3 @@ def qayds(request):
     }
     return render(request, 'accounts/qayds.html', context)
 
-
-# def qayd_create(request):
-#   if request.method == 'POST':
-#     date_details = None
-#     accountID = None
-#     currencyID = None
-#     rate = None
-#     debit = None
-#     credit = None
-#     description_details = None
-#     projectID = None
-#     empID = None
-#     # Get Values from the form
-#     if 'date_details' in request.POST: date_details = request.POST['date_details']
-#     else: messages.error(request, 'Error in date_details')
-#     if 'accountID' in request.POST: accountID = request.POST['accountID']
-#     else: messages.error(request, 'Error in accountID')
-#     if 'currencyID' in request.POST: currencyID = request.POST['currencyID']
-#     else: messages.error(request, 'Error in currencyID')
-#     if 'rate' in request.POST: rate = request.POST['rate']
-#     else: messages.error(request, 'Error in rate')
-#     if 'debit' in request.POST: debit = request.POST['debit']
-#     else: messages.error(request, 'Error in debit')
-#     if 'credit' in request.POST: credit = request.POST['credit']
-#     else: messages.error(request, 'Error in credit')
-#     if 'description_details' in request.POST: description_details = request.POST['description_details']
-#     else: messages.error(request, 'Error in description_details')
-#     if 'projectID' in request.POST: projectID = request.POST['projectID']
-#     else: messages.error(request, 'Error in projectID')
-#     if 'empID' in request.POST: empID = request.POST['empID']
-#     else: messages.error(request, 'Error in empID')
-#     newQayd = QaydForm(request.POST, request.FILES)
-#     if newQayd.is_valid():
-#       newQayd.save()
-#       newQaydDetails = QaydDetails(qaydID=newQayd.instance,
-#                                     date_details=date_details,
-#                                     accountID_id=accountID,
-#                                     currencyID_id=currencyID,
-#                                     rate=rate,
-#                                     debit=debit,
-#                                     credit=credit,
-#                                     description_details=description_details,
-#                                     projectID_id=projectID,
-#                                     empID_id=empID)
-#       newQaydDetails.save()
-#       messages.success(request, 'تمت الإضافة بنجاح') 
-#       return redirect('qayds')
-#     else :      
-#       messages.error(request, 'خطأ في البيانات') 
-#       return redirect('qayd_create')
-#   context = {
-#     'qayd_form': QaydForm(),
-#     'qayd_details_form': QaydDetailsForm(),
-#   }
-#   return render(request, 'accounts/qayd_create.html', context)
-
-
-
-# def qayd_update(request, id):
-#   if request.user.is_authenticated and not request.user.is_anonymous:
-#     qayd_update = Qayd.objects.get(id=id)
-#     qayd_update_form = QaydForm(request.POST, request.FILES, instance=qayd_update)
-#     qayd_update_details = QaydDetails.objects.get(qaydID=id)
-#     qayd_update_details_form = QaydDetailsForm(request.POST, request.FILES, instance=qayd_update)
-#     if 'btnsave' in request.POST:
-#       if request.method == 'POST':
-#         qayd_update.userID_id = request.user
-#         qayd_update.date = request.POST['date']
-#         qayd_update.description = request.POST['description']
-#         qayd_update.typeTransactionID_id = request.POST['typeTransactionID']
-#         qayd_update.attachments = request.POST['attachments']  
-#         qayd_update.save()
-#         qayd_update_details.date_details = request.POST['date_details']
-#         qayd_update_details.accountID_id = request.POST['accountID']
-#         qayd_update_details.currencyID_id = request.POST['currencyID']
-#         qayd_update_details.debit = request.POST['debit']
-#         qayd_update_details.credit = request.POST['credit']
-#         qayd_update_details.rate = request.POST['rate']
-#         qayd_update_details.description_details = request.POST['description_details']
-#         qayd_update_details.projectID_id = request.POST['projectID']
-#         qayd_update_details.empID_id = request.POST['empID']
-#         qayd_update_details.save()
-#         messages.success(request, 'تم التحديث بنجاح')
-#         return redirect('qayds')
-#       else:
-#         messages.error(request, 'خطأ في البيانات')   
-#     qayd_update_form = QaydForm(instance=qayd_update)
-#     qayd_update_details_form = QaydDetailsForm(instance=qayd_update_details)
-
-#     qayd_id_details = QaydDetails.objects.filter(qaydID=id)
-#     total_d, total_c, difference = calculate_totals(qayd_id_details)
-
-#     context = {
-#         'qayd_update':qayd_update,
-#         'qayd_update_form':qayd_update_form,
-#         'qayd_update_details':qayd_update_details,
-#         'qayd_update_details_form':qayd_update_details_form,
-#         'total_d': total_d,
-#         'total_c': total_c,
-#         'difference': difference,
-#     }
-#     return render(request, 'accounts/qayd_update.html', context)
-#   else:
-#     messages.info(request, 'الرجاء تسجيل الدخول')
-#     return redirect('signin')    

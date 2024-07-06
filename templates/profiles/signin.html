@@ -1,10 +1,13 @@
-{% extends 'base.html' %} 
-{% block title %} | Signin{% endblock %} 
+{% extends 'base.html' %} {% load static %} {% block title %} | Signin {% endblock %}
+
 {% block content %}
+
 <!-- Start Signin -->
 <div class="login-box">
   <div class="login-logo">
-    <a href="{% url 'index' %}"> <b>الإبداع لنظم المعلومات</b>LTE </a>
+    <a href="{% url 'index' %}">
+      <img src="{% static 'dist/img/AIS.png' %}" alt="AdminLTE Logo"  style="width: auto;" class="brand-link-image"/>
+    </a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
@@ -18,8 +21,7 @@
       </h4>
       {% else %}
       <form method="POST">
-        {% csrf_token %}
-        {% include 'partials/_alerts.html' %}
+        {% csrf_token %} {% include 'partials/_alerts.html' %}
         <hr />
         <div class="input-group mb-3">
           <input
@@ -82,7 +84,7 @@
       <!-- /.social-auth-links -->
       <p class="mb-1"><a href="#">I forgot my password</a></p>
       <p class="mb-0">
-        <a href="register.html" class="text-center"
+        <a href="{% url 'signup' %}" class="text-center"
           >Register a new membership</a
         >
       </p>

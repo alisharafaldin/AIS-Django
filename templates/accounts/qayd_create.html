@@ -31,36 +31,29 @@
       <div class="form-row">
         <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
           <div class="form-row">
-          <h6 style="font-weight: bold" class="col-md-3">المستخدم</h6>
-          <div class="form-group col-md-6">{{qayd_form.created_py}}</div>
-        </div>
-          </div>
-            <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">التاريخ</h6>
-            <div class="form-group col-md-6">{{qayd_form.date}}</div>
+            <div class="form-group col-md-6">{{head_form.date}}</div>
           </div>
           <div class="form-row">
-            <h6 style="font-weight: bold" class="col-md-3">العملية</h6>
-            <div class="form-group col-md-6">{{qayd_form.typeTransactionID}}</div>
+            <h6 style="font-weight: bold" class="col-md-3">مصدر القيد</h6>
+            <div class="form-group col-md-6">{{head_form.typeTransactionID}}</div>
           </div>
         </div>
         <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
           <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">الوصف</h6>
-            <div class="form-group col-md-6">{{qayd_form.description}}</div>
+            <div class="form-group col-md-6">{{head_form.description}}</div>
           </div>
           <div class="form-row">
             <h6 style="font-weight: bold" class="col-md-3">المرفقات</h6>
-            <div class="form-group col-md-6">{{qayd_form.attachments}}</div>
+            <div class="form-group col-md-6">{{head_form.attachments}}</div>
           </div>
         </div>
       </div>
       <table class="table table-hover">
         <thead>
           <tr>
-            <th scope="col">{{ qayd_details_form.total_form_count }}</th>
-            <th scope="col">ID</th>
-            <th scope="col">التاريخ</th>
+            <th scope="col">{{ formset.total_form_count }}</th>
             <th scope="col">الحساب</th>
             <th scope="col">العملة</th>
             <th scope="col">سعر الصرف</th>
@@ -71,31 +64,25 @@
             <th scope="col">الموظف</th>
           </tr>
         </thead>
-        <tbody id="tbody">
-          {{ qayd_details_form.management_form }} 
-          <div id="formset-container">
-            {% for qayd_details_form in qayd_details_form %}
-            <div class="form-container">
-              <tr>
-                <td><a class="btn btn-danger" style="background-color: rgb(192, 0, 0);" id="delete-qayd1">-{{forloop.counter}}</a></td>
-                <td>{{ qayd_details_form.qaydID }}</td>
-                <td>{{ qayd_details_form.date_details }}</td>
-                <td>{{ qayd_details_form.accountID }}</td>
-                <td>{{ qayd_details_form.currencyID }}</td>
-                <td>{{ qayd_details_form.rate }}</td>
-                <td>{{ qayd_details_form.debit }}</td>
-                <td>{{ qayd_details_form.credit }}</td>
-                <td>{{ qayd_details_form.description_details }}</td>
-                <td>{{ qayd_details_form.projectID }}</td>
-                <td>{{ qayd_details_form.empID }}</td>
-              </tr>
-            </div>
-            {% endfor %}
-          </div>
+        {{ formset.management_form }} 
+        <tbody id="formset-container">
+            {% for form in formset %}
+            <tr class="form-container">
+                <td><button class="btn btn-danger">-</button></td>
+                <td>{{ form.accountID }}</td>
+                <td>{{ form.currencyID }}</td>
+                <td>{{ form.rate }}</td>
+                <td>{{ form.debit }}</td>
+                <td>{{ form.credit }}</td>
+                <td>{{ form.description_details }}</td>
+                <td>{{ form.projectID }}</td>
+                <td>{{ form.empID }}</td>
+            </tr>
+        {% endfor %}
         </tbody>
         <tbody>
           <tr>
-            <td></td>
+            <td><a class="btn" style="background-color: green;" id="add-form">+</a></td>
             <td></td>
             <td></td>
             <td></td>
@@ -113,44 +100,11 @@
     </form>
     <!-- End Modal -->
     <div class="form-row">
-    <h6 class="form-group col-md-6">مُنشئ القيد : {{qayd_id.userID}} </h6>
+    <h6 class="form-group col-md-6"> المستخدم : {{request.user}} </h6>
     </div>
   </div>
 </div>
-
-<script> 
-  document.addEventListener('DOMContentLoaded', function() {
-      // الحصول على عنصر الحاوية لنماذج formset
-      const container = document.getElementById('formset-container');
-      // الحصول على قالب النموذج لإضافته
-      const formTemplate = container.querySelectorAll('.form-container').outerHTML;
-      // عدد النماذج الحالية
-      let formCount = "{{ qayd_details_form.total_form_count }}";
-      // إضافة نموذج جديد عند النقر على الزر
-      document.getElementById('add-form').addEventListener('click', function() {
-          formCount++;
-          const newForm = formTemplate.replace(/__prefix__/g, formCount - 1);
-          container.insertAdjacentHTML('beforeend', newForm);
-          console.log(newForm)
-
-          // تحديث قيم الحقول المخفية
-          document.querySelector('input[name="form-TOTAL_FORMS"]').value = formCount;
-          if (!document.querySelector('input[name="form-TOTAL_FORMS"]')) {
-              console.error('Form management element not found!');
-          }
-      });
-      // تحديث الأرقام في نماذج جديدة بعد إضافتها
-      container.addEventListener('change', function(event) {
-                if (event.target.name && event.target.name.startsWith('form-')) {
-                    const formIndex = event.target.name.match(/\d+/)[0];
-                    const newIndex = formCount - 1;
-                    event.target.name = event.target.name.replace(formIndex, newIndex);
-                    event.target.id = event.target.id.replace(formIndex, newIndex);
-                }
-            });
-    });
-
-</script>
+<script src="{% static 'dist/js/add-remove-form.js' %}"></script>
 <script src="{% static 'dist/js/total.js' %}"></script>
 
 {% endblock %}

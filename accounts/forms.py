@@ -3,7 +3,6 @@ from .models import Qayd, QaydDetails , AccountsTree
 from django.forms import modelformset_factory, formset_factory
 from django.forms import BaseModelFormSet
 
-
 class AccountsTreeForm(forms.ModelForm):
     class Meta:
         model = AccountsTree
@@ -24,22 +23,38 @@ class QaydForm(forms.ModelForm):
         model = Qayd
         fields = '__all__'
         widgets = {
-            # 'created_py': forms.Select(attrs={'class':'form-control', 'placeholder':'المستخدم'}),
-            'date': forms.TextInput(attrs={'class':'form-control',  'type':'date' , 'placeholder':'تاريخ القيد'}),
+            'date': forms.DateTimeInput(attrs={'class':'form-control',  'type':'datetime-local' , 'placeholder':'تاريخ القيد'}),
             'typeTransactionID': forms.Select(attrs={'class':'form-control', 'placeholder':'العملية'}),
             'description': forms.Textarea(attrs={'class':'form-control', 'placeholder':'وصف القيد', 'style':'height: 50px;'}),
             'attachments': forms.FileInput(attrs={'class':'form-control', 'placeholder':'مرفقات القيد', 'value':"{{qayd_form.attachments}}"}),
-            'created_py': forms.Select(attrs={'class':'form-control', 'placeholder':'المستخدم', 'value':"{{qayd_form.attachments}}"}),
-        }
+            'updated_at': forms.DateTimeInput(attrs={'class':'form-control',  'type':'datetime-local' , 'placeholder':'تاريخ التعديل'}),
+            'details': forms.CheckboxSelectMultiple,
+            'created_by': forms.Select(attrs={'class':'form-control', 'placeholder':'المنشئ'}),
 
+        }
+    # def save(self, commit=True):
+    #     instance = super().save(commit=False)
+    #     if self.instance.pk:  # إذا كان الكائن موجودًا بالفعل (تعديل)
+    #         instance.created_by = self.instance.created_by  # حافظ على القيمة الأصلية لـ 'created_by'
+    #     if commit:
+    #         instance.save()
+    #     return instance
+    
+    # ضبط حقل created_byكنموذج للقراءة فقط في حال اتعديل  
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['created_by'].widget = forms.HiddenInput()  # إخفاء الحقل في نموذج التعديل
+        else:
+            self.fields['created_by'].required = True  # تأكيد أن الحقل مطلوب عند الإنشاء
+ 
 class QaydDetailsForm(forms.ModelForm):
+    DELETE = forms.BooleanField(required=False, initial=False)
     class Meta:
         model = QaydDetails
         fields = '__all__'
         widgets = {
-            'id': forms.Select(attrs={'class':'form-control', 'placeholder':' id'}),
-            'qaydID': forms.Select(attrs={'class':'form-control', 'placeholder':'رأس القيد'}),
-            'date_details': forms.TextInput(attrs={'class':'form-control',  'type':'date' , 'placeholder':'تاريخ القيد'}),
+            'DELETE': forms.CheckboxInput(),
             'accountID': forms.Select(attrs={'class':'form-control', 'placeholder':'الحساب'}),
             'rate': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'سعر الصرف'}),
             'debit': forms.NumberInput(attrs={'class':'form-control debit-input', 'placeholder':'مدين', 'onchange':'calculateTotals()'}),
@@ -47,27 +62,7 @@ class QaydDetailsForm(forms.ModelForm):
             'currencyID': forms.Select(attrs={'class':'form-control', 'placeholder':'العملة'}),
             'description_details': forms.TextInput(attrs={'class':'form-control', 'placeholder':'وصف القيد'}),
             'projectID': forms.Select(attrs={'class':'form-control', 'placeholder':'المشروع'}),
-            'empID': forms.Select(attrs={'class':'form-control', 'placeholder':'الموظف'}),       
+            'empID': forms.Select(attrs={'class':'form-control', 'placeholder':'الموظف'}), 
         }
-    
 
-class BaseQaydDetailsFormSet(BaseModelFormSet):
-    def clean(self):
-        super().clean()
-        # لا تقم بالتحقق من التكرار في هذا الـ FormSet
-        # إذا كان لديك قواعد معينة لتجنب التكرار، قم بإضافتها هنا
-        # على سبيل المثال:
-        seen = set()
-        for form in self.forms:
-            if form.cleaned_data:
-                qaydID = form.cleaned_data.get('qaydID')
-                accountID = form.cleaned_data.get('accountID')
-                currencyID = form.cleaned_data.get('currencyID')
-                key = (qaydID, accountID, currencyID)
-                if key in seen:
-                    raise forms.ValidationError("Please correct the duplicate values below.")
-                seen.add(key)
-
-
-
-QaydDetailsFormSet = modelformset_factory(QaydDetails, form=QaydDetailsForm, extra=2)  # extra=3 يعني أننا نريد إضافة 3 نماذج إضافية
+QaydDetailsFormSet = modelformset_factory(QaydDetails, form=QaydDetailsForm, extra=2, can_delete=True)  # extra=3 يعني أننا نريد إضافة 3 نماذج إضافية

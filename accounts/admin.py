@@ -24,25 +24,35 @@ class AccountCategoryImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id']
 
-@admin.register(AccountsTree)
-class AccountsTreeImportExport(ImportExportModelAdmin):
-    pass
-    list_display = ['id']
+# @admin.register(AccountsTree)
+# class AccountsTreeImportExport(ImportExportModelAdmin):
+#     pass
+#     list_display = ['id']
 
 @admin.register(TypeTransaction)
 class TypeTransactionImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id']
 
-@admin.register(Qayd)
-class QaydImportExport(ImportExportModelAdmin):
-    pass
-    list_display = ['id']
+# @admin.register(Qayd)
+# class QaydImportExport(ImportExportModelAdmin):
+#     pass
+#     list_display = ['id']
 
 @admin.register(QaydDetails)
 class QaydDetailsImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id']
+    list_display = ['id' , 'qaydID' , 'description_details' , 'date_details' , 'debit' , 'credit']
+
+class QaydDetailsInline(admin.TabularInline):
+    model = QaydDetails
+    extra = 1
+
+class QaydAdmin(admin.ModelAdmin):
+    inlines = [QaydDetailsInline]
+
+admin.site.register(Qayd, QaydAdmin)
+admin.site.register(AccountsTree)
 
 
 
