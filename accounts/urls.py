@@ -15,7 +15,9 @@ urlpatterns = [
     path('qayd_delete/<int:id>', views.qayd_delete, name='qayd_delete'),
     path('qayds', views.qayds, name='qayds'),
 
-       # path('qayd_create', qaydCreate.as_view(), name='qayd_create'),
+    path('generate-qayd-pdf/<int:id>/', views.generate_qayd_pdf, name='generate_qayd_pdf'),
+
+    # path('qayd_create', qaydCreate.as_view(), name='qayd_create'),
     # path('qayd_detail/<int:pk>', qaydDetail.as_view(), name='qayd_detail'),
     # path('qayd_update/<int:pk>', views.qaydUpdate.as_view(), name='qayd_update'),
     # path('qayd_delete/<int:pk>',qaydDelete.as_view(), name='qayd_delete'),

@@ -5,8 +5,11 @@
 <div class="content-wrapper">
   <h4 class="main-title">طباعة القيد رقم : ( {{qayd_reade.id}} )</h4>
   <div class="content">
-    <br />
-    
+    <a href="{% url 'generate_qayd_pdf' qayd_reade.id %}" class="btn-link"><i class="fas fa-print"></i></a>
+    <a href="{% url 'qayd_update' qayd_reade.id %}" class="btn-link"><i class="fas fa-edit"></i></a>
+    <a href="{% url 'qayds' %}" class="btn-link"><i class="fas fa-close"></i></a>
+    <br/>
+    <br/>
     <form method="POST" >
       {% csrf_token %} 
       {% include 'partials/_alerts.html' %}
@@ -55,7 +58,7 @@
               <!-- تفاصيل الجدول -->
               <!-- <td>{{ qdf.pk }}</td> -->
               <td>{{ qdf.accountID }}</td>
-              <td>{{ qdf.currencyID }}</td>
+              <td>{{ qdf.currencyID.currency_ar }}</td>
               <td>{{ qdf.rate }}</td>
               <td>{{ qdf.debit }}</td>
               <td>{{ qdf.credit }}</td>
@@ -82,9 +85,6 @@
           </tr>
         </tbody>
       </table>
-      <button type="submit" name="btnsave" class="btn btn-save">طباعة PDF</button>
-      <a href="{% url 'qayd_update' qayd_reade.id %}" class="btn-link"><i class="fas fa-edit"></i></a>
-      <a href="{% url 'qayds' %}" class="btn btn-close">إلغاء</a>
     </form>
     <br>
     <div class="form-col">

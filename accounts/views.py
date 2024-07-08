@@ -14,42 +14,13 @@ from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 
-# class qaydCreate(CreateView):
-#    model = Qayd
-#    fields = "__all__" #تعبئة كل الحقول
-#   #  fields = ['date','description'] #تعبئة جزء من الحقول
-#    success_url = reverse_lazy({'qayd_list'}) #لإعادة توجيه إلى صفحة أخرى
-#    form_class = QaydForm
-#   #  success_url = reverse_lazy('qayds')
-#   #  template_name = 'qayd_create' #لتحديد صفحة القالب 
-#    pass
-   
-# class qaydDetail(DetailView):
-#    model = Qayd
-#   #  context_object_name = 'qayd' #المتغير الذي يستخدم في القالب
-
-# class qaydUpdate(UpdateView):
-#    model = Qayd
-#    form_class = QaydForm
-#   #  fields = ['description'] #تعبئة كل الحقول
-#    template_name = 'accounts/qayd_update.html'
-#    success_url = reverse_lazy({'qayd_list'}) #لإعادة توجيه إلى صفحة أخرى
-#    def get_context_data(self, **kwargs):
-#       context = super().get_context_data(**kwargs)
-#       context['qayd_update_form'] = QaydForm()
-#       context['qayd_update_details_form'] = QaydDetailsForm()
-#       return context
-
-# class qaydDelete(DeleteView):
-#    model = Qayd
-#    success_url = reverse_lazy({'qayd_list'}) #لإعادة توجيه إلى صفحة أخرى
-   
-# class qaydList(ListView):
-#    model = Qayd
-#   # queryset = Qayd.objects.order_by('date') #لترتيب البيانات
-#   # ordering = ["-date"] #لترتيب البيانات
-#   # context_object_name = 'qayds' #المتغير الذي يستخدم في القالب
-#   # paginate_by = 
+import io
+from django.http import FileResponse
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 
 def account_create(request):
     if request.method == 'POST':
@@ -146,7 +117,7 @@ def qayd_create(request):
             body = form.save(commit=False)
             body.qaydID = head  # استخدام head مباشرة بدلاً من head.instance
             body.save()
-        messages.success(request, 'تمت الإضافة بنجاح')
+        messages.success(request, 'تم إضافة قيد جديد بنجاح')
         return redirect('qayds')
       else:
         # دالة عرض الأخطاء
@@ -187,7 +158,7 @@ def qayd_delete(request, id):
         qayd_id = Qayd.objects.get(id=id)
         if 'btndelete' in request.POST:
             qayd_id.delete()
-            messages.info(request, 'تم الحذف بنجاح')
+            messages.success(request, f'تم حذف القيد {id} بنجاح')
             return redirect('qayds')
     else:
         messages.error(request, 'الرجاء تسجيل الدخول أولاً')
@@ -215,12 +186,12 @@ def qayd_update(request, id):
     if request.method == 'POST':
         head_form = QaydForm(request.POST, request.FILES, instance=qayd_update)
         formset = QaydDetailsFormSet(request.POST, queryset=queryset)
-
+    
         if head_form.is_valid() and formset.is_valid():
           head = head_form.save(commit=False)
           head.updated_by = request.user
           head.save()
-
+        
           for form in formset:
             if form.cleaned_data.get('DELETE', False):
                 if form.instance.pk:
@@ -230,7 +201,7 @@ def qayd_update(request, id):
                 body.qaydID = head
                 body.save()
 
-          messages.success(request, 'تم التحديث بنجاح')
+          messages.success(request, f'تم تحديث بيانات القيد {id} بنجاح')
           return redirect('qayds')
         else:
             # دالة عرض الأخطاء
@@ -266,3 +237,86 @@ def qayds(request):
     }
     return render(request, 'accounts/qayds.html', context)
 
+
+def generate_qayd_pdf(request, id):
+    # احصل على القيد والتفاصيل الخاصة به من قاعدة البيانات
+    qayd = Qayd.objects.get(id=id)  # تأكد من أنك تحصل على Qayd وليس QaydDetails
+    qayd_details = qayd.details.all()  # استخدام 'details' بدلاً من 'qayddetails_set'
+    # إنشاء مستند PDF
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=letter)
+    elements = []
+    # إعداد الأنماط
+    styles = getSampleStyleSheet()
+    title_style = styles['Title']
+    heading_style = styles['Heading2']
+    normal_style = styles['Normal']
+    # إضافة ترويسة
+    elements.append(Paragraph("تفاصيل القيد", title_style))
+    elements.append(Paragraph(f"رقم القيد: {qayd.id}", heading_style))
+    elements.append(Paragraph(f"تاريخ القيد: {qayd.date}", normal_style))
+    elements.append(Paragraph(f"أنشأه: {qayd.created_by}", normal_style))
+    elements.append(Paragraph("<br/><br/>", normal_style))  # إضافة مسافة
+    # إعداد جدول التفاصيل
+    data = [['العملة', 'المدين', 'الدائن']]
+    for detail in qayd_details:
+        data.append([
+            f"{detail.debit:.2f}",
+            f"{detail.credit:.2f}"
+        ])
+    table = Table(data)
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+    ]))
+    elements.append(table)
+    # بناء ملف PDF
+    doc.build(elements)
+    buffer.seek(0)
+    # إرجاع استجابة PDF
+    return FileResponse(buffer, as_attachment=True, filename='qayd.pdf')
+
+
+
+
+# class qaydCreate(CreateView):
+#    model = Qayd
+#    fields = "__all__" #تعبئة كل الحقول
+#   #  fields = ['date','description'] #تعبئة جزء من الحقول
+#    success_url = reverse_lazy({'qayd_list'}) #لإعادة توجيه إلى صفحة أخرى
+#    form_class = QaydForm
+#   #  success_url = reverse_lazy('qayds')
+#   #  template_name = 'qayd_create' #لتحديد صفحة القالب 
+#    pass
+   
+# class qaydDetail(DetailView):
+#    model = Qayd
+#   #  context_object_name = 'qayd' #المتغير الذي يستخدم في القالب
+
+# class qaydUpdate(UpdateView):
+#    model = Qayd
+#    form_class = QaydForm
+#   #  fields = ['description'] #تعبئة كل الحقول
+#    template_name = 'accounts/qayd_update.html'
+#    success_url = reverse_lazy({'qayd_list'}) #لإعادة توجيه إلى صفحة أخرى
+#    def get_context_data(self, **kwargs):
+#       context = super().get_context_data(**kwargs)
+#       context['qayd_update_form'] = QaydForm()
+#       context['qayd_update_details_form'] = QaydDetailsForm()
+#       return context
+
+# class qaydDelete(DeleteView):
+#    model = Qayd
+#    success_url = reverse_lazy({'qayd_list'}) #لإعادة توجيه إلى صفحة أخرى
+   
+# class qaydList(ListView):
+#    model = Qayd
+#   # queryset = Qayd.objects.order_by('date') #لترتيب البيانات
+#   # ordering = ["-date"] #لترتيب البيانات
+#   # context_object_name = 'qayds' #المتغير الذي يستخدم في القالب
+#   # paginate_by = 

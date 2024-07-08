@@ -1,10 +1,25 @@
-import { calculateTotals } from './total.js';
+import { calculateTotals } from './calculate-totals.js';
+// import { validateForm } from './check-form.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     const container = document.getElementById('formset-container');
     const addButton = document.getElementById('add-form');
     const totalForms = document.getElementById('id_form-TOTAL_FORMS');
     let formCount = parseInt(totalForms.value);
+
+    // دالة لإضافة مستمعين للأحداث على الحقول
+    // function addInputListeners() {
+    const creditInputs = document.querySelectorAll(".credit-input");
+    const debitInputs = document.querySelectorAll(".debit-input");
+
+    creditInputs.forEach(input => {
+    input.addEventListener('change', calculateTotals);
+    });
+
+    debitInputs.forEach(input => {
+    input.addEventListener('change', calculateTotals);
+    });
+    // }
 
     // إضافة نموذج جديد
     addButton.addEventListener('click', function() {
@@ -35,8 +50,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 // تفريغ الحقول credit و debit قبل حذف النموذج
                 const creditInput = formContainer.querySelector('.credit-input');
                 const debitInput = formContainer.querySelector('.debit-input');
-                if (creditInput) creditInput.value = '0';
-                if (debitInput) debitInput.value = '0';
+                if (creditInput) creditInput.value = '-1';
+                if (debitInput) debitInput.value = '-1';
                 calculateTotals();  // تحديث المجموع بعد إزالة نموذج
                 deleteInput.checked = true;  // تحديد خانة حذف النموذج
                 formContainer.style.display = 'none';  // إخفاء النموذج من الواجهة
@@ -56,6 +71,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    calculateTotals();  // تحديث المجموع عند تغير القيم  
+    // function handleInputChange(input, type) {
+        const formContainer = input.closest('.form-container');
+        const otherType = type === 'credit' ? 'debit' : 'credit';
+        const otherInput = formContainer.querySelector(`.${otherType}-input`);
+      
+        if (input.value.trim() !== '' && otherInput.value.trim() !== '') {
+            otherInput.value = 0;
+        }
+    //   }
 
+    calculateTotals();  // تحديث المجموع عند تغير القيم  
 });

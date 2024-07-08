@@ -54,10 +54,10 @@ class TypeTransaction(models.Model):
     
 class Qayd(models.Model):
   typeTransactionID = models.ForeignKey(TypeTransaction , verbose_name='نوع العملية', default=1, on_delete=models.PROTECT, null=True)
-  date = models.DateTimeField(verbose_name='تاريخ القيد', default=timezone.now , blank=True, null=True)
+  date = models.DateTimeField(verbose_name='التاريخ', default=timezone.now , blank=True, null=True)
   description = models.TextField(verbose_name='وصف القيد', default="قيد يومية جديد", max_length=250, blank=True, null=True)
   attachments = models.FileField(verbose_name='مرفقات القيد', blank=True, null=True)
-  details = models.ManyToManyField(AccountsTree, through='QaydDetails', blank=True, null=True)
+  details = models.ManyToManyField(AccountsTree, through='QaydDetails', blank=True, related_name='qayds')
   created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name='qayds_created', null=True, blank=True)
   created_at = models.DateTimeField(verbose_name='تاريخ الإنشاء',auto_now_add=True)
   updated_by = models.ForeignKey(User, verbose_name='المُعدِل', related_name='updated_qayds', on_delete=models.PROTECT, blank=True, null=True)
@@ -66,12 +66,16 @@ class Qayd(models.Model):
     # return ' | Qayd id: ' + str(self.id)
     return  str(self.id)
   
+  class Meta:
+    #ترتيب العناصر حسب الآي دي
+    ordering = ['-id']
+
   def get_details_count(self):
         return QaydDetails.objects.filter(qaydID=self).count()
   
 class QaydDetails(models.Model):
-  qaydID = models.ForeignKey(Qayd, on_delete=models.CASCADE, null=True, blank=True)
-  date_details = models.DateTimeField(verbose_name='التاريخ', default=datetime.now, blank=True, null=True)
+  qaydID = models.ForeignKey(Qayd, on_delete=models.CASCADE, related_name='qayd_details', blank=True)
+  date_details = models.DateTimeField(verbose_name='التاريخ', default=timezone.now, blank=True, null=True)
   accountID = models.ForeignKey(AccountsTree, verbose_name='الحساب', default=1, on_delete=models.PROTECT, blank=True, null=True)
   currencyID = models.ForeignKey(Countries , verbose_name='العملة', default=1, on_delete=models.PROTECT, null=True)
   rate = models.DecimalField(verbose_name='سعر الصرف', default=1, max_digits=6, decimal_places=2)
@@ -90,8 +94,11 @@ class QaydDetails(models.Model):
 
 
   def __str__(self):
-    # return 
     return str(self.qaydID)
+  
   class Meta:
     #ترتيب العناصر حسب الآي دي
-    ordering = ['-id']
+    ordering = ['id']
+
+  def get_currency_ar(self):
+      return self.currencyID.get_currency_ar()

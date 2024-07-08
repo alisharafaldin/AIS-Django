@@ -1,5 +1,5 @@
 from django import forms
-from .models import Qayd, QaydDetails , AccountsTree
+from .models import Qayd, QaydDetails , AccountsTree, Countries
 from django.forms import modelformset_factory, formset_factory
 from django.forms import BaseModelFormSet
 
@@ -23,33 +23,26 @@ class QaydForm(forms.ModelForm):
         model = Qayd
         fields = '__all__'
         widgets = {
-            'date': forms.DateTimeInput(attrs={'class':'form-control',  'type':'datetime-local' , 'placeholder':'تاريخ القيد'}),
+            'date': forms.DateTimeInput(attrs={'class':'form-control',  'type':'datetime-local' , 'placeholder':'التاريخ '}),
             'typeTransactionID': forms.Select(attrs={'class':'form-control', 'placeholder':'العملية'}),
             'description': forms.Textarea(attrs={'class':'form-control', 'placeholder':'وصف القيد', 'style':'height: 50px;'}),
             'attachments': forms.FileInput(attrs={'class':'form-control', 'placeholder':'مرفقات القيد', 'value':"{{qayd_form.attachments}}"}),
             'updated_at': forms.DateTimeInput(attrs={'class':'form-control',  'type':'datetime-local' , 'placeholder':'تاريخ التعديل'}),
             'details': forms.CheckboxSelectMultiple,
-            'created_by': forms.Select(attrs={'class':'form-control', 'placeholder':'المنشئ'}),
+            # 'created_by': forms.Select(attrs={'class':'form-control', 'placeholder':'المنشئ'}),
 
         }
-    # def save(self, commit=True):
-    #     instance = super().save(commit=False)
-    #     if self.instance.pk:  # إذا كان الكائن موجودًا بالفعل (تعديل)
-    #         instance.created_by = self.instance.created_by  # حافظ على القيمة الأصلية لـ 'created_by'
-    #     if commit:
-    #         instance.save()
-    #     return instance
-    
     # ضبط حقل created_byكنموذج للقراءة فقط في حال اتعديل  
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if self.instance.pk:
-            self.fields['created_by'].widget = forms.HiddenInput()  # إخفاء الحقل في نموذج التعديل
-        else:
-            self.fields['created_by'].required = True  # تأكيد أن الحقل مطلوب عند الإنشاء
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     if self.instance.pk:
+    #         self.fields['created_by'].widget = forms.HiddenInput()  # إخفاء الحقل في نموذج التعديل
+    #     else:
+    #         self.fields['created_by'].required = True  # تأكيد أن الحقل مطلوب عند الإنشاء
  
 class QaydDetailsForm(forms.ModelForm):
     DELETE = forms.BooleanField(required=False, initial=False)
+    # currency_ar = forms.CharField(required=False, widget=forms.TextInput(attrs={'readonly': 'readonly'}))
     class Meta:
         model = QaydDetails
         fields = '__all__'
@@ -64,5 +57,39 @@ class QaydDetailsForm(forms.ModelForm):
             'projectID': forms.Select(attrs={'class':'form-control', 'placeholder':'المشروع'}),
             'empID': forms.Select(attrs={'class':'form-control', 'placeholder':'الموظف'}), 
         }
+    #التأكد من أن على الأقل إحدى القيمتين ليست صفراً
+    def clean(self):
+        cleaned_data = super().clean()
+        credit = cleaned_data.get('credit')
+        debit = cleaned_data.get('debit')
+        if credit == 0 and debit == 0:
+            raise forms.ValidationError('يجب أن تكون إحدى القيمتين على الأقل غير صفرية أو حذف السطر.')
+        return cleaned_data
 
-QaydDetailsFormSet = modelformset_factory(QaydDetails, form=QaydDetailsForm, extra=2, can_delete=True)  # extra=3 يعني أننا نريد إضافة 3 نماذج إضافية
+# نموذج المجموعة مع دالة التحقق
+QaydDetailsFormSet = modelformset_factory(
+    QaydDetails,
+    form=QaydDetailsForm,
+    extra=2, # عدد النماذج الإفتراضية
+    can_delete=True, # إمكانية الحذف
+    min_num=2, # الحد الأدنى لعدد النماذج
+    validate_min=True, # التحقق من عدد النماذج
+    ) 
+
+# للتحقق من توازن القيد
+class BaseQaydDetailsFormSet(forms.BaseModelFormSet):
+    def clean(self):
+        super().clean()
+        total_credit = 0
+        total_debit = 0
+
+        for form in self.forms:
+            if form.cleaned_data:
+                total_credit += form.cleaned_data.get('credit', 0)
+                total_debit += form.cleaned_data.get('debit', 0)
+
+        if total_credit != total_debit:
+            raise forms.ValidationError('قيمة المدين يجب أن تكون مساوية لقيمة الدائن.')
+
+# إنشاء نموذج المجموعة باستخدام الفئة الأساسية المخصصة
+QaydDetailsFormSet = modelformset_factory(QaydDetails, form=QaydDetailsForm, formset=BaseQaydDetailsFormSet, extra=2)

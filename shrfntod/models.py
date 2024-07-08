@@ -11,7 +11,7 @@ class Album(models.Model):
     return  self.name
 
 class Posts(models.Model):
-  date = models.DateField(verbose_name='تاريخ البوست', default=timezone.now() , blank=True, null=True)
+  date = models.DateField(verbose_name='تاريخ البوست', default=timezone.now , blank=True, null=True)
   dateHijri = models.CharField(max_length=100)
   title = models.CharField(verbose_name='عنوان البوست', max_length=500)
   albumID = models.ForeignKey(Album , verbose_name='الألبوم', default=1, on_delete=models.CASCADE)

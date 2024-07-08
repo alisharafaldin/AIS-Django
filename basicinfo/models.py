@@ -17,9 +17,13 @@ class Countries(models.Model):
   fractional_en = models.CharField(verbose_name='الكسر إنجليزي',max_length=50, blank=True, null=True)
   symbol_ar = models.CharField(verbose_name='الرمز عربي',max_length=50, blank=True, null=True)
   symbol_en = models.CharField(verbose_name='الرمز إنجليزي',max_length=50, blank=True, null=True)
+  
   def __str__(self):
-      return str(self.name_ar)
+      return str(self.currency_ar)
     
+  def get_currency_ar(self):
+        return str(self.currency_ar)
+  
 class Region(models.Model):
   countryID = models.ForeignKey(Countries, verbose_name='معرف الدولة',on_delete=models.PROTECT) #لن يتم حزف الصنف في حالة حذف الموظف
   name_ar = models.CharField(verbose_name='إسم المنطقة عربي',max_length=50, blank=True, null=True)

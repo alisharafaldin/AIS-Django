@@ -6,6 +6,7 @@ function sumValues(inputs) {
   });
   return total;
 }
+
 // دالة لحساب المجموعات والفرق بينها
 export function calculateTotals() {
   const creditInputs = document.querySelectorAll(".credit-input");
@@ -30,14 +31,15 @@ export function calculateTotals() {
 
     return difference === 0;  // نحتاج إلى إعادة قيمة صحيحة إذا كان التوازن صحيحًا
 }
+
 // دالة لتحديث النتيجة على الصفحة
 function updateTotal(elementId, total) {
   const totalField = document.getElementById(elementId);
   totalField.textContent =
     `${elementId.replace(/-/g, " ").toUpperCase()}: ` + total.toFixed(2);
 }
+
 // حساب المجموع عند تحميل الصفحة
 document.addEventListener("DOMContentLoaded", (event) => {
   calculateTotals();
 });
-
