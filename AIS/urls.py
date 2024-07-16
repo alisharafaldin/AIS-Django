@@ -6,9 +6,8 @@ from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/',admin.site.urls),
-    path('' , RedirectView.as_view(url='home')), #للتحويل إلى رابط آخر
-    path('home' , include('pages.urls')),
-    # path('users/' , include('users.urls')),
+    path('' , RedirectView.as_view(url='companys')), #للتحويل إلى رابط آخر
+    path('companys' , include('companys.urls')),
     path('basicinfo/',include('basicinfo.urls')),
     path('hadena/',include('hadena.urls')),
     path('forex/',include('forex.urls')),
@@ -17,7 +16,9 @@ urlpatterns = [
     path('products/',include('products.urls')),
     path('orders/',include('orders.urls')),
     path('employees/',include('employees.urls')),
+    path('companys/',include('companys.urls')),
     path('pages/',include('pages.urls')),
+    
 ] 
 if settings.DEBUG:
   urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -14,6 +14,11 @@
       <li class="nav-item d-none d-sm-inline-block">
         <a class="nav-link" href="http://127.0.0.1:8000/admin/" target="blank" >Admin</a>
       </li>
+      
+    </ul>
+
+  
+    <ul class="navbar-nav mr-auto-navbav">
       <li 
       {% if 'signin' in request.path or 'signup' in request.path or 'profile' in request.path %}
       class="nav-item dropdown active"
@@ -22,21 +27,28 @@
       {% endif %}         
       >
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
           {% if request.user.is_authenticated %}
-          Welcome
+            {% for company_user in request.user.companyuser_set.all %}
+                <li>{{ company_user.companyID.name_ar }} - 
+                    <a href="{% url 'switch_company' company_user.companyID.id %}">تبديل</a>
+                </li>
+            {% endfor %}
+            <p>{{ request.session.current_company_name }}</p>
           {% else %}
-          Join us
+            <a href="{% url 'login' %}">تسجيل دخول</a>
           {% endif %}
+
         </a>
         <div class="dropdown-menu animate slideIn" aria-labelledby="navbarDropdown">
           {% if request.user.is_authenticated %}
-          <a class="dropdown-item" href="{% url 'profile' %}">Profile ({{request.user.username}})</a>
-          <a class="dropdown-item" href="{% url 'show_pro_fav' %}">My Favorite</a>
-          <a class="dropdown-item" href="{% url 'cart' %}">My Cart</a>
+          <a class="dropdown-item" href="{% url 'company_reade' request.current_company.id %}">ملف الشركة</a>
+          <a class="dropdown-item" href="{% url 'company_update' request.current_company.id %}">تعديل بيانات الشركة</a>
+          <a class="dropdown-item" href="{% url 'companys' %}">تبديل الشركة</a>
           <a class="dropdown-item" href="{% url 'show_orders' %}">My Orders</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="{% url 'logout' %}">
-            Logout
+            تسجيل خروج
           </a>
           {% else %}
           <a class="dropdown-item" href="{% url 'signin' %}">Sign in</a>
@@ -44,27 +56,35 @@
           {% endif %}    
         </div>
       </li>
-    </ul>
+      
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <!-- <div class="info">
+          <a href="#" class="d-block">{{request.user.first_name}}</a>
+        </div> -->
+        <div class="image">
+          {% if request.current_company.logo %}
+          <img src="{{ request.current_company.logo.url }}" class="img-circle elevation-2" alt="User Image"/>
+          {% else %}
+          <img src="{% static 'dist/img/AIS.png' %}" class="img-circle elevation-2" alt="User Image"/>
+          {% endif %}
+        </div>
+      </div>
 
-
-
-    <ul class="navbar-nav mr-auto-navbav">
-      <li class="nav-item dropdown">
+      <!-- <li class="nav-item dropdown">
         <a class="nav-link" href="{% url 'cart' %}">
-          <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"> Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. <path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg>
           <span class="badge badge-danger navbar-badge">{{order_count.count}}</span>
         </a>
-      </li>
-
+      </li> -->
       <!-- Messages Dropdown Menu -->
-      <li class="nav-item dropdown">
+     <!-- <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-comments"></i>
           <span class="badge badge-danger navbar-badge">3</span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <a href="#" class="dropdown-item">
-            <!-- Message Start -->
+             Message Start 
             <div class="media">
               <img src="dist/img/AIS.png" alt="User Avatar" class="img-size-50 mr-3 img-circle">
               <div class="media-body">
@@ -76,11 +96,11 @@
                 <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
               </div>
             </div>
-            <!-- Message End -->
+            Message End 
           </a>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item">
-            <!-- Message Start -->
+         Message Start 
             <div class="media">
               <img src="dist/img/AIS.png" alt="User Avatar" class="img-size-50 img-circle mr-3">
               <div class="media-body">
@@ -92,11 +112,11 @@
                 <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
               </div>
             </div>
-            <!-- Message End -->
+             Message End 
           </a>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item">
-            <!-- Message Start -->
+             Message Start
             <div class="media">
               <img src="dist/img/AIS.png" alt="User Avatar" class="img-size-50 img-circle mr-3">
               <div class="media-body">
@@ -108,13 +128,13 @@
                 <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
               </div>
             </div>
-            <!-- Message End -->
+            Message End
           </a>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
         </div>
       </li>
-      <!-- Notifications Dropdown Menu -->
+       Notifications Dropdown Menu 
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-bell"></i>
@@ -145,7 +165,8 @@
         <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
           <i class="fas fa-th-large"></i>
         </a>
-      </li>
+      </li>  -->
+
     </ul>
   </nav>
   <!-- /.navbar -->

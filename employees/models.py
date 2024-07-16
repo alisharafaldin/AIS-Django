@@ -1,26 +1,25 @@
 from django.db import models
 from datetime import date 
 from basicinfo.models import *
+from companys.models import Company
+from django.contrib.auth.models import User
+from profiles.models import UserProfile
 
-class Company(models.Model):
-    lpID = models.OneToOneField(LegalPersonality, on_delete=models.CASCADE)
-    taxNumber = models.CharField(verbose_name='الرقم الضريبي',max_length=100, blank=True, null=True)
-    def __str__(self):
-        return str(self.lpID)
-
-class EmpInfo(models.Model):
+class EmployeeInfo(models.Model):
+    companyID = models.ForeignKey(Company, on_delete=models.PROTECT)
+    sequence = models.PositiveIntegerField(editable=False)  # الحقل التسلسلي
     personID = models.OneToOneField(Person, on_delete=models.CASCADE)
-    companyID = models.ForeignKey(Company, verbose_name='الشركة', default=1, on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
     workStartDate = models.DateField(verbose_name='تاريخ بداية العمل', blank=True, null=True)
     contractSalary = models.DecimalField(verbose_name="راتب العقد", default=1200, decimal_places=2, max_digits=10, blank=True, null=True)
     fixedExtra = models.DecimalField(verbose_name="إضافي ثابت", default=0, decimal_places=2, max_digits=10, blank=True, null=True)
     workingStatusID = models.ForeignKey(WorkingStatus, verbose_name='حالة العمل', default=1, on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
     workEndDate = models.DateField(verbose_name='تاريخ نهاية العمل', blank=True, null=True)
+
     def __str__(self):
         return str(self.personID)
 
 class ProjectRotation(models.Model):
-    empID = models.ForeignKey(EmpInfo, verbose_name='العامل', on_delete=models.PROTECT) #لن يتم حزف الصنف في حالة حذف الموظف
+    empID = models.ForeignKey(EmployeeInfo, verbose_name='العامل', on_delete=models.PROTECT) #لن يتم حزف الصنف في حالة حذف الموظف
     projectID = models.ForeignKey(Project, verbose_name='المشروع', on_delete=models.PROTECT) #لن يتم حزف الصنف في حالة حذف الموظف
     subProjectID = models.ForeignKey(SubProject, verbose_name='مشروع فرعي', on_delete=models.PROTECT) #لن يتم حزف الصنف في حالة حذف الموظف
     yearID = models.ForeignKey(CalendarYears, verbose_name='العام', on_delete=models.PROTECT) #لن يتم حزف الصنف في حالة حذف الموظف

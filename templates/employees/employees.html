@@ -28,52 +28,54 @@
     <br>
 
     <!-- End Search -->
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">الإسم</th>
-          <th scope="col">نوع الهوية</th>
-          <th scope="col">رقم الهوية</th>
-          <th scope="col">السكن</th>
-          <th scope="col">رقم الجوال</th>
-          <th scope="col">المستندات</th>
-          <th scope="col">الإجراءات</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for emp in all_emp %}
-        <tr>
-          <!-- لعمل ارقام تسلسلة -->
-          <th scope="row">{{forloop.counter}}</th>
-          <!-- تفاصيل الجدول -->
-          <td>{{emp.personID.f_Name_ar}}</td>
-          <td>{{emp.personID.typeID}}</td>
-          <td>{{emp.personID.id_number}}</td>
-          <td>{{emp.personID.desAddress}}</td>
-          <td>{{emp.personID.mobileNumber}}</td>
-          <td>
-            {% if emp.documentLink %}
-            <a href="{{emp.documentLink}}" target="blank">رابط المستندات</a>
-            {% else %}
-            <a style="color: brown">لا يوجد مستندات</a>
-            {% endif %}
-          </td>
-          <td>
-            <a class="btn-link" href="{% url 'employee_update' emp.id %}">
-              <i class="fas fa-edit"></i>
-            </a>
-            <a href="{% url 'employee_reade' emp.id %}" class="btn-link">
-              <i class="fa fa-print" aria-hidden="true"></i>
-            </a>
-            <a href="{% url 'employee_delete' emp.id %}" class="btn-link">
-              <i class="fa fa-trash" aria-hidden="true"></i>
-            </a>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+     <div class="table-responsive">
+       <table class="table table-hover">
+         <thead>
+           <tr>
+             <th scope="col">#</th>
+             <th scope="col">الإسم</th>
+             <th scope="col">نوع الهوية</th>
+             <th scope="col">رقم الهوية</th>
+             <th scope="col">السكن</th>
+             <th scope="col">رقم الجوال</th>
+             <th scope="col">المستندات</th>
+             <th scope="col">الإجراءات</th>
+           </tr>
+         </thead>
+         <tbody>
+           {% for emp in all_emp %}
+           <tr>
+             <!-- لعمل ارقام تسلسلة -->
+             <th scope="row">{{forloop.counter}}</th>
+             <!-- تفاصيل الجدول -->
+             <td>{{emp.personID.f_Name_ar}}</td>
+             <td>{{emp.personID.typeID}}</td>
+             <td>{{emp.personID.id_number}}</td>
+             <td>{{emp.personID.desAddress}}</td>
+             <td>{{emp.personID.mobileNumber}}</td>
+             <td>
+               {% if emp.documentLink %}
+               <a href="{{emp.documentLink}}" target="blank">رابط المستندات</a>
+               {% else %}
+               <a style="color: brown">لا يوجد مستندات</a>
+               {% endif %}
+             </td>
+             <td>
+               <a class="btn-link" href="{% url 'employee_update' emp.id %}">
+                 <i class="fas fa-edit"></i>
+               </a>
+               <a href="{% url 'employee_reade' emp.id %}" class="btn-link">
+                 <i class="fa fa-print" aria-hidden="true"></i>
+               </a>
+               <a href="{% url 'employee_delete' emp.id %}" class="btn-link">
+                 <i class="fa fa-trash" aria-hidden="true"></i>
+               </a>
+             </td>
+           </tr>
+           {% endfor %}
+         </tbody>
+       </table>
+     </div>
   </div>
 </div>
 {% endblock %}

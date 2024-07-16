@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib import auth
 from .models import UserProfile
 from products.models import Product 
-from employees.models import EmpInfo 
+from employees.models import EmployeeInfo 
 import re
 # Create your views here.
 def signin(request):
@@ -211,3 +211,12 @@ def show_pro_fav(request):
         pro = userInfo.Product_favorites.all()
         context = { 'products':pro }
     return render(request, 'products/products.html', context)
+
+def user_reade(request, id):
+  user_id = UserProfile.objects.get(id=id)
+  context = {
+    'user_reade':user_id,
+  }
+  return render(request, 'partials/_navbar.html', context)
+
+

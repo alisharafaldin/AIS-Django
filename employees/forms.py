@@ -1,10 +1,10 @@
 from django import forms
-from .models import EmpInfo
+from .models import EmployeeInfo
 from basicinfo.models import Person
 
 class EmpForm(forms.ModelForm):
   class Meta:
-      model = EmpInfo
+      model = EmployeeInfo
       fields = '__all__'
       # لعمل إستثناء حقل
       # exclude = ('f_Name_ar')

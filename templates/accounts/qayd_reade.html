@@ -3,10 +3,11 @@
 
 {% block content %}
 <div class="content-wrapper">
-  <h4 class="main-title">طباعة القيد رقم : ( {{qayd_reade.id}} )</h4>
+  <h4 class="main-title">طباعة القيد رقم : ( {{qayd_reade.sequence}} )</h4>
   <div class="content">
     <a href="{% url 'generate_qayd_pdf' qayd_reade.id %}" class="btn-link"><i class="fas fa-print"></i></a>
     <a href="{% url 'qayd_update' qayd_reade.id %}" class="btn-link"><i class="fas fa-edit"></i></a>
+    <a href="{% url 'qayd_delete' qayd_reade.id %}" class="btn-link"><i class="fas fa-trash"></i></a>
     <a href="{% url 'qayds' %}" class="btn-link"><i class="fas fa-close"></i></a>
     <br/>
     <br/>
@@ -35,56 +36,58 @@
           </div>
         </div>
       </div>
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <!-- <th scope="col">رقم القيد</th> -->
-            <th scope="col">الحساب</th>
-            <th scope="col">العملة</th>
-            <th scope="col">سعر الصرف</th>
-            <th scope="col">مدين</th>
-            <th scope="col">دائن</th>
-            <th scope="col">الوصف</th>
-            <th scope="col">المشروع</th>
-            <th scope="col">الموظف</th>
-          </tr>
-        </thead>
-        <tbody>
-            {% for qdf in qayd_reade_details %}
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
             <tr>
-              <!-- لعمل ارقام تسلسلة -->
-              <th scope="row">{{forloop.counter}}</th>
-              <!-- تفاصيل الجدول -->
-              <!-- <td>{{ qdf.pk }}</td> -->
-              <td>{{ qdf.accountID }}</td>
-              <td>{{ qdf.currencyID.currency_ar }}</td>
-              <td>{{ qdf.rate }}</td>
-              <td>{{ qdf.debit }}</td>
-              <td>{{ qdf.credit }}</td>
-              <td>{{ qdf.description_details }}</td>
-              <td>{{ qdf.projectID }}</td>
-              <td>{{ qdf.empID }}</td>
+              <th scope="col">#</th>
+              <!-- <th scope="col">رقم القيد</th> -->
+              <th scope="col">الحساب</th>
+              <th scope="col">العملة</th>
+              <th scope="col">سعر الصرف</th>
+              <th scope="col">مدين</th>
+              <th scope="col">دائن</th>
+              <th scope="col">الوصف</th>
+              <th scope="col">المشروع</th>
+              <th scope="col">الموظف</th>
             </tr>
-            {% endfor %}
-        </tbody>
-        <tbody>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <th>المجموع</th>
-            <th>مجموع مدين : {{total_d}}</th>
-            <th>مجموع الدائن : {{total_c}}</th>
-            {% if difference == 0 %}
-              <th>الفرق : <span style="color: green;">{{difference}}</span></th>
-            {% else %}
-              <th>الفرق : <span style="color: red;">{{difference}}</span></th>
-            {% endif %}
-          </tr>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+              {% for qdf in qayd_reade_details %}
+              <tr>
+                <!-- لعمل ارقام تسلسلة -->
+                <th scope="row">{{forloop.counter}}</th>
+                <!-- تفاصيل الجدول -->
+                <!-- <td>{{ qdf.pk }}</td> -->
+                <td>{{ qdf.accountID }}</td>
+                <td>{{ qdf.currencyID.currency_ar }}</td>
+                <td>{{ qdf.rate }}</td>
+                <td>{{ qdf.debit }}</td>
+                <td>{{ qdf.credit }}</td>
+                <td>{{ qdf.description_details }}</td>
+                <td>{{ qdf.projectID }}</td>
+                <td>{{ qdf.empID }}</td>
+              </tr>
+              {% endfor %}
+          </tbody>
+          <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <th>المجموع</th>
+              <th>مجموع مدين : {{total_d}}</th>
+              <th>مجموع الدائن : {{total_c}}</th>
+              {% if difference == 0 %}
+                <th>الفرق : <span style="color: green;">{{difference}}</span></th>
+              {% else %}
+                <th>الفرق : <span style="color: red;">{{difference}}</span></th>
+              {% endif %}
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </form>
     <br>
     <div class="form-col">

@@ -8,6 +8,11 @@ class ProjectImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id', 'name_ar']
 
+@admin.register(JobTitle)
+class JobTitleImportExport(ImportExportModelAdmin):
+    pass
+    list_display = ['id', 'name_ar']
+
 @admin.register(SubProject)
 class SubProjectImportExport(ImportExportModelAdmin):
     pass
@@ -58,10 +63,10 @@ class TypeIDImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id', 'typeID_ar']
 
-@admin.register(LegalPersonality)
-class LegalPersonalityImportExport(ImportExportModelAdmin):
+@admin.register(TypeTransaction)
+class TypeTransactionImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'name_ar']
+    list_display = ['id', 'typeTransaction_ar']
 
 @admin.register(Region)
 class RegionImportExport(ImportExportModelAdmin):
@@ -77,11 +82,6 @@ class statesImportExport(ImportExportModelAdmin):
 class RSocialStatusImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id', 'socialStatus_ar']
-
-@admin.register(BusinessType)
-class BusinessTypeImportExport(ImportExportModelAdmin):
-    pass
-    list_display = ['id', 'type_ar']
 
 @admin.register(WorkTrade)
 class WorkTradeTypeImportExport(ImportExportModelAdmin):

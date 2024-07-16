@@ -10,6 +10,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 40px;
 }
 
 .layout-fixed .main-sidebar {
@@ -71,9 +72,43 @@
 @media (max-width: 767.98px) {
     .main-sidebar, .main-sidebar::before {
         box-shadow: none !important;
-        margin-right: -250px;
+        margin-right: -50px;
     }
 
+    .title-label{
+      height: 40px;
+    }
+    /* القاعدة الأساسية للشريط الجانبي */
+.main-sidebar {
+  width: 250px;
+  transition: margin-right 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+}
+
+/* تعديل الشريط الجانبي للأجهزة الصغيرة */
+@media (max-width: 1199.98px) {
+  .main-sidebar {
+      margin-right: -200px; /* تحريك الشريط الجانبي قليلاً إلى اليسار */
+  }
+}
+
+@media (max-width: 991.98px) {
+  .main-sidebar {
+      margin-right: -250px; /* تحريك الشريط الجانبي أكثر إلى اليسار */
+  }
+}
+
+@media (max-width: 767.98px) {
+  .main-sidebar {
+      margin-right: -250px; /*تحريك الشريط الجانبي بالكامل إلى اليسار */
+      box-shadow: none !important; /* إزالة الظل */
+      background-color:#fff !important;
+      /* display: none !important; */
+  }
+  .main-sidebar::before {
+      box-shadow: none !important; /* إزالة الظل من pseudo-element */
+  }
+}
     .content-wrapper, .content-wrapper::before, .main-footer, .main-footer::before, .main-header, .main-header::before {
         margin-right: 0;
     }

@@ -51,7 +51,7 @@ def employee_create(request):
   return render(request, 'employees/employee_create.html', context)
 
 def employee_reade(request, id):
-  emp_id = EmpInfo.objects.get(id=id)
+  emp_id = EmployeeInfo.objects.get(id=id)
   context = {
     'employee_reade':emp_id,
   }
@@ -107,13 +107,10 @@ def employee_update(request, id):
 def employee_delete(request, id):
   if request.user.is_authenticated and not request.user.is_anonymous:
     employee_delete = EmpInfo.objects.get(id=id)
-    # person_delete = Person.objects.get(id=employee_delete)
     if request.method == 'POST':
       employee_delete.delete()
-      # if employee_delete.delete():
-      #   person_delete.delete()
       messages.info(request, 'تم حذف الموظف بنجاح')
-      return redirect('qayds')
+      return redirect('employees')
   else:
       messages.error(request, 'الرجاء تسجيل الدخول أولاً')
   context = {

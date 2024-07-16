@@ -1,9 +1,11 @@
 
 from django.db import models
 from datetime import date 
-from employees.models import EmpInfo
+from employees.models import EmployeeInfo
 from basicinfo.models import Countries, Region, States, Cities, Person
-from accounts.models import Qayd
+def get_qayd():
+  from accounts.models import Qayd
+  return Qayd
 
 class Cycle(models.Model):
   cycle_ar = models.CharField(verbose_name='الدورة عربي',max_length=100)
@@ -19,7 +21,7 @@ class Cycle(models.Model):
 
 class ShareholdersInfo(models.Model):
   personID = models.OneToOneField(Person, related_name='personID', on_delete=models.CASCADE)
-  supervisorID = models.ForeignKey(EmpInfo, related_name='المشرف', verbose_name='المشرف',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الموظف في حالة حذف المسوق
+  supervisorID = models.ForeignKey(EmployeeInfo, related_name='المشرف', verbose_name='المشرف',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الموظف في حالة حذف المسوق
   someoneToReferTo = models.CharField(verbose_name='شخص للرجوع إليه',max_length=100, blank=True, null=True)
   phoneSomeoneToReferTo = models.CharField(verbose_name='هاتف شخص للرجوع إليه',max_length=100, blank=True, null=True)
 
@@ -36,13 +38,13 @@ class Contracts(models.Model):
   contractNumber = models.CharField(verbose_name='رقم العقد',max_length=100, blank=True, null=True)
   typeContractID = models.ForeignKey(TypeContract, verbose_name='نوع العقد', on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
   cycleID = models.ForeignKey(Cycle, verbose_name='الدورة', on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
-  receiptID = models.ForeignKey(Qayd, verbose_name='رقم الإيصال', on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
+  receiptID = models.ForeignKey(get_qayd(), verbose_name='رقم الإيصال', on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
   numberOfShares = models.IntegerField(verbose_name='عدد الأسهم', default=1)
   amountOfShare = models.IntegerField(verbose_name='سعر السهم', default=1200000)
   profitRate = models.IntegerField(verbose_name='معدل الربح', default=8)
   dateOfDividend = models.DateField(verbose_name='تاريخ توزيع الأرباح', blank=True, null=True)
-  witnes1ID = models.ForeignKey(EmpInfo, related_name='witnes1ID', verbose_name='الشاهد الأول',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الموظف في حالة حذف المسوق
-  witnes2ID = models.ForeignKey(EmpInfo, related_name='witnes2ID', verbose_name='الشاهد الثاني',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الموظف في حالة حذف المسوق
+  witnes1ID = models.ForeignKey(EmployeeInfo, related_name='witnes1ID', verbose_name='الشاهد الأول',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الموظف في حالة حذف المسوق
+  witnes2ID = models.ForeignKey(EmployeeInfo, related_name='witnes2ID', verbose_name='الشاهد الثاني',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الموظف في حالة حذف المسوق
   notes = models.TextField(verbose_name='ملاحظات', blank=True, null=True)
   def __str__(self):
     return str(self.shareholdersID)

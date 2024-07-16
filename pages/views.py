@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from products.models import Product
-from employees.models import EmpInfo
+from employees.models import EmployeeInfo
 from shrfntod.models import Posts
 from accounts.models import Qayd
 
@@ -10,7 +10,7 @@ from accounts.models import Qayd
 def index(request):
     context = {
         'products': Product.objects.all(),
-        'emp_count': EmpInfo.objects.all(),
+        'emp_count': EmployeeInfo.objects.all(),
         'qayds' : Qayd.objects.all(),
     }
     return render(request , 'pages/index.html' , context)

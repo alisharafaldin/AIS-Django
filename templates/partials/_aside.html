@@ -2,7 +2,7 @@
 {% load static %}
 <!-- Main Sidebar Container -->
 <!-- sidebar-dark-primary -->
-<aside class="main-sidebar elevation-4" style="position: fixed">
+<aside class="main-sidebar " style="position: fixed">
   <!-- Brand Logo -->
   <a href="{% url 'index' %}" class="brand-link">
     <img
@@ -16,7 +16,7 @@
   <!-- Sidebar -->
   <div class="sidebar">
     <!-- Sidebar user panel (optional) -->
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+    <!-- <div class="user-panel mt-3 pb-3 mb-3 d-flex">
       <div class="image">
         <img
           src="{% static 'dist/img/emp1.jpg' %}"
@@ -25,9 +25,9 @@
         />
       </div>
       <div class="info">
-        <a href="#" class="d-block">{{request.user.username}}</a>
+        <a href="#" class="d-block">{{request.user.first_name}}</a>
       </div>
-    </div>
+    </div> -->
 
     <!-- Sidebar Menu -->
     <nav class="mt-2">

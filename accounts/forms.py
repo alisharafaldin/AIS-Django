@@ -26,23 +26,13 @@ class QaydForm(forms.ModelForm):
             'date': forms.DateTimeInput(attrs={'class':'form-control',  'type':'datetime-local' , 'placeholder':'التاريخ '}),
             'typeTransactionID': forms.Select(attrs={'class':'form-control', 'placeholder':'العملية'}),
             'description': forms.Textarea(attrs={'class':'form-control', 'placeholder':'وصف القيد', 'style':'height: 50px;'}),
-            'attachments': forms.FileInput(attrs={'class':'form-control', 'placeholder':'مرفقات القيد', 'value':"{{qayd_form.attachments}}"}),
+            'attachments': forms.ClearableFileInput(attrs={'class':'form-control', 'placeholder':'مرفقات القيد', 'value':"{{qayd_form.attachments}}"}),
             'updated_at': forms.DateTimeInput(attrs={'class':'form-control',  'type':'datetime-local' , 'placeholder':'تاريخ التعديل'}),
             'details': forms.CheckboxSelectMultiple,
-            # 'created_by': forms.Select(attrs={'class':'form-control', 'placeholder':'المنشئ'}),
-
         }
-    # ضبط حقل created_byكنموذج للقراءة فقط في حال اتعديل  
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     if self.instance.pk:
-    #         self.fields['created_by'].widget = forms.HiddenInput()  # إخفاء الحقل في نموذج التعديل
-    #     else:
-    #         self.fields['created_by'].required = True  # تأكيد أن الحقل مطلوب عند الإنشاء
- 
+
 class QaydDetailsForm(forms.ModelForm):
     DELETE = forms.BooleanField(required=False, initial=False)
-    # currency_ar = forms.CharField(required=False, widget=forms.TextInput(attrs={'readonly': 'readonly'}))
     class Meta:
         model = QaydDetails
         fields = '__all__'

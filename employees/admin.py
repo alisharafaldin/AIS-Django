@@ -6,13 +6,8 @@ from import_export.admin import ImportExportModelAdmin
 # Register your models here.
 
 # admin.site.register(Cities)
-@admin.register(EmpInfo)
+@admin.register(EmployeeInfo)
 class EmpInfoImportExport(ImportExportModelAdmin):
-    pass
-    list_display = ['id']
-
-@admin.register(Company)
-class CompanyImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id']
 

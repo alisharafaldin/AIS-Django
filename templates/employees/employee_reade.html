@@ -15,7 +15,7 @@
       <div class="card-body form-row">
         <div class="col-md-4">
           {% if emp.emp_Photo %}
-          <img src="{{ emp.emp_Photo.url }}" class="card-img" alt="..." />
+          <img src="{{ employee_reade.photo.url }}" class="card-img" alt="..." />
           {% else %}
           <img src="{% static 'dist/img/AIS.png' %}" class="card-img" alt="" />
           {% endif %}

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+from django.utils.translation import gettext_lazy as _
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -35,6 +36,7 @@ INSTALLED_APPS = [
     'basicinfo.apps.BasicinfoConfig',
     'hadena.apps.HadenaConfig',
     'employees.apps.EmployeesConfig',
+    'companys.apps.CompanysConfig',
     'orders.apps.OrdersConfig',
     'pages.apps.PagesConfig',
     'profiles.apps.ProfilesConfig',
@@ -61,6 +63,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'companys.middleware.CurrentCompanyMiddleware',
 ]
 
 ROOT_URLCONF = 'AIS.urls'
@@ -124,14 +128,21 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGES = [
+    ('ar', _('Arabic')),
+    ('en', _('English')),
+]
+LANGUAGE_CODE = 'ar'  # تعيين اللغة الافتراضية إلى العربية
+
+# LOCALE_PATHS = [
+#     os.path.join(BASE_DIR, 'locale'),  # مجلد الترجمة
+# ]
 
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
@@ -148,6 +159,7 @@ MEDIA_URL = '/media/'
 
 LOGIN_URL = '/profiles/signin'
 
+
 #Custom Messages
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 from django.contrib.messages import constants as messages
@@ -162,3 +174,12 @@ MESSAGE_TAGS = {
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# إعدادات البريد الإلكتروني لإستعادة كلمة المرور
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.your-email-provider.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'alisharafaldin@gmail.com'
+EMAIL_HOST_PASSWORD = 'kd]ghthvadgu@GA01'
+DEFAULT_FROM_EMAIL = 'info@ais.com'

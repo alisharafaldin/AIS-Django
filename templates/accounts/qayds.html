@@ -2,6 +2,15 @@
 {% block title %} | Qayds 
 {% endblock %} 
 {% block content %}
+<style>
+  /* تحسين عرض الجدول على الأجهزة الصغيرة */
+  @media (max-width: 767.98px) {
+      th, td {
+          white-space: nowrap;
+      }
+  }
+</style>
+
 <div class="content-wrapper">
   <div class="main-title">
     <h4 class="form-group col-md-9">قيود اليومية</h4>
@@ -42,48 +51,50 @@
     {% include 'partials/_alerts.html' %}
     <form method="POST">
       {% csrf_token %}
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">تاريخ القيد</th>
-            <th scope="col">رقم القيد</th>
-            <th scope="col">الوصف</th>
-            <th scope="col">عدد الأسطر</th>
-            <th scope="col">المستخدم</th>
-            <th scope="col">العملية</th>
-            <th scope="col">إجراءات</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for qayd in qayds %}
-          <tr>
-            <!-- لعمل ارقام تسلسلة -->
-            <th scope="row">{{forloop.counter}}</th>
-            <!-- تفاصيل الجدول -->
-            <td>{{qayd.date|date:"Y-m-d"}}</td>
-            <td>{{qayd.id}}</td>
-            <td>{{qayd.description}}</td>
-            <td>{{qayd.details.count}}</td>
-            <td>{{qayd.created_by}}</td>
-            <td>{{qayd.typeTransactionID}}</td>
-            <td>
-              <a href="{% url 'qayd_update' qayd.id %}" class="btn-link"
-                ><i class="fas fa-edit"></i
-              ></a>
-              <a href="{% url 'qayd_reade' qayd.id %}" class="btn-link"
-                ><i class="fa fa-print" aria-hidden="true"></i
-              ></a>
-              <a href="{% url 'qayd_delete' qayd.id %}" class="btn-link"
-                ><i class="fa fa-trash" aria-hidden="true"></i
-              ></a>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">تاريخ القيد</th>
+              <th scope="col">رقم القيد</th>
+              <th scope="col">الوصف</th>
+              <th scope="col">عدد الأسطر</th>
+              <th scope="col">المستخدم</th>
+              <th scope="col">العملية</th>
+              <th scope="col">إجراءات</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for qayd in qayds %}
+            <tr>
+              <th scope="row">{{ forloop.counter }}</th>
+              <td>{{ qayd.date|date:"Y-m-d" }}</td>
+              <td>{{ qayd.sequence }}</td>
+              <td>{{ qayd.description }}</td>
+              <td>{{ qayd.details.count }}</td>
+              <td>{{ qayd.created_by }}</td>
+              <td>{{ qayd.typeTransactionID }}</td>
+              <td>
+                <a href="{% url 'qayd_update' qayd.id %}" class="btn-link">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <a href="{% url 'qayd_reade' qayd.id %}" class="btn-link">
+                  <i class="fa fa-print" aria-hidden="true"></i>
+                </a>
+                <a href="{% url 'qayd_delete' qayd.id %}" class="btn-link">
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      
     </form>
     <!-- End Modal -->
   </div>
 </div>
+
 {% endblock %}

@@ -2,7 +2,7 @@ from django.db import models
 from datetime import date 
 from django.utils import timezone
 from datetime import datetime
-
+from django.contrib.auth.models import User
 
 class Countries(models.Model):
   name_ar = models.CharField(verbose_name='إسم الدولة عربي',max_length=50)
@@ -96,7 +96,13 @@ class WorkSpecialty(models.Model):
     workSpecialty_en = models.CharField(verbose_name='التخصص إنجليزي',max_length=100,blank=True, null=True)
     def __str__(self):
         return str(self.workSpecialty_ar)
-    
+
+class JobTitle(models.Model):
+    name_ar = models.CharField(verbose_name='المسمى الوظيفي عربي',max_length=100)
+    name_en = models.CharField(verbose_name='المسمى الوظيفي إنجليزي',max_length=100,blank=True, null=True)
+    def __str__(self):
+        return str(self.name_ar) 
+       
 class WorkingStatus(models.Model):
     workingStatus_ar = models.CharField(verbose_name='حالة العمل عربي',max_length=100)
     workingStatus_en = models.CharField(verbose_name='حالة العمل إنجليزي',max_length=100,blank=True, null=True)
@@ -125,47 +131,18 @@ class TypeAccBank(models.Model):
     def __str__(self):
         return str(self.TypeAccBank_AR)
 
-class BusinessType(models.Model):
-    type_ar = models.CharField(verbose_name='نوع العمل عربي',max_length=100)
-    type_en = models.CharField(verbose_name='نوع العمل إنجليزي',max_length=100,blank=True, null=True)
-    def __str__(self):
-        return str(self.type_ar)
-    
 class TypeID(models.Model):
     typeID_ar = models.CharField(verbose_name='نوع الهوية عربي',max_length=100)
     typeID_en = models.CharField(verbose_name='نوع الهوية إنجليزي',max_length=100,blank=True, null=True)
     def __str__(self):
         return str(self.typeID_ar)
 
-class LegalPersonality(models.Model):
-    name_ar = models.CharField(verbose_name='الإسم عربي',max_length=100)
-    name_en = models.CharField(verbose_name='الإسم إنجليزي',max_length=100, blank=True, null=True)
-    acronym_ar = models.CharField(verbose_name='الإسم المختصر عربي',max_length=100, blank=True, null=True)
-    acronym_en = models.CharField(verbose_name='الإسم المختصر إنجليزي',max_length=100, blank=True, null=True)
-    businessTypeID = models.ForeignKey(BusinessType, default=1, verbose_name='نوع الشركة',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
-    countryID = models.ForeignKey(Countries, default=13, verbose_name='الدولة',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
-    regionID = models.CharField(verbose_name='المنطقة',max_length=100, blank=True, null=True)
-    bankID = models.ForeignKey(Bank, verbose_name='البنك',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
-    branchBankID = models.ForeignKey(BranchBank, verbose_name='فرع البنك', default=1,on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
-    typeAccBankID = models.ForeignKey(TypeAccBank, verbose_name='نوع الحساب', default=1,on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
-    accountNumber = models.CharField(verbose_name='رقم الحساب المصرفي',max_length=100, blank=True, null=True)
-    IBANNumber = models.CharField(verbose_name='رقم الآيبان المصرفي',max_length=100, blank=True, null=True)
-    phone = models.CharField(verbose_name='رقم الهاتف',max_length=100, blank=True, null=True)
-    owner = models.CharField(verbose_name='المالك',max_length=100, blank=True, null=True)
-    owner_Phone = models.CharField(verbose_name='هاتف المالك',max_length=100, blank=True, null=True)
-    email = models.CharField(verbose_name='الإيميل',max_length=100, blank=True, null=True)
-    website = models.CharField(verbose_name='الموقع الإلكتروني',max_length=100, blank=True, null=True)
-    administrator = models.CharField(verbose_name='المسؤول',max_length=100, blank=True, null=True)
-    fax = models.CharField(verbose_name='فاكس',max_length=100, blank=True, null=True)
-    POBox = models.CharField(verbose_name='صندوق البري',max_length=100, blank=True, null=True)
-    who_i = models.TextField(max_length=250, blank=True, null=True)
-    image = models.ImageField(verbose_name='شعار الشركة', upload_to='photos/%Y/%m/%d/', null=True, blank=True)
-    active = models.BooleanField(default=False, verbose_name="نشط", blank=True, null=True)
-    Notes = models.CharField(verbose_name='ملاحظات',max_length=100, blank=True, null=True)
-    # created_dt = models.DateTimeField(verbose_name='تاريخ الإنشاء',auto_now_add=True)
-    def __str__(self):
-        return str(self.name_ar)
-
+class TypeTransaction(models.Model):
+  typeTransaction_ar = models.CharField(verbose_name='نوع المعاملة عربي',max_length=100)
+  typeTransaction_en = models.CharField(verbose_name='نوع المعاملة إنجليزي',max_length=100,blank=True, null=True)
+  def __str__(self):
+    return str(self.typeTransaction_ar)
+  
 class Project(models.Model):
     name_ar = models.CharField(verbose_name='المشروع عربي',max_length=100)
     name_er = models.CharField(verbose_name='المشروع إنجليزي',max_length=100)
@@ -220,7 +197,11 @@ class Person(models.Model):
     notes = models.TextField(verbose_name='ملاحظات', blank=True, null=True)
     attachments = models.FileField(verbose_name='مرفقات', blank=True, null=True)
     documentLink = models.CharField(verbose_name='رابط المستندات',max_length=100, blank=True, null=True)
-    # created_dt = models.DateTimeField(verbose_name='تاريخ الإنشاء', auto_now_add=True)
+    created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name='created_by', blank=True, null=True)
+    created_at = models.DateTimeField(verbose_name='تاريخ الإنشاء',auto_now_add=True, blank=True, null=True)
+    updated_by = models.ForeignKey(User, verbose_name='المُعدِل', related_name='updated_by', on_delete=models.PROTECT, blank=True, null=True)
+    updated_at = models.DateTimeField(verbose_name='تاريخ التعديل', auto_now=True, blank=True, null=True)
+   
     def __str__(self):
         return str(self.f_Name_ar)
     

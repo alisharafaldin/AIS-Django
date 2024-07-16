@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% load static %} {% block title %} | Qayd Update ( {{qayd_update.id}} )
 {% endblock %} {% block content %}
 <div class="content-wrapper">
-  <h4 class="main-title">تعديل القيد رقم : ( {{qayd_update.id}} )</h4>
+  <h4 class="main-title">تعديل القيد رقم : ( {{qayd_update.sequence}} )</h4>
   <div class="content">
     <br />
     <form method="POST" action="">
@@ -35,55 +35,57 @@
           </div>
         </div>
       </div>
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col">{{ formset.total_form_count }}</th>
-            <th scope="col">الحساب</th>
-            <th scope="col">العملة</th>
-            <th scope="col">سعر الصرف</th>
-            <th scope="col">مدين</th>
-            <th scope="col">دائن</th>
-            <th scope="col">الوصف</th>
-            <th scope="col">المشروع</th>
-            <th scope="col">الموظف</th>
-          </tr>
-        </thead>
-        {{ formset.management_form }} 
-        <tbody id="formset-container">
-            {% for form in formset %}
-            <tr class="form-container">
-                <td><button class="remove-form btn btn-danger">-</button></td>
-                <td style="display: none;">{{ form.DELETE }}</td>
-                <td style="display: none;">{{ form.id }}</td>
-                <td>{{ form.accountID }}</td>
-                <td>{{ form.currencyID }}</td>
-                <td>{{ form.rate }}</td>
-                <td>{{ form.debit }}</td>
-                <td>{{ form.credit }}</td>
-                <td>{{ form.description_details }}</td>
-                <td>{{ form.projectID }}</td>
-                <td>{{ form.empID }}</td>
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">{{ formset.total_form_count }}</th>
+              <th scope="col">الحساب</th>
+              <th scope="col">العملة</th>
+              <th scope="col">سعر الصرف</th>
+              <th scope="col">مدين</th>
+              <th scope="col">دائن</th>
+              <th scope="col">الوصف</th>
+              <th scope="col">المشروع</th>
+              <th scope="col">الموظف</th>
             </tr>
-        {% endfor %}
-        </tbody>
-        <tbody>
-          <tr>
-            <td><a class="btn" style="background-color: green;" id="add-form">+</a></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <th>المجموع</th>
-            <th id="total-d">مجموع مدين : {{total_d}}</th>
-            <th id="total-c">مجموع الدائن : {{total_c}}</th>
-            {% if difference == 0 %}
-            <th id="result">الفرق : <span style="color: green;">{{difference}}</span></th>
-            {% else %}
-            <th id="result">الفرق : <span style="color: red;">{{difference}}</span></th>
-            {% endif %}
-          </tr>
-        </tbody>
-      </table>
+          </thead>
+          {{ formset.management_form }} 
+          <tbody id="formset-container">
+              {% for form in formset %}
+              <tr class="form-container">
+                  <td><button class="remove-form btn btn-danger">-</button></td>
+                  <td style="display: none;">{{ form.DELETE }}</td>
+                  <td style="display: none;">{{ form.id }}</td>
+                  <td>{{ form.accountID }}</td>
+                  <td>{{ form.currencyID }}</td>
+                  <td>{{ form.rate }}</td>
+                  <td>{{ form.debit }}</td>
+                  <td>{{ form.credit }}</td>
+                  <td>{{ form.description_details }}</td>
+                  <td>{{ form.projectID }}</td>
+                  <td>{{ form.empID }}</td>
+              </tr>
+          {% endfor %}
+          </tbody>
+          <tbody>
+            <tr>
+              <td><a class="btn" style="background-color: green;" id="add-form">+</a></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <th>المجموع</th>
+              <th id="total-d">مجموع مدين : {{total_d}}</th>
+              <th id="total-c">مجموع الدائن : {{total_c}}</th>
+              {% if difference == 0 %}
+              <th id="result">الفرق : <span style="color: green;">{{difference}}</span></th>
+              {% else %}
+              <th id="result">الفرق : <span style="color: red;">{{difference}}</span></th>
+              {% endif %}
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </form>
     <div class="form-col">
       <h6 class="form-group col-md-6">مُنشئ القيد : {{qayd_update.created_by}} </h6>

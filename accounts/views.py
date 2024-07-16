@@ -1,20 +1,14 @@
-
+import io
 from typing import Any
-from django.shortcuts import render , redirect, HttpResponse
+from django.shortcuts import render , redirect
 from django.contrib import messages
-from django.views.generic import CreateView
 from . models import AccountsTree, Qayd, QaydDetails
-from employees.models import EmpInfo
+from companys.models import Company, CompanyUser
 from . forms import AccountsTreeForm, QaydForm, QaydDetailsForm, QaydDetailsFormSet
-from django.utils import timezone
 from django.forms import modelformset_factory
-from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
-
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 
-import io
 from django.http import FileResponse
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
@@ -22,6 +16,7 @@ from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 
+@login_required # للتحقق من تسجيل الدخول
 def account_create(request):
     if request.method == 'POST':
         add_acc = AccountsTreeForm(request.POST, request.FILES)
@@ -33,6 +28,7 @@ def account_create(request):
     }    
     return render(request,'accounts/account_create.html', context)
 
+@login_required # للتحقق من تسجيل الدخول
 def account_reade(request, id):
     if request.user.is_authenticated and not request.user.is_anonymous:
       account_id = AccountsTree.objects.get(id=id)
@@ -41,6 +37,7 @@ def account_reade(request, id):
     }
     return render(request, 'accounts/account_reade.html', context)
 
+@login_required # للتحقق من تسجيل الدخول
 def account_update(request, id):
     if request.user.is_authenticated and not request.user.is_anonymous:
         account_id = AccountsTree.objects.get(id=id)
@@ -61,6 +58,7 @@ def account_update(request, id):
         messages.info(request, 'الرجاء تسجيل الدخول' )
         return redirect('accounts')
 
+@login_required # للتحقق من تسجيل الدخول
 def account_delete(request, id):
     if request.user.is_authenticated and not request.user.is_anonymous:
       account_id = AccountsTree.objects.get(id=id)
@@ -75,6 +73,7 @@ def account_delete(request, id):
     }
     return render(request, 'accounts/account_delete.html', context)
 
+@login_required # للتحقق من تسجيل الدخول
 def accounts(request):
     accounts = AccountsTree.objects.all().order_by("typeID")
     accounts2 = accounts.order_by("code")
@@ -102,7 +101,12 @@ def calculate_totals(details_queryset):
     return total_d, total_c, total_d - total_c
 
 # دالة إنشاء قيد جديد
+@login_required # للتحقق من تسجيل الدخول
 def qayd_create(request):
+    if not request.user.has_perm('accounts.add_qayd'):
+        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لإنشاء القيود المحاسبية.")
+        return redirect('qayds')
+    
     if request.method == 'POST':
       head_form = QaydForm(request.POST, request.FILES)
       formset = QaydDetailsFormSet(request.POST)
@@ -110,6 +114,8 @@ def qayd_create(request):
       if head_form.is_valid() and formset.is_valid():
         head = head_form.save(commit=False)
         head.created_by = request.user  # تعيين created_by فقط عند إنشاء قيد جديد
+        head.companyID = Company.objects.get(id=request.session.get('current_company_id'))
+     
         head.save()
 
         for form in formset:
@@ -138,7 +144,11 @@ def qayd_create(request):
     return render(request, 'accounts/qayd_create.html', context)
 
 # دالة عرض وقراءة قيد موجود مسبقاَ
+@login_required # للتحقق من تسجيل الدخول
 def qayd_reade(request, id):
+    if not request.user.has_perm('accounts.view_qayd'):
+        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة للإطلاع القيود المحاسبية.")
+        return redirect('qayds')
     if request.user.is_authenticated and not request.user.is_anonymous:
         qayd_reade = Qayd.objects.get(id=id)
         qayd_reade_details = QaydDetails.objects.filter(qaydID=id)
@@ -153,7 +163,11 @@ def qayd_reade(request, id):
         return render(request, 'accounts/qayd_reade.html', context)
 
 # دالة حذف قيد
+@login_required # للتحقق من تسجيل الدخول
 def qayd_delete(request, id):
+    if not request.user.has_perm('accounts.delete_qayd'):
+        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لحذف القيود المحاسبية.")
+        return redirect('qayds')
     if request.user.is_authenticated and not request.user.is_anonymous:
         qayd_id = Qayd.objects.get(id=id)
         if 'btndelete' in request.POST:
@@ -176,8 +190,12 @@ def qayd_delete(request, id):
     return render(request, 'accounts/qayd_delete.html', context)
 
 # دالة تحديث بيانات قيد موجود
-@login_required
+@login_required # للتحقق من تسجيل الدخول
+# @permission_required('accounts.change_qayd', raise_exception=True) # للتحقق من الصلاحيات
 def qayd_update(request, id):
+    if not request.user.has_perm('accounts.change_qayd'):
+        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لتعديل القيود المحاسبية.")
+        return redirect('qayds')
     qayd_update = get_object_or_404(Qayd, id=id)
     # استخدام formset للحصول على جميع نماذج QaydDetails المرتبطة بـ Qayd المحدد
     QaydDetailsFormSet = modelformset_factory(QaydDetails, form=QaydDetailsForm, extra=1)
@@ -190,6 +208,7 @@ def qayd_update(request, id):
         if head_form.is_valid() and formset.is_valid():
           head = head_form.save(commit=False)
           head.updated_by = request.user
+          head.companyID = Company.objects.get(id=request.session.get('current_company_id'))
           head.save()
         
           for form in formset:
@@ -221,23 +240,40 @@ def qayd_update(request, id):
     return render(request, 'accounts/qayd_update.html', context)
 
 # دالة عرض جميع القيود
+
 @login_required
 def qayds(request):
     """
     عرض جميع الكائنات من نموذج Qayd في صفحة qayds.html.
     يجب أن يكون المستخدم مسجلاً للدخول للوصول إلى هذه الصفحة.
     """
-    try:
-        qayds_list = Qayd.objects.all()  # استعلام عن جميع الكائنات من نموذج Qayd
+    # التحقق من الأذونات أولاً
+    if not request.user.has_perm('accounts.view_qayd'):
+        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة للإطلاع على القيود المحاسبية.")
+        return redirect('index')
+    
+    # الحصول على الشركة الحالية من جلسة المستخدم
+    current_company_id = request.session.get('current_company_id')
+    
+    if not current_company_id:
+        messages.error(request, 'الرجاء تحديد الشركة للعمل عليها.')
+        return redirect('companys')
 
+    # الحصول على القيود الخاصة بالشركة الحالية
+    try:
+        qayds_list = Qayd.objects.filter(companyID_id=current_company_id)
     except Qayd.DoesNotExist:
         qayds_list = []  # إذا لم يكن هناك أي كائنات، العودة إلى قائمة فارغة
+    
+    # إعداد السياق
     context = {
         'qayds': qayds_list,
     }
+    
+    # عرض الصفحة مع البيانات
     return render(request, 'accounts/qayds.html', context)
 
-
+@login_required # للتحقق من تسجيل الدخول
 def generate_qayd_pdf(request, id):
     # احصل على القيد والتفاصيل الخاصة به من قاعدة البيانات
     qayd = Qayd.objects.get(id=id)  # تأكد من أنك تحصل على Qayd وليس QaydDetails
@@ -254,7 +290,7 @@ def generate_qayd_pdf(request, id):
     # إضافة ترويسة
     elements.append(Paragraph("تفاصيل القيد", title_style))
     elements.append(Paragraph(f"رقم القيد: {qayd.id}", heading_style))
-    elements.append(Paragraph(f"تاريخ القيد: {qayd.date}", normal_style))
+    elements.append(Paragraph(f"date القيد: {qayd.date}", normal_style))
     elements.append(Paragraph(f"أنشأه: {qayd.created_by}", normal_style))
     elements.append(Paragraph("<br/><br/>", normal_style))  # إضافة مسافة
     # إعداد جدول التفاصيل
@@ -281,42 +317,3 @@ def generate_qayd_pdf(request, id):
     # إرجاع استجابة PDF
     return FileResponse(buffer, as_attachment=True, filename='qayd.pdf')
 
-
-
-
-# class qaydCreate(CreateView):
-#    model = Qayd
-#    fields = "__all__" #تعبئة كل الحقول
-#   #  fields = ['date','description'] #تعبئة جزء من الحقول
-#    success_url = reverse_lazy({'qayd_list'}) #لإعادة توجيه إلى صفحة أخرى
-#    form_class = QaydForm
-#   #  success_url = reverse_lazy('qayds')
-#   #  template_name = 'qayd_create' #لتحديد صفحة القالب 
-#    pass
-   
-# class qaydDetail(DetailView):
-#    model = Qayd
-#   #  context_object_name = 'qayd' #المتغير الذي يستخدم في القالب
-
-# class qaydUpdate(UpdateView):
-#    model = Qayd
-#    form_class = QaydForm
-#   #  fields = ['description'] #تعبئة كل الحقول
-#    template_name = 'accounts/qayd_update.html'
-#    success_url = reverse_lazy({'qayd_list'}) #لإعادة توجيه إلى صفحة أخرى
-#    def get_context_data(self, **kwargs):
-#       context = super().get_context_data(**kwargs)
-#       context['qayd_update_form'] = QaydForm()
-#       context['qayd_update_details_form'] = QaydDetailsForm()
-#       return context
-
-# class qaydDelete(DeleteView):
-#    model = Qayd
-#    success_url = reverse_lazy({'qayd_list'}) #لإعادة توجيه إلى صفحة أخرى
-   
-# class qaydList(ListView):
-#    model = Qayd
-#   # queryset = Qayd.objects.order_by('date') #لترتيب البيانات
-#   # ordering = ["-date"] #لترتيب البيانات
-#   # context_object_name = 'qayds' #المتغير الذي يستخدم في القالب
-#   # paginate_by = 
