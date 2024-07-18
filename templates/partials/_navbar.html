@@ -13,12 +13,11 @@
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a class="nav-link" href="http://127.0.0.1:8000/admin/" target="blank" >Admin</a>
-      </li>
-      
+      </li>      
     </ul>
 
   
-    <ul class="navbar-nav mr-auto-navbav">
+    <ul class="navbar-nav mr-auto-navbav ">
       <li 
       {% if 'signin' in request.path or 'signup' in request.path or 'profile' in request.path %}
       class="nav-item dropdown active"
@@ -27,7 +26,6 @@
       {% endif %}         
       >
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
           {% if request.user.is_authenticated %}
             {% for company_user in request.user.companyuser_set.all %}
                 <li>{{ company_user.companyID.name_ar }} - 
@@ -36,137 +34,37 @@
             {% endfor %}
             <p>{{ request.session.current_company_name }}</p>
           {% else %}
-            <a href="{% url 'login' %}">تسجيل دخول</a>
+            <a href="{% url 'signin' %}">تسجيل دخول</a>
           {% endif %}
-
         </a>
         <div class="dropdown-menu animate slideIn" aria-labelledby="navbarDropdown">
           {% if request.user.is_authenticated %}
+          {% if request.current_company %}
           <a class="dropdown-item" href="{% url 'company_reade' request.current_company.id %}">ملف الشركة</a>
           <a class="dropdown-item" href="{% url 'company_update' request.current_company.id %}">تعديل بيانات الشركة</a>
+          {% endif %}
           <a class="dropdown-item" href="{% url 'companys' %}">تبديل الشركة</a>
-          <a class="dropdown-item" href="{% url 'show_orders' %}">My Orders</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="{% url 'logout' %}">
             تسجيل خروج
           </a>
           {% else %}
-          <a class="dropdown-item" href="{% url 'signin' %}">Sign in</a>
-          <a class="dropdown-item" href="{% url 'signup' %}">Sign up</a>
+          <a class="dropdown-item" href="{% url 'signin' %}">تسجيل دخول</a>
+          <a class="dropdown-item" href="{% url 'signup' %}">تسجيل جديد</a>
           {% endif %}    
         </div>
       </li>
-      
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <!-- <div class="info">
-          <a href="#" class="d-block">{{request.user.first_name}}</a>
-        </div> -->
-        <div class="image">
-          {% if request.current_company.logo %}
-          <img src="{{ request.current_company.logo.url }}" class="img-circle elevation-2" alt="User Image"/>
-          {% else %}
-          <img src="{% static 'dist/img/AIS.png' %}" class="img-circle elevation-2" alt="User Image"/>
-          {% endif %}
-        </div>
-      </div>
-
-      <!-- <li class="nav-item dropdown">
-        <a class="nav-link" href="{% url 'cart' %}">
-          <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"> Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. <path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg>
-          <span class="badge badge-danger navbar-badge">{{order_count.count}}</span>
-        </a>
-      </li> -->
-      <!-- Messages Dropdown Menu -->
-     <!-- <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-comments"></i>
-          <span class="badge badge-danger navbar-badge">3</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <a href="#" class="dropdown-item">
-             Message Start 
-            <div class="media">
-              <img src="dist/img/AIS.png" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  Brad Diesel
-                  <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">Call me whenever you can...</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-              </div>
-            </div>
-            Message End 
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-         Message Start 
-            <div class="media">
-              <img src="dist/img/AIS.png" alt="User Avatar" class="img-size-50 img-circle mr-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  John Pierce
-                  <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">I got your message bro</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-              </div>
-            </div>
-             Message End 
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-             Message Start
-            <div class="media">
-              <img src="dist/img/AIS.png" alt="User Avatar" class="img-size-50 img-circle mr-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  Nora Silvester
-                  <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">The subject goes here</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-              </div>
-            </div>
-            Message End
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+      <li>
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+          <div class="image">
+            {% if request.current_company.logo %}
+            <img src="{{ request.current_company.logo.url }}" class="img-circle elevation-2" alt="User Image"/>
+            {% else %}
+            <img src="{% static 'dist/img/AIS.png' %}" class="img-circle elevation-2" alt="User Image"/>
+            {% endif %}
+          </div>
         </div>
       </li>
-       Notifications Dropdown Menu 
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge">15</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">15 Notifications</span>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> 4 new messages
-            <span class="float-right text-muted text-sm">3 mins</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> 8 friend requests
-            <span class="float-right text-muted text-sm">12 hours</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-file mr-2"></i> 3 new reports
-            <span class="float-right text-muted text-sm">2 days</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
-          <i class="fas fa-th-large"></i>
-        </a>
-      </li>  -->
-
     </ul>
   </nav>
   <!-- /.navbar -->

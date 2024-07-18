@@ -23,3 +23,5 @@ class CurrentCompanyMiddleware:
 
         response = self.get_response(request)
         return response
+
+

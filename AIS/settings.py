@@ -176,10 +176,12 @@ MESSAGE_TAGS = {
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # إعدادات البريد الإلكتروني لإستعادة كلمة المرور
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.your-email-provider.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'alisharafaldin@gmail.com'
-EMAIL_HOST_PASSWORD = 'kd]ghthvadgu@GA01'
-DEFAULT_FROM_EMAIL = 'info@ais.com'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.your-email-provider.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'alisharafaldin@gmail.com'
+# EMAIL_HOST_PASSWORD = 'kd]ghthvadgu@GA01'
+# DEFAULT_FROM_EMAIL = 'info@ais.com'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'webmaster@localhost'

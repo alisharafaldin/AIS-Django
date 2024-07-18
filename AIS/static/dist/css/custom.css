@@ -1,7 +1,24 @@
 *{
     direction: rtl !important;
+} 
+/*   Start Customize Navbar */
+a#navbarDropdown {
+  display: flex !important;
+  align-items: baseline;
 }
 
+ul.navbar-nav.mr-auto-navbav {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.user-panel.mt-3.pb-3.mb-3.d-flex {
+  margin: 0 !important;
+  padding: 2px !important;
+}
+
+/*   End Customize Navbar */
 .title-label {
   background:#ececec;
   color: rgb(88, 88, 88);

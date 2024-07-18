@@ -15,3 +15,4 @@ class Product(models.Model):
     #لترتيب العناصر بدلالة مغتير ولعكس الترتيب نضع علامة سالب قبل المتغير
     class Meta:
         ordering = ['publish_date']
+

@@ -119,14 +119,14 @@ def employee_delete(request, id):
   return render(request, 'employees/employee_delete.html', context)
 
 def employees(request):
-  all_emp = EmpInfo.objects.all()
+  all_emp = EmployeeInfo.objects.all()
   context = {
     'all_emp': all_emp,
     'emp_form': EmpForm(),
     'person_form': PersonForm(),
-    'emp_count': EmpInfo.objects.all(),
-    'emp_workingStatus': EmpInfo.objects.filter(workingStatusID=1).count(),
-    'age': EmpInfo.objects.filter(),
+    'emp_count': EmployeeInfo.objects.all(),
+    'emp_workingStatus': EmployeeInfo.objects.filter(workingStatusID=1).count(),
+    'age': EmployeeInfo.objects.filter(),
   }
   return render(request, 'employees/employees.html', context)
 

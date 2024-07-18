@@ -74,7 +74,7 @@ class Qayd(models.Model):
   
   class Meta:
     #ترتيب العناصر حسب الآي دي
-    ordering = ['-id']
+    ordering = ['sequence']
 
   def get_details_count(self):
         return QaydDetails.objects.filter(qaydID=self).count()
@@ -98,9 +98,6 @@ class QaydDetails(models.Model):
   def __str__(self):
     return str(self.qaydID)
   
-  class Meta:
-    #ترتيب العناصر حسب الآي دي
-    ordering = ['id']
 
   def get_currency_ar(self):
       return self.currencyID.get_currency_ar()

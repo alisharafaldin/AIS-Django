@@ -6,8 +6,8 @@ from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/',admin.site.urls),
-    path('' , RedirectView.as_view(url='companys')), #للتحويل إلى رابط آخر
-    path('companys' , include('companys.urls')),
+    path('' , RedirectView.as_view(url='index')), #للتحويل إلى رابط آخر
+    path('',include('pages.urls')),
     path('basicinfo/',include('basicinfo.urls')),
     path('hadena/',include('hadena.urls')),
     path('forex/',include('forex.urls')),

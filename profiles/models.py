@@ -1,18 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
 from products.models import Product
+from basicinfo.models import Person
 
 # Create your models here.
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    Product_favorites = models.ManyToManyField(Product)
-    address = models.CharField(max_length=60)
-    address2 = models.CharField(max_length=60)
-    city = models.CharField(max_length=60)
-    state = models.CharField(max_length=60)
-    zip_number = models.CharField(max_length=5)
-    photo = models.ImageField(verbose_name='صورة شخصية', upload_to='photos/%Y/%m/%d/', null=True, blank=True)
+    userID = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile_user')
+    personID = models.OneToOneField(Person, on_delete=models.CASCADE, related_name='profile_person')
 
 
     def __str__(self):
