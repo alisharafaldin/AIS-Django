@@ -4,9 +4,12 @@ from products.models import Product
 from employees.models import EmployeeInfo
 from shrfntod.models import Posts
 from accounts.models import Qayd
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 
+@login_required
 def index(request):
     context = {
         'products': Product.objects.all(),

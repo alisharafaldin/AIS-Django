@@ -30,7 +30,7 @@ def signup(request):
             # يمكنك إجراء عمليات إضافية هنا مثل تسجيل الدخول تلقائيًا
             
             # توجيه المستخدم إلى الصفحة بعد التسجيل بنجاح
-            return redirect('profile')  # اسم العرض بعد تسجيل المستخدم بنجاح
+            return redirect('index')  # اسم العرض بعد تسجيل المستخدم بنجاح
     else:
         user_form = UserForm()
     
@@ -41,14 +41,14 @@ def signup(request):
 
 def signin(request):
     if request.user.is_authenticated:
-        return redirect('profile')
+        return redirect('index')
     
     if request.method == 'POST':
         username = request.POST.get('user')
         password = request.POST.get('pass')
 
         if not username or not password:
-            messages.error(request, 'Username and password are required')
+            messages.error(request, 'الرجاء التحقق من إدخال إسم المستخدم وكلمة المرور')
             return redirect('signin')
 
         user = auth.authenticate(username=username, password=password)
@@ -56,13 +56,13 @@ def signin(request):
             if 'rememberme' not in request.POST:
                 request.session.set_expiry(0)
             auth.login(request, user)
-            messages.success(request, 'You are now logged in')
-            return redirect('companys')
+            messages.success(request, 'تم تسجيل الدخول بنجاح')
+            return redirect('index')
         else:
-            messages.error(request, 'Username or password is invalid')
+            messages.error(request, 'يوجد خطأ في إسم المستخدم أو كلمة المرور')
             return redirect('signin')
     else:
-        return redirect('signin')
+        return render(request, 'profiles/signin.html')
 
 @login_required
 def profile(request):
@@ -111,7 +111,7 @@ def profile(request):
 def logout(request):
     if request.user.is_authenticated:
         auth.logout(request)
-    return redirect('signin')
+    return redirect('index')
 
 def pro_fav(request, pro_id):
     # في حال تم تسجيل الدخول ولا يوجد مستخدم مجهول

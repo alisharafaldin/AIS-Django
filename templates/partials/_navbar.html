@@ -25,16 +25,16 @@
       class="nav-item dropdown"
       {% endif %}         
       >
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           {% if request.user.is_authenticated %}
             {% for company_user in request.user.companyuser_set.all %}
-                <li>{{ company_user.companyID.name_ar }} - 
+                <li>{{ company_user.companyID.name_ar }}
                     <a href="{% url 'switch_company' company_user.companyID.id %}">تبديل</a>
                 </li>
-            {% endfor %}
-            <p>{{ request.session.current_company_name }}</p>
+                {% endfor %}
+                <p>{{ request.session.current_company_name }}</p>
           {% else %}
-            <a href="{% url 'signin' %}">تسجيل دخول</a>
+            <!-- <a href="#">تسجيل دخول</a> -->
           {% endif %}
         </a>
         <div class="dropdown-menu animate slideIn" aria-labelledby="navbarDropdown">

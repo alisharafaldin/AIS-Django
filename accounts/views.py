@@ -16,7 +16,7 @@ from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 
-@login_required # للتحقق من تسجيل الدخول
+@login_required 
 def account_create(request):
     if request.method == 'POST':
         add_acc = AccountsTreeForm(request.POST, request.FILES)
@@ -28,7 +28,7 @@ def account_create(request):
     }    
     return render(request,'accounts/account_create.html', context)
 
-@login_required # للتحقق من تسجيل الدخول
+@login_required
 def account_reade(request, id):
     if request.user.is_authenticated and not request.user.is_anonymous:
       account_id = AccountsTree.objects.get(id=id)
@@ -37,7 +37,7 @@ def account_reade(request, id):
     }
     return render(request, 'accounts/account_reade.html', context)
 
-@login_required # للتحقق من تسجيل الدخول
+@login_required 
 def account_update(request, id):
     if request.user.is_authenticated and not request.user.is_anonymous:
         account_id = AccountsTree.objects.get(id=id)
@@ -58,7 +58,7 @@ def account_update(request, id):
         messages.info(request, 'الرجاء تسجيل الدخول' )
         return redirect('accounts')
 
-@login_required # للتحقق من تسجيل الدخول
+@login_required 
 def account_delete(request, id):
     if request.user.is_authenticated and not request.user.is_anonymous:
       account_id = AccountsTree.objects.get(id=id)
@@ -73,7 +73,7 @@ def account_delete(request, id):
     }
     return render(request, 'accounts/account_delete.html', context)
 
-@login_required # للتحقق من تسجيل الدخول
+@login_required
 def accounts(request):
     accounts = AccountsTree.objects.all().order_by("typeID")
     accounts2 = accounts.order_by("code")
@@ -83,6 +83,7 @@ def accounts(request):
     return render(request,'accounts/accounts.html', context)
 
 # دوال لإنشاء وتحديث وقراءة وحذف القيود المحاسبية
+
 def handle_form_errors(head_form, formset, request):
     """وظيفة مساعد لمعالجة الأخطاء وعرض الرسائل المناسبة."""
     for field, errors in head_form.errors.items():
@@ -96,13 +97,17 @@ def handle_form_errors(head_form, formset, request):
         messages.error(request, f"خطأ في الـ FormSet: {error}")
 
 def calculate_totals(details_queryset):
+    """ وظيفة مساعدة لعمل مجاميع القيود """
     total_d = sum(item.debit for item in details_queryset)
     total_c = sum(item.credit for item in details_queryset)
     return total_d, total_c, total_d - total_c
 
 # دالة إنشاء قيد جديد
-@login_required # للتحقق من تسجيل الدخول
+@login_required 
 def qayd_create(request):
+    """
+    وظيفة هذه الدالة هي إنشاء قيد محاسبي جديد خاص بالشركة التي قام المستخدم بتسجيل الدخول إليها
+    """
     if not request.user.has_perm('accounts.add_qayd'):
         messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لإنشاء القيود المحاسبية.")
         return redirect('qayds')
@@ -143,9 +148,9 @@ def qayd_create(request):
     }
     return render(request, 'accounts/qayd_create.html', context)
 
-# دالة عرض وقراءة قيد موجود مسبقاَ
-@login_required # للتحقق من تسجيل الدخول
+@login_required 
 def qayd_reade(request, id):
+    """ دالة عرض وقراءة قيد موجود مسبقاَ """
     if not request.user.has_perm('accounts.view_qayd'):
         messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة للإطلاع القيود المحاسبية.")
         return redirect('qayds')
@@ -162,9 +167,9 @@ def qayd_reade(request, id):
         }
         return render(request, 'accounts/qayd_reade.html', context)
 
-# دالة حذف قيد
-@login_required # للتحقق من تسجيل الدخول
+@login_required 
 def qayd_delete(request, id):
+    """ د دالة حذف قيد """
     if not request.user.has_perm('accounts.delete_qayd'):
         messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لحذف القيود المحاسبية.")
         return redirect('qayds')
@@ -190,8 +195,7 @@ def qayd_delete(request, id):
     return render(request, 'accounts/qayd_delete.html', context)
 
 # دالة تحديث بيانات قيد موجود
-@login_required # للتحقق من تسجيل الدخول
-# @permission_required('accounts.change_qayd', raise_exception=True) # للتحقق من الصلاحيات
+@login_required 
 def qayd_update(request, id):
     if not request.user.has_perm('accounts.change_qayd'):
         messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لتعديل القيود المحاسبية.")
@@ -240,7 +244,6 @@ def qayd_update(request, id):
     return render(request, 'accounts/qayd_update.html', context)
 
 # دالة عرض جميع القيود
-
 @login_required
 def qayds(request):
     """
@@ -273,7 +276,7 @@ def qayds(request):
     # عرض الصفحة مع البيانات
     return render(request, 'accounts/qayds.html', context)
 
-@login_required # للتحقق من تسجيل الدخول
+@login_required
 def generate_qayd_pdf(request, id):
     # احصل على القيد والتفاصيل الخاصة به من قاعدة البيانات
     qayd = Qayd.objects.get(id=id)  # تأكد من أنك تحصل على Qayd وليس QaydDetails
