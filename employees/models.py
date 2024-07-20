@@ -3,7 +3,7 @@ from datetime import date
 from basicinfo.models import *
 from companys.models import Company
 from django.contrib.auth.models import User
-from profiles.models import UserProfile
+# from profiles.models import UserProfile
 
 class EmployeeInfo(models.Model):
     companyID = models.ForeignKey(Company, on_delete=models.PROTECT)

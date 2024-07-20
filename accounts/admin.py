@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import *
 from import_export.admin import ImportExportModelAdmin 
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from mptt.admin import DraggableMPTTAdmin
 
 # Register your models here.
 
@@ -25,22 +26,12 @@ class AccountCategoryImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id']
 
-# @admin.register(AccountsTree)
-# class AccountsTreeImportExport(ImportExportModelAdmin):
-#     pass
-#     list_display = ['id']
+@admin.register(AccountsTree)
+class AccountsTreeAdmin(DraggableMPTTAdmin, ImportExportModelAdmin):
+    list_display = ('tree_actions', 'indented_title', 'id', 'name_ar', 'typeID', 'natureID', 'categoryID', 'code', 'description', 'is_can_pay', 'parent')
+    list_display_links = ('indented_title',)
 
-# @admin.register(TypeTransaction)
-# class TypeTransactionImportExport(ImportExportModelAdmin):
-#     pass
-#     list_display = ['id']
-
-# @admin.register(Qayd)
-# class QaydImportExport(ImportExportModelAdmin):
-#     pass
-#     list_display = ['id']
-
-
+# admin.site.register(AccountsTree, AccountsTreeAdmin)
 
 @admin.register(QaydDetails)
 class QaydDetailsImportExport(ImportExportModelAdmin):
@@ -58,8 +49,6 @@ class QaydAdmin(admin.ModelAdmin):
 
 # تسجيل نموذج `Qayd` باستخدام `QaydAdmin` فقط مرة واحدة
 admin.site.register(Qayd, QaydAdmin)
-admin.site.register(AccountsTree)
-
 # admin.site.unregister(User)
 # admin.site.register(User, BaseUserAdmin)
 

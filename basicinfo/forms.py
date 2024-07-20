@@ -1,5 +1,5 @@
 from django import forms
-from .models import Person, Cities
+from .models import Person, Cities, Color
 
 
 class PersonForm(forms.ModelForm):
@@ -49,3 +49,9 @@ class PersonForm(forms.ModelForm):
             'notes': forms.TextInput(attrs={'class':'form-control', 'placeholder':'ملاحظات'}),
         }
       
+class ColorForm(forms.ModelForm):
+    class Meta:
+        model = Color
+        fields = '__all__'
+        widgets = {'color': forms.TextInput(attrs={'type': 'color'}),}
+    

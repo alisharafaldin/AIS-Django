@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from products.models import Product
+from products.models import ItemsDetails
 from creditcards.models import CardNumberField, CardExpiryField, SecurityCodeField
 
 # Create your models here.
@@ -10,7 +10,7 @@ class Order(models.Model):
     userID = models.ForeignKey(User, on_delete=models.CASCADE)
     order_date = models.DateTimeField()
     # لربط جدول مني تو مني
-    details = models.ManyToManyField(Product, through='OrderDetails')
+    itemsDetailsID = models.ManyToManyField(ItemsDetails, through='OrderDetails')
     is_finished = models.BooleanField()
     total = 0
     items_count = 0
@@ -18,7 +18,7 @@ class Order(models.Model):
         return 'User: ' + self.userID.username + ' | Order id: ' + str(self.id)
 
 class OrderDetails(models.Model):
-    productID = models.ForeignKey(Product, on_delete=models.CASCADE)
+    itemsDetailsID = models.ForeignKey(ItemsDetails, on_delete=models.CASCADE)
     orderID = models.ForeignKey(Order, on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=6 , decimal_places=2)
     quantity = models.IntegerField()

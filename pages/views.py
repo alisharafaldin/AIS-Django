@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from products.models import Product
+from products.models import ItemsDetails
 from employees.models import EmployeeInfo
 from shrfntod.models import Posts
 from accounts.models import Qayd
@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def index(request):
     context = {
-        'products': Product.objects.all(),
+        'products': ItemsDetails.objects.all(),
         'emp_count': EmployeeInfo.objects.all(),
         'qayds' : Qayd.objects.all(),
     }

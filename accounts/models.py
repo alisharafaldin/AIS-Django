@@ -7,6 +7,7 @@ from datetime import datetime
 from django.utils import timezone
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
+from mptt.models import MPTTModel, TreeForeignKey
 
 #  لتجنب مشكلة الاستيراد الدائري (Circular Import)
 def get_shareholdersInfo():
@@ -44,15 +45,20 @@ class AccountCategory(models.Model):
   def __str__(self):
     return str(self.category_ar)
 
-class AccountsTree(models.Model):
+class AccountsTree(MPTTModel):
   name_ar = models.CharField(verbose_name='إسم الحساب عربي',max_length=100, blank=True, null=True)
   name_en = models.CharField(verbose_name='إسم الحساب إنجليزي',max_length=100, blank=True, null=True)
-  typeID = models.ForeignKey(AccountType, verbose_name='نوع الحساب', default=1, on_delete=models.CASCADE)
-  natureID = models.ForeignKey(AccountNature , verbose_name='طبيعة الحساب', default=1, on_delete=models.CASCADE)
-  categoryID = models.ForeignKey(AccountCategory , verbose_name='تصنيف حساب ', default=1, on_delete=models.CASCADE)
+  typeID = models.ForeignKey(AccountType, verbose_name='نوع الحساب', default=1, on_delete=models.CASCADE, blank=True, null=True)
+  natureID = models.ForeignKey(AccountNature , verbose_name='طبيعة الحساب', default=1, on_delete=models.CASCADE, blank=True, null=True)
+  categoryID = models.ForeignKey(AccountCategory , verbose_name='تصنيف حساب ', default=1, on_delete=models.CASCADE, blank=True, null=True)
   code = models.CharField(verbose_name='رمز الحساب',max_length=100, blank=True, null=True)
   description = models.CharField(verbose_name='وصف الحساب',max_length=100, blank=True, null=True)
-  is_can_pay = models.BooleanField(verbose_name='إمكانية الدفع والتحصيل بهذا الحساب')
+  is_can_pay = models.BooleanField(verbose_name='إمكانية الدفع', blank=True, null=True)
+  parent = TreeForeignKey('self', on_delete=models.CASCADE, related_name='children', blank=True, null=True,)
+
+  class MPTTMeta:
+      order_insertion_by = ['name_ar']
+
   def __str__(self):
     return str(self.name_ar)
     
@@ -79,7 +85,6 @@ class Qayd(models.Model):
   def get_details_count(self):
         return QaydDetails.objects.filter(qaydID=self).count()
   
-
 class QaydDetails(models.Model):
   qaydID = models.ForeignKey(Qayd, on_delete=models.CASCADE, related_name='qayd_details', blank=True)
   date_details = models.DateTimeField(verbose_name='التاريخ', default=timezone.now, blank=True, null=True)

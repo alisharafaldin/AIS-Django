@@ -160,6 +160,24 @@ class SubProject(models.Model):
     name_er = models.CharField(verbose_name='مشروع فرعي إنجليزي',max_length=100)
     def __str__(self):
         return str(self.noPro)
+    
+class Size(models.Model):
+    name = models.CharField(verbose_name='المقاس',max_length=100)
+    name_GB = models.CharField(verbose_name='مقاس المملكة المتحدة',max_length=100)
+    name_FR = models.CharField(verbose_name='مقاس فرنسا',max_length=100)
+    name_US = models.CharField(verbose_name='مقاس الولايات المتحدة',max_length=100)
+    name_DE = models.CharField(verbose_name='مقاس ألمانيا',max_length=100)
+    name_IT = models.CharField(verbose_name='مقاس إيطاليا',max_length=100)
+    def __str__(self):
+        return str(self.noPro)
+
+class Color(models.Model):
+    name_AR = models.CharField(verbose_name='اللون عربي',max_length=100)
+    name_EN = models.CharField(verbose_name='اللون إنجليزي',max_length=100)
+    color = models.CharField(max_length=7, default="#FFFFFF", help_text="Enter the color in hex format, e.g., #FFFFFF")
+
+    def __str__(self):
+        return str(self.name_AR)
 
 class Person(models.Model):
     f_Name_ar = models.CharField(verbose_name='الإسم الأول عربي',max_length=100, blank=True, null=True)
