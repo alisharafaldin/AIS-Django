@@ -26,17 +26,17 @@ class CalendarYearsImportExport(ImportExportModelAdmin):
 @admin.register(CalendarMonths)
 class CalendarMonthsImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'month_ar', 'month_en_sort', 'daysOfMonth']
+    list_display = ['id', 'name_ar']
 
 @admin.register(CalendarWeek)
 class CalendarWeekImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'day_ar']
+    list_display = ['id', 'name_ar']
 
 @admin.register(Gender)
 class GenderImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'gender_ar']
+    list_display = ['id', 'name_ar']
 
 @admin.register(Cities)
 class CitiesImportExport(ImportExportModelAdmin):
@@ -51,22 +51,22 @@ class CountriesImportExport(ImportExportModelAdmin):
 @admin.register(TypeAccBank)
 class TypeAccBankImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'TypeAccBank_AR']
+    list_display = ['id', 'name_ar']
 
 @admin.register(BranchBank)
 class BranchBankImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'branchBank_AR']
+    list_display = ['id', 'name_ar', 'name_en', 'bankID', 'name_Symbol']
 
 @admin.register(TypeID)
 class TypeIDImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'typeID_ar']
+    list_display = ['id', 'name_ar']
 
 @admin.register(TypeTransaction)
 class TypeTransactionImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'typeTransaction_ar']
+    list_display = ['id', 'name_ar']
 
 @admin.register(Region)
 class RegionImportExport(ImportExportModelAdmin):
@@ -81,27 +81,27 @@ class statesImportExport(ImportExportModelAdmin):
 @admin.register(SocialStatus)
 class RSocialStatusImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'socialStatus_ar']
+    list_display = ['id', 'name_ar']
 
 @admin.register(WorkTrade)
 class WorkTradeTypeImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'workTrade_ar']
+    list_display = ['id', 'name_ar']
 
 @admin.register(Bank)
 class BankImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'bank_ar', 'bank_Symbol']
+    list_display = ['id', 'name_ar', 'name_Symbol']
 
 @admin.register(WorkSpecialty)
 class WorkSpecialtyTypeImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'workSpecialty_ar']
+    list_display = ['id', 'name_ar']
 
 @admin.register(WorkingStatus)
 class WorkingStatusImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'workingStatus_ar']
+    list_display = ['id', 'name_ar']
 
 @admin.register(Person)
 class PersonImportExport(ImportExportModelAdmin):

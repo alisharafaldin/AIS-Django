@@ -57,45 +57,45 @@ class CalendarYears(models.Model):
         return str(self.year)
 
 class CalendarMonths(models.Model):
-    month_ar = models.CharField(verbose_name='الشهر عربي',max_length=50)
-    month_en = models.CharField(verbose_name='الشهر إنجليزي',max_length=50)
-    month_en_sort = models.CharField(verbose_name='إختصار الشهر إنجليزي',max_length=50)
+    name_ar = models.CharField(verbose_name='الشهر عربي',max_length=50)
+    name_en = models.CharField(verbose_name='الشهر إنجليزي',max_length=50)
+    name_en_sort = models.CharField(verbose_name='إختصار الشهر إنجليزي',max_length=50)
     daysOfMonth = models.CharField(verbose_name='أيام الشهر',max_length=50)
     def __str__(self):
-        return str(self.month_ar)
+        return str(self.name_ar)
 
 class CalendarWeek(models.Model):
-    day_ar = models.CharField(verbose_name='اليوم عربي',max_length=50)
-    day_en = models.CharField(verbose_name='اليوع إنجليزي',max_length=50)
+    name_ar = models.CharField(verbose_name='اليوم عربي',max_length=50)
+    name_en = models.CharField(verbose_name='اليوع إنجليزي',max_length=50)
     day_short_en = models.CharField(verbose_name=' اليوع إنجليزي مختصر',max_length=50)
     workDay = models.BooleanField(default=True, verbose_name='يوم عمل',max_length=50)
     def __str__(self):
-        return str(self.day_ar)
+        return str(self.name_ar)
 
 class Gender(models.Model):
-    gender_ar = models.CharField(verbose_name='الجنس عربي',max_length=50)
-    gender_en = models.CharField(verbose_name='الجنس إنجليزي',max_length=50)
+    name_ar = models.CharField(verbose_name='الجنس عربي',max_length=50)
+    name_en = models.CharField(verbose_name='الجنس إنجليزي',max_length=50)
     def __str__(self):
-        return str(self.gender_ar)
+        return str(self.name_ar)
 
 class SocialStatus(models.Model):
-    socialStatus_ar = models.CharField(verbose_name='الحالة الإجتماعية عربي',max_length=50)
-    socialStatus_en = models.CharField(verbose_name='الحالة الإجتماعية إنجليزي',max_length=50)
+    name_ar = models.CharField(verbose_name='الحالة الإجتماعية عربي',max_length=50)
+    name_en = models.CharField(verbose_name='الحالة الإجتماعية إنجليزي',max_length=50)
     def __str__(self):
-        return str(self.socialStatus_ar)
+        return str(self.name_ar)
 
 class WorkTrade(models.Model):
-    workTrade_ar = models.CharField(verbose_name='المهنة عربي',max_length=100)
-    workTrade_en = models.CharField(verbose_name='المهنة إنجليزي',max_length=100,blank=True, null=True)
+    name_ar = models.CharField(verbose_name='المهنة عربي',max_length=100)
+    name_en = models.CharField(verbose_name='المهنة إنجليزي',max_length=100,blank=True, null=True)
     def __str__(self):
-        return str(self.workTrade_ar)
+        return str(self.name_ar)
 
 class WorkSpecialty(models.Model):
     workTradeID = models.ForeignKey(WorkTrade, verbose_name='معرف المهنة',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
-    workSpecialty_ar = models.CharField(verbose_name='التخصص عربي',max_length=100)
-    workSpecialty_en = models.CharField(verbose_name='التخصص إنجليزي',max_length=100,blank=True, null=True)
+    name_ar = models.CharField(verbose_name='التخصص عربي',max_length=100)
+    name_en = models.CharField(verbose_name='التخصص إنجليزي',max_length=100,blank=True, null=True)
     def __str__(self):
-        return str(self.workSpecialty_ar)
+        return str(self.name_ar)
 
 class JobTitle(models.Model):
     name_ar = models.CharField(verbose_name='المسمى الوظيفي عربي',max_length=100)
@@ -104,44 +104,44 @@ class JobTitle(models.Model):
         return str(self.name_ar) 
        
 class WorkingStatus(models.Model):
-    workingStatus_ar = models.CharField(verbose_name='حالة العمل عربي',max_length=100)
-    workingStatus_en = models.CharField(verbose_name='حالة العمل إنجليزي',max_length=100,blank=True, null=True)
+    name_ar = models.CharField(verbose_name='حالة العمل عربي',max_length=100)
+    name_en = models.CharField(verbose_name='حالة العمل إنجليزي',max_length=100,blank=True, null=True)
     def __str__(self):
-        return str(self.workingStatus_ar)
+        return str(self.name_ar)
 
 class Bank(models.Model):
-    bank_ar = models.CharField(verbose_name='البنك عربي',max_length=100)
-    bank_en = models.CharField(verbose_name='البنك إنجليزي',max_length=100,blank=True, null=True)
-    bank_Symbol = models.CharField(verbose_name=' رمز البنك',max_length=100,blank=True, null=True)
+    name_ar = models.CharField(verbose_name='البنك عربي',max_length=100)
+    name_en = models.CharField(verbose_name='البنك إنجليزي',max_length=100,blank=True, null=True)
+    name_Symbol = models.CharField(verbose_name=' رمز البنك',max_length=100,blank=True, null=True)
     def __str__(self):
-        return str(self.bank_ar)
+        return str(self.name_ar)
     
 class BranchBank(models.Model):
     bankID = models.ForeignKey(Bank, verbose_name='معرف البنك',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
-    branchBank_AR = models.CharField(verbose_name='قرع البنك عربي',max_length=100)
-    branchBank_EN = models.CharField(verbose_name='قرع البنك إنجليزي',max_length=100,blank=True, null=True)
-    bank_Symbol = models.CharField(verbose_name=' رمز البنك',max_length=100,blank=True, null=True)
+    name_ar = models.CharField(verbose_name='قرع البنك عربي',max_length=100)
+    name_en = models.CharField(verbose_name='قرع البنك إنجليزي',max_length=100,blank=True, null=True)
+    name_Symbol = models.CharField(verbose_name=' رمز البنك',max_length=100,blank=True, null=True)
     def __str__(self):
-        return str(self.branchBank_AR)
+        return str(self.name_ar)
     
 class TypeAccBank(models.Model):
-    TypeAccBank_AR = models.CharField(verbose_name='نوع الحساب عربي',max_length=100)
-    TypeAccBank_EN = models.CharField(verbose_name='نوع الحساب إنجليزي',max_length=100,blank=True, null=True)
-    bank_Symbol = models.CharField(verbose_name=' رمز البنك',max_length=100,blank=True, null=True)
+    name_ar = models.CharField(verbose_name='نوع الحساب عربي',max_length=100)
+    name_en = models.CharField(verbose_name='نوع الحساب إنجليزي',max_length=100,blank=True, null=True)
+    name_Symbol = models.CharField(verbose_name=' رمز البنك',max_length=100,blank=True, null=True)
     def __str__(self):
-        return str(self.TypeAccBank_AR)
+        return str(self.name_ar)
 
 class TypeID(models.Model):
-    typeID_ar = models.CharField(verbose_name='نوع الهوية عربي',max_length=100)
-    typeID_en = models.CharField(verbose_name='نوع الهوية إنجليزي',max_length=100,blank=True, null=True)
+    name_ar = models.CharField(verbose_name='نوع الهوية عربي',max_length=100)
+    name_en = models.CharField(verbose_name='نوع الهوية إنجليزي',max_length=100,blank=True, null=True)
     def __str__(self):
-        return str(self.typeID_ar)
+        return str(self.name_ar)
 
 class TypeTransaction(models.Model):
-  typeTransaction_ar = models.CharField(verbose_name='نوع المعاملة عربي',max_length=100)
-  typeTransaction_en = models.CharField(verbose_name='نوع المعاملة إنجليزي',max_length=100,blank=True, null=True)
+  name_ar = models.CharField(verbose_name='نوع المعاملة عربي',max_length=100)
+  name_en = models.CharField(verbose_name='نوع المعاملة إنجليزي',max_length=100,blank=True, null=True)
   def __str__(self):
-    return str(self.typeTransaction_ar)
+    return str(self.name_ar)
   
 class Project(models.Model):
     name_ar = models.CharField(verbose_name='المشروع عربي',max_length=100)
@@ -159,25 +159,25 @@ class SubProject(models.Model):
     name_ar = models.CharField(verbose_name='مشروع فرعي عربي',max_length=100)
     name_er = models.CharField(verbose_name='مشروع فرعي إنجليزي',max_length=100)
     def __str__(self):
-        return str(self.noPro)
+        return str(self.name_ar)
     
 class Size(models.Model):
     name = models.CharField(verbose_name='المقاس',max_length=100)
-    name_GB = models.CharField(verbose_name='مقاس المملكة المتحدة',max_length=100)
-    name_FR = models.CharField(verbose_name='مقاس فرنسا',max_length=100)
-    name_US = models.CharField(verbose_name='مقاس الولايات المتحدة',max_length=100)
-    name_DE = models.CharField(verbose_name='مقاس ألمانيا',max_length=100)
-    name_IT = models.CharField(verbose_name='مقاس إيطاليا',max_length=100)
+    name_gr = models.CharField(verbose_name='مقاس المملكة المتحدة',max_length=100)
+    name_fr = models.CharField(verbose_name='مقاس فرنسا',max_length=100)
+    name_us = models.CharField(verbose_name='مقاس الولايات المتحدة',max_length=100)
+    name_de = models.CharField(verbose_name='مقاس ألمانيا',max_length=100)
+    name_it = models.CharField(verbose_name='مقاس إيطاليا',max_length=100)
     def __str__(self):
-        return str(self.noPro)
+        return str(self.name)
 
 class Color(models.Model):
-    name_AR = models.CharField(verbose_name='اللون عربي',max_length=100)
-    name_EN = models.CharField(verbose_name='اللون إنجليزي',max_length=100)
+    name_ar = models.CharField(verbose_name='اللون عربي',max_length=100)
+    name_en = models.CharField(verbose_name='اللون إنجليزي',max_length=100)
     color = models.CharField(max_length=7, default="#FFFFFF", help_text="Enter the color in hex format, e.g., #FFFFFF")
 
     def __str__(self):
-        return str(self.name_AR)
+        return str(self.name_ar)
 
 class Person(models.Model):
     f_Name_ar = models.CharField(verbose_name='الإسم الأول عربي',max_length=100, blank=True, null=True)

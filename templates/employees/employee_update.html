@@ -2,6 +2,7 @@
 {% load static %}
 {% block title %} | Update Employee ( {{employee_update.id}} ){% endblock %}
 {% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <div class="content-wrapper">
   <h4 class="main-title">تعديل بيانات الموظف : {{employee_update.personID.f_Name_ar}} {{employee_update.personID.s_Name_ar}} {{employee_update.personID.t_Name_ar}} </h4>
  <div class="content">
@@ -127,5 +128,5 @@
   </form>
  </div>
 </div>
-<script type="module" src="{% static 'dist/js/ajax.js' %}"></script>
+{% include 'employees/updateDropdown.html' %}
 {% endblock %}

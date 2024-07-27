@@ -131,7 +131,6 @@
             >
             <div class="form-group col-md-3">{{person_form.email}}</div>
           </div>
-
           <!-- البنك - الفرع - نوع الحساب - رقم الحساب - رقم الأيبان ر -->
           <div class="form-row">
             <label class="form-group col-md-1 title-label"
@@ -203,99 +202,5 @@
     </div>
   </div>
 </div>
-<!-- 
-<script>
-  // تحديث المناطق حسب الدولى
-  $(document).ready(function() {
-    // Function to update regions based on selected country
-    function updateRegions() {
-        var url = "{% url 'load_region' %}"; // the URL to get the regions
-        var countryID = $("#id_countryID").val(); // get the selected country ID from the HTML input
-        $.ajax({
-            url: url,
-            data: {
-                'countryID': countryID
-            },
-            success: function (data) {
-                $("#id_regionID").html(''); // clear the existing options in the regions dropdown
-                $.each(data, function (key, value) {
-                    $("#id_regionID").append('<option value="' + value.id + '">' + value.name_ar + '</option>');
-                });
-            },
-            error: function (xhr, errmsg, err) {
-                console.log("Error: " + errmsg); // log any error
-            }
-        });
-    }
-    // Call the function on page load
-    updateRegions();
-    // Call the function when the country dropdown changes
-    $('#id_countryID').change(function () {
-        updateRegions();
-    });
-});
- 
-//  تحميل المدن حسب المناطق
-$(document).ready(function() {
-    // Function to update regions based on selected country
-    function updateStates() {
-        var url = "{% url 'load_state' %}"; // the URL to get the regions
-        var regionID = $("#id_regionID").val(); // get the selected country ID from the HTML input
-        $.ajax({
-            url: url,
-            data: {
-                'regionID': regionID
-            },
-            success: function (data) {
-                $("#id_stateID").html(''); // clear the existing options in the regions dropdown
-                $.each(data, function (key, value) {
-                    $("#id_stateID").append('<option value="' + value.id + '">' + value.name_ar + '</option>');
-                });
-            },
-            error: function (xhr, errmsg, err) {
-                console.log("Error: " + errmsg); // log any error
-            }
-        });
-    }
-    // Call the function on page load
-    updateStates();
-    // Call the function when the country dropdown changes
-    $('#id_regionID').change(function () {
-        updateStates();
-    });
-});
-
-//  تحميل الأحياء حسب المدن
-$(document).ready(function() {
-    // Function to update regions based on selected country
-    function updateCity() {
-        var url = "{% url 'load_city' %}"; // the URL to get the regions
-        var stateID = $("#id_stateID").val(); // get the selected country ID from the HTML input
-        $.ajax({
-            url: url,
-            data: {
-                'stateID': stateID
-            },
-            success: function (data) {
-                $("#id_cityID").html(''); // clear the existing options in the regions dropdown
-                $.each(data, function (key, value) {
-                    $("#id_cityID").append('<option value="' + value.id + '">' + value.name_ar + '</option>');
-                });
-            },
-            error: function (xhr, errmsg, err) {
-                console.log("Error: " + errmsg); // log any error
-            }
-        });
-    }
-    // Call the function on page load
-    updateCity();
-    // Call the function when the country dropdown changes
-    $('#id_stateID').change(function () {
-        updateCity();
-    });
-});
-</script>
-   -->
-   <script src="{% static 'dist/js/ajax.js' %}"></script>
-  
+{% include 'employees/updateDropdown.html' %}
 {% endblock %}

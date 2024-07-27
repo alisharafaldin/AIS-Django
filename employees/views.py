@@ -5,7 +5,7 @@ from django.views.generic import CreateView
 from .forms import EmpForm
 from django.contrib.auth.decorators import login_required
 from basicinfo.forms import PersonForm
-from basicinfo.models import Region, States, Cities
+from basicinfo.models import Region, States, Cities, WorkSpecialty, BranchBank
 from django.http import JsonResponse
 
 # Create your views here.
@@ -17,6 +17,30 @@ from django.http import JsonResponse
 #         if txtsearch: # للتحقق أن البيانات ليست فارغة
 #             all_emp = all_emp.filter(item_search__icontains=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
 
+def load_region(request):
+    country_id = request.GET.get('countryID')
+    regions = Region.objects.filter(countryID_id=country_id).order_by('name_ar')
+    return JsonResponse(list(regions.values('id', 'name_ar')), safe=False)
+
+def load_state(request):
+    regionID_id = request.GET.get('regionID')
+    states = States.objects.filter(regionID_id=regionID_id).order_by('name_ar')
+    return JsonResponse(list(states.values('id', 'name_ar')), safe=False)
+
+def load_city(request):
+    stateID_id = request.GET.get('stateID')
+    cities = Cities.objects.filter(stateID_id=stateID_id).order_by('name_ar')
+    return JsonResponse(list(cities.values('id', 'name_ar')), safe=False)
+
+def load_workSpecialty(request):
+    workTradeID_id = request.GET.get('workTradeID')
+    workSpecialty = WorkSpecialty.objects.filter(workTradeID_id=workTradeID_id).order_by('name_ar')
+    return JsonResponse(list(workSpecialty.values('id', 'name_ar')), safe=False)
+
+def load_branchBank(request):
+    bankID_id = request.GET.get('bankID')
+    branchBank = BranchBank.objects.filter(bankID_id=bankID_id).order_by('name_ar')
+    return JsonResponse(list(branchBank.values('id', 'name_ar')), safe=False)
 
 def handle_form_errors(head_form, formset, request):
     """وظيفة مساعد لمعالجة الأخطاء وعرض الرسائل المناسبة."""
@@ -63,21 +87,6 @@ def employee_create(request):
        'emp_form': emp_form,
     }
     return render(request, 'employees/employee_create.html', context)
-
-def load_region(request):
-    country_id = request.GET.get('countryID')
-    regions = Region.objects.filter(countryID_id=country_id).order_by('name_ar')
-    return JsonResponse(list(regions.values('id', 'name_ar')), safe=False)
-
-def load_state(request):
-    regionID_id = request.GET.get('regionID')
-    states = States.objects.filter(regionID_id=regionID_id).order_by('name_ar')
-    return JsonResponse(list(states.values('id', 'name_ar')), safe=False)
-
-def load_city(request):
-    stateID_id = request.GET.get('stateID')
-    cities = Cities.objects.filter(stateID_id=stateID_id).order_by('name_ar')
-    return JsonResponse(list(cities.values('id', 'name_ar')), safe=False)
 
 def employee_reade(request, id):
   emp_id = EmployeeInfo.objects.get(id=id)
