@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from products.models import ItemsDetails
+from products.models import ItemDetails
 from orders.models import Order, OrderDetails, Payment
 from django.utils import timezone
 # Create your views here.
@@ -13,10 +13,10 @@ def add_to_cart(request):
         # للتحقق أن المستخدم ليس له طلب غير مكتمل
         order = Order.objects.all().filter(userID=request.user, is_finished=False)
         #للتحقق أن المنتج المختار موجود
-        if not ItemsDetails.objects.all().filter(id=pro_id).exists():
+        if not ItemDetails.objects.all().filter(id=pro_id).exists():
             return redirect('products')
         #تجهيز المنتج المختار    
-        pro = ItemsDetails.objects.get(id=pro_id)
+        pro = ItemDetails.objects.get(id=pro_id)
         if order:
             #يعني وجود طلب قديم غير مكتكمل
             old_order = Order.objects.get(userID=request.user, is_finished=False)

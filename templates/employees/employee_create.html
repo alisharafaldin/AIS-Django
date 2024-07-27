@@ -1,7 +1,7 @@
-{% extends 'base.html' %}
-{% load static %} 
-{% block title %} | Create Employee {% endblock %}
-{% block content %}
+{% extends 'base.html' %} {% load static %} {% block title %} | Create Employee
+{% endblock %} {% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <div class="content-wrapper">
   <div class="content">
     <div class="modal-content">
@@ -11,119 +11,191 @@
         <form method="POST">
           <div class="form-row main-title">
             <h5 class="form-group" id="staticBackdropLabel">إضافة موظف جديد</h5>
-            <button type="submit" class="btn btn-save" name="btnempsave">إضافة</button>
+            <button type="submit" class="btn btn-save" name="btnempsave">
+              إضافة
+            </button>
             <a href="{% url 'employees' %}" class="btn btn-close">إلغاء</a>
           </div>
           {% csrf_token %}
-          <br/>
+          <br />
           <div class="form-row">
-            <label class="form-group col-md-1 title-label">الإسم عربي</label>
+            <label class="form-group col-md-2 title-label"
+              >الإسم الكامل عربي</label
+            >
             <div class="form-group col-md-2">{{person_form.f_Name_ar}}</div>
-            <div class="form-group col-md-3">{{person_form.s_Name_ar}}</div>
-            <div class="form-group col-md-3">{{person_form.t_Name_ar}}</div>
-            <div class="form-group col-md-3">{{person_form.fo_Name_ar}}</div>
+            <div class="form-group col-md-2">{{person_form.s_Name_ar}}</div>
+            <div class="form-group col-md-2">{{person_form.t_Name_ar}}</div>
+            <div class="form-group col-md-2">{{person_form.fo_Name_ar}}</div>
           </div>
           <div class="form-row">
-            <label class="form-group col-md-1 title-label">الإسم إنجليزي</label>
+            <label class="form-group col-md-2 title-label"
+              >الإسم الكامل إنجليزي</label
+            >
             <div class="form-group col-md-2">{{person_form.f_Name_en}}</div>
-            <div class="form-group col-md-3">{{person_form.s_Name_en}}</div>
-            <div class="form-group col-md-3">{{person_form.t_Name_en}}</div>
-            <div class="form-group col-md-3">{{person_form.fo_Name_en}}</div>
+            <div class="form-group col-md-2">{{person_form.s_Name_en}}</div>
+            <div class="form-group col-md-2">{{person_form.t_Name_en}}</div>
+            <div class="form-group col-md-2">{{person_form.fo_Name_en}}</div>
           </div>
           <!-- تاريخ الميلا - الجنس - الجنسية - الحالة الإجتماعية -->
           <div class="form-row">
-            <label class="form-group col-md-1 title-label">تاريخ الميلاد</label>
+            <label class="form-group col-md-1 title-label"
+              >{{person_form.dateOfBirth.label}}</label
+            >
             <div class="form-group col-md-2">{{person_form.dateOfBirth}}</div>
-            <label class="form-group col-md-1 title-label">الجنس</label>
-            <div class="form-group col-md-2">{{person_form.genderID}}</div>
-            <label class="form-group col-md-1 title-label">الجنسية</label>
+            <label class="form-group col-md-1 title-label"
+              >{{person_form.genderID.label}}</label
+            >
+            <div class="form-group col-md-1">{{person_form.genderID}}</div>
+            <label class="form-group col-md-1 title-label"
+              >{{person_form.nationalityID.label}}</label
+            >
             <div class="form-group col-md-2">{{person_form.nationalityID}}</div>
-            <label class="form-group col-md-1 title-label">الحالة الإجتماعية</label>
-            <div class="form-group col-md-2">{{person_form.socialStatusID}}</div>
+            <label class="form-group col-md-2 title-label"
+              >{{person_form.socialStatusID.label}}</label
+            >
+            <div class="form-group col-md-2">
+              {{person_form.socialStatusID}}
+            </div>
           </div>
           <!--  الدولة - الولاية - المدية -  وصف العنوان -->
           <div class="form-row">
-            <label class="form-group col-md-1 title-label">الدولة</label>
+            <label class="form-group col-md-1 title-label"
+              >{{person_form.countryID.label}}</label
+            >
             <div class="form-group col-md-2">{{person_form.countryID}}</div>
-            <label class="form-group col-md-1 title-label">المنطقة</label>
+            
+            <label class="form-group col-md-1 title-label"
+              >{{person_form.regionID.label}}</label
+            >
             <div class="form-group col-md-2">{{person_form.regionID}}</div>
-            <label class="form-group col-md-1 title-label">الولاية</label>
+            <label class="form-group col-md-1 title-label"
+              >{{person_form.stateID.label}}</label
+            >
             <div class="form-group col-md-2">{{person_form.stateID}}</div>
-            <label class="form-group col-md-1 title-label">المدينة</label>
+            <label class="form-group col-md-1 title-label"
+              >{{person_form.cityID.label}}</label
+            >
             <div class="form-group col-md-2">{{person_form.cityID}}</div>
+          </div>
+          <div class="form-row">
+            <label class="form-group col-md-2 title-label"
+              >{{person_form.desAddress.label}}</label
+            >
+            <div class="form-group col-md-10">{{person_form.desAddress}}</div>
           </div>
           <!-- المهنة - التخصص - المسوق -->
           <div class="form-row">
-            <label class="form-group col-md-1 title-label">المهنة</label>
+            <label class="form-group col-md-1 title-label"
+              >{{person_form.workTradeID.label}}</label
+            >
             <div class="form-group col-md-3">{{person_form.workTradeID}}</div>
-            <label class="form-group col-md-1 title-label">التخصص</label>
-            <div class="form-group col-md-3">{{person_form.workSpecialtyID}}</div>
-            <label class="form-group col-md-1 title-label">عنوان المنزل</label>
-            <div class="form-group col-md-3">{{person_form.desAddress}}</div>
+            <label class="form-group col-md-1 title-label"
+              >{{person_form.workSpecialtyID.label}}</label
+            >
+            <div class="form-group col-md-3">
+              {{person_form.workSpecialtyID}}
+            </div>
           </div>
           <!--  نوع الهوية - رقم الهوية - تاريخ إنتهاء الهوية  -->
           <div class="form-row">
-            <label class="form-group col-md-1 title-label">نوع الهوية</label>
+            <label class="form-group col-md-1 title-label"
+              >{{person_form.typeID.label}}</label
+            >
             <div class="form-group col-md-2">{{person_form.typeID}}</div>
-            <label class="form-group col-md-1 title-label">رقم الهوية</label>
+            <label class="form-group col-md-1 title-label"
+              >{{person_form.id_number.label}}</label
+            >
             <div class="form-group col-md-2">{{person_form.id_number}}</div>
-            <label class="form-group col-md-1 title-label">تاريخ الإنتهاء</label>
-            <div class="form-group col-md-2">{{person_form.id_ExpiredDate}}</div>
-            <label class="form-group col-md-1 title-label">المشرف</label>
-            <div class="form-group col-md-2">{{share_form.marketerID}}</div>
+            <label class="form-group col-md-2 title-label"
+              >{{person_form.id_ExpiredDate.label}}</label
+            >
+            <div class="form-group col-md-2">
+              {{person_form.id_ExpiredDate}}
+            </div>
           </div>
           <!--البريد الإلكتروني - رقم الجوال - رقم جوال آخر -->
-          <br>
+          <br />
           <div class="form-row">
-            <label class="form-group col-md-1 title-label">رقم الجوال</label>
-            <div class="form-group col-md-3">{{person_form.mobileNumber}}</div>
-            <label class="form-group col-md-1 title-label">جوال آخر</label>
-            <div class="form-group col-md-3">{{person_form.mobileNumberAnother}}</div>
-            <label class="form-group col-md-1 title-label">البريد الإلكتروني</label>
+            <label class="form-group col-md-1 title-label"
+              >{{person_form.mobileNumber.label}}</label
+            >
+            <div class="form-group col-md-2">{{person_form.mobileNumber}}</div>
+            <label class="form-group col-md-2 title-label"
+              >{{person_form.mobileNumberAnother.label}}</label
+            >
+            <div class="form-group col-md-2">
+              {{person_form.mobileNumberAnother}}
+            </div>
+            <label class="form-group col-md-2 title-label"
+              >{{person_form.email.label}}</label
+            >
             <div class="form-group col-md-3">{{person_form.email}}</div>
           </div>
-          <br>
+
           <!-- البنك - الفرع - نوع الحساب - رقم الحساب - رقم الأيبان ر -->
           <div class="form-row">
-            <label class="form-group col-md-1 title-label">البنك</label>
+            <label class="form-group col-md-1 title-label"
+              >{{person_form.bankID.label}}</label
+            >
             <div class="form-group col-md-3">{{person_form.bankID}}</div>
-            <label class="form-group col-md-1 title-label">الفرع</label>
+            <label class="form-group col-md-1 title-label"
+              >{{person_form.branchBankID.label}}</label
+            >
             <div class="form-group col-md-3">{{person_form.branchBankID}}</div>
-            <label class="form-group col-md-1 title-label">نوع الحساب</label>
-            <div class="form-group col-md-3">{{person_form.typeAccBankID}}</div>
+            <label class="form-group col-md-2 title-label"
+              >{{person_form.typeAccBankID.label}}</label
+            >
+            <div class="form-group col-md-2">{{person_form.typeAccBankID}}</div>
           </div>
           <div class="form-row">
-            <label class="form-group col-md-1 title-label">رقم الحساب</label>
+            <label class="form-group col-md-2 title-label"
+              >{{person_form.accountNumber.label}}</label
+            >
             <div class="form-group col-md-4">{{person_form.accountNumber}}</div>
-            <label class="form-group col-md-1 title-label">رقم الآي بان</label>
-            <div class="form-group col-md-6">{{person_form.IBANNumber}}</div>
+            <label class="form-group col-md-2 title-label"
+              >{{person_form.IBANNumber.label}}</label
+            >
+            <div class="form-group col-md-4">{{person_form.IBANNumber}}</div>
           </div>
-          <br>
           <!-- صورة الموظف - رابط المستندات - ملاحظات -->
           <div class="form-row">
-            <label class="form-group col-md-1 title-label">صورة شخصية</label>
-            <div class="form-group col-md-3">{{person_form.photo}}</div>
-            <label class="form-group col-md-1 title-label">مرفقات</label>
-            <div class="form-group col-md-3">{{person_form.attachments}}</div>
-            <label class="form-group col-md-1 title-label">ملاحظات</label>
+            <label class="form-group col-md-2 title-label"
+              >{{person_form.photo.label}}</label
+            >
+            <div class="form-group col-md-2">{{person_form.photo}}</div>
+            <label class="form-group col-md-2 title-label"
+              >{{person_form.attachments.label}}</label
+            >
+            <div class="form-group col-md-2">{{person_form.attachments}}</div>
+            <label class="form-group col-md-1 title-label"
+              >{{person_form.notes.label}}</label
+            >
             <div class="form-group col-md-3">{{person_form.notes}}</div>
           </div>
           <!-- المهنة - التخصص - الشركة - بداية العمل -->
           <div class="form-row">
-            <label class="form-group col-md-1 title-label">الشركة</label>
-            <div class="form-group col-md-3">{{emp_form.companyID}}</div>
-            <label class="form-group col-md-1 title-label">بداية العمل</label>
+            <label class="form-group col-md-1 title-label"
+              >{{emp_form.workStartDate.label}}</label
+            >
             <div class="form-group col-md-3">{{emp_form.workStartDate}}</div>
-            <label class="form-group col-md-1 title-label">نهاية العمل</label>
+            <label class="form-group col-md-1 title-label"
+              >{{emp_form.workEndDate.label}}</label
+            >
             <div class="form-group col-md-3">{{emp_form.workEndDate}}</div>
           </div>
           <!-- حالة العمل - الراتب الأساسي - الإضافي - تاريخ بداية العمل -->
           <div class="form-row">
-            <label class="form-group col-md-1 title-label">حالة العمل</label>
+            <label class="form-group col-md-1 title-label"
+              >{{emp_form.workingStatusID.label}}</label
+            >
             <div class="form-group col-md-3">{{emp_form.workingStatusID}}</div>
-            <label class="form-group col-md-1 title-label">الراتب الأساسي</label>
+            <label class="form-group col-md-1 title-label"
+              >{{emp_form.contractSalary.label}}</label
+            >
             <div class="form-group col-md-3">{{emp_form.contractSalary}}</div>
-            <label class="form-group col-md-1 title-label">الإضافي</label>
+            <label class="form-group col-md-1 title-label"
+              >{{emp_form.fixedExtra.label}}</label
+            >
             <div class="form-group col-md-3">{{emp_form.fixedExtra}}</div>
           </div>
         </form>
@@ -131,4 +203,99 @@
     </div>
   </div>
 </div>
+<!-- 
+<script>
+  // تحديث المناطق حسب الدولى
+  $(document).ready(function() {
+    // Function to update regions based on selected country
+    function updateRegions() {
+        var url = "{% url 'load_region' %}"; // the URL to get the regions
+        var countryID = $("#id_countryID").val(); // get the selected country ID from the HTML input
+        $.ajax({
+            url: url,
+            data: {
+                'countryID': countryID
+            },
+            success: function (data) {
+                $("#id_regionID").html(''); // clear the existing options in the regions dropdown
+                $.each(data, function (key, value) {
+                    $("#id_regionID").append('<option value="' + value.id + '">' + value.name_ar + '</option>');
+                });
+            },
+            error: function (xhr, errmsg, err) {
+                console.log("Error: " + errmsg); // log any error
+            }
+        });
+    }
+    // Call the function on page load
+    updateRegions();
+    // Call the function when the country dropdown changes
+    $('#id_countryID').change(function () {
+        updateRegions();
+    });
+});
+ 
+//  تحميل المدن حسب المناطق
+$(document).ready(function() {
+    // Function to update regions based on selected country
+    function updateStates() {
+        var url = "{% url 'load_state' %}"; // the URL to get the regions
+        var regionID = $("#id_regionID").val(); // get the selected country ID from the HTML input
+        $.ajax({
+            url: url,
+            data: {
+                'regionID': regionID
+            },
+            success: function (data) {
+                $("#id_stateID").html(''); // clear the existing options in the regions dropdown
+                $.each(data, function (key, value) {
+                    $("#id_stateID").append('<option value="' + value.id + '">' + value.name_ar + '</option>');
+                });
+            },
+            error: function (xhr, errmsg, err) {
+                console.log("Error: " + errmsg); // log any error
+            }
+        });
+    }
+    // Call the function on page load
+    updateStates();
+    // Call the function when the country dropdown changes
+    $('#id_regionID').change(function () {
+        updateStates();
+    });
+});
+
+//  تحميل الأحياء حسب المدن
+$(document).ready(function() {
+    // Function to update regions based on selected country
+    function updateCity() {
+        var url = "{% url 'load_city' %}"; // the URL to get the regions
+        var stateID = $("#id_stateID").val(); // get the selected country ID from the HTML input
+        $.ajax({
+            url: url,
+            data: {
+                'stateID': stateID
+            },
+            success: function (data) {
+                $("#id_cityID").html(''); // clear the existing options in the regions dropdown
+                $.each(data, function (key, value) {
+                    $("#id_cityID").append('<option value="' + value.id + '">' + value.name_ar + '</option>');
+                });
+            },
+            error: function (xhr, errmsg, err) {
+                console.log("Error: " + errmsg); // log any error
+            }
+        });
+    }
+    // Call the function on page load
+    updateCity();
+    // Call the function when the country dropdown changes
+    $('#id_stateID').change(function () {
+        updateCity();
+    });
+});
+</script>
+   -->
+   <script src="{% static 'dist/js/ajax.js' %}"></script>
+  
 {% endblock %}

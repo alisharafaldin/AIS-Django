@@ -14,37 +14,35 @@
       {% csrf_token %} {% include 'partials/_alerts.html' %}
       <br />
       <div class=" form-row"> 
-        <label class="form-group col-md-1 title-label">إسم الحساب عربي</label>
-        <div class="form-group col-md-6">{{account_form.name_ar}}</div>
+        <label class="form-group col-md-2 title-label">{{account_form.name_ar.label}}</label>
+        <div class="form-group col-md-4">{{account_form.name_ar}}</div>
+        <label class="form-group col-md-2 title-label">{{account_form.name_en.label}}</label>
+        <div class="form-group col-md-4">{{account_form.name_en}}</div>
       </div>
+
       <div class=" form-row"> 
-        <label class="form-group col-md-1 title-label">إسم الحساب إنجليزي</label>
-        <div class="form-group col-md-6">{{account_form.name_en}}</div>
+        <label class="form-group col-md-1 title-label">{{account_form.typeID.label}}</label>
+        <div class="form-group col-md-3">{{account_form.typeID}}</div>
+        <label class="form-group col-md-1 title-label">{{account_form.parent.label}}</label>
+        <div class="form-group col-md-3">{{account_form.parent}}</div>
+        <label class="form-group col-md-1 title-label">{{account_form.code.label}}</label>
+        <div class="form-group col-md-3">{{account_form.code}}</div>
       </div>
+
       <div class=" form-row"> 
-        <label class="form-group col-md-1 title-label">رمز الحساب</label>
-        <div class="form-group col-md-6">{{account_form.code}}</div>
+        <label class="form-group col-md-2 title-label">{{account_form.natureID.label}}</label>
+        <div class="form-group col-md-2">{{account_form.natureID}}</div>
+        <label class="form-group col-md-2 title-label">{{account_form.categoryID.label}}</label>
+        <div class="form-group col-md-3">{{account_form.categoryID}}</div>
+        <label class="form-group col-md-2 title-label">{{account_form.is_can_pay.label}}</label>
+        <div class="form-group col-md-1">{{account_form.is_can_pay}}</div>
       </div>
+
       <div class=" form-row"> 
-        <label class="form-group col-md-1 title-label">نوع الحساب</label>
-        <div class="form-group col-md-6">{{account_form.typeID}}</div>
+        <label class="form-group col-md-2 title-label">{{account_form.description.label}}</label>
+        <div class="form-group col-md-10">{{account_form.description}}</div>
       </div>
-      <div class=" form-row"> 
-        <label class="form-group col-md-1 title-label">طبيعةالحساب</label>
-        <div class="form-group col-md-6">{{account_form.natureID}}</div>
-      </div>
-      <div class=" form-row"> 
-        <label class="form-group col-md-1 title-label">تصنيف الحساب</label>
-        <div class="form-group col-md-6">{{account_form.categoryID}}</div>
-      </div>
-      <div class=" form-row"> 
-        <label class="form-group col-md-1 title-label">وصف الحساب</label>
-        <div class="form-group col-md-6">{{account_form.description}}</div>
-      </div>
-      <div class=" form-row"> 
-        <label class="form-group col-md-1 title-label">إمكانية الدفع و السداد من الحساب</label>
-        <div class="form-group col-md-6">{{account_form.is_can_pay}}</div>
-      </div>
+ 
     </form>
   </div>
 </div>

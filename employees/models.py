@@ -1,14 +1,12 @@
 from django.db import models
-from datetime import date 
 from basicinfo.models import *
 from companys.models import Company
-from django.contrib.auth.models import User
 # from profiles.models import UserProfile
 
 class EmployeeInfo(models.Model):
-    companyID = models.ForeignKey(Company, on_delete=models.PROTECT)
+    companyID = models.ForeignKey(Company, on_delete=models.PROTECT, blank=True)
     sequence = models.PositiveIntegerField(editable=False)  # الحقل التسلسلي
-    personID = models.OneToOneField(Person, on_delete=models.CASCADE)
+    personID = models.OneToOneField(Person, on_delete=models.CASCADE, blank=True)
     workStartDate = models.DateField(verbose_name='تاريخ بداية العمل', blank=True, null=True)
     contractSalary = models.DecimalField(verbose_name="راتب العقد", default=1200, decimal_places=2, max_digits=10, blank=True, null=True)
     fixedExtra = models.DecimalField(verbose_name="إضافي ثابت", default=0, decimal_places=2, max_digits=10, blank=True, null=True)

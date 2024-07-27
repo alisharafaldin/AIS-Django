@@ -3,7 +3,7 @@ from typing import Any
 from django.shortcuts import render , redirect
 from django.contrib import messages
 from . models import AccountsTree, Qayd, QaydDetails
-from companys.models import Company, CompanyUser
+from companys.models import Company
 from . forms import AccountsTreeForm, QaydForm, QaydDetailsForm, QaydDetailsFormSet
 from django.forms import modelformset_factory
 from django.shortcuts import get_object_or_404
@@ -81,6 +81,15 @@ def accounts(request):
         'accounts':accounts2,
     }    
     return render(request,'accounts/accounts.html', context)
+
+@login_required
+def accounts_tree(request):
+    accounts = AccountsTree.objects.filter(parent__isnull=True)
+    accounts2 = accounts.order_by("code")
+    context = {
+        'accounts':accounts2,
+    }    
+    return render(request,'accounts/accounts_tree.html', context)
 
 # دوال لإنشاء وتحديث وقراءة وحذف القيود المحاسبية
 

@@ -5,11 +5,12 @@ from employees.models import EmployeeInfo
 from companys.models import Company
 from datetime import datetime
 from django.utils import timezone
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_delete
 from django.dispatch import receiver
 from mptt.models import MPTTModel, TreeForeignKey
-
+from products.models import ItemDetails
 #  لتجنب مشكلة الاستيراد الدائري (Circular Import)
+
 def get_shareholdersInfo():
       from hadena.models import ShareholdersInfo
       return ShareholdersInfo
@@ -54,7 +55,7 @@ class AccountsTree(MPTTModel):
   code = models.CharField(verbose_name='رمز الحساب',max_length=100, blank=True, null=True)
   description = models.CharField(verbose_name='وصف الحساب',max_length=100, blank=True, null=True)
   is_can_pay = models.BooleanField(verbose_name='إمكانية الدفع', blank=True, null=True)
-  parent = TreeForeignKey('self', on_delete=models.CASCADE, related_name='children', blank=True, null=True,)
+  parent = TreeForeignKey('self', verbose_name='الحساب الأب', on_delete=models.CASCADE, related_name='children', blank=True, null=True,)
 
   class MPTTMeta:
       order_insertion_by = ['name_ar']
@@ -70,6 +71,7 @@ class Qayd(models.Model):
   description = models.TextField(verbose_name='وصف القيد', default="قيد يومية جديد", max_length=250, blank=True, null=True)
   attachments = models.FileField(verbose_name='مرفقات القيد', blank=True, null=True)
   details = models.ManyToManyField(AccountsTree, through='QaydDetails', related_name='qayds', blank=True)
+  posted = models.BooleanField(verbose_name='ترحيل', default=False, blank=True, null=True) 
   created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name='qayds_created', blank=True, null=True)
   created_at = models.DateTimeField(verbose_name='تاريخ الإنشاء',auto_now_add=True, blank=True, null=True)
   updated_by = models.ForeignKey(User, verbose_name='المُعدِل', related_name='updated_qayds', on_delete=models.PROTECT, blank=True, null=True)
@@ -89,12 +91,13 @@ class QaydDetails(models.Model):
   qaydID = models.ForeignKey(Qayd, on_delete=models.CASCADE, related_name='qayd_details', blank=True)
   date_details = models.DateTimeField(verbose_name='التاريخ', default=timezone.now, blank=True, null=True)
   accountID = models.ForeignKey(AccountsTree, verbose_name='الحساب', default=1, on_delete=models.PROTECT, blank=True, null=True)
-  currencyID = models.ForeignKey(Countries , verbose_name='العملة', default=1, on_delete=models.PROTECT, null=True)
-  rate = models.DecimalField(verbose_name='سعر الصرف', default=1, max_digits=6, decimal_places=2)
+  currencyID = models.ForeignKey(Countries , verbose_name='العملة', default=1, on_delete=models.PROTECT, blank=True, null=True)
+  rate = models.DecimalField(verbose_name='سعر الصرف', default=1, max_digits=6, decimal_places=2, blank=True, null=True)
   quantity = models.DecimalField(max_digits=6, verbose_name='الكمية', default=1, decimal_places=2, blank=True, null=True)
   debit = models.DecimalField(verbose_name='مدين', default=0, max_digits=6, decimal_places=2)
   credit = models.DecimalField(verbose_name='دائن', default=0, max_digits=6, decimal_places=2)
   description_details = models.TextField(verbose_name='وصف تفصيل القيد', default="تفاصيل قيد يومية جديد", max_length=250,blank=True, null=True)
+  itemsDetailstID = models.ForeignKey(ItemDetails, verbose_name='المنتج', on_delete=models.PROTECT, blank=True, null=True)
   projectID = models.ForeignKey(Project, verbose_name='المشروع', on_delete=models.PROTECT, blank=True, null=True)
   empID = models.ForeignKey(EmployeeInfo, verbose_name='الموظف', on_delete=models.PROTECT, blank=True, null=True)
   shareholdersID = models.ForeignKey(get_shareholdersInfo(), related_name='المساهم', verbose_name='المساهم', on_delete=models.PROTECT, blank=True, null=True)

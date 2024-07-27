@@ -97,7 +97,7 @@ def switch_company(request, company_id):
         request.session['current_company_id'] = company.id
         request.session['current_company_name'] = company.name_ar
         messages.success(request, f'تم بدء العمل في : {company.name_ar}')
-        return redirect('qayds')  # 
+        return redirect('index')  # 
     else:
         messages.error(request, 'الشركة غير موجودة أو ليس لديك صلاحيات الوصول إليها.')
     return redirect('companys')

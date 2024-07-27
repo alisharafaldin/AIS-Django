@@ -92,14 +92,12 @@
     </div>
 
     <!-- jQuery -->
+
     <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
     <!-- jQuery UI 1.11.4 -->
     <script src="{% static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-      $.widget.bridge("uibutton", $.ui.button);
-    </script>
-    <script src="{% static 'dist/js/learn.js' %}"></script>
+    <script>$.widget.bridge("uibutton", $.ui.button);</script>
     <script src="{% static 'dist/js/jQuery/jQuery 3.7.1.js' %}"></script>
     <!-- Bootstrap 4 rtl -->
     <script src="https://cdn.rtlcss.com/bootstrap/v4.2.1/js/bootstrap.min.js"></script>
@@ -129,6 +127,5 @@
     <script src="{% static 'dist/js/pages/dashboard.js' %}"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{% static 'dist/js/demo.js' %}"></script>
-    <script src="{% static 'dist/js/learn.js' %}"></script>
   </body>
 </html>

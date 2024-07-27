@@ -4,6 +4,7 @@ from . import views
 # app_name = 'ais_qayd'
 urlpatterns = [  
     path('', views.accounts, name='accounts'),
+    path('accounts_tree', views.accounts_tree, name='accounts_tree'),
     path('account_create', views.account_create, name='account_create'),
     path('account_reade/<int:id>', views.account_reade, name='account_reade'),
     path('account_update/<int:id>', views.account_update, name='account_update'),

@@ -19,7 +19,7 @@ class Countries(models.Model):
   symbol_en = models.CharField(verbose_name='الرمز إنجليزي',max_length=50, blank=True, null=True)
   
   def __str__(self):
-      return str(self.currency_ar)
+      return str(self.name_ar)
     
   def get_currency_ar(self):
         return str(self.currency_ar)

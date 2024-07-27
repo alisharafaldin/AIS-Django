@@ -44,7 +44,7 @@ class QaydDetailsInline(admin.TabularInline):
 
 
 class QaydAdmin(admin.ModelAdmin):
-    list_display = ('companyID', 'sequence', 'created_by')
+    list_display = ('id', 'companyID', 'sequence', 'created_by')
     inlines = [QaydDetailsInline]  # إذا كنت بحاجة إلى إدراج `QaydDetailsInline`
 
 # تسجيل نموذج `Qayd` باستخدام `QaydAdmin` فقط مرة واحدة

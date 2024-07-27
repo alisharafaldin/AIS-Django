@@ -13,6 +13,7 @@ class AccountsTreeForm(forms.ModelForm):
             'name_en': forms.TextInput(attrs={'class':'form-control', 'placeholder':'إسم الحساب إنجليزي'}),
             'typeID': forms.Select(attrs={'class':'form-control', 'placeholder':'نوع الحساب'}),
             'natureID': forms.Select(attrs={'class':'form-control', 'placeholder':'طبيعة الميزانية'}),
+            'parent': forms.Select(attrs={'class':'form-control', 'placeholder':'الحساب الأب'}),
             'categoryID': forms.Select(attrs={'class':'form-control', 'placeholder':'تصنيف الحساب'}),
             'description': forms.TextInput(attrs={'class':'form-control', 'placeholder':'وصف الحساب'}),
             'is_can_pay': forms.CheckboxInput(attrs={'class':'form-control', 'placeholder':'إمكانية الدفع و السداد من الحساب'}),     

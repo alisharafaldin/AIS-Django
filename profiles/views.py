@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib import auth
 from .models import UserProfile
-from products.models import ItemsDetails 
+from products.models import ItemDetails 
 from employees.models import EmployeeInfo
 from basicinfo.forms import PersonForm
 from basicinfo.models import Person
@@ -116,27 +116,27 @@ def logout(request):
 def pro_fav(request, pro_id):
     # في حال تم تسجيل الدخول ولا يوجد مستخدم مجهول
     if request.user.is_authenticated and not request.user.is_anonymous:
-        pro_fav = ItemsDetails.objects.get(pk=pro_id)
+        pro_fav = ItemDetails.objects.get(pk=pro_id)
         # للتحقق أن المنتج لم يتم إضافته في المفضلة من قبل نفس المستخدم
-        if UserProfile.objects.filter(user=request.user ,ItemsDetails_favorites=pro_fav).exists():
-            messages.info(request, 'Already ItemsDetails in the favorite list')
+        if UserProfile.objects.filter(user=request.user ,ItemDetails_favorites=pro_fav).exists():
+            messages.info(request, 'Already ItemDetails in the favorite list')
             messages.info(request, 'المنتج بالفعل في قائمة المفضلة')
         else:
             userprofile = UserProfile.objects.get(user=request.user)
-            userprofile.ItemsDetails_favorites.add(pro_fav)
-            messages.success(request, 'ItemsDetails has been favorited')
+            userprofile.ItemDetails_favorites.add(pro_fav)
+            messages.success(request, 'ItemDetails has been favorited')
     else:
         messages.info(request, 'لإضافة المنتج في المفضلة يجب تسجيل الدخول أولاً')
-    return redirect('/ItemsDetailss/' + str(pro_id))
+    return redirect('/ItemDetailss/' + str(pro_id))
     
 def show_pro_fav(request):
     context = None
     # في حال تم تسجيل الدخول ولا يوجد مستخدم مجهول
     if request.user.is_authenticated and not request.user.is_anonymous:
         userInfo = UserProfile.objects.get(user=request.user)
-        pro = userInfo.ItemsDetails_favorites.all()
-        context = { 'ItemsDetailss':pro }
-    return render(request, 'ItemsDetailss/ItemsDetailss.html', context)
+        pro = userInfo.ItemDetails_favorites.all()
+        context = { 'ItemDetailss':pro }
+    return render(request, 'ItemDetailss/ItemDetailss.html', context)
 
 def user_reade(request, id):
   user_id = UserProfile.objects.get(id=id)

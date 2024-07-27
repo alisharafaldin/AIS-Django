@@ -1,34 +1,52 @@
 from django.db import models
 from datetime import datetime
 from basicinfo.models import Color, Size
+from django.contrib.auth.models import User
+from companys.models import Company
+
 # Create your models here.
 
-class CategoryType(models.Model):
-    name = models.CharField(max_length=100)
+class ItemType(models.Model):
+    companyID = models.ForeignKey(Company, on_delete=models.PROTECT,blank=True)
+    sequence = models.PositiveIntegerField(editable=False)  # الحقل التسلسلي
+    name_ar = models.CharField(verbose_name='نوع الصنف عربي', max_length=100, blank=True, null=True)
+    name_en = models.CharField(verbose_name='نوع الصنف إنجليزي', max_length=100, blank=True, null=True)
     def __str__(self):
-        return self.name
+        return self.name_ar
 
-class Category(models.Model):
-    categoryTypeID = models.ForeignKey(CategoryType, on_delete=models.CASCADE, related_name='category_type', blank=True)
-    name = models.CharField(max_length=100)
+class ItemGrop(models.Model):
+    companyID = models.ForeignKey(Company, on_delete=models.PROTECT,blank=True)
+    sequence = models.PositiveIntegerField(editable=False)  # الحقل التسلسلي
+    itemTypeID = models.ForeignKey(ItemType, verbose_name='معرف نوع الصنف', on_delete=models.PROTECT, related_name='category_type', blank=True, null=True)
+    name_ar = models.CharField(verbose_name='مجموعة الصنف عربي', max_length=100, blank=True, null=True)
+    name_en = models.CharField(verbose_name='مجموعة الصنف إنجليزي', max_length=100, blank=True, null=True)
     def __str__(self):
-        return self.name
+        return self.name_ar
     
-class Items(models.Model):
-    categoryID = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='category', blank=True)
-    purchasingPrice = models.DecimalField(verbose_name='سعر الشراء', default=0, max_digits=6, decimal_places=2)
-    sellingPrice = models.DecimalField(verbose_name='سعر البيع', default=0, max_digits=6, decimal_places=2)
-    name = models.CharField(max_length=100)
+class Item(models.Model):
+    companyID = models.ForeignKey(Company, on_delete=models.PROTECT,blank=True)
+    sequence = models.PositiveIntegerField(editable=False)  # الحقل التسلسلي
+    itemGropID = models.ForeignKey(ItemGrop, verbose_name='معرف مجموعة الصنف', on_delete=models.PROTECT, related_name='category', blank=True, null=True)
+    purchasingPrice = models.DecimalField(verbose_name='سعر الشراء', default=0, max_digits=6, decimal_places=2, blank=True, null=True)
+    sellingPrice = models.DecimalField(verbose_name='سعر البيع', default=0, max_digits=6, decimal_places=2, blank=True, null=True)
+    name_ar = models.CharField(verbose_name='الصنف عربي', max_length=100, blank=True, null=True)
+    name_en = models.CharField(verbose_name='الصنف إنجليزي', max_length=100, blank=True, null=True)
     def __str__(self):
-        return self.name
+        return self.name_ar
     
-class ItemsDetails(models.Model):
-    itemID = models.ForeignKey(Category, on_delete=models.CASCADE, default=1, related_name='item', blank=True, null=True)
-    colorID = models.ForeignKey(Color, on_delete=models.CASCADE, default=1, related_name='the_color', blank=True, null=True)
-    sizeID = models.ForeignKey(Size, on_delete=models.CASCADE, default=1, related_name='size', blank=True, null=True)
-    photo = models.ImageField(upload_to='photos/%Y/%m/%d/', blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
-    is_active = models.BooleanField(default=True, null=True)
+class ItemDetails(models.Model):
+    companyID = models.ForeignKey(Company, on_delete=models.PROTECT,blank=True)
+    sequence = models.PositiveIntegerField(editable=False)  # الحقل التسلسلي
+    itemID = models.ForeignKey(Item,verbose_name='معرف الصنف',  on_delete=models.PROTECT, default=1, related_name='item', blank=True, null=True)
+    colorID = models.ForeignKey(Color,verbose_name='معرف اللون',  on_delete=models.PROTECT, default=1, related_name='the_color', blank=True, null=True)
+    sizeID = models.ForeignKey(Size,verbose_name='معرف المقاس',  on_delete=models.PROTECT, default=1, related_name='size', blank=True, null=True)
+    photo = models.ImageField(verbose_name='صورة للصنف', upload_to='photos/%Y/%m/%d/', blank=True, null=True)
+    description = models.TextField(verbose_name='وصف الصنف', blank=True, null=True)
+    created_by = models.ForeignKey(User, verbose_name='المنشئ', related_name='created_by_itemsDetails', on_delete=models.PROTECT, blank=True, null=True)
+    created_at = models.DateTimeField(verbose_name='تاريخ الإنشاء',auto_now_add=True, blank=True, null=True)
+    updated_by = models.ForeignKey(User, verbose_name='المُعدِل', related_name='updated_by_itemsDetails', on_delete=models.PROTECT, blank=True, null=True)
+    updated_at = models.DateTimeField(verbose_name='تاريخ التعديل', auto_now=True, blank=True, null=True)
+    is_active = models.BooleanField(verbose_name='نشط', default=True, null=True)
     def __str__(self):
         return self.itemID
 
