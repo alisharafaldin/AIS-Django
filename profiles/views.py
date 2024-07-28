@@ -57,7 +57,7 @@ def signin(request):
                 request.session.set_expiry(0)
             auth.login(request, user)
             messages.success(request, 'تم تسجيل الدخول بنجاح')
-            return redirect('index')
+            return redirect('companys')
         else:
             messages.error(request, 'يوجد خطأ في إسم المستخدم أو كلمة المرور')
             return redirect('signin')

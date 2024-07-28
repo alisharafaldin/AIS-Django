@@ -1,16 +1,17 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} 
 {% load static %} 
-{% block title %} | Home{% endblock %} 
+{% block title %} | Home
+{% endblock %} 
 {% block content %}
 <style>
   @media (max-width: 767.98px) {
-  .card-footer .row .col-12 {
-    margin-bottom: 15px;
+    .card-footer .row .col-12 {
+      margin-bottom: 15px;
+    }
+    .card-footer .row .col-12:last-child {
+      margin-bottom: 0;
+    }
   }
-  .card-footer .row .col-12:last-child {
-    margin-bottom: 0;
-  }
-}
 </style>
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
@@ -44,7 +45,7 @@
           <!-- small box -->
           <div class="small-box bg-info">
             <div class="inner">
-              <h3>44</h3>
+              <h3>0</h3>
               <p>فواتير المشتريات</p>
             </div>
             <div class="icon">
@@ -60,7 +61,7 @@
           <!-- small box -->
           <div class="small-box bg-success">
             <div class="inner">
-              <h3>67<sup style="font-size: 20px">قيود</sup></h3>
+              <h3>0<sup style="font-size: 20px"></sup></h3>
               <p>فواتير المبيعات</p>
             </div>
             <div class="icon">
@@ -109,7 +110,7 @@
       </div>
       <!-- /.row -->
       <!-- Main row -->
-  
+
       <!-- /.row (main row) -->
     </div>
     <!-- /.container-fluid -->

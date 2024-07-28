@@ -2,6 +2,8 @@
 {% load static %} 
 {% block title %} | Create Company {% endblock %}
 {% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <div class="content-wrapper">
   <div class="content">
     <div class="modal-content">
@@ -110,6 +112,7 @@
     </div>
   </div>
 </div>
+{% include 'partials/updateDropdown.html' %}
 {% endblock %}
 
             <label class="form-group col-md-2 title-label">{{company_form.name_ar.label}}</label>

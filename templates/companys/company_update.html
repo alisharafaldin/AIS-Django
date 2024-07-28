@@ -1,7 +1,7 @@
-{% extends 'base.html' %}
-{% load static %} 
-{% block title %} | Update Company {% endblock %}
-{% block content %}
+{% extends 'base.html' %} {% load static %} {% block title %} | Update Company
+{% endblock %} {% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <div class="content-wrapper">
   <div class="content">
     <div class="modal-content">
@@ -10,102 +10,172 @@
         <!-- Start Modal Countries -->
         <form method="POST" enctype="multipart/form-data">
           <div class="form-row main-title">
-            <h5 class="form-group" id="staticBackdropLabel">تعديل بيانات {{company_id.name_ar}}</h5>
+            <h5 class="form-group" id="staticBackdropLabel">
+              تعديل بيانات {{company_id.name_ar}}
+            </h5>
           </div>
           {% csrf_token %}
-          <br/>
-          <button type="submit" class="btn btn-save" name="btnempsave">تعديل</button>
+          <br />
+          <button type="submit" class="btn btn-save" name="btnempsave">
+            تعديل
+          </button>
           <a href="{% url 'companys' %}" class="btn btn-close">إلغاء</a>
-          <br/>
-          <br/>
+          <br />
+          <br />
           <!-- إسم الشركة عربي - الإسم المختصر عربي -->
           <div class="form-row">
-            <div class="form-group col-md-5"  style="display: none;">{{company_form.owner}}</div>
-            <label class="form-group col-md-2 title-label">{{company_form.name_ar.label}}</label>
+            <div class="form-group col-md-5" style="display: none">
+              {{company_form.owner}}
+            </div>
+            <label class="form-group col-md-2 title-label"
+              >{{company_form.name_ar.label}}</label
+            >
             <div class="form-group col-md-5">{{company_form.name_ar}}</div>
-            <label class="form-group col-md-2 title-label">{{company_form.acronym_ar.label}}</label>
+            <label class="form-group col-md-2 title-label"
+              >{{company_form.acronym_ar.label}}</label
+            >
             <div class="form-group col-md-3">{{company_form.acronym_ar}}</div>
           </div>
           <!-- إسم الشركة إنجليزي - الإسم المختصر إنجليزي -->
           <div class="form-row">
-            <label class="form-group col-md-2 title-label">{{company_form.name_en.label}}</label>
+            <label class="form-group col-md-2 title-label"
+              >{{company_form.name_en.label}}</label
+            >
             <div class="form-group col-md-5">{{company_form.name_en}}</div>
-            <label class="form-group col-md-2 title-label">{{company_form.acronym_en.label}}</label>
+            <label class="form-group col-md-2 title-label"
+              >{{company_form.acronym_en.label}}</label
+            >
             <div class="form-group col-md-3">{{company_form.acronym_en}}</div>
           </div>
           <!-- من نحن - نوع العمل -->
           <div class="form-row">
-            <label class="form-group col-md-1 title-label">{{company_form.who_are_we.label}}</label>
+            <label class="form-group col-md-1 title-label"
+              >{{company_form.who_are_we.label}}</label
+            >
             <div class="form-group col-md-8">{{company_form.who_are_we}}</div>
-            <label class="form-group col-md-1 title-label">{{company_form.businessTypeID.label}}</label>
-            <div class="form-group col-md-2">{{company_form.businessTypeID}}</div>
+            <label class="form-group col-md-1 title-label"
+              >{{company_form.businessTypeID.label}}</label
+            >
+            <div class="form-group col-md-2">
+              {{company_form.businessTypeID}}
+            </div>
           </div>
           <!--  الدولة - المنطقة - الولاية - المدية -->
           <div class="form-row">
-            <label class="form-group col-md-1 title-label">{{company_form.countryID.label}}</label>
+            <label class="form-group col-md-1 title-label"
+              >{{company_form.countryID.label}}</label
+            >
             <div class="form-group col-md-2">{{company_form.countryID}}</div>
-            <label class="form-group col-md-1 title-label">{{company_form.regionID.label}}</label>
+            <label class="form-group col-md-1 title-label"
+              >{{company_form.regionID.label}}</label
+            >
             <div class="form-group col-md-2">{{company_form.regionID}}</div>
-            <label class="form-group col-md-1 title-label">{{company_form.stateID.label}}</label>
+            <label class="form-group col-md-1 title-label"
+              >{{company_form.stateID.label}}</label
+            >
             <div class="form-group col-md-2">{{company_form.stateID}}</div>
-            <label class="form-group col-md-1 title-label">{{company_form.cityID.label}}</label>
+            <label class="form-group col-md-1 title-label"
+              >{{company_form.cityID.label}}</label
+            >
             <div class="form-group col-md-2">{{company_form.cityID}}</div>
           </div>
           <!-- وصف عنوان مقر الشركة - الموظف المسؤول -->
           <div class="form-row">
-            <label class="form-group col-md-2 title-label">{{company_form.address.label}}</label>
+            <label class="form-group col-md-2 title-label"
+              >{{company_form.address.label}}</label
+            >
             <div class="form-group col-md-5">{{company_form.address}}</div>
-            <label class="form-group col-md-2 title-label">{{company_form.administrator.label}}</label>
-            <div class="form-group col-md-3">{{company_form.administrator}}</div>
+            <label class="form-group col-md-2 title-label"
+              >{{company_form.administrator.label}}</label
+            >
+            <div class="form-group col-md-3">
+              {{company_form.administrator}}
+            </div>
           </div>
           <!-- رقم الهاتف - رقم هاتف آخر - فاكس - صندوق بريد -->
           <div class="form-row">
-            <label class="form-group col-md-1 title-label">{{company_form.phone.label}}</label>
+            <label class="form-group col-md-1 title-label"
+              >{{company_form.phone.label}}</label
+            >
             <div class="form-group col-md-2">{{company_form.phone}}</div>
-            <label class="form-group col-md-2 title-label">{{company_form.phoneOther.label}}</label>
+            <label class="form-group col-md-2 title-label"
+              >{{company_form.phoneOther.label}}</label
+            >
             <div class="form-group col-md-2">{{company_form.phoneOther}}</div>
-            <label class="form-group col-md-1 title-label">{{company_form.fax.label}}</label>
+            <label class="form-group col-md-1 title-label"
+              >{{company_form.fax.label}}</label
+            >
             <div class="form-group col-md-1">{{company_form.fax}}</div>
-            <label class="form-group col-md-2 title-label">{{company_form.POBox.label}}</label>
+            <label class="form-group col-md-2 title-label"
+              >{{company_form.POBox.label}}</label
+            >
             <div class="form-group col-md-1">{{company_form.POBox}}</div>
           </div>
           <!-- البريد الإلكتروني - الموقع الإلكتروني -->
           <div class="form-row">
-            <label class="form-group col-md-2 title-label">{{company_form.email.label}}</label>
+            <label class="form-group col-md-2 title-label"
+              >{{company_form.email.label}}</label
+            >
             <div class="form-group col-md-4">{{company_form.email}}</div>
-            <label class="form-group col-md-2 title-label">{{company_form.website.label}}</label>
+            <label class="form-group col-md-2 title-label"
+              >{{company_form.website.label}}</label
+            >
             <div class="form-group col-md-4">{{company_form.website}}</div>
           </div>
           <!-- البنك - الفرع  حساب -->
           <div class="form-row">
-            <label class="form-group col-md-1 title-label">{{company_form.bankID.label}}</label>
+            <label class="form-group col-md-1 title-label"
+              >{{company_form.bankID.label}}</label
+            >
             <div class="form-group col-md-3">{{company_form.bankID}}</div>
-            <label class="form-group col-md-1 title-label">{{company_form.branchBankID.label}}</label>
+            <label class="form-group col-md-1 title-label"
+              >{{company_form.branchBankID.label}}</label
+            >
             <div class="form-group col-md-3">{{company_form.branchBankID}}</div>
-            <label class="form-group col-md-2 title-label">{{company_form.typeAccBankID.label}}</label>
-            <div class="form-group col-md-2">{{company_form.typeAccBankID}}</div>
+            <label class="form-group col-md-2 title-label"
+              >{{company_form.typeAccBankID.label}}</label
+            >
+            <div class="form-group col-md-2">
+              {{company_form.typeAccBankID}}
+            </div>
           </div>
           <!-- رقم الحساب - الآي بان -->
           <div class="form-row">
-            <label class="form-group col-md-2 title-label">{{company_form.accountNumber.label}}</label>
-            <div class="form-group col-md-4">{{company_form.accountNumber}}</div>
-            <label class="form-group col-md-2 title-label">{{company_form.IBANNumber.label}}</label>
+            <label class="form-group col-md-2 title-label"
+              >{{company_form.accountNumber.label}}</label
+            >
+            <div class="form-group col-md-4">
+              {{company_form.accountNumber}}
+            </div>
+            <label class="form-group col-md-2 title-label"
+              >{{company_form.IBANNumber.label}}</label
+            >
             <div class="form-group col-md-4">{{company_form.IBANNumber}}</div>
           </div>
           <!-- حساب البنك بإسم - الرقم الضريبي -->
           <div class="form-row">
-            <label class="form-group col-md-2 title-label">{{company_form.accountName.label}}</label>
+            <label class="form-group col-md-2 title-label"
+              >{{company_form.accountName.label}}</label
+            >
             <div class="form-group col-md-4">{{company_form.accountName}}</div>
-            <label class="form-group col-md-2 title-label">{{company_form.taxNumber.label}}</label>
+            <label class="form-group col-md-2 title-label"
+              >{{company_form.taxNumber.label}}</label
+            >
             <div class="form-group col-md-4">{{company_form.taxNumber}}</div>
           </div>
           <!-- الشعار - ملاحظت - نشط -->
           <div class="form-row">
-            <label class="form-group col-md-2 title-label">{{company_form.logo.label}}</label>
+            <label class="form-group col-md-2 title-label"
+              >{{company_form.logo.label}}</label
+            >
             <div class="form-group col-md-2">{{company_form.logo}}</div>
-            <label class="form-group col-md-1 title-label">{{company_form.notes.label}}</label>
+            <label class="form-group col-md-1 title-label"
+              >{{company_form.notes.label}}</label
+            >
             <div class="form-group col-md-5">{{company_form.notes}}</div>
-            <label class="form-group col-md-1 title-label">{{company_form.active.label}}</label>
+            <label class="form-group col-md-1 title-label"
+              >{{company_form.active.label}}</label
+            >
             <div class="form-group col-md-1">{{company_form.active}}</div>
           </div>
         </form>
@@ -113,4 +183,4 @@
     </div>
   </div>
 </div>
-{% endblock %}
+{% include 'partials/updateDropdown.html' %} {% endblock %}

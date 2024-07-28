@@ -1,46 +1,11 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from employees.models import *
-from django.views.generic import CreateView
 from .forms import EmpForm
 from django.contrib.auth.decorators import login_required
 from basicinfo.forms import PersonForm
-from basicinfo.models import Region, States, Cities, WorkSpecialty, BranchBank
-from django.http import JsonResponse
-
-# Create your views here.
-
-# def search(request, item_search):
-#     txtsearch = None
-#     if 'item_search' in request.GET: # للتحقق من وجود نيم  في الرابط
-#         txtsearch = request.GET['search_emp'] # تغذية المتغير بالمدخلات حسب النيم
-#         if txtsearch: # للتحقق أن البيانات ليست فارغة
-#             all_emp = all_emp.filter(item_search__icontains=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
-
-def load_region(request):
-    country_id = request.GET.get('countryID')
-    regions = Region.objects.filter(countryID_id=country_id).order_by('name_ar')
-    return JsonResponse(list(regions.values('id', 'name_ar')), safe=False)
-
-def load_state(request):
-    regionID_id = request.GET.get('regionID')
-    states = States.objects.filter(regionID_id=regionID_id).order_by('name_ar')
-    return JsonResponse(list(states.values('id', 'name_ar')), safe=False)
-
-def load_city(request):
-    stateID_id = request.GET.get('stateID')
-    cities = Cities.objects.filter(stateID_id=stateID_id).order_by('name_ar')
-    return JsonResponse(list(cities.values('id', 'name_ar')), safe=False)
-
-def load_workSpecialty(request):
-    workTradeID_id = request.GET.get('workTradeID')
-    workSpecialty = WorkSpecialty.objects.filter(workTradeID_id=workTradeID_id).order_by('name_ar')
-    return JsonResponse(list(workSpecialty.values('id', 'name_ar')), safe=False)
-
-def load_branchBank(request):
-    bankID_id = request.GET.get('bankID')
-    branchBank = BranchBank.objects.filter(bankID_id=bankID_id).order_by('name_ar')
-    return JsonResponse(list(branchBank.values('id', 'name_ar')), safe=False)
+from basicinfo.models import Person
+# from basicinfo.views import 
 
 def handle_form_errors(head_form, formset, request):
     """وظيفة مساعد لمعالجة الأخطاء وعرض الرسائل المناسبة."""
@@ -56,7 +21,6 @@ def employee_create(request):
     if not request.user.has_perm('employee.add_qayd'):
         messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لإنشاء القيود المحاسبية.")
         return redirect('employees')
-    
     if request.method == 'POST':
       person_form = PersonForm(request.POST, request.FILES)
       emp_form = EmpForm(request.POST, request.FILES)
@@ -89,9 +53,11 @@ def employee_create(request):
     return render(request, 'employees/employee_create.html', context)
 
 def employee_reade(request, id):
-  emp_id = EmployeeInfo.objects.get(id=id)
+  emp_form = EmployeeInfo.objects.get(id=id)
+  person_form = Person.objects.get(id=emp_form.personID_id)
   context = {
-    'employee_reade':emp_id,
+    'emp_form':emp_form,
+    'person_form':person_form,
   }
   return render(request, 'employees/employee_reade.html', context)
 
@@ -136,9 +102,9 @@ def employee_update(request, id):
   update_person_form = PersonForm(instance=update_person)
   context = {
     'employee_update':update_emp,
-    'employee_update_form':update_emp_form,
+    'emp_form':update_emp_form,
     'person_update':update_person,
-    'person_update_form':update_person_form,
+    'person_form':update_person_form,
   }
   return render(request, 'employees/employee_update.html', context)    
 
@@ -157,14 +123,34 @@ def employee_delete(request, id):
   return render(request, 'employees/employee_delete.html', context)
 
 def employees(request):
-  all_emp = EmployeeInfo.objects.all()
-  context = {
-    'all_emp': all_emp,
-    'emp_form': EmpForm(),
-    'person_form': PersonForm(),
-    'emp_count': EmployeeInfo.objects.all(),
-    'emp_workingStatus': EmployeeInfo.objects.filter(workingStatusID=1).count(),
-    'age': EmployeeInfo.objects.filter(),
-  }
-  return render(request, 'employees/employees.html', context)
+    # التحقق من الأذونات أولاً
+    if not request.user.has_perm('emplyees.view_qayd'):
+        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة للإطلاع على ملفات الموظفين.")
+        return redirect('index')
+    # الحصول على الشركة الحالية من جلسة المستخدم
+    current_company_id = request.session.get('current_company_id')
+    if not current_company_id:
+        messages.error(request, 'الرجاء تحديد الشركة للعمل عليها.')
+        return redirect('companys')
+    # الحصول على القيود الخاصة بالشركة الحالية
+    try:
+        emp_list = EmployeeInfo.objects.filter(companyID_id=current_company_id)
+    except EmployeeInfo.DoesNotExist:
+        emp_list = []  # إذا لم يكن هناك أي كائنات، العودة إلى قائمة فارغة    
+    # إعداد السياق
+    context = {
+        'all_emp': emp_list,
+    }
+    # عرض الصفحة مع البيانات
+    return render(request, 'employees/employees.html', context)
+
+
+# Create your views here.
+
+# def search(request, item_search):
+#     txtsearch = None
+#     if 'item_search' in request.GET: # للتحقق من وجود نيم  في الرابط
+#         txtsearch = request.GET['search_emp'] # تغذية المتغير بالمدخلات حسب النيم
+#         if txtsearch: # للتحقق أن البيانات ليست فارغة
+#             all_emp = all_emp.filter(item_search__icontains=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
 

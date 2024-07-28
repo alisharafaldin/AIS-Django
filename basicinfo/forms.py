@@ -1,5 +1,5 @@
 from django import forms
-from .models import Person, Color, Countries, Region, States, Cities
+from .models import Person, Color
 
 class PersonForm(forms.ModelForm):
     class Meta:

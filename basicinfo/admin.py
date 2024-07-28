@@ -41,7 +41,7 @@ class GenderImportExport(ImportExportModelAdmin):
 @admin.register(Cities)
 class CitiesImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'name_ar']
+    list_display = ['id', 'name_ar', 'stateID', 'population']
 
 @admin.register(Countries)
 class CountriesImportExport(ImportExportModelAdmin):
@@ -71,12 +71,12 @@ class TypeTransactionImportExport(ImportExportModelAdmin):
 @admin.register(Region)
 class RegionImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'name_ar']
+    list_display = ['id', 'countryID', 'name_ar', 'capitalRegion']
 
 @admin.register(States)
 class statesImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'name_ar']
+    list_display = ['id', 'regionID', 'name_ar', 'capitalState', 'population']
 
 @admin.register(SocialStatus)
 class RSocialStatusImportExport(ImportExportModelAdmin):

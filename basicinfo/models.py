@@ -1,7 +1,4 @@
 from django.db import models
-from datetime import date 
-from django.utils import timezone
-from datetime import datetime
 from django.contrib.auth.models import User
 
 class Countries(models.Model):
@@ -195,7 +192,7 @@ class Person(models.Model):
     typeID = models.ForeignKey(TypeID , verbose_name='نوع الهوية', default=1,on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
     id_number = models.CharField(verbose_name='رقم الهوية',max_length=100, blank=True, null=True)
     id_ExpiredDate = models.DateField(verbose_name='تاريخ إنتهاء الهوية', blank=True, null=True)    
-    countryID = models.ForeignKey(Countries, related_name='countryID', default=1, verbose_name='الدولة', on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
+    countryID = models.ForeignKey(Countries, related_name='countryID', default=1, verbose_name='بلد الإقامة', on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
     regionID = models.ForeignKey(Region, verbose_name='المنطقة', default=1, on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
     stateID = models.ForeignKey(States, verbose_name='الولاية', default=1, on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
     cityID = models.ForeignKey(Cities, verbose_name='المدينة', default=1, on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
