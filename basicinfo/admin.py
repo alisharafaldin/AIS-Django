@@ -103,6 +103,41 @@ class WorkingStatusImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id', 'name_ar']
 
+@admin.register(Size)
+class SizeImportExport(ImportExportModelAdmin):
+    pass
+    list_display = ['id', 'name']
+
+@admin.register(TargetGroup)
+class TargetGroupImportExport(ImportExportModelAdmin):
+    pass
+    list_display = ['id', 'name_ar']
+
+@admin.register(Color)
+class ColorImportExport(ImportExportModelAdmin):
+    pass
+    list_display = ['id', 'name_ar']
+
+@admin.register(Skills)
+class SkillsImportExport(ImportExportModelAdmin):
+    pass
+    list_display = ['id', 'name_ar']
+
+@admin.register(Languages)
+class LanguagesImportExport(ImportExportModelAdmin):
+    pass
+    list_display = ['id', 'name_ar']
+
+@admin.register(DeliveryMethod)
+class DeliveryMethodImportExport(ImportExportModelAdmin):
+    pass
+    list_display = ['id', 'name_ar']
+
+@admin.register(LegalPersons)
+class LegalPersonsImportExport(ImportExportModelAdmin):
+    pass
+    list_display = ['id', 'name_ar']
+
 @admin.register(Person)
 class PersonImportExport(ImportExportModelAdmin):
     pass

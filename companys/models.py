@@ -1,15 +1,9 @@
 from django.db import models
 from datetime import date 
-from basicinfo.models import Countries, Bank, BranchBank, TypeAccBank, Region, JobTitle, States, Cities
+from basicinfo.models import Countries, Bank, BranchBank, TypeAccBank, Region, JobTitle, States, Cities, BusinessType
 from django.contrib.auth.models import User
 
-    
-class BusinessType(models.Model):
-    name_ar = models.CharField(verbose_name='نوع العمل عربي',max_length=100)
-    name_en = models.CharField(verbose_name='نوع العمل إنجليزي',max_length=100,blank=True, null=True)
-    def __str__(self):
-        return str(self.name_ar)
-    
+
 class Company(models.Model):
     owner = models.ForeignKey(User, verbose_name='المالك', on_delete=models.PROTECT, related_name='owner_companies', blank=True)
     name_ar = models.CharField(verbose_name='إسم الشركة عربي',max_length=100)
@@ -23,6 +17,7 @@ class Company(models.Model):
     stateID = models.ForeignKey(States, verbose_name='الولاية', default=1, on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
     cityID = models.ForeignKey(Cities, verbose_name='المدينة', default=1, on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
     address = models.CharField(verbose_name='وصف عنوان مقر الشركة',max_length=100, blank=True, null=True)
+    google_maps_location = models.URLField(verbose_name='العنوان على خرائط قوقل', max_length=500, blank=True, null=True)
     bankID = models.ForeignKey(Bank, verbose_name='البنك',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
     branchBankID = models.ForeignKey(BranchBank, verbose_name='فرع البنك', default=1,on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
     typeAccBankID = models.ForeignKey(TypeAccBank, verbose_name='نوع الحساب', default=1,on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف

@@ -1,8 +1,5 @@
-{% extends 'base.html' %} 
-{% load static %} 
-{% block title %} | Home
-{% endblock %} 
-{% block content %}
+{% extends 'base.html' %} {% load static %} {% block title %} | Home 
+{% endblock %} {% block content %}
 <style>
   @media (max-width: 767.98px) {
     .card-footer .row .col-12 {
@@ -67,7 +64,7 @@
             <div class="icon">
               <i class="ion ion-stats-bars"></i>
             </div>
-            <a href="#" class="small-box-footer"
+            <a href="{% url 'invoices_sales' %}" class="small-box-footer"
               >المزيد <i class="fas fa-arrow-circle-right"></i
             ></a>
           </div>

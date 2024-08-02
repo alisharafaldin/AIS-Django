@@ -1,3 +1,7 @@
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+
 <div>
   <div class="form-row">
     <label class="form-group col-md-2 title-label">الإسم الكامل عربي</label>
@@ -24,9 +28,11 @@
     <label class="form-group col-md-2 title-label">الحالة الإجتماعية</label>
     <div class="form-group col-md-1">{{person_form.socialStatusID}}</div>
     <label class="form-group col-md-1 title-label">المهنة</label>
-    <div class="form-group col-md-2">{{person_form.workTradeID}}</div>
+    <div class="form-group col-md-1">{{person_form.workTradeID}}</div>
     <label class="form-group col-md-1 title-label">التخصص</label>
-    <div class="form-group col-md-2">{{person_form.workSpecialtyID}}</div>
+    <div class="form-group col-md-1">{{person_form.workSpecialtyID}}</div>
+    <label class="form-group col-md-2 title-label">المسمى الوظيفي</label>
+    <div class="form-group col-md-1">{{person_form.jobTitleID}}</div>
   </div>
   <!--  الدولة - المنطقة - الولاية - المدية -  وصف العنوان -->
   <div class="form-row">
@@ -102,5 +108,18 @@
     <div class="form-group col-md-2">{{person_form.attachments}}</div>
     <label class="form-group col-md-1 title-label">ملاحظات</label>
     <div class="form-group col-md-8">{{person_form.notes}}</div>
+  </div>
+    <!--المهارات - اللغات  -->
+    <div class="form-row">
+      <label class="form-group col-md-1 title-label">المهارات</label>
+      {% for skill in person_form.skillsID.all %}
+      <div class="form-group col-md-2">{{skill}}</div>
+      {% endfor %}
+      <label class="form-group col-md-1 title-label">اللغات</label>
+      {% for language in person_form.languagesID.all %}
+      <div class="form-group col-md-2">{{language}}</div>
+      {% endfor %}
     </div>
 </div>
+
+{% include 'basicinfo/updateDropdown.html' %}

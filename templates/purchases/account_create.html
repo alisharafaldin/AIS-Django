@@ -1,0 +1,57 @@
+
+{% extends 'base.html' %}
+{% load static %} 
+{% block title %} | Accounts Create {% endblock %}
+{% block content %}
+<div class="content-wrapper">
+  <div class="content">
+    <div class="modal-content">
+      <div class="modal-body">
+        {% include 'partials/_alerts.html' %}
+        <!-- Start Modal Countries -->
+        <form method="POST">
+          <div class="form-row main-title">
+            <h5 class="form-group" id="staticBackdropLabel" target="blank">إضافة حساب جديد</h5>
+            <button type="submit" class="btn btn-save" name="btnempsave">إضافة</button>
+            <a href="{% url 'accounts' %}" class="btn btn-close">إلغاء</a>
+          </div>
+          {% csrf_token %}
+          <br/>          
+          <div class=" form-row"> 
+            <label class="form-group col-md-1 title-label">إسم الحساب عربي</label>
+            <div class="form-group col-md-6">{{acc_form.name_ar}}</div>
+          </div>
+          <div class=" form-row"> 
+            <label class="form-group col-md-1 title-label">إسم الحساب إنجليزي</label>
+            <div class="form-group col-md-6">{{acc_form.name_en}}</div>
+          </div>
+          <div class=" form-row"> 
+            <label class="form-group col-md-1 title-label">رمز الحساب</label>
+            <div class="form-group col-md-6">{{acc_form.code}}</div>
+          </div>
+          <div class=" form-row"> 
+            <label class="form-group col-md-1 title-label">نوع الحساب</label>
+            <div class="form-group col-md-6">{{acc_form.typeID}}</div>
+          </div>
+          <div class=" form-row"> 
+            <label class="form-group col-md-1 title-label">طبيعةالحساب</label>
+            <div class="form-group col-md-6">{{acc_form.natureID}}</div>
+          </div>
+          <div class=" form-row"> 
+            <label class="form-group col-md-1 title-label">تصنيف الحساب</label>
+            <div class="form-group col-md-6">{{acc_form.categoryID}}</div>
+          </div>
+          <div class=" form-row"> 
+            <label class="form-group col-md-1 title-label">وصف الحساب</label>
+            <div class="form-group col-md-6">{{acc_form.description}}</div>
+          </div>
+          <div class=" form-row"> 
+            <label class="form-group col-md-1 title-label">إمكانية الدفع و السداد من الحساب</label>
+            <div class="form-group col-md-6">{{acc_form.is_can_pay}}</div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

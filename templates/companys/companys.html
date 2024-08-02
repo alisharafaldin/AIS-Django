@@ -2,16 +2,15 @@
 {% endblock %} {% block content %}
 <div class="content-wrapper">
   <div class="main-title">
-    <h4 class="form-group col-md-9">جميع الشركات</h4>
+    <h4 class="form-group col-md-9">جميع أسماء الأعمال</h4>
   </div>
   <a href="{% url 'company_create' %}" class="btn btn-main" target="blank"
-    >إنشاء شركة جديدة</a
+    >إضافة إسم عمل جديد</a
   >
   <br />
   {% include 'partials/_alerts.html' %}
 
   <div class="content form-row justify-content-around">
-    <div class="form-inline my-2 my-lg-0"></div>
     {% for company in companys %}
     <div class="card" style="width: 18rem">
       <div class="image" style="height: 254px">

@@ -1,0 +1,65 @@
+<div class="form-row">
+  <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
+    <div class="form-row">
+      <h6 style="font-weight: bold" class="col-md-3">{{head_form.date.label}}</h6>
+      <div class="form-group col-md-6">{{head_form.date}}</div>
+    </div>
+    <div class="form-row">
+      <h6 style="font-weight: bold" class="col-md-3">{{head_form.supplierID.label}}</h6>
+      <div class="form-group col-md-6">{{head_form.supplierID}}</div>
+    </div>
+  </div>
+  <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
+    <div class="form-row">
+      <h6 style="font-weight: bold" class="col-md-3">{{head_form.description.label}}</h6>
+      <div class="form-group col-md-6">{{head_form.description}}</div>
+    </div>
+    <div class="form-row">
+      <h6 style="font-weight: bold" class="col-md-3">{{head_form.attachments.label}}</h6>
+      <div class="form-group col-md-6">{{head_form.attachments}}</div>
+    </div>
+  </div>
+</div>
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">{{ formset.total_form_count }}</th>
+        <th scope="col">المنتج</th>
+        <th scope="col">الكمية</th>
+        <th scope="col">السعر</th>
+        <th scope="col">خصم</th>
+        <th scope="col">الإجمالي</th>
+      </tr>
+    </thead>
+    {{ formset.management_form }} 
+    <tbody id="formset-container">
+        {% for form in formset %}
+        <tr class="form-container">
+            <td><button class="remove-form btn btn-danger">-</button></td>
+            <td style="display: none;">{{ form.DELETE }}</td>
+            <td style="display: none;">{{ form.id }}</td>
+            <td>{{ form.itemsDetailstID }}</td>
+            <td>{{ form.quantity }}</td>
+            <td>{{ form.unit_price }}</td>
+            <td>{{ form.discount }}</td>
+            <td>{{ form.total_price_after_tax }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    <tbody>
+      <tr>
+        <td><a class="btn" style="background-color: green;" id="add-form">+</a></td>
+        <th>الإجمالي</th>
+        <th id="t-quantity"> 44 {{total_d}}</th>
+        <th></th>
+        <th id="t-discount"> 664 {{total_c}}</th>
+        <th id="t-total_price_after_tax"> 87585 {{total_c}}</th>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+

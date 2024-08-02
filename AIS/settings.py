@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-5a&qb+fj^5eh_3p9q1$bpsu0@lz=^&p+d8#3-5ci_zv^#h6tim
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.0.123']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.1.6']
 
 
 # Application definition
@@ -37,13 +37,14 @@ INSTALLED_APPS = [
     'hadena.apps.HadenaConfig',
     'employees.apps.EmployeesConfig',
     'companys.apps.CompanysConfig',
+    'products.apps.ProductsConfig',
     'orders.apps.OrdersConfig',
     'pages.apps.PagesConfig',
     'profiles.apps.ProfilesConfig',
     'accounts.apps.AccountsConfig',
-    'products.apps.ProductsConfig',
     'forex.apps.ForexConfig',
     'effastore.apps.EffastoreConfig',
+    'dalilalaemal.apps.DalilalaemalConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -53,6 +54,9 @@ INSTALLED_APPS = [
     'import_export',
     'django.contrib.humanize',
     'taggit',
+    'rest_framework',
+    'purchases.apps.PurchasesConfig',
+    'sales.apps.SalesConfig',
 ]
 
 MIDDLEWARE = [

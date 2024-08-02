@@ -13,11 +13,14 @@ urlpatterns = [
     path('forex/',include('forex.urls')),
     path('profiles/',include('profiles.urls')),
     path('accounts/',include('accounts.urls')),
+    path('sales/',include('sales.urls')),
     path('products/',include('products.urls')),
     path('orders/',include('orders.urls')),
     path('employees/',include('employees.urls')),
     path('companys/',include('companys.urls')),
     path('pages/',include('pages.urls')),
+    path('dalilalaemal/',include('dalilalaemal.urls')),
+    path('purchases/',include('purchases.urls')),
     
 ] 
 if settings.DEBUG:

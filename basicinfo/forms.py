@@ -1,5 +1,5 @@
 from django import forms
-from .models import Person, Color
+from .models import Person, Color, Skills
 
 class PersonForm(forms.ModelForm):
     class Meta:
@@ -26,8 +26,12 @@ class PersonForm(forms.ModelForm):
             'stateID': forms.Select(attrs={'class':'form-control', 'placeholder':'الولاية'}),
             'cityID': forms.Select(attrs={'class':'form-control', 'placeholder':'المدينة'}),
             'desAddress': forms.TextInput(attrs={'class':'form-control', 'placeholder':'وصف مكان السكن'}),
+            'google_maps_location': forms.URLInput(attrs={'class':'form-control', 'placeholder':'العوان على خرائط قوقل'}),
             'workTradeID': forms.Select(attrs={'class':'form-control', 'placeholder':'المهنة'}),
             'workSpecialtyID': forms.Select(attrs={'class':'form-control', 'placeholder':'التخصص'}),
+            'skillsID': forms.SelectMultiple(attrs={'class':'form-control', 'placeholder':'المهارات'}),
+            'languagesID': forms.SelectMultiple(attrs={'class':'form-control', 'placeholder':'اللغات'}),
+            'jobTitleID': forms.Select(attrs={'class':'form-control', 'placeholder':'المسمى الوظيفي'}),
             'mobileNumber': forms.TextInput(attrs={'class':'form-control', 'placeholder':'رقم الجوال'}),
             'mobileNumberAnother': forms.TextInput(attrs={'class':'form-control', 'placeholder':'رقم جوال آخر'}),
             'email': forms.EmailInput(attrs={'class':'form-control', 'placeholder':'إيميل'}),

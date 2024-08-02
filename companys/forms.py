@@ -17,6 +17,7 @@ class CompanyForm (forms.ModelForm):
         'stateID': forms.Select(attrs={'class':'form-control', 'placeholder':'الولاية'}),
         'cityID': forms.Select(attrs={'class':'form-control', 'placeholder':'المدينة'}),
         'address': forms.TextInput(attrs={'class':'form-control', 'placeholder':'عنوان مقر الشركة'}),
+        'google_maps_location': forms.URLInput(attrs={'class':'form-control', 'placeholder':'العوان على خرائط قوقل'}),
         'administrator': forms.TextInput(attrs={'class':'form-control', 'placeholder':'الموظف المسؤول'}),
         'bankID': forms.Select(attrs={'class':'form-control', 'placeholder':'البنك'}),
         'branchBankID': forms.Select(attrs={'class':'form-control', 'placeholder':'الفرع'}),

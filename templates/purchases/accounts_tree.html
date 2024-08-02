@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} | Accounts Tree {% endblock %}
+{% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<style>
+    .tree ul {
+        padding-top: 20px;
+        position: relative;
+        transition: all 0.5s;
+        display: flex;
+        justify-content: center;
+    }
+
+    .tree li {
+        text-align: center;
+        list-style-type: none;
+        position: relative;
+        padding: 20px 5px 0 5px;
+        transition: all 0.5s;
+    }
+
+    .tree li::before, .tree li::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 50%;
+        border-top: 2px solid #ccc;
+        width: 50%;
+        height: 20px;
+    }
+
+    .tree li::after {
+        right: auto;
+        left: 50%;
+        border-left: 2px solid #ccc;
+    }
+
+    .tree li:only-child::after, .tree li:only-child::before {
+        display: none;
+    }
+
+    .tree li:only-child {
+        padding-top: 0;
+    }
+
+    .tree li:first-child::before, .tree li:last-child::after {
+        border: 0 none;
+    }
+
+    .tree li:last-child::before {
+        border-right: 2px solid #ccc;
+        border-radius: 0 5px 0 0;
+    }
+
+    .tree li:first-child::after {
+        border-radius: 5px 0 0 0;
+    }
+
+    .tree ul ul::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        border-left: 2px solid #ccc;
+        width: 0;
+        height: 20px;
+    }
+
+    .tree li a {
+        border: 2px solid #ccc;
+        padding: 5px 10px;
+        text-decoration: none;
+        color: #666;
+        font-family: Arial, Verdana, Tahoma;
+        font-size: 11px;
+        display: inline-block;
+        border-radius: 5px;
+        transition: all 0.5s;
+    }
+
+    .tree li a:hover, .tree li a:hover + ul li a {
+        background: #c8e4f8;
+        color: #000;
+        border: 2px solid #94a0b4;
+    }
+
+    .tree li a:hover + ul li::after, 
+    .tree li a:hover + ul li::before, 
+    .tree li a:hover + ul::before, 
+    .tree li a:hover + ul ul::before {
+        border-color: #94a0b4;
+    }
+</style>
+
+<div class=" content-wrapper">
+  <div class="main-title">
+    <h4 class="form-group col-md-9">شجرة الحسابات</h4>
+  </div>
+  <form method="GET" class="form-inline my-2 my-lg-0">  
+    <a href="{% url 'account_create' %}" class="btn btn-main" >إضافة حساب جديد</a>
+    <button class="btn btn-main" type="submit">
+      بحث 
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+    <a href="{% url 'accounts' %}" class="btn btn-main" type="submit">
+      إعادة تعيين
+      <i class="fa-solid fa-rotate-right"></i>
+    </a>
+    <input class="form-control mr-sm-2 remove-outline"name="search_emp"  placeholder="بحث بالإسم" >
+    <input class="form-control mr-sm-2 remove-outline"name="search_iqama" placeholder="بحث برقم الحدود" >
+    <input class="form-control mr-sm-2 remove-outline"name="search_border" placeholder="بحث برقم الإقامة" >
+    <input class="form-control mr-sm-2 remove-outline"name="search_company" placeholder="تصفية بالشركة" >
+    <!-- <div class="form-control mr-sm-2 remove-outline"name="search_company">{{emp_form.companyID}}</div> -->
+  </form>
+  <div class="content">
+    <br><br>
+    {% include 'partials/_alerts.html' %}
+  <form method="POST">
+          <div class="tree">
+            <ul>
+                {% for account in accounts %}
+                    <li>
+                        {{ account.name_ar }} ({{ account.code }})
+                        {% if account.get_children.count %}
+                            {% include 'accounts/account_tree_node.html' with nodes=account.get_children.all %}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+  </form>
+  </div>
+</div>
+{% endblock %}

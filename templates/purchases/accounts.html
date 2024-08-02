@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} | Accounts Tree {% endblock %}
+{% block content %}
+<div class=" content-wrapper">
+  <div class="main-title">
+    <h4 class="form-group col-md-9">شجرة الحسابات</h4>
+  </div>
+  <form method="GET" class="form-inline my-2 my-lg-0">  
+    <a href="{% url 'account_create' %}" class="btn btn-main" >إضافة حساب جديد</a>
+    <button class="btn btn-main" type="submit">
+      بحث 
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+    <a href="{% url 'accounts' %}" class="btn btn-main" type="submit">
+      إعادة تعيين
+      <i class="fa-solid fa-rotate-right"></i>
+    </a>
+    <input class="form-control mr-sm-2 remove-outline"name="search_emp"  placeholder="بحث بالإسم" >
+    <input class="form-control mr-sm-2 remove-outline"name="search_iqama" placeholder="بحث برقم الحدود" >
+    <input class="form-control mr-sm-2 remove-outline"name="search_border" placeholder="بحث برقم الإقامة" >
+    <input class="form-control mr-sm-2 remove-outline"name="search_company" placeholder="تصفية بالشركة" >
+    <!-- <div class="form-control mr-sm-2 remove-outline"name="search_company">{{emp_form.companyID}}</div> -->
+  </form>
+  <div class="content">
+    <br><br>
+    {% include 'partials/_alerts.html' %}
+  <form method="POST">
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">رمز الحساب</th>
+            <th scope="col">إسم الحساب عربي</th>
+            <th scope="col">إسم الحساب إنجليزي</th>
+            <th scope="col">نوع الحساب</th>
+            <th scope="col">طبيعة الحساب</th>
+            <th scope="col">تصنيف الحساب</th>
+            <th scope="col">الوصف</th>
+            <th scope="col">إمكانية الدفع والتحصيل</th>
+            <th scope="col">إجراءات</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for account in accounts %}
+          {% if account.typeID.type_ar == "رئيس" %}
+            <tr style="font-weight: bold;">
+              <!-- لعمل ارقام تسلسلة -->
+              <th scope="row">{{forloop.counter}}</th>
+              <!-- تفاصيل الجدول -->
+              <td>{{account.code}}</td>
+              <td>{{account.name_en}}</td>
+              <td>{{account.name_ar}}</td>
+              <td>{{account.typeID}}</td>
+              <td>{{account.natureID}}</td>
+              <td>{{account.categoryID}}</td>
+              <td>{{account.description}}</td>
+              <td>{{account.is_can_pay}}</td>
+              <td>
+                <a class="btn-link" href="{% url 'account_update' account.id %}">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <a href="{% url 'account_reade' account.id %}" class="btn-link ">
+                  <i class="fa fa-print" aria-hidden="true"></i>
+                </a>
+                <a href="{% url 'account_delete' account.id %}" class="btn-link ">
+                  <i class="fa fa-trash"></i>
+                </a>
+              </td>
+            </tr>
+          {% else %}
+            <tr>
+              <!-- لعمل ارقام تسلسلة -->
+              <th scope="row">{{forloop.counter}}</th>
+              <!-- تفاصيل الجدول -->
+              <td>{{account.code}}</td>
+              <td>{{account.name_en}}</td>
+              <td>{{account.name_ar}}</td>
+              <td >{{account.typeID}}</td>
+              <td>{{account.natureID}}</td>
+              <td>{{account.categoryID}}</td>
+              <td>{{account.description}}</td>
+              <td>{{account.is_can_pay}}</td>
+              <td>
+                <a class="btn-link" href="{% url 'account_update' account.id %}">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <a href="{% url 'account_reade' account.id %}" class="btn-link ">
+                  <i class="fa fa-print" aria-hidden="true"></i>
+                </a>
+                <a href="{% url 'account_delete' account.id %}" class="btn-link ">
+                  <i class="fa fa-trash"></i>
+                </a>
+              </td>
+            </tr>
+          {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+  </form>
+  </div>
+</div>
+{% endblock %}

@@ -18,12 +18,11 @@
           </div>
           {% csrf_token %}
           <br />
-          {% include 'employees/employee_form.html' %}
+          {% include 'employees/employee_form_label.html' %}
           
         </form>
       </div>
     </div>
   </div>
 </div>
-{% include 'partials/updateDropdown.html' %}
 {% endblock %}
