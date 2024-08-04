@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from basicinfo.models import BasicInfo, LegalPersons
 from .models import Company, CompanyUser, JobTitle
+from basicinfo.forms import BasicInfoForm, LegalPersonsForm
 from .forms import CompanyForm
-from profiles.models import UserProfile
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -12,20 +13,31 @@ def handle_form_errors(head_form, request):
     """وظيفة مساعد لمعالجة الأخطاء وعرض الرسائل المناسبة."""
     for field, errors in head_form.errors.items():
         for error in errors:
-            messages.error(request, f"خطأ في نموذج الرأس في الحقل '{field}': {error}")
+            messages.error(request, f"خطأ في النموذج في الحقل '{field}': {error}")
 
 def company_create(request):
   if request.method == 'POST':
+    basicInfo_Form = BasicInfoForm(request.POST, request.FILES)
+    legalPerson_Form = LegalPersonsForm(request.POST, request.FILES)
     company_form = CompanyForm(request.POST, request.FILES)
 
     try:
         job_title_admin = JobTitle.objects.get(id=1)
     except JobTitle.DoesNotExist:
-        messages.error(request, 'JobTitle with ID 1 does not exist.')
+        messages.error(request, 'JobTitle with ID does not exist.')
         return redirect('company_create')
         
-    if company_form.is_valid():
+    if basicInfo_Form.is_valid() and legalPerson_Form.is_valid() and company_form.is_valid():
+      basicInfo = basicInfo_Form.save(commit=False)
+      basicInfo.created_by = request.user 
+      basicInfo.save()
+
+      legalPerson = legalPerson_Form.save(commit=False)
+      legalPerson.basicInfoID = basicInfo
+      legalPerson.save()
+      
       company = company_form.save(commit=False)
+      company.legalPersonID = legalPerson
       company.owner = request.user
       company.save()
       # إنشاء اشتراك للمستخدم الحالي كمدير للشركة
@@ -33,21 +45,62 @@ def company_create(request):
       messages.success(request, 'تم إنشاء شركة بنجاح') 
       return redirect('companys')
     else :      
+      handle_form_errors(basicInfo_Form, request)
+      handle_form_errors(legalPerson_Form, request)
       handle_form_errors(company_form, request)
       return redirect('company_create')
   context = {
+    'basicInfo_form': BasicInfoForm(),
+    'legalPerson_form': LegalPersonsForm(),
     'company_form': CompanyForm(),
+
+    'basicInfo_label': BasicInfoForm(),
+    'legalPerson_label': LegalPersonsForm(),
+    'company_label': CompanyForm(),
+    
   }
   return render(request, 'companys/company_create.html', context)
 
+# def company_reade(request, id):
+#   company_id = get_object_or_404(Company ,id=id)
+#   legalPersons_id = LegalPersons.objects.get(id=company_id.legalPersonID_id)
+#   basicInfo_id = BasicInfo.objects.get(id=legalPersons_id.basicInfoID_id)
+
+#   company_form = CompanyForm(instance=company_id)
+#   legalPersons_form = LegalPersonsForm(instance=legalPersons_id)
+#   basicInfo_form = BasicInfoForm(instance=basicInfo_id)
+
+#   context = {
+#     'basicInfo_label':basicInfo_form,
+#     'legalPersons_label':legalPersons_form,
+#     'company_label':company_form,
+
+#     'basicInfo_form':basicInfo_id,
+#     'legalPersons_form':legalPersons_id,
+#     'company_form':company_id,
+#   }
+#   return render(request, 'companys/company_reade.html', context)
+
+
 def company_reade(request, id):
-  company_id = Company.objects.get(id=id)
-  company_form = CompanyForm(instance=company_id)
-  context = {
-    'company_reade':company_id,
-    'company_form':company_form,
-  }
-  return render(request, 'companys/company_reade.html', context)
+    company_id = get_object_or_404(Company, id=id)
+    legalPersons_id = get_object_or_404(LegalPersons, id=company_id.legalPersonID_id)
+    basicInfo_id = get_object_or_404(BasicInfo, id=legalPersons_id.basicInfoID_id)
+
+    company_form = CompanyForm(instance=company_id)
+    legalPersons_form = LegalPersonsForm(instance=legalPersons_id)
+    basicInfo_form = BasicInfoForm(instance=basicInfo_id)
+
+    context = {
+        'basicInfo_label': basicInfo_form,
+        'legalPerson_label': legalPersons_form,
+        'company_label': company_form,
+
+        'company_form': company_id,
+        'basicInfo_form': basicInfo_id,
+        'legalPerson_form': legalPersons_id,
+    }
+    return render(request, 'companys/company_reade.html', context)
 
 def company_update(request, id):
   company_id= Company.objects.get(id=id)
@@ -95,8 +148,8 @@ def switch_company(request, company_id):
     # تحقق إذا كان المستخدم ينتمي للشركة
     if CompanyUser.objects.filter(userID=request.user, companyID=company).exists():
         request.session['current_company_id'] = company.id
-        request.session['current_company_name'] = company.name_ar
-        messages.success(request, f'تم بدء العمل في : {company.name_ar}')
+        request.session['current_company_name'] = company.legalPersonID.name_ar
+        messages.success(request, f'تم بدء العمل في : {company.legalPersonID.name_ar}')
         return redirect('index')  # 
     else:
         messages.error(request, 'الشركة غير موجودة أو ليس لديك صلاحيات الوصول إليها.')

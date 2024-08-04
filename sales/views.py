@@ -1,6 +1,8 @@
 import io
 from typing import Any
 from django.shortcuts import render , redirect
+from basicinfo.forms import LegalPersonsForm
+from basicinfo.models import LegalPersons
 from django.contrib import messages
 from . models import Customers, SalesInvoiceHead, SalesInvoiceBody
 from companys.models import Company
@@ -38,6 +40,135 @@ def calculate_totals(details_queryset):
     total_c = sum(item.credit for item in details_queryset)
     return total_d, total_c, total_d - total_c
 
+@login_required 
+def customer_create(request):
+    if not request.user.has_perm('customer.add_qayd'):
+        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لإضافة عملاء.")
+        return redirect('customers')
+    if request.method == 'POST':
+      LegalPerson_form = LegalPersonsForm(request.POST, request.FILES)
+      customer_form = CustomersForm(request.POST, request.FILES)
+      if LegalPerson_form.is_valid() and customer_form.is_valid():
+        LegalPerson = LegalPerson_form.save(commit=False)
+        LegalPerson.created_by = request.user  # تعيين created_by فقط عند إنشاء قيد جديد
+        LegalPerson.save()
+        customer = customer_form.save(commit=False)
+        customer.companyID = Company.objects.get(id=request.session.get('current_company_id'))
+        customer.LegalPersonID = LegalPerson
+        customer.save()
+        messages.success(request, 'تم إضافة موظف جديد بنجاح')
+        return redirect('customers')
+      else:
+        # دالة عرض الأخطاء
+        handle_form_errors(LegalPerson_form, customer_form, request)
+        # إعادة عرض النماذج مع الأخطاء
+        return render(request, 'sales/customer_create.html', {
+            'LegalPerson_form': LegalPerson_form,
+            'customer_form': customer_form,
+        })
+    else:
+        # إعداد النماذج عند طلب GET
+        LegalPerson_form = LegalPersonsForm()
+        customer_form = CustomersForm()
+    context = {
+       'LegalPerson_form': LegalPerson_form,
+       'customer_form': customer_form,
+    }
+    return render(request, 'sales/customer_create.html', context)
+
+def customer_reade(request, id):
+  customer_form = Customers.objects.get(id=id)
+  LegalPerson_form = LegalPersons.objects.get(id=customer_form.LegalPersonID_id)
+  context = {
+    'customer_form':customer_form,
+    'LegalPerson_form':LegalPerson_form,
+  }
+  return render(request, 'sales/customer_reade.html', context)
+
+def customer_update(request, id):
+  update_customer = Customers.objects.get(id=id)
+  update_LegalPerson = LegalPersons.objects.get(id=update_customer.LegalPersonID_id)
+  update_customer_form = CustomersForm(instance=update_customer)
+  update_LegalPerson_form = LegalPersons(request.POST, request.FILES, instance=update_LegalPerson)
+  if request.method == 'POST':
+    companyID = None
+    workingStatusID = None
+    contractSalary = None
+    fixedExtra = None
+    workStartDate = None
+    workEndDate = None
+    #Get Values from the form
+    if 'companyID' in request.POST: companyID = request.POST['companyID']
+    else: messages.error(request, 'Error in companyID')
+    if 'workingStatusID' in request.POST: workingStatusID = request.POST['workingStatusID']
+    else: messages.error(request, 'Error in workingStatusID')
+    if 'contractSalary' in request.POST: contractSalary = request.POST['contractSalary']
+    else: messages.error(request, 'Error in contractSalary')
+    if 'fixedExtra' in request.POST: fixedExtra = request.POST['fixedExtra']
+    else: messages.error(request, 'Error in fixedExtra')
+    if 'workStartDate' in request.POST: workStartDate = request.POST['workStartDate']
+    else: messages.error(request, 'Error in workStartDate')
+    if 'workEndDate' in request.POST: workEndDate = request.POST['workEndDate']
+    else: messages.error(request, 'Error in workEndDate')
+    if update_LegalPerson_form.is_valid():
+      update_LegalPerson_form.save()
+      update_customer.companyID_id=companyID 
+      update_customer.workingStatusID_id=workingStatusID
+      update_customer.contractSalary=contractSalary
+      update_customer.workStartDate=workStartDate
+      update_customer.workEndDate=workEndDate
+      update_customer.fixedExtra=fixedExtra
+      messages.success(request, 'تم تحديث البيانات بنجاح') 
+      return redirect('customers')
+    else :      
+      messages.error(request, 'خطأ في البيانات') 
+      return redirect('customer_update')
+  update_LegalPerson_form = LegalPersons(instance=update_LegalPerson)
+  context = {
+    'customer_update':update_customer,
+    'customer_form':update_customer_form,
+    'LegalPerson_update':update_LegalPerson,
+    'LegalPerson_form':update_LegalPerson_form,
+  }
+  return render(request, 'sales/customer_update.html', context)    
+
+def customer_delete(request, id):
+  if request.user.is_authenticated and not request.user.is_anonymous:
+    customer_delete = Customers.objects.get(id=id)
+    if request.method == 'POST':
+      customer_delete.delete()
+      messages.info(request, 'تم حذف الموظف بنجاح')
+      return redirect('customers')
+  else:
+      messages.error(request, 'الرجاء تسجيل الدخول أولاً')
+  context = {
+      'customer_delete':customer_delete,
+  }
+  return render(request, 'sales/customer_delete.html', context)
+
+def customers(request):
+    # التحقق من الأذونات أولاً
+    if not request.user.has_perm('emplyees.view_qayd'):
+        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة للإطلاع على ملفات الموظفين.")
+        return redirect('index')
+    # الحصول على الشركة الحالية من جلسة المستخدم
+    current_company_id = request.session.get('current_company_id')
+    if not current_company_id:
+        messages.error(request, 'الرجاء تحديد الشركة للعمل عليها.')
+        return redirect('companys')
+    # الحصول على القيود الخاصة بالشركة الحالية
+    try:
+        emp_list = Customers.objects.filter(companyID_id=current_company_id)
+    except Customers.DoesNotExist:
+        emp_list = []  # إذا لم يكن هناك أي كائنات، العودة إلى قائمة فارغة    
+    # إعداد السياق
+    context = {
+        'all_emp': emp_list,
+    }
+    # عرض الصفحة مع البيانات
+    return render(request, 'sales/customers.html', context)
+
+
 # # دالة عرض جميع القيود
 @login_required
 def invoices(request):
@@ -73,7 +204,7 @@ def invoices(request):
 
 # دالة إنشاء فاتورة جديدة
 @login_required 
-def invoice_sales_create(request):
+def invoice_create(request):
     """
     وظيفة هذه الدالة هي إنشاء قيد محاسبي جديد خاص بالشركة التي قام المستخدم بتسجيل الدخول إليها
     """

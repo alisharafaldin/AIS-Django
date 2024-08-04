@@ -1,12 +1,8 @@
 from django.shortcuts import render , redirect
 from django.contrib import messages
-from django.contrib.auth.models import User
 from django.contrib import auth
 from .models import UserProfile
 from products.models import ItemDetails 
-from employees.models import EmployeeInfo
-from basicinfo.forms import PersonForm
-from basicinfo.models import Person
 from .forms import UserProfileForm, UserForm
 from django.contrib.auth.views import PasswordResetView
 from django.core.mail import send_mail
@@ -25,7 +21,7 @@ def signup(request):
             user.save()
             
             # إنشاء وربط ملف UserProfile و Person مع المستخدم الجديد
-            UserProfile.objects.create(userID=user, personID=Person.objects.create())
+            # UserProfile.objects.create(userID=user, personID=Person.objects.create())
             
             # يمكنك إجراء عمليات إضافية هنا مثل تسجيل الدخول تلقائيًا
             
@@ -70,17 +66,17 @@ def profile(request):
 
        # التحقق من أن كائن Person مرتبط بـ UserProfile، وإذا لم يكن كذلك، قم بإنشائه
     if user_profile.personID is None:
-        user_profile.personID = Person.objects.create()
+        # user_profile.personID = Person.objects.create()
         user_profile.save()
 
     if request.method == 'POST':
         user_form = UserForm(request.POST, instance=request.user)
-        person_form = PersonForm(request.POST, instance=user_profile)
+        # person_form = PersonForm(request.POST, instance=user_profile)
         profile_form = UserProfileForm(request.POST, instance=user_profile)
 
-        if user_form.is_valid() and profile_form.is_valid() and person_form.is_valid():
+        if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save(commit=False)
-            person = person_form.save(commit=False)
+            # person = person_form.save(commit=False)
             profile = profile_form.save(commit=False)
 
             # تحديث بيانات المستخدم
@@ -88,7 +84,7 @@ def profile(request):
             user.save()
 
             # تحديث بيانات العلومات العامة
-            person.save()
+            # person.save()
 
             # تحديث بيانات الملف الشخصي
             profile.save()
@@ -99,11 +95,11 @@ def profile(request):
             messages.error(request, 'الرجاء التحقق من البيانات المدخلة')
     else:
         user_form = UserForm(instance=request.user)
-        person_form = PersonForm(instance=request.user)
+        # person_form = PersonForm(instance=request.user)
         profile_form = UserProfileForm(instance=user_profile)
     context = {
         'user_form': user_form,
-        'person_form': person_form,
+        # 'person_form': person_form,
         'profile_form': profile_form,
     }
     return render(request, 'profiles/profile.html', context)

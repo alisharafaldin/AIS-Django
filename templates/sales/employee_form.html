@@ -1,0 +1,125 @@
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+
+<div>
+  <div class="form-row">
+    <label class="form-group col-md-2 title-label">الإسم الكامل عربي</label>
+    <div class="form-group col-md-2">{{person_form.f_Name_ar}}</div>
+    <div class="form-group col-md-2">{{person_form.s_Name_ar}}</div>
+    <div class="form-group col-md-2">{{person_form.t_Name_ar}}</div>
+    <div class="form-group col-md-2">{{person_form.fo_Name_ar}}</div>
+    <label class="form-group col-md-1 title-label">الجنس</label>
+    <div class="form-group col-md-1">{{person_form.genderID}}</div>
+  </div>
+  <div class="form-row">
+    <label class="form-group col-md-2 title-label">الإسم الكامل إنجليزي</label>
+    <div class="form-group col-md-2">{{person_form.f_Name_en}}</div>
+    <div class="form-group col-md-2">{{person_form.s_Name_en}}</div>
+    <div class="form-group col-md-2">{{person_form.t_Name_en}}</div>
+    <div class="form-group col-md-2">{{person_form.fo_Name_en}}</div>
+    <label class="form-group col-md-1 title-label">الجنسية</label>
+  <div class="form-group col-md-1">{{person_form.nationalityID}}</div>
+  </div>
+  <!--المهنة - التخصص - تاريخ الميلا - الجنس - الجنسية - الحالة الإجتماعية -->
+  <div class="form-row">
+    <label class="form-group col-md-1 title-label">تاريخ الميلاد</label>
+    <div class="form-group col-md-2">{{person_form.dateOfBirth}}</div>
+    <label class="form-group col-md-2 title-label">الحالة الإجتماعية</label>
+    <div class="form-group col-md-1">{{person_form.socialStatusID}}</div>
+    <label class="form-group col-md-1 title-label">المهنة</label>
+    <div class="form-group col-md-1">{{person_form.workTradeID}}</div>
+    <label class="form-group col-md-1 title-label">التخصص</label>
+    <div class="form-group col-md-1">{{person_form.workSpecialtyID}}</div>
+    <label class="form-group col-md-2 title-label">المسمى الوظيفي</label>
+    <div class="form-group col-md-1">{{person_form.jobTitleID}}</div>
+  </div>
+  <!--  الدولة - المنطقة - الولاية - المدية -  وصف العنوان -->
+  <div class="form-row">
+    <label class="form-group col-md-1 title-label">بلد الإقامة</label>
+    <div class="form-group col-md-2">{{person_form.countryID}}</div>
+    <label class="form-group col-md-1 title-label">المنطقة</label>
+    <div class="form-group col-md-2">{{person_form.regionID}}</div>
+    <label class="form-group col-md-1 title-label">الولاية</label>
+    <div class="form-group col-md-2">{{person_form.stateID}}</div>
+    <label class="form-group col-md-1 title-label">المدينة</label>
+    <div class="form-group col-md-2">{{person_form.cityID}}</div>
+  </div>
+  <!-- وصف عنوان السكن -->
+  <div class="form-row">
+    <label class="form-group col-md-2 title-label">عنوان السكن</label>
+    <div class="form-group col-md-10">{{person_form.desAddress}}</div>
+  </div>
+  <!--  نوع الهوية - رقم الهوية - تاريخ إنتهاء الهوية  -->
+  <div class="form-row">
+    <label class="form-group col-md-1 title-label">نوع الهوية</label>
+    <div class="form-group col-md-3">{{person_form.typeID}}</div>
+    <label class="form-group col-md-1 title-label">رقم الهوية</label>
+    <div class="form-group col-md-3">{{person_form.id_number}}</div>
+    <label class="form-group col-md-2 title-label">تاريخ إنتهاء الهوية</label>
+    <div class="form-group col-md-2">{{person_form.id_ExpiredDate}}</div>
+  </div>
+  <!--البريد الإلكتروني - رقم الجوال - رقم جوال آخر -->
+  <div class="form-row">
+    <label class="form-group col-md-1 title-label">رقم الجوال</label>
+    <div class="form-group col-md-2">{{person_form.mobileNumber}}</div>
+    <label class="form-group col-md-2 title-label">جوال آخر</label>
+    <div class="form-group col-md-2">{{person_form.mobileNumberAnother}}</div>
+    <label class="form-group col-md-2 title-label">البريد الإلكتروني</label>
+    <div class="form-group col-md-3">{{person_form.email}}</div>
+  </div>
+  <!-- البنك - الفرع - نوع الحساب - رقم الحساب - رقم الأيبان ر -->
+  <div class="form-row">
+    <label class="form-group col-md-1 title-label">البنك</label>
+    <div class="form-group col-md-3">{{person_form.bankID}}</div>
+    <label class="form-group col-md-1 title-label">فرع البنك</label>
+    <div class="form-group col-md-3">{{person_form.branchBankID}}</div>
+    <label class="form-group col-md-2 title-label">نوع الحساب</label>
+    <div class="form-group col-md-2">{{person_form.typeAccBankID}}</div>
+  </div>
+  <div class="form-row">
+    <label class="form-group col-md-2 title-label">رقم الحساب</label>
+    <div class="form-group col-md-4">{{person_form.accountNumber}}</div>
+    <label class="form-group col-md-2 title-label">رقم الآي بان</label>
+    <div class="form-group col-md-4">{{person_form.IBANNumber}}</div>
+  </div>
+  
+  <!--  -حالة العمل - الراتب الأساسي - الإضافي - تاريخ بداية العمل  - بداية العمل -->
+  <div class="form-row">
+    <label class="form-group col-md-2 title-label">صورة شخصية</label>
+    <div class="form-group col-md-2">{{person_form.photo}}</div>
+    <label class="form-group col-md-2 title-label">تاريخ بداية العمل</label>
+    <div class="form-group col-md-2">{{emp_form.workStartDate}}</div>
+    <label class="form-group col-md-2 title-label">تاريخ نهاية العمل</label>
+    <div class="form-group col-md-2">{{emp_form.workEndDate}}</div>
+  </div>
+
+  <div class="form-row">
+    <label class="form-group col-md-2 title-label">حالة العمل</label>
+    <div class="form-group col-md-2">{{emp_form.workingStatusID}}</div>
+    <label class="form-group col-md-2 title-label">الراتب الأساسي</label>
+    <div class="form-group col-md-2">{{emp_form.contractSalary}}</div>
+    <label class="form-group col-md-2 title-label">إضافي ثابت</label>
+    <div class="form-group col-md-2">{{emp_form.fixedExtra}}</div>
+  </div>
+  <!-- رابط المستندات - ملاحظات -->
+  <div class="form-row">
+    <label class="form-group col-md-1 title-label">مرفقات</label>
+    <div class="form-group col-md-2">{{person_form.attachments}}</div>
+    <label class="form-group col-md-1 title-label">ملاحظات</label>
+    <div class="form-group col-md-8">{{person_form.notes}}</div>
+  </div>
+    <!--المهارات - اللغات  -->
+    <div class="form-row">
+      <label class="form-group col-md-1 title-label">المهارات</label>
+      {% for skill in person_form.skillsID.all %}
+      <div class="form-group col-md-2">{{skill}}</div>
+      {% endfor %}
+      <label class="form-group col-md-1 title-label">اللغات</label>
+      {% for language in person_form.languagesID.all %}
+      <div class="form-group col-md-2">{{language}}</div>
+      {% endfor %}
+    </div>
+</div>
+
+{% include 'basicinfo/updateDropdown.html' %}

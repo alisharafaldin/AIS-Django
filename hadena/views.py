@@ -1,17 +1,11 @@
-from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from employees.models import *
 from .models import *
-from basicinfo.models import Person
+from basicinfo.models import Persons
 from basicinfo.forms import PersonForm
-from django.views.generic import CreateView
 from .forms import ShareholderForm, ContractsForm
-import io
-from django.http import FileResponse
-from reportlab.pdfgen import canvas
-from django.http import HttpResponse
-from django.views.generic import View
-from .pdf import html2pdf
+
 
 # Create your views here.
 
@@ -92,7 +86,7 @@ def shareholder_reade(request, id):
 
 def shareholder_update(request, id):
   shareholder_update = ShareholdersInfo.objects.get(id=id)
-  update_person = Person.objects.get(id=shareholder_update.personID_id)
+  update_person = Persons.objects.get(id=shareholder_update.personID_id)
   update_share_form = ShareholderForm(instance=shareholder_update)
   update_person_form = PersonForm(request.POST, request.FILES, instance=update_person)
   if request.method == 'POST':

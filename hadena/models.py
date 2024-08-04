@@ -2,7 +2,7 @@
 from django.db import models
 from datetime import date 
 from employees.models import EmployeeInfo
-from basicinfo.models import Countries, Region, States, Cities, Person
+from basicinfo.models import Countries, Region, States, Cities, Persons
 def get_qayd():
   from accounts.models import Qayd
   return Qayd
@@ -20,7 +20,7 @@ class Cycle(models.Model):
     return str(self.cycle_ar)
 
 class ShareholdersInfo(models.Model):
-  personID = models.OneToOneField(Person, related_name='personID', on_delete=models.CASCADE)
+  personID = models.OneToOneField(Persons, related_name='personID', on_delete=models.CASCADE)
   supervisorID = models.ForeignKey(EmployeeInfo, related_name='المشرف', verbose_name='المشرف',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الموظف في حالة حذف المسوق
   someoneToReferTo = models.CharField(verbose_name='شخص للرجوع إليه',max_length=100, blank=True, null=True)
   phoneSomeoneToReferTo = models.CharField(verbose_name='هاتف شخص للرجوع إليه',max_length=100, blank=True, null=True)

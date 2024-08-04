@@ -4,7 +4,7 @@ from employees.models import *
 from .forms import EmpForm
 from django.contrib.auth.decorators import login_required
 from basicinfo.forms import PersonForm
-from basicinfo.models import Person
+from basicinfo.models import Persons
 # from basicinfo.views import 
 
 def handle_form_errors(head_form, formset, request):
@@ -54,7 +54,7 @@ def employee_create(request):
 
 def employee_reade(request, id):
   emp_form = EmployeeInfo.objects.get(id=id)
-  person_form = Person.objects.get(id=emp_form.personID_id)
+  person_form = Persons.objects.get(id=emp_form.personID_id)
   context = {
     'emp_form':emp_form,
     'person_form':person_form,
@@ -63,7 +63,7 @@ def employee_reade(request, id):
 
 def employee_update(request, id):
   update_emp = EmployeeInfo.objects.get(id=id)
-  update_person = Person.objects.get(id=update_emp.personID_id)
+  update_person = Persons.objects.get(id=update_emp.personID_id)
   update_emp_form = EmpForm(instance=update_emp)
   update_person_form = PersonForm(request.POST, request.FILES, instance=update_person)
   if request.method == 'POST':
@@ -143,14 +143,3 @@ def employees(request):
     }
     # عرض الصفحة مع البيانات
     return render(request, 'employees/employees.html', context)
-
-
-# Create your views here.
-
-# def search(request, item_search):
-#     txtsearch = None
-#     if 'item_search' in request.GET: # للتحقق من وجود نيم  في الرابط
-#         txtsearch = request.GET['search_emp'] # تغذية المتغير بالمدخلات حسب النيم
-#         if txtsearch: # للتحقق أن البيانات ليست فارغة
-#             all_emp = all_emp.filter(item_search__icontains=txtsearch) #فلتر البيانات بالإسم من غير مراعات حساسية الأحرف 
-

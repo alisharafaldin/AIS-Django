@@ -58,6 +58,11 @@ class BranchBankImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id', 'name_ar', 'name_en', 'bankID', 'name_Symbol']
 
+@admin.register(BusinessType)
+class BusinessTypeImportExport(ImportExportModelAdmin):
+    pass
+    list_display = ['id', 'name_ar']
+    
 @admin.register(TypeID)
 class TypeIDImportExport(ImportExportModelAdmin):
     pass
@@ -133,13 +138,19 @@ class DeliveryMethodImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id', 'name_ar']
 
+@admin.register(BasicInfo)
+class BasicInfoImportExport(ImportExportModelAdmin):
+    pass
+    list_display = ['id']
+
 @admin.register(LegalPersons)
 class LegalPersonsImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id', 'name_ar']
 
-@admin.register(Person)
+@admin.register(Persons)
 class PersonImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id', 'f_Name_ar', 's_Name_ar', 't_Name_ar']
+
 
