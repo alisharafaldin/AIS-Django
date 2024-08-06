@@ -200,11 +200,23 @@ class Skills(models.Model):
   def __str__(self):
     return str(self.name_ar)
  
-class DeliveryMethod(models.Model):
+class DeliveryMethods(models.Model):
   name_ar = models.CharField(verbose_name='طريقة التسليم عربي',max_length=100)
   name_en = models.CharField(verbose_name='طريقة التسليم إنجليزي',max_length=100,blank=True, null=True)
   def __str__(self):
     return str(self.name_ar)  
+  
+class PaymentMethods(models.Model):
+  name_ar = models.CharField(verbose_name='طريقة الدفع عربي',max_length=100)
+  name_en = models.CharField(verbose_name='طريقة الدفع إنجليزي',max_length=100,blank=True, null=True)
+  def __str__(self):
+    return str(self.name_ar)  
+  
+class MeasuringUnits(models.Model):
+  name_ar = models.CharField(verbose_name='وحدة القياس عربي',max_length=100)
+  name_en = models.CharField(verbose_name='وحدة القياس إنجليزي',max_length=100,blank=True, null=True)
+  def __str__(self):
+    return str(self.name_ar) 
 
 class BasicInfo(models.Model):
     nationalityID = models.ForeignKey(Countries, verbose_name='الجنسية', related_name='nationalityID', default=1, on_delete=models.PROTECT, blank=True, null=True) 
@@ -230,7 +242,8 @@ class BasicInfo(models.Model):
     notes = models.TextField(verbose_name='ملاحظات', blank=True, null=True)
     attachments = models.FileField(verbose_name='مرفقات', blank=True, null=True)
     documentLink = models.CharField(verbose_name='رابط المستندات',max_length=100, blank=True, null=True)
-    active = models.BooleanField(default=False, verbose_name="نشط", blank=True, null=True)
+    active = models.BooleanField(default=True, verbose_name="نشط", blank=True, null=True)
+    delete = models.BooleanField(default=False, verbose_name="حذف", blank=True, null=True)
     created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name='created_by', blank=True, null=True)
     created_at = models.DateTimeField(verbose_name='تاريخ الإنشاء',auto_now_add=True, blank=True, null=True)
     updated_by = models.ForeignKey(User, verbose_name='المُعدِل', related_name='updated_by', on_delete=models.PROTECT, blank=True, null=True)

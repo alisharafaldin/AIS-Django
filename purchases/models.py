@@ -6,13 +6,13 @@ from companys.models import Company
 from django.utils import timezone
 from django.db.models.signals import pre_save, post_delete
 from django.dispatch import receiver
-from products.models import ItemDetails
+from products.models import Items
 
 
 class Suppliers(models.Model):
     companyID = models.ForeignKey(Company, on_delete=models.PROTECT, blank=True)
     sequence = models.PositiveIntegerField(editable=False)  # الحقل التسلسلي
-    legalPersonsID = models.OneToOneField(LegalPersons, on_delete=models.CASCADE, blank=True)
+    legalPersonID = models.OneToOneField(LegalPersons, on_delete=models.CASCADE, blank=True)
      
 class InvoiceHead(models.Model):
     companyID = models.ForeignKey(Company, on_delete=models.PROTECT,blank=True)
@@ -32,7 +32,7 @@ class InvoiceHead(models.Model):
   
 class InvoiceBody(models.Model):
     invoiceHeadID = models.ForeignKey(InvoiceHead, on_delete=models.CASCADE, related_name='qayd_details', blank=True)
-    itemsDetailstID = models.ForeignKey(ItemDetails, verbose_name='المنتج', on_delete=models.PROTECT, blank=True, null=True)
+    itemID = models.ForeignKey(Items, verbose_name='المنتج', on_delete=models.PROTECT, blank=True, null=True)
     quantity = models.DecimalField(verbose_name='الكمية', default=1, max_digits=6, decimal_places=2, blank=True, null=True)
     unit_price = models.DecimalField(verbose_name='سعر الشراء', default=1, max_digits=10, decimal_places=2, blank=True, null=True)
     discount = models.DecimalField(verbose_name='خصم مسموح به', default=0, max_digits=6, decimal_places=2, blank=True, null=True)

@@ -30,7 +30,7 @@ class BasicInfoForm(forms.ModelForm):
             'photo': forms.ClearableFileInput(attrs={'class':'form-control', 'placeholder':'صورة / لوقو'}),
             'notes': forms.TextInput(attrs={'class':'form-control', 'placeholder':'ملاحظات'}),
             'documentLink': forms.TextInput(attrs={'class':'form-control', 'placeholder':'رابط المستندات'}),
-            'active': forms.TextInput(attrs={'class':'form-control', 'placeholder':'ملاحظات'}),
+            'active': forms.CheckboxInput(attrs={'class':'form-control', 'placeholder':'ملاحظات'}),
         }
 
 class PersonForm(forms.ModelForm):

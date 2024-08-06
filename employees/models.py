@@ -3,7 +3,7 @@ from basicinfo.models import *
 from companys.models import Company
 # from profiles.models import UserProfile
 
-class EmployeeInfo(models.Model):
+class Employee(models.Model):
     companyID = models.ForeignKey(Company, on_delete=models.PROTECT, blank=True)
     sequence = models.PositiveIntegerField(editable=False)  # الحقل التسلسلي
     personID = models.OneToOneField(Persons, on_delete=models.CASCADE, blank=True)
@@ -17,7 +17,7 @@ class EmployeeInfo(models.Model):
         return str(self.personID)
 
 class ProjectRotation(models.Model):
-    empID = models.ForeignKey(EmployeeInfo, verbose_name='العامل', on_delete=models.PROTECT) #لن يتم حزف الصنف في حالة حذف الموظف
+    empID = models.ForeignKey(Employee, verbose_name='العامل', on_delete=models.PROTECT) #لن يتم حزف الصنف في حالة حذف الموظف
     projectID = models.ForeignKey(Project, verbose_name='المشروع', on_delete=models.PROTECT) #لن يتم حزف الصنف في حالة حذف الموظف
     subProjectID = models.ForeignKey(SubProject, verbose_name='مشروع فرعي', on_delete=models.PROTECT) #لن يتم حزف الصنف في حالة حذف الموظف
     yearID = models.ForeignKey(CalendarYears, verbose_name='العام', on_delete=models.PROTECT) #لن يتم حزف الصنف في حالة حذف الموظف

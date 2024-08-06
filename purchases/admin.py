@@ -6,7 +6,7 @@ from import_export.admin import ImportExportModelAdmin
 @admin.register(Suppliers)
 class SuppliersImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'legalPersonsID']
+    list_display = ['id', 'legalPersonID']
 
 @admin.register(InvoiceHead)
 class InvoiceHeadImportExport(ImportExportModelAdmin):
@@ -16,6 +16,6 @@ class InvoiceHeadImportExport(ImportExportModelAdmin):
 @admin.register(InvoiceBody)
 class InvoiceBodyImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'itemsDetailstID', 'quantity', 'unit_price', 'discount', 'total_price_before_tax']
+    list_display = ['id', 'itemID', 'quantity', 'unit_price', 'discount', 'total_price_before_tax']
 
 

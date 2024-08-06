@@ -55,15 +55,17 @@
         </div>
       </li>
       <li>
+        <a href="{% url 'index' %}">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-          <div class="image">
-            {% if request.current_company.logo %}
-            <img src="{{ request.current_company.logo.url }}" class="img-circle elevation-2" alt="User Image"/>
-            {% else %}
-            <img src="{% static 'dist/img/AIS.png' %}" class="img-circle elevation-2" alt="User Image"/>
-            {% endif %}
+            <div class="image">
+              {% if request.current_company.logo %}
+              <img src="{{ request.current_company.logo.url }}" class="img-circle elevation-2" alt="User Image"/>
+              {% else %}
+              <img src="{% static 'dist/img/AIS.png' %}" class="img-circle elevation-2" alt="User Image"/>
+              {% endif %}
+            </div>
           </div>
-        </div>
+        </a>
       </li>
     </ul>
   </nav>

@@ -1,8 +1,8 @@
 from django import forms
-from .models import Customers, SalesInvoiceHead, SalesInvoiceBody
+from .models import Customers, InvoicesSalesHead, InvoicesSalesBody
 from django.forms import modelformset_factory
 
-class CustomersForm(forms.ModelForm):
+class CustomerForm(forms.ModelForm):
     class Meta:
         model = Customers
         fields = '__all__'
@@ -10,9 +10,9 @@ class CustomersForm(forms.ModelForm):
            'legalPersonsID': forms.Select(attrs={'class':'form-control', 'placeholder':'معرف المورد'}),
    }
 
-class SalesInvoiceHeadForm(forms.ModelForm):
+class InvoiceHeadForm(forms.ModelForm):
     class Meta:
-        model = SalesInvoiceHead
+        model = InvoicesSalesHead
         fields = '__all__'
         widgets = {
             'date': forms.DateTimeInput(attrs={'class':'form-control',  'type':'datetime-local' , 'placeholder':'التاريخ '}),
@@ -23,10 +23,10 @@ class SalesInvoiceHeadForm(forms.ModelForm):
             'details': forms.CheckboxSelectMultiple,
         }
 
-class SalesInvoiceBodyForm(forms.ModelForm):
+class InvoiceBodyForm(forms.ModelForm):
     DELETE = forms.BooleanField(required=False, initial=False)
     class Meta:
-        model = SalesInvoiceBody
+        model = InvoicesSalesBody
         fields = '__all__'
         widgets = {
             'DELETE': forms.CheckboxInput(),
@@ -50,9 +50,9 @@ class SalesInvoiceBodyForm(forms.ModelForm):
         return cleaned_data
 
 # نموذج المجموعة مع دالة التحقق
-SalesInvoiceBodyFormSet = modelformset_factory(
-    SalesInvoiceBody,
-    form=SalesInvoiceBodyForm,
+InvoiceBodyFormSet = modelformset_factory(
+    InvoicesSalesBody,
+    form=InvoiceBodyForm,
     extra=2, # عدد النماذج الإفتراضية
     can_delete=True, # إمكانية الحذف
     min_num=2, # الحد الأدنى لعدد النماذج
@@ -60,4 +60,4 @@ SalesInvoiceBodyFormSet = modelformset_factory(
     ) 
 
 # إنشاء نموذج المجموعة باستخدام الفئة الأساسية المخصصة
-SalesInvoiceBodyFormSet = modelformset_factory(SalesInvoiceBody, form=SalesInvoiceBodyForm, extra=2)
+InvoiceBodyFormSet = modelformset_factory(InvoicesSalesBody, form=InvoiceBodyForm, extra=2)

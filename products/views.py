@@ -1,9 +1,9 @@
 from django.shortcuts import get_object_or_404, render
 from datetime import datetime
-from .models import ItemDetails
+from .models import Items
 # Create your views here.
-def itemsDetails(request):
-    pro = ItemDetails.objects.all()
+def items(request):
+    pro = Items.objects.all()
     name = None
     desc = None
     pricefrom = None
@@ -38,9 +38,9 @@ def itemsDetails(request):
     }
     return render(request, 'products/products.html', context)
 
-def itemDetails(request, pro_id):
+def Items(request, pro_id):
     context = {
-        'pro':get_object_or_404(ItemDetails, pk=pro_id)
+        'pro':get_object_or_404(Items, pk=pro_id)
     }
     return render(request, 'products/product.html', context)
 

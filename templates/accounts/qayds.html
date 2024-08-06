@@ -2,14 +2,50 @@
 {% block title %} | Qayds 
 {% endblock %} 
 {% block content %}
+
 <style>
-  /* تحسين عرض الجدول على الأجهزة الصغيرة */
-  @media (max-width: 767.98px) {
-      th, td {
-          white-space: nowrap;
-      }
+  @media (max-width: 768px) {
+    .table-responsive thead {
+      display: none;
+    }
+
+    .table-responsive tbody, 
+    .table-responsive th, 
+    .table-responsive td {
+      display: block;
+    }
+
+    .table-responsive tr {
+      margin-bottom: 15px;
+    }
+
+
+    .table-responsive td, 
+    .table-responsive th {
+      direction: rtl; /* لضبط الاتجاه من اليمين إلى اليسار */
+      text-align: right;
+      padding-right: 25%;
+      position: relative;
+      width: 100vw;
+    }
+
+    .table-responsive td::before, 
+    .table-responsive th::before {
+      content: attr(data-label);
+      position: absolute;
+      right: 0;
+      width: 20%;
+      padding-right: 10px;
+      margin: -12px 1px 2px 2px;
+      padding: 12px 8px 12px 0px;
+      font-weight: bold;
+      background-color: rgb(219, 219, 219);
+    }
   }
+
+
 </style>
+
 
 <div class="content-wrapper">
   <div class="main-title">
@@ -68,14 +104,14 @@
           <tbody>
             {% for qayd in qayds %}
             <tr>
-              <th scope="row">{{ forloop.counter }}</th>
-              <td>{{ qayd.date|date:"Y-m-d" }}</td>
-              <td>{{ qayd.sequence }}</td>
-              <td>{{ qayd.description }}</td>
-              <td>{{ qayd.details.count }}</td>
-              <td>{{ qayd.created_by }}</td>
-              <td>{{ qayd.typeTransactionID }}</td>
-              <td>
+              <th data-label="#"scope="row">{{ forloop.counter }}</th>
+              <td data-label="تاريخ القيد">{{ qayd.date|date:"Y-m-d" }}</td>
+              <td data-label="رقم القيد">{{ qayd.sequence }}</td>
+              <td data-label="الوصف">{{ qayd.description }}</td>
+              <td data-label="الأسطر">{{ qayd.details.count }}</td>
+              <td data-label="المستخدم">{{ qayd.created_by }}</td>
+              <td data-label="نوع العملية">{{ qayd.typeTransactionID }}</td>
+              <td data-label="إجراءات">
                 <a href="{% url 'qayd_update' qayd.id %}" class="btn-link">
                   <i class="fas fa-edit"></i>
                 </a>

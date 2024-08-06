@@ -1,7 +1,7 @@
 
 from django.db import models
 from datetime import date 
-from employees.models import EmployeeInfo
+from employees.models import Employee
 from basicinfo.models import Countries, Region, States, Cities, Persons
 def get_qayd():
   from accounts.models import Qayd
@@ -21,7 +21,7 @@ class Cycle(models.Model):
 
 class ShareholdersInfo(models.Model):
   personID = models.OneToOneField(Persons, related_name='personID', on_delete=models.CASCADE)
-  supervisorID = models.ForeignKey(EmployeeInfo, related_name='المشرف', verbose_name='المشرف',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الموظف في حالة حذف المسوق
+  supervisorID = models.ForeignKey(Employee, related_name='المشرف', verbose_name='المشرف',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الموظف في حالة حذف المسوق
   someoneToReferTo = models.CharField(verbose_name='شخص للرجوع إليه',max_length=100, blank=True, null=True)
   phoneSomeoneToReferTo = models.CharField(verbose_name='هاتف شخص للرجوع إليه',max_length=100, blank=True, null=True)
 
@@ -43,8 +43,8 @@ class Contracts(models.Model):
   amountOfShare = models.IntegerField(verbose_name='سعر السهم', default=1200000)
   profitRate = models.IntegerField(verbose_name='معدل الربح', default=8)
   dateOfDividend = models.DateField(verbose_name='تاريخ توزيع الأرباح', blank=True, null=True)
-  witnes1ID = models.ForeignKey(EmployeeInfo, related_name='witnes1ID', verbose_name='الشاهد الأول',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الموظف في حالة حذف المسوق
-  witnes2ID = models.ForeignKey(EmployeeInfo, related_name='witnes2ID', verbose_name='الشاهد الثاني',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الموظف في حالة حذف المسوق
+  witnes1ID = models.ForeignKey(Employee, related_name='witnes1ID', verbose_name='الشاهد الأول',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الموظف في حالة حذف المسوق
+  witnes2ID = models.ForeignKey(Employee, related_name='witnes2ID', verbose_name='الشاهد الثاني',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الموظف في حالة حذف المسوق
   notes = models.TextField(verbose_name='ملاحظات', blank=True, null=True)
   def __str__(self):
     return str(self.shareholdersID)

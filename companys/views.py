@@ -15,6 +15,7 @@ def handle_form_errors(head_form, request):
         for error in errors:
             messages.error(request, f"خطأ في النموذج في الحقل '{field}': {error}")
 
+@login_required
 def company_create(request):
   if request.method == 'POST':
     basicInfo_Form = BasicInfoForm(request.POST, request.FILES)
@@ -61,78 +62,115 @@ def company_create(request):
   }
   return render(request, 'companys/company_create.html', context)
 
-# def company_reade(request, id):
-#   company_id = get_object_or_404(Company ,id=id)
-#   legalPersons_id = LegalPersons.objects.get(id=company_id.legalPersonID_id)
-#   basicInfo_id = BasicInfo.objects.get(id=legalPersons_id.basicInfoID_id)
-
-#   company_form = CompanyForm(instance=company_id)
-#   legalPersons_form = LegalPersonsForm(instance=legalPersons_id)
-#   basicInfo_form = BasicInfoForm(instance=basicInfo_id)
-
-#   context = {
-#     'basicInfo_label':basicInfo_form,
-#     'legalPersons_label':legalPersons_form,
-#     'company_label':company_form,
-
-#     'basicInfo_form':basicInfo_id,
-#     'legalPersons_form':legalPersons_id,
-#     'company_form':company_id,
-#   }
-#   return render(request, 'companys/company_reade.html', context)
-
-
+@login_required
 def company_reade(request, id):
-    company_id = get_object_or_404(Company, id=id)
-    legalPersons_id = get_object_or_404(LegalPersons, id=company_id.legalPersonID_id)
-    basicInfo_id = get_object_or_404(BasicInfo, id=legalPersons_id.basicInfoID_id)
+    company = get_object_or_404(Company, id=id)
+    legalPerson = get_object_or_404(LegalPersons, id=company.legalPersonID_id)
+    basicInfo = get_object_or_404(BasicInfo, id=legalPerson.basicInfoID_id)
 
-    company_form = CompanyForm(instance=company_id)
-    legalPersons_form = LegalPersonsForm(instance=legalPersons_id)
-    basicInfo_form = BasicInfoForm(instance=basicInfo_id)
+    company_form = CompanyForm(instance=company)
+    legalPerson_form = LegalPersonsForm(instance=legalPerson)
+    basicInfo_form = BasicInfoForm(instance=basicInfo)
 
     context = {
         'basicInfo_label': basicInfo_form,
-        'legalPerson_label': legalPersons_form,
+        'legalPerson_label': legalPerson_form,
         'company_label': company_form,
 
-        'company_form': company_id,
-        'basicInfo_form': basicInfo_id,
-        'legalPerson_form': legalPersons_id,
+        'company_form': company,
+        'basicInfo_form': basicInfo,
+        'legalPerson_form': legalPerson,
     }
     return render(request, 'companys/company_reade.html', context)
 
+@login_required
 def company_update(request, id):
-  company_id= Company.objects.get(id=id)
-  company_form = CompanyForm(request.POST, request.FILES, instance=company_id)
+  # الحصول على الكائنات المطلوبة من قاعدة البيانات
+  company_id = get_object_or_404(Company, id=id)
+  legalPerson_id = get_object_or_404(LegalPersons, id=company_id.legalPersonID_id)
+  basicInfo_id = get_object_or_404(BasicInfo, id=legalPerson_id.basicInfoID_id)
+
   if request.method == 'POST':
-      if company_form.is_valid():
-        company_form.save()
-        messages.success(request, 'تم تحديث البيانات بنجاح') 
-        return redirect('companys')
-      else :      
-        handle_form_errors(company_form, request)
+    # إنشاء نماذج بالكائنات المسترجعة
+    basicInfo_form = BasicInfoForm(request.POST, request.FILES, instance=basicInfo_id)
+    legalPerson_form = LegalPersonsForm(request.POST, request.FILES, instance=legalPerson_id)
+    company_form = CompanyForm(request.POST, request.FILES, instance=company_id)
+    
+      # تحديث البيانات وعرض رسالة تأكيد
+    if basicInfo_form.is_valid() and legalPerson_form.is_valid() and company_form.is_valid():
+      basicInfo = basicInfo_form.save(commit=False)
+      basicInfo.created_by = request.user 
+      basicInfo.save()
+
+      legalPerson = legalPerson_form.save(commit=False)
+      legalPerson.basicInfoID = basicInfo
+      legalPerson.save()
+      
+      company = company_form.save(commit=False)
+      company.legalPersonID = legalPerson
+      company.owner = request.user
+      company.save()
+
+      messages.success(request, 'تم إنشاء شركة بنجاح') 
+      return redirect('companys')
+    else :      
+      # عرض رسائل الخطأ من النماذج
+      handle_form_errors(basicInfo_form, request)
+      handle_form_errors(legalPerson_form, request)
+      handle_form_errors(company_form, request)
+      return redirect('company_update')
+  # إنشاء نماذج بالكائنات المسترجعة
+  basicInfo_form = BasicInfoForm(instance=basicInfo_id)
+  legalPerson_form = LegalPersonsForm(instance=legalPerson_id)
   company_form = CompanyForm(instance=company_id)
+
   context = {
-    'company_id':company_id,
-    'company_form':company_form,
+    'company_id': company_id,
+
+    'basicInfo_form': basicInfo_form,
+    'legalPerson_form': legalPerson_form,
+    'company_form': company_form,
+    
+    'basicInfo_label': BasicInfoForm(),
+    'legalPerson_label': LegalPersonsForm(),
+    'company_label': CompanyForm(),   
   }
   return render(request, 'companys/company_update.html', context)    
 
+@login_required
 def company_delete(request, id):
-  if request.user.is_authenticated and not request.user.is_anonymous:
-    company_delete = Company.objects.get(id=id)
-    if request.method == 'POST':
-      company_delete.delete()
-      messages.info(request, 'تم حذف الشركة بنجاح')
-      return redirect('companys')
+  # الحصول على الكائنات المطلوبة من قاعدة البيانات
+  company = get_object_or_404(Company, id=id)
+  legalPerson = get_object_or_404(LegalPersons, id=company.legalPersonID_id)
+  basicInfo = get_object_or_404(BasicInfo, id=legalPerson.basicInfoID_id)
+
+  # إنشاء نماذج بالكائنات المسترجعة
+  company_form = CompanyForm(instance=company)
+  legalPerson_form = LegalPersonsForm(instance=legalPerson)
+  basicInfo_form = BasicInfoForm(instance=basicInfo)
+
+  if request.method == 'POST':
+    # حذف الكائن وإضافة رسالة نجاح
+    company.delete()
+    messages.info(request, 'تم حذف الشركة بنجاح')
+    return redirect('companys')
   else:
-      messages.error(request, 'يوجد خطأ في البيانات')
+      handle_form_errors(basicInfo_form, request)
+      handle_form_errors(legalPerson_form, request)
+      handle_form_errors(company_form, request)
+  
   context = {
-      'company_delete':company_delete,
+      'basicInfo_label': basicInfo_form,
+      'legalPerson_label': legalPerson_form,
+      'company_label': company_form,
+
+      'company_form': company,
+      'basicInfo_form': basicInfo,
+      'legalPerson_form': legalPerson,
   }
   return render(request, 'companys/company_delete.html', context)
 
+@login_required
 def companys(request):
   user_companys = CompanyUser.objects.filter(userID=request.user).values_list('companyID', flat=True)
   companys = Company.objects.filter(id__in=user_companys)
@@ -141,7 +179,7 @@ def companys(request):
   }
   return render(request, 'companys/companys.html', context)
 
-#  إعداد عرض لتبديل الشركة
+#إعداد عرض لتبديل الشركة
 @login_required
 def switch_company(request, company_id):
     company = get_object_or_404(Company, id=company_id)
@@ -155,7 +193,7 @@ def switch_company(request, company_id):
         messages.error(request, 'الشركة غير موجودة أو ليس لديك صلاحيات الوصول إليها.')
     return redirect('companys')
 
-# إضافة معلومات الشركة الحالية إلى الجلسة
+#إضافة معلومات الشركة الحالية إلى الجلسة
 class CompanyMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response

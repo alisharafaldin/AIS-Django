@@ -11,15 +11,16 @@
         <form method="POST">
           <div class="form-row main-title">
             <h5 class="form-group" id="staticBackdropLabel">إضافة عميل جديد</h5>
-            <button type="submit" class="btn btn-save" name="btnempsave">
-              إضافة
-            </button>
-            <a href="{% url 'customers' %}" class="btn btn-close">إلغاء</a>
           </div>
+          <br>
+          <button type="submit" class="btn btn-save" name="btnempsave">
+            إضافة
+          </button>
+          <a href="{% url 'customers' %}" class="btn btn-close">إلغاء</a>
+          <br>
+          <br>
           {% csrf_token %}
-          <br />
-          {% include 'sales/customer_form_label.html' %}
-          
+          {% include 'sales/customer_form.html' %}
         </form>
       </div>
     </div>

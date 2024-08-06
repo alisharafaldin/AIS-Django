@@ -1,38 +1,24 @@
 import io
 from typing import Any
-from django.shortcuts import render , redirect
-from basicinfo.forms import LegalPersonsForm
-from basicinfo.models import LegalPersons
+from django.shortcuts import render , redirect, get_object_or_404
+from basicinfo.forms import BasicInfoForm, LegalPersonsForm
+from basicinfo.models import BasicInfo, LegalPersons
 from django.contrib import messages
-from . models import Customers, SalesInvoiceHead, SalesInvoiceBody
+from . models import Customers, InvoicesSalesHead, InvoicesSalesBody
 from companys.models import Company
-from . forms import CustomersForm, SalesInvoiceHeadForm, SalesInvoiceBodyForm, SalesInvoiceBodyFormSet
+from . forms import CustomerForm, InvoiceHeadForm, InvoiceBodyForm, InvoiceBodyFormSet
 from django.forms import modelformset_factory
-from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
-
-from django.http import FileResponse
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
-from reportlab.lib import colors
-from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 
 # Create your views here.
 
 # دوال لإنشاء وتحديث وقراءة وحذف القيود المحاسبية
 
-def handle_form_errors(head_form, formset, request):
+def handle_form_errors(head_form, request):
     """وظيفة مساعد لمعالجة الأخطاء وعرض الرسائل المناسبة."""
     for field, errors in head_form.errors.items():
         for error in errors:
-            messages.error(request, f"خطأ في نموذج الرأس في الحقل '{field}': {error}")
-    for form_index, form in enumerate(formset.forms):
-        for field, errors in form.errors.items():
-            for error in errors:
-                messages.error(request, f"خطأ في نموذج التفاصيل {form_index + 1} في الحقل '{field}': {error}")
-    for error in formset.non_form_errors():
-        messages.error(request, f"خطأ في الـ FormSet: {error}")
+            messages.error(request, f"خطأ في النموذج في الحقل '{field}': {error}")
 
 def calculate_totals(details_queryset):
     """ وظيفة مساعدة لعمل مجاميع القيود """
@@ -45,104 +31,164 @@ def customer_create(request):
     if not request.user.has_perm('customer.add_qayd'):
         messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لإضافة عملاء.")
         return redirect('customers')
+    
     if request.method == 'POST':
-      LegalPerson_form = LegalPersonsForm(request.POST, request.FILES)
-      customer_form = CustomersForm(request.POST, request.FILES)
-      if LegalPerson_form.is_valid() and customer_form.is_valid():
-        LegalPerson = LegalPerson_form.save(commit=False)
-        LegalPerson.created_by = request.user  # تعيين created_by فقط عند إنشاء قيد جديد
-        LegalPerson.save()
+      basicInfo_form = BasicInfoForm(request.POST, request.FILES)
+      legalPerson_form = LegalPersonsForm(request.POST, request.FILES)
+      customer_form = CustomerForm(request.POST, request.FILES)
+
+      if basicInfo_form.is_valid() and legalPerson_form.is_valid() and customer_form.is_valid():
+
+        basicInfo = basicInfo_form.save(commit=False)
+        basicInfo.created_by = request.user  # تعيين created_by فقط عند إنشاء قيد جديد
+        basicInfo.save()
+
+        legalPerson = legalPerson_form.save(commit=False)
+        legalPerson.basicInfoID = basicInfo
+        legalPerson.save()
+
+        # التحقق من وجود current_company_id في الجلسة قبل استخدامه.
+        current_company_id = request.session.get('current_company_id')
+        if not current_company_id:
+            messages.error(request, 'لم يتم تحديد الشركة الحالية.')
+            return redirect('sales')
+        
         customer = customer_form.save(commit=False)
-        customer.companyID = Company.objects.get(id=request.session.get('current_company_id'))
-        customer.LegalPersonID = LegalPerson
+        customer.companyID = get_object_or_404(Company, id=current_company_id)
+        customer.legalPersonID = legalPerson
         customer.save()
-        messages.success(request, 'تم إضافة موظف جديد بنجاح')
+        messages.success(request, f'تم إضافة عميل جديد بإسم : {customer.legalPersonID.name_ar}')
         return redirect('customers')
       else:
         # دالة عرض الأخطاء
-        handle_form_errors(LegalPerson_form, customer_form, request)
+        handle_form_errors(legalPerson_form, customer_form, request)
         # إعادة عرض النماذج مع الأخطاء
         return render(request, 'sales/customer_create.html', {
-            'LegalPerson_form': LegalPerson_form,
+            'basicInfo_form': basicInfo_form,
+            'legalPerson_form': legalPerson_form,
             'customer_form': customer_form,
         })
     else:
         # إعداد النماذج عند طلب GET
-        LegalPerson_form = LegalPersonsForm()
-        customer_form = CustomersForm()
+        basicInfo_form = BasicInfoForm()
+        legalPerson_form = LegalPersonsForm()
+        customer_form = CustomerForm()
     context = {
-       'LegalPerson_form': LegalPerson_form,
+       'basicInfo_form': basicInfo_form,
+       'legalPerson_form': legalPerson_form,
        'customer_form': customer_form,
+
+       'basicInfo_label': basicInfo_form,
+       'legalPerson_label': legalPerson_form,
+       'customer_label': customer_form,
     }
     return render(request, 'sales/customer_create.html', context)
 
+@login_required
 def customer_reade(request, id):
-  customer_form = Customers.objects.get(id=id)
-  LegalPerson_form = LegalPersons.objects.get(id=customer_form.LegalPersonID_id)
-  context = {
-    'customer_form':customer_form,
-    'LegalPerson_form':LegalPerson_form,
-  }
-  return render(request, 'sales/customer_reade.html', context)
+    customer = get_object_or_404(Customers, id=id)
+    legalPerson = get_object_or_404(LegalPersons, id=customer.legalPersonID_id)
+    basicInfo = get_object_or_404(BasicInfo, id=legalPerson.basicInfoID_id)
 
+    customer_form = CustomerForm(instance=customer)
+    legalPerson_form = LegalPersonsForm(instance=legalPerson)
+    basicInfo_form = BasicInfoForm(instance=basicInfo)
+
+    context = {
+        'basicInfo_label': basicInfo_form,
+        'legalPerson_label': legalPerson_form,
+        'customer_label': customer_form,
+
+        'customer_form': customer,
+        'basicInfo_form': basicInfo,
+        'legalPerson_form': legalPerson,
+    }
+    return render(request, 'sales/customer_reade.html', context)
+
+@login_required
 def customer_update(request, id):
-  update_customer = Customers.objects.get(id=id)
-  update_LegalPerson = LegalPersons.objects.get(id=update_customer.LegalPersonID_id)
-  update_customer_form = CustomersForm(instance=update_customer)
-  update_LegalPerson_form = LegalPersons(request.POST, request.FILES, instance=update_LegalPerson)
+  # الحصول على الكائنات المطلوبة من قاعدة البيانات
+  customer_id = get_object_or_404(Customers, id=id)
+  legalPerson_id = get_object_or_404(LegalPersons, id=customer_id.legalPersonID_id)
+  basicInfo_id = get_object_or_404(BasicInfo, id=legalPerson_id.basicInfoID_id)
+
   if request.method == 'POST':
-    companyID = None
-    workingStatusID = None
-    contractSalary = None
-    fixedExtra = None
-    workStartDate = None
-    workEndDate = None
-    #Get Values from the form
-    if 'companyID' in request.POST: companyID = request.POST['companyID']
-    else: messages.error(request, 'Error in companyID')
-    if 'workingStatusID' in request.POST: workingStatusID = request.POST['workingStatusID']
-    else: messages.error(request, 'Error in workingStatusID')
-    if 'contractSalary' in request.POST: contractSalary = request.POST['contractSalary']
-    else: messages.error(request, 'Error in contractSalary')
-    if 'fixedExtra' in request.POST: fixedExtra = request.POST['fixedExtra']
-    else: messages.error(request, 'Error in fixedExtra')
-    if 'workStartDate' in request.POST: workStartDate = request.POST['workStartDate']
-    else: messages.error(request, 'Error in workStartDate')
-    if 'workEndDate' in request.POST: workEndDate = request.POST['workEndDate']
-    else: messages.error(request, 'Error in workEndDate')
-    if update_LegalPerson_form.is_valid():
-      update_LegalPerson_form.save()
-      update_customer.companyID_id=companyID 
-      update_customer.workingStatusID_id=workingStatusID
-      update_customer.contractSalary=contractSalary
-      update_customer.workStartDate=workStartDate
-      update_customer.workEndDate=workEndDate
-      update_customer.fixedExtra=fixedExtra
-      messages.success(request, 'تم تحديث البيانات بنجاح') 
+    # إنشاء نماذج بالكائنات المسترجعة
+    basicInfo_form = BasicInfoForm(request.POST, request.FILES, instance=basicInfo_id)
+    legalPerson_form = LegalPersonsForm(request.POST, request.FILES, instance=legalPerson_id)
+    customer_form = CustomerForm(request.POST, request.FILES, instance=customer_id)
+    
+      # تحديث البيانات وعرض رسالة تأكيد
+    if basicInfo_form.is_valid() and legalPerson_form.is_valid() and customer_form.is_valid():
+      basicInfo = basicInfo_form.save(commit=False)
+      basicInfo.created_by = request.user 
+      basicInfo.save()
+
+      legalPerson = legalPerson_form.save(commit=False)
+      legalPerson.basicInfoID = basicInfo
+      legalPerson.save()
+      
+      customer = customer_form.save(commit=False)
+      customer.legalPersonID = legalPerson
+      customer.companyID = Company.objects.get(id=request.session.get('current_company_id'))
+      customer.save()
+
+      messages.success(request, 'تم إنشاء شركة بنجاح') 
       return redirect('customers')
     else :      
-      messages.error(request, 'خطأ في البيانات') 
+      # عرض رسائل الخطأ من النماذج
+      handle_form_errors(basicInfo_form, request)
+      handle_form_errors(legalPerson_form, request)
+      handle_form_errors(customer_form, request)
       return redirect('customer_update')
-  update_LegalPerson_form = LegalPersons(instance=update_LegalPerson)
+  # إنشاء نماذج بالكائنات المسترجعة
+  basicInfo_form = BasicInfoForm(instance=basicInfo_id)
+  legalPerson_form = LegalPersonsForm(instance=legalPerson_id)
+  customer_form = CustomerForm(instance=customer_id)
+
   context = {
-    'customer_update':update_customer,
-    'customer_form':update_customer_form,
-    'LegalPerson_update':update_LegalPerson,
-    'LegalPerson_form':update_LegalPerson_form,
+    'customer_id': customer_id,
+
+    'basicInfo_form': basicInfo_form,
+    'legalPerson_form': legalPerson_form,
+    'customer_form': customer_form,
+    
+    'basicInfo_label': BasicInfoForm(),
+    'legalPerson_label': LegalPersonsForm(),
+    'customer_label': CustomerForm(),   
   }
   return render(request, 'sales/customer_update.html', context)    
 
+@login_required
 def customer_delete(request, id):
-  if request.user.is_authenticated and not request.user.is_anonymous:
-    customer_delete = Customers.objects.get(id=id)
-    if request.method == 'POST':
-      customer_delete.delete()
-      messages.info(request, 'تم حذف الموظف بنجاح')
-      return redirect('customers')
+  # الحصول على الكائنات المطلوبة من قاعدة البيانات
+  customer = get_object_or_404(Customers, id=id)
+  legalPerson = get_object_or_404(LegalPersons, id=customer.legalPersonID_id)
+  basicInfo = get_object_or_404(BasicInfo, id=legalPerson.basicInfoID_id)
+
+  # إنشاء نماذج بالكائنات المسترجعة
+  customer_form = CustomerForm(instance=customer)
+  legalPerson_form = LegalPersonsForm(instance=legalPerson)
+  basicInfo_form = BasicInfoForm(instance=basicInfo)
+
+  if request.method == 'POST':
+    # حذف الكائن وإضافة رسالة نجاح
+    customer.delete()
+    messages.info(request, f'تم حذف العميل {customer.legalPersonID.name_ar}')
+    return redirect('customers')
   else:
-      messages.error(request, 'الرجاء تسجيل الدخول أولاً')
+      handle_form_errors(basicInfo_form, request)
+      handle_form_errors(legalPerson_form, request)
+      handle_form_errors(customer_form, request)
+  
   context = {
-      'customer_delete':customer_delete,
+      'basicInfo_label': basicInfo_form,
+      'legalPerson_label': legalPerson_form,
+      'customer_label': customer_form,
+
+      'customer_form': customer,
+      'basicInfo_form': basicInfo,
+      'legalPerson_form': legalPerson,
   }
   return render(request, 'sales/customer_delete.html', context)
 
@@ -158,40 +204,38 @@ def customers(request):
         return redirect('companys')
     # الحصول على القيود الخاصة بالشركة الحالية
     try:
-        emp_list = Customers.objects.filter(companyID_id=current_company_id)
+        customers = Customers.objects.filter(companyID_id=current_company_id)
     except Customers.DoesNotExist:
-        emp_list = []  # إذا لم يكن هناك أي كائنات، العودة إلى قائمة فارغة    
+        customers = []  # إذا لم يكن هناك أي كائنات، العودة إلى قائمة فارغة    
     # إعداد السياق
     context = {
-        'all_emp': emp_list,
+        'customers': customers,
     }
     # عرض الصفحة مع البيانات
     return render(request, 'sales/customers.html', context)
 
-
 # # دالة عرض جميع القيود
 @login_required
-def invoices(request):
+def invoices_sales(request):
     """
     عرض جميع الكائنات من نموذج invoice في صفحة invoices.html.
     يجب أن يكون المستخدم مسجلاً للدخول للوصول إلى هذه الصفحة.
     """
     # التحقق من الأذونات أولاً
     if not request.user.has_perm('accounts.view_invoice'):
-        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة للإطلاع على القيود المحاسبية.")
+        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة للإطلاع على فواتير المبيعات.")
         return redirect('index')
     
     # الحصول على الشركة الحالية من جلسة المستخدم
     current_company_id = request.session.get('current_company_id')
-    
     if not current_company_id:
         messages.error(request, 'الرجاء تحديد الشركة للعمل عليها.')
         return redirect('companys')
 
     # الحصول على القيود الخاصة بالشركة الحالية
     try:
-        invoices_list = SalesInvoiceHead.objects.filter(companyID_id=current_company_id)
-    except SalesInvoiceHead.DoesNotExist:
+        invoices_list = InvoicesSalesHead.objects.filter(companyID_id=current_company_id)
+    except InvoicesSalesHead.DoesNotExist:
         invoices_list = []  # إذا لم يكن هناك أي كائنات، العودة إلى قائمة فارغة
     
     # إعداد السياق
@@ -203,139 +247,53 @@ def invoices(request):
     return render(request, 'sales/invoices.html', context)
 
 # دالة إنشاء فاتورة جديدة
+
 @login_required 
-def invoice_create(request):
+def create_invoice_sales(request):
     """
-    وظيفة هذه الدالة هي إنشاء قيد محاسبي جديد خاص بالشركة التي قام المستخدم بتسجيل الدخول إليها
+    وظيفة هذه الدالة هي إنشاء فاتورة مبيعات جديدة خاصة بالشركة التي قام المستخدم بتسجيل الدخول إليها
     """
-    if not request.user.has_perm('accounts.add_invoice'):
+    if not request.user.has_perm('accounts.add_qayd'):
         messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لإنشاء القيود المحاسبية.")
-        return redirect('invoices')
+        return redirect('invoices_salse')
+    
     if request.method == 'POST':
-      head_form = SalesInvoiceHead(request.POST, request.FILES)
-      formset = SalesInvoiceBodyFormSet(request.POST)
+      head_form = InvoiceHeadForm(request.POST, request.FILES)
+      formset = InvoiceBodyFormSet(request.POST)
+
+      # التحقق من وجود current_company_id في الجلسة قبل استخدامه.
+      current_company_id = request.session.get('current_company_id')
+      if not current_company_id:
+        messages.error(request, 'لم يتم تحديد الشركة الحالية.')
+        return redirect('sales')
+    
       if head_form.is_valid() and formset.is_valid():
         head = head_form.save(commit=False)
-        head.created_by = request.user  # تعيين created_by فقط عند إنشاء قيد جديد
-        head.companyID = Company.objects.get(id=request.session.get('current_company_id'))
+        head.created_by = request.user  # تعيين created_by فقط عند إنشاء فاتورة جديد
+        head.companyID = get_object_or_404(Company, id=current_company_id)
         head.save()
+
         for form in formset:
           if form.cleaned_data:  # تأكد من أن النموذج يحتوي على بيانات صالحة
             body = form.save(commit=False)
             body.invoiceHeadID = head  # استخدام head مباشرة بدلاً من head.instance
             body.save()
-        messages.success(request, 'تم إضافة قيد جديد بنجاح')
-        return redirect('invoices')
+        messages.success(request, 'تم إضافة فاتورة مبيعات جديدة')
+        return redirect('qayds')
       else:
         # دالة عرض الأخطاء
         handle_form_errors(head_form, formset, request)
         # إعادة عرض النماذج مع الأخطاء
-        return render(request, 'sales/invoice_create.html', {
+        return render(request, 'accounts/qayd_create.html', {
             'head_form': head_form,
             'formset': formset,
         })
     else:
         # إعداد النماذج عند طلب GET
-        head_form = SalesInvoiceHeadForm()
-        formset = SalesInvoiceBodyFormSet(queryset=SalesInvoiceBody.objects.none())
+        head_form = InvoiceHeadForm()
+        formset = InvoiceBodyFormSet(queryset=InvoicesSalesBody.objects.none())
     context = {
        'head_form': head_form,
        'formset': formset,
     }
     return render(request, 'sales/invoice_create.html', context)
-
-# @login_required 
-# def invoice_reade(request, id):
-#     """ دالة عرض وقراءة قيد موجود مسبقاَ """
-#     if not request.user.has_perm('accounts.view_invoice'):
-#         messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة للإطلاع القيود المحاسبية.")
-#         return redirect('invoices')
-#     if request.user.is_authenticated and not request.user.is_anonymous:
-#         invoice_reade = invoice.objects.get(id=id)
-#         invoice_reade_details = invoiceDetails.objects.filter(invoiceID=id)
-#         total_d, total_c, difference = calculate_totals(invoice_reade_details)
-#         context = {
-#             'invoice_reade': invoice_reade,
-#             'invoice_reade_details': invoice_reade_details,
-#             'total_d': total_d,
-#             'total_c': total_c,
-#             'difference': difference,
-#         }
-#         return render(request, 'accounts/invoice_reade.html', context)
-
-# @login_required 
-# def invoice_delete(request, id):
-#     """ د دالة حذف قيد """
-#     if not request.user.has_perm('accounts.delete_invoice'):
-#         messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لحذف القيود المحاسبية.")
-#         return redirect('invoices')
-#     if request.user.is_authenticated and not request.user.is_anonymous:
-#         invoice_id = invoice.objects.get(id=id)
-#         if 'btndelete' in request.POST:
-#             invoice_id.delete()
-#             messages.success(request, f'تم حذف القيد {id} بنجاح')
-#             return redirect('invoices')
-#     else:
-#         messages.error(request, 'الرجاء تسجيل الدخول أولاً')
-    
-#     invoice_id_details = invoiceDetails.objects.filter(invoiceID=id)
-#     total_d, total_c, difference = calculate_totals(invoice_id_details)
-
-#     context = {
-#         'invoice_id': invoice_id,
-#         'invoice_id_details': invoice_id_details,
-#         'total_d': total_d,
-#         'total_c': total_c,
-#         'difference': difference,
-#     }
-#     return render(request, 'accounts/invoice_delete.html', context)
-
-# # دالة تحديث بيانات قيد موجود
-# @login_required 
-# def invoice_update(request, id):
-#     if not request.user.has_perm('accounts.change_invoice'):
-#         messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لتعديل القيود المحاسبية.")
-#         return redirect('invoices')
-#     invoice_update = get_object_or_404(invoice, id=id)
-#     # استخدام formset للحصول على جميع نماذج invoiceDetails المرتبطة بـ invoice المحدد
-#     invoiceDetailsFormSet = modelformset_factory(invoiceDetails, form=invoiceDetailsForm, extra=1)
-#     queryset = invoiceDetails.objects.filter(invoiceID=invoice_update)
-
-#     if request.method == 'POST':
-#         head_form = invoiceForm(request.POST, request.FILES, instance=invoice_update)
-#         formset = invoiceDetailsFormSet(request.POST, queryset=queryset)
-    
-#         if head_form.is_valid() and formset.is_valid():
-#           head = head_form.save(commit=False)
-#           head.updated_by = request.user
-#           head.companyID = Company.objects.get(id=request.session.get('current_company_id'))
-#           head.save()
-        
-#           for form in formset:
-#             if form.cleaned_data.get('DELETE', False):
-#                 if form.instance.pk:
-#                     form.instance.delete()  # حذف النموذج من قاعدة البيانات
-#             else:
-#                 body = form.save(commit=False)
-#                 body.invoiceID = head
-#                 body.save()
-
-#           messages.success(request, f'تم تحديث بيانات القيد {id} بنجاح')
-#           return redirect('invoices')
-#         else:
-#             # دالة عرض الأخطاء
-#             handle_form_errors(head_form, formset, request)
-#     else:
-#         head_form = invoiceForm(instance=invoice_update)
-#         formset = invoiceDetailsFormSet(queryset=queryset)
-#     total_d, total_c, difference = calculate_totals(queryset)
-#     context = {
-#         'invoice_update': invoice_update,
-#         'head_form': head_form,
-#         'formset':formset,
-#         'total_d': total_d,
-#         'total_c': total_c,
-#         'difference': difference,
-#     }
-#     return render(request, 'accounts/invoice_update.html', context)
-

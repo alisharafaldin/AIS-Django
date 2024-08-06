@@ -1,5 +1,5 @@
 from django.db import models
-from basicinfo.models import Color, Size, TargetGroup
+from basicinfo.models import Color, Size, TargetGroup, MeasuringUnits
 from django.contrib.auth.models import User
 from companys.models import Company
 
@@ -20,15 +20,17 @@ class ItemGrop(models.Model):
     def __str__(self):
         return self.name_ar
     
-class ItemDetails(models.Model):
+class Items(models.Model):
     companyID = models.ForeignKey(Company, on_delete=models.PROTECT,blank=True)
     sequence = models.PositiveIntegerField(editable=False)  # الحقل التسلسلي
     itemGropID = models.ForeignKey(ItemGrop, verbose_name='معرف مجموعة الصنف', on_delete=models.PROTECT, related_name='category', blank=True, null=True)
+    measuringUnitID = models.ForeignKey(MeasuringUnits, verbose_name='معرف وحدة القياس', on_delete=models.PROTECT, related_name='category', blank=True, null=True)
+    targetGroupID = models.ForeignKey(TargetGroup,verbose_name='الفئة المستهدفة',  on_delete=models.PROTECT, default=1, blank=True, null=True)
+    itemCode = models.TextField(verbose_name='كود الصنف', blank=True, null=True)
     purchasingPrice = models.DecimalField(verbose_name='سعر الشراء', default=0, max_digits=10, decimal_places=2, blank=True, null=True)
     sellingPrice = models.DecimalField(verbose_name='سعر البيع', default=0, max_digits=10, decimal_places=2, blank=True, null=True)
     name_ar = models.CharField(verbose_name='الصنف عربي', max_length=100, blank=True, null=True)
     name_en = models.CharField(verbose_name='الصنف إنجليزي', max_length=100, blank=True, null=True)
-    targetGroupID = models.ForeignKey(TargetGroup,verbose_name='الفئة المستهدفة',  on_delete=models.PROTECT, default=1, blank=True, null=True)
     colorID = models.ForeignKey(Color,verbose_name='اللون',  on_delete=models.PROTECT, default=1, related_name='the_color', blank=True, null=True)
     sizeID = models.ForeignKey(Size,verbose_name='المقاس',  on_delete=models.PROTECT, default=1, related_name='size', blank=True, null=True)
     description = models.TextField(verbose_name='وصف الصنف', blank=True, null=True)

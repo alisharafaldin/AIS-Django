@@ -1,14 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
 from basicinfo.models import Project, Countries, TypeTransaction
-from employees.models import EmployeeInfo
+from employees.models import Employee
 from companys.models import Company
 from datetime import datetime
 from django.utils import timezone
 from django.db.models.signals import pre_save, post_delete
 from django.dispatch import receiver
 from mptt.models import MPTTModel, TreeForeignKey
-from products.models import ItemDetails
 #  لتجنب مشكلة الاستيراد الدائري (Circular Import)
 
 def get_shareholdersInfo():
@@ -97,9 +96,8 @@ class QaydDetails(models.Model):
   debit = models.DecimalField(verbose_name='مدين', default=0, max_digits=6, decimal_places=2)
   credit = models.DecimalField(verbose_name='دائن', default=0, max_digits=6, decimal_places=2)
   description_details = models.TextField(verbose_name='وصف تفصيل القيد', default="تفاصيل قيد يومية جديد", max_length=250,blank=True, null=True)
-  itemsDetailstID = models.ForeignKey(ItemDetails, verbose_name='المنتج', on_delete=models.PROTECT, blank=True, null=True)
   projectID = models.ForeignKey(Project, verbose_name='المشروع', on_delete=models.PROTECT, blank=True, null=True)
-  empID = models.ForeignKey(EmployeeInfo, verbose_name='الموظف', on_delete=models.PROTECT, blank=True, null=True)
+  empID = models.ForeignKey(Employee, verbose_name='الموظف', on_delete=models.PROTECT, blank=True, null=True)
   shareholdersID = models.ForeignKey(get_shareholdersInfo(), related_name='المساهم', verbose_name='المساهم', on_delete=models.PROTECT, blank=True, null=True)
   cycleID = models.ForeignKey(get_cycle(), related_name='cycleID', verbose_name='الدورة', on_delete=models.PROTECT, blank=True, null=True)
 

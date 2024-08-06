@@ -13,8 +13,8 @@ class CategoryImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id', 'name_ar', 'name_en', 'itemTypeID']
 
-@admin.register(ItemDetails)
-class ItemsDetailsImportExport(ImportExportModelAdmin):
+@admin.register(Items)
+class ItemsImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id', 'itemGropID' , 'purchasingPrice', 'sellingPrice', 'name_en', 'colorID', 'sizeID', 'description', 'photo']
 

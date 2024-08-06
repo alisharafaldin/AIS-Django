@@ -1,0 +1,116 @@
+
+<style>
+  @media (max-width: 768px) {
+    .table-responsive thead {
+      display: none;
+    }
+
+    .table-responsive tbody, 
+    .table-responsive th, 
+    .table-responsive td {
+      display: block;
+    }
+
+    .table-responsive tr {
+      margin-bottom: 15px;
+    }
+
+
+    .table-responsive td, 
+    .table-responsive th {
+      direction: rtl; /* لضبط الاتجاه من اليمين إلى اليسار */
+      text-align: right;
+      padding-right: 25%;
+      position: relative;
+      width: 100vw;
+    }
+
+    .table-responsive td::before, 
+    .table-responsive th::before {
+      content: attr(data-label);
+      position: absolute;
+      right: 0;
+      width: 20%;
+      padding-right: 10px;
+      margin: -12px 1px 2px 2px;
+      padding: 12px 8px 12px 0px;
+      font-weight: bold;
+      background-color: rgb(219, 219, 219);
+    }
+  }
+
+
+</style>
+
+<div class="form-row">
+  <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
+    <div class="form-row">
+      <h6 style="font-weight: bold" class="col-md-3">التاريخ</h6>
+      <div class="form-group col-md-6">{{head_form.date}}</div>
+    </div>
+    <div class="form-row">
+      <h6 style="font-weight: bold" class="col-md-3">مصدر القيد</h6>
+      <div class="form-group col-md-6">{{head_form.typeTransactionID}}</div>
+    </div>
+  </div>
+  <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
+    <div class="form-row">
+      <h6 style="font-weight: bold" class="col-md-3">الوصف</h6>
+      <div class="form-group col-md-6">{{head_form.description}}</div>
+    </div>
+    <div class="form-row">
+      <h6 style="font-weight: bold" class="col-md-3">المرفقات</h6>
+      <div class="form-group col-md-6">{{head_form.attachments}}</div>
+    </div>
+  </div>
+</div>
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">{{ formset.total_form_count }}</th>
+        <th scope="col">المنتج</th>
+        <th scope="col">الكمية</th>
+        <th scope="col">سعر الوحدة</th>
+        <th scope="col">الخصم</th>
+        <th scope="col">الإجمالي قبل الضريبة</th>
+        <th scope="col">نسبة الضريبة</th>
+        <th scope="col">المشروع</th>
+        <th scope="col">الموظف</th>
+      </tr>
+    </thead>
+    {{ formset.management_form }} 
+    <tbody id="formset-container">
+        {% for form in formset %}
+        <tr class="form-container">
+            <td data-label="حذف"><button class="btn btn-danger">-</button></td>
+            <td data-label="المنتج">{{form.itemsDetailstID}}</td>
+            <td data-label="الكمية">{{form.quantity}}</td>
+            <td data-label="سعر الوحدة">{{form.unit_price}}</td>
+            <td data-label="الخصم">{{form.discount}}</td>
+            <td data-label="الإجمالي قبل الضريبة">{{form.total_price_before_tax}}</td>
+            <td data-label="نسبة الضريبة">{{form.tax_rate}}</td>
+            <td data-label="قيمة الضريبة">{{form.tax_value}}</td>
+            <td data-label="الإجمالي بعد الضريبة">{{form.total_price_after_tax}}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    <tbody>
+      <tr>
+        <td><a class="btn" style="background-color: green;" id="add-form">+</a></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <th>المجموع</th>
+        <th id="total-d">مجموع مدين : {{total_d}}</th>
+        <th id="total-c">مجموع الدائن : {{total_c}}</th>
+        {% if difference == 0 %}
+        <th id="result">الفرق : <span style="color: green;">{{difference}}</span></th>
+        {% else %}
+        <th id="result">الفرق : <span style="color: red;">{{difference}}</span></th>
+        {% endif %}
+      </tr>
+    </tbody>
+  </table>
+</div>
+     

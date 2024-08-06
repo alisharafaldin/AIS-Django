@@ -2,6 +2,50 @@
 {% load static %} 
 {% block title %} | Employees {% endblock %}
 {% block content %}
+
+<style>
+  @media (max-width: 768px) {
+    .table-responsive thead {
+      display: none;
+    }
+
+    .table-responsive tbody, 
+    .table-responsive th, 
+    .table-responsive td {
+      display: block;
+    }
+
+    .table-responsive tr {
+      margin-bottom: 15px;
+    }
+
+
+    .table-responsive td, 
+    .table-responsive th {
+      direction: rtl; /* لضبط الاتجاه من اليمين إلى اليسار */
+      text-align: right;
+      padding-right: 25%;
+      position: relative;
+      width: 100vw;
+    }
+
+    .table-responsive td::before, 
+    .table-responsive th::before {
+      content: attr(data-label);
+      position: absolute;
+      right: 0;
+      width: 20%;
+      padding-right: 10px;
+      margin: -12px 1px 2px 2px;
+      padding: 12px 8px 12px 0px;
+      font-weight: bold;
+      background-color: rgb(219, 219, 219);
+    }
+  }
+
+
+</style>
+
 <div class="content-wrapper">
   <div class="main-title">
     <h4 class="form-group col-md-9">جميع الموظفين</h4>
@@ -18,9 +62,10 @@
     <!-- End Search -->
   </form>
   <br>
+  {% include 'partials/_alerts.html' %}
   <div class="content">
     <div class="form-inline my-2 my-lg-0"></div>
-    <p class="sub-title">إجمالي عدد الموظفين : {{emp_count.count}}</p>
+    <p class="sub-title">إجمالي عدد الموظفين : {{employees.count}}</p>
     <p class="sub-title">
       إجمالي الموظفين على رأس العمل : {{emp_workingStatus}}
     </p>
@@ -43,17 +88,17 @@
            </tr>
          </thead>
          <tbody>
-           {% for emp in all_emp %}
+           {% for employee in employees %}
            <tr>
              <!-- لعمل ارقام تسلسلة -->
-             <th scope="row">{{forloop.counter}}</th>
+             <th data-label="#" scope="row">{{forloop.counter}}</th>
              <!-- تفاصيل الجدول -->
-             <td>{{emp.personID.f_Name_ar}}</td>
-             <td>{{emp.personID.typeID}}</td>
-             <td>{{emp.personID.id_number}}</td>
-             <td>{{emp.personID.desAddress}}</td>
-             <td>{{emp.personID.mobileNumber}}</td>
-             <td>
+             <td data-label="الإسم">{{employee.personID.fullName_ar}}</td>
+             <td data-label="نوع الهوية">{{employee.personID.typeID}}</td>
+             <td data-label="رقم الهوية">{{employee.personID.id_number}}</td>
+             <td data-label="العنوان">{{employee.personID.basicInfoID.address}}</td>
+             <td data-label="جوال">{{employee.personID.basicInfoID.phone}}</td>
+             <td data-label="إجراءات">
                {% if emp.documentLink %}
                <a href="{{emp.documentLink}}" target="blank">رابط المستندات</a>
                {% else %}
@@ -61,13 +106,13 @@
                {% endif %}
              </td>
              <td>
-               <a class="btn-link" href="{% url 'employee_update' emp.id %}">
+               <a class="btn-link" href="{% url 'employee_update' employee.id %}">
                  <i class="fas fa-edit"></i>
                </a>
-               <a href="{% url 'employee_reade' emp.id %}" class="btn-link">
+               <a href="{% url 'employee_reade' employee.id %}" class="btn-link">
                  <i class="fa fa-print" aria-hidden="true"></i>
                </a>
-               <a href="{% url 'employee_delete' emp.id %}" class="btn-link">
+               <a href="{% url 'employee_delete' employee.id %}" class="btn-link">
                  <i class="fa fa-trash" aria-hidden="true"></i>
                </a>
              </td>

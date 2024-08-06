@@ -169,6 +169,7 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',
+    # messages.SUCCESS: 'Nagah',
 }
 # f = open('test.txt', 'w')
 # f.write( os.path.join(BASE_DIR))

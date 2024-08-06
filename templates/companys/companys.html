@@ -14,10 +14,10 @@
     {% for company in companys %}
     <div class="card" style="width: 18rem">
       <div class="image" style="height: 254px">
-        {% if company.logo %}
+        {% if company.legalPersonID.basicInfoID.photo %}
         <img
           class="card-img-top"
-          src="{{ company.logo.url }}"
+          src="{{ company.legalPersonID.basicInfoID.photo.url }}"
           alt="Card image cap"
         />
         {% else %}

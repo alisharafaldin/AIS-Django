@@ -1,9 +1,9 @@
 from django.db.models.signals import pre_save
 from django.db.models import Max
 from django.dispatch import receiver
-from .models import EmployeeInfo
+from .models import Employee
 
-@receiver(pre_save, sender=EmployeeInfo)
+@receiver(pre_save, sender=Employee)
 def set_sequence(sender, instance, **kwargs):
     if instance.pk is None:  # إذا كان هذا سجل جديد
         # الحصول على أقصى قيمة موجودة للـ sequence في الشركة المحددة

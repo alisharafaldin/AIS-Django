@@ -1,19 +1,7 @@
-{% extends 'base.html' %}
-{% load static %} 
-{% block title %} | Invoice Sales New {% endblock %}
-{% block content %}
-<style>
-  .btn-qayd{
-    width: 30px;
-    /* display: block; */
-    color: white !important;
-    justify-content: center;
-    align-items: center;
-    border-radius: 20%;
-    display: flex;
-    cursor: pointer !important;
-  }
-</style>
+{% extends 'base.html' %} {% load static %} {% block title %} | Invoice Sales
+New {% endblock %} {% block content %}
+
+
 <div class="content-wrapper">
   <div class="main-title">
     <h4 class="form-group col-md-9">فاتورة مبيعات جديدة</h4>
@@ -22,19 +10,22 @@
     {% include 'partials/_alerts.html' %}
     <form method="POST">
       {% csrf_token %}
-      <br>
+      <br />
       <button type="submit" name="btnsave" class="btn btn-save">إضافة</button>
       <a href="{% url 'invoices_sales' %}" class="btn btn-close" data-dismiss="modal" aria-label="Close">إلغاء</a>
-      <br>
-      <br>
-      <br>
-      {% include 'sales/invoice_form_label.html' %}
+      <br />
+      <br />
+      <br />
+      {% include 'sales/invoice_forml.html' %}
     </form>
     <!-- End Modal -->
     <div class="form-row">
-    <h6 class="form-group col-md-6"> المستخدم : {{request.user}} </h6>
+      <h6 class="form-group col-md-6">المستخدم : {{request.user}}</h6>
     </div>
   </div>
 </div>
-<script  type="module" src="{% static 'dist/js/add-remove-invoice-form.js' %}"></script>
+<script type="module" src="{% static 'dist/js/add-remove-invoice-form.js' %}"></script>
+<script type="module" src="{% static 'dist/js/calculate-totals.js' %}"></script>
+<script type="module" src="{% static 'dist/js/add-remove-form.js' %}"></script>
+
 {% endblock %}

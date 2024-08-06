@@ -1,14 +1,13 @@
 from django import forms
-from .models import EmployeeInfo
+from .models import Employee
 
-class EmpForm(forms.ModelForm):
+class EmployeeForm(forms.ModelForm):
   class Meta:
-      model = EmployeeInfo
+      model = Employee
       fields = '__all__'
       # لعمل إستثناء حقل
       # exclude = ('f_Name_ar')
       widgets = {
-        'workEndDate': forms.TextInput(attrs={'class':'form-control','type':'date', 'placeholder':'تاريخ بداية العمل'}),
         'workEndDate': forms.TextInput(attrs={'class':'form-control','type':'date', 'placeholder':'تاريخ بداية العمل'}),
         'contractSalary': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'إجمالي الراتب'}),
         'fixedExtra': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'إضافي ثابت'}),

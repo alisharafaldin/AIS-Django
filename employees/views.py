@@ -1,127 +1,188 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from employees.models import *
-from .forms import EmpForm
+from .forms import EmployeeForm
 from django.contrib.auth.decorators import login_required
-from basicinfo.forms import PersonForm
-from basicinfo.models import Persons
+from basicinfo.forms import BasicInfoForm, PersonForm
+from basicinfo.models import BasicInfo, Persons
 # from basicinfo.views import 
+  #  التحقق من وجود current_company_id في الجلسة قبل استخدامه.
+def is_current_company_id(request):
+    current_company_id = request.session.get('current_company_id')
+    if not current_company_id:
+        messages.error(request, 'لم يتم تحديد الشركة الحالية.')
+        return redirect('employees')
+    
+def handle_form_errors(request, *forms):
+    for form in forms:
+        for field, errors in form.errors.items():
+            for error in errors:
+                messages.error(request, f"{field}: {error}")
 
-def handle_form_errors(head_form, formset, request):
-    """وظيفة مساعد لمعالجة الأخطاء وعرض الرسائل المناسبة."""
-    for field, errors in head_form.errors.items():
-        for error in errors:
-            messages.error(request, f"خطأ في نموذج Person في الحقل '{field}': {error}")
-    for field, errors in formset.errors.items():
-      for error in errors:
-          messages.error(request, f"خطأ في نموذج Emp في الحقل '{field}': {error}")
-  
 @login_required 
 def employee_create(request):
     if not request.user.has_perm('employee.add_qayd'):
         messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لإنشاء القيود المحاسبية.")
         return redirect('employees')
+    
     if request.method == 'POST':
+      basicInfo_form = BasicInfoForm(request.POST, request.FILES)
       person_form = PersonForm(request.POST, request.FILES)
-      emp_form = EmpForm(request.POST, request.FILES)
-      if person_form.is_valid() and emp_form.is_valid():
+      employee_form = EmployeeForm(request.POST, request.FILES)
+
+      if basicInfo_form.is_valid() and person_form.is_valid() and employee_form.is_valid():
+        basicInfo = basicInfo_form.save(commit=False)
+        basicInfo.created_by = request.user  # تعيين created_by فقط عند إنشاء موظف جديد
+        basicInfo.save()
+
         person = person_form.save(commit=False)
-        person.created_by = request.user  # تعيين created_by فقط عند إنشاء قيد جديد
+        person.basicInfoID = basicInfo
         person.save()
-        emp = emp_form.save(commit=False)
-        emp.companyID = Company.objects.get(id=request.session.get('current_company_id'))
-        emp.personID = person
-        emp.save()
-        messages.success(request, 'تم إضافة موظف جديد بنجاح')
+
+        #  التحقق من وجود current_company_id في الجلسة قبل استخدامه.
+        current_company_id = request.session.get('current_company_id')
+        if not current_company_id:
+            messages.error(request, 'لم يتم تحديد الشركة الحالية.')
+            return redirect('employees')
+        
+        employee = employee_form.save(commit=False)
+        employee.companyID = get_object_or_404(Company, id=current_company_id)
+        employee.personID = person
+        employee.save()
+
+        messages.success(request, f'تم إضافة موظف جديد بنجاح بإسم : {employee.personID.fullName_ar()} ')
         return redirect('employees')
       else:
         # دالة عرض الأخطاء
-        handle_form_errors(person_form, emp_form, request)
-        # إعادة عرض النماذج مع الأخطاء
-        return render(request, 'employees/employee_create.html', {
-            'person_form': person_form,
-            'emp_form': emp_form,
-        })
+            handle_form_errors(request, basicInfo_form, person_form, employee_form)
+            # إعادة عرض النماذج مع الأخطاء
+            return render(request, 'employees/employee_create.html', {
+                'basicInfo_form': basicInfo_form,
+                'person_form': person_form,
+                'employee_form': employee_form,
+            })
     else:
         # إعداد النماذج عند طلب GET
+        basicInfo_form = BasicInfoForm()
         person_form = PersonForm()
-        emp_form = EmpForm()
+        employee_form = EmployeeForm()
+
     context = {
-       'person_form': person_form,
-       'emp_form': emp_form,
+    'basicInfo_form': basicInfo_form,
+    'person_form': person_form,
+    'employee_form': employee_form,
+
+    'basicInfo_label': basicInfo_form,
+    'person_label': person_form,
+    'employee_label': employee_form,
     }
     return render(request, 'employees/employee_create.html', context)
 
+@login_required
 def employee_reade(request, id):
-  emp_form = EmployeeInfo.objects.get(id=id)
-  person_form = Persons.objects.get(id=emp_form.personID_id)
+  employee = Employee.objects.get(id=id)
+  person = Persons.objects.get(id=employee.personID_id)
+  basicInfo = BasicInfo.objects.get(id=person.basicInfoID_id)
+
+  basicInfo_form = BasicInfoForm(request.POST, request.FILES, instance=basicInfo)
+  person_form = PersonForm(request.POST, request.FILES, instance=person)
+  employee_form = EmployeeForm(request.POST, request.FILES, instance=employee)
+
   context = {
-    'emp_form':emp_form,
-    'person_form':person_form,
+    'basicInfo_form': basicInfo,
+    'person_form': person,
+    'employee_form': employee,
+
+    'basicInfo_label': basicInfo_form,
+    'person_label': person_form,
+    'employee_label': employee_form,
   }
   return render(request, 'employees/employee_reade.html', context)
 
+@login_required
 def employee_update(request, id):
-  update_emp = EmployeeInfo.objects.get(id=id)
-  update_person = Persons.objects.get(id=update_emp.personID_id)
-  update_emp_form = EmpForm(instance=update_emp)
-  update_person_form = PersonForm(request.POST, request.FILES, instance=update_person)
+  # الحصول على الكائنات المطلوبة من قاعدة البيانات
+  employee = get_object_or_404(Employee, id=id)
+  person = get_object_or_404(Persons, id=employee.personID_id)
+  basicInfo = get_object_or_404(BasicInfo, id=person.basicInfoID_id)
+
   if request.method == 'POST':
-    companyID = None
-    workingStatusID = None
-    contractSalary = None
-    fixedExtra = None
-    workStartDate = None
-    workEndDate = None
-    #Get Values from the form
-    if 'companyID' in request.POST: companyID = request.POST['companyID']
-    else: messages.error(request, 'Error in companyID')
-    if 'workingStatusID' in request.POST: workingStatusID = request.POST['workingStatusID']
-    else: messages.error(request, 'Error in workingStatusID')
-    if 'contractSalary' in request.POST: contractSalary = request.POST['contractSalary']
-    else: messages.error(request, 'Error in contractSalary')
-    if 'fixedExtra' in request.POST: fixedExtra = request.POST['fixedExtra']
-    else: messages.error(request, 'Error in fixedExtra')
-    if 'workStartDate' in request.POST: workStartDate = request.POST['workStartDate']
-    else: messages.error(request, 'Error in workStartDate')
-    if 'workEndDate' in request.POST: workEndDate = request.POST['workEndDate']
-    else: messages.error(request, 'Error in workEndDate')
-    if update_person_form.is_valid():
-      update_person_form.save()
-      update_emp.companyID_id=companyID 
-      update_emp.workingStatusID_id=workingStatusID
-      update_emp.contractSalary=contractSalary
-      update_emp.workStartDate=workStartDate
-      update_emp.workEndDate=workEndDate
-      update_emp.fixedExtra=fixedExtra
-      messages.success(request, 'تم تحديث البيانات بنجاح') 
-      return redirect('employees')
-    else :      
-      messages.error(request, 'خطأ في البيانات') 
-      return redirect('employee_update')
-  update_person_form = PersonForm(instance=update_person)
+      # إنشاء نماذج بالكائنات المسترجعة
+      basicInfo_form = BasicInfoForm(request.POST, request.FILES, instance=basicInfo)
+      person_form = PersonForm(request.POST, request.FILES, instance=person)
+      employee_form = EmployeeForm(request.POST, request.FILES, instance=employee)
+
+      if basicInfo_form.is_valid() and person_form.is_valid() and employee_form.is_valid():
+          basicInfo = basicInfo_form.save(commit=False)
+          basicInfo.created_by = request.user 
+          basicInfo.save()
+
+          person = person_form.save(commit=False)
+          person.basicInfoID = basicInfo
+          person.save()
+
+          employee = employee_form.save(commit=False)
+          employee.personID = person
+          employee.owner = request.user
+          employee.companyID = Company.objects.get(id=request.session.get('current_company_id'))
+          employee.save()
+
+          messages.success(request, f'تم تحديث بيانات الموظف {employee.personID.fullName_ar()}')
+          return redirect('employees')
+      else:
+          # عرض رسائل الخطأ من النماذج
+          handle_form_errors(request, basicInfo_form, person_form, employee_form)
+  else:
+      # إعداد النماذج عند طلب GET
+      basicInfo_form = BasicInfoForm(instance=basicInfo)
+      person_form = PersonForm(instance=person)
+      employee_form = EmployeeForm(instance=employee)
+
   context = {
-    'employee_update':update_emp,
-    'emp_form':update_emp_form,
-    'person_update':update_person,
-    'person_form':update_person_form,
+    'employee': employee,
+
+    'basicInfo_form': basicInfo_form,
+    'person_form': person_form,
+    'employee_form': employee_form,
+    
+    'basicInfo_label': BasicInfoForm(),
+    'person_label': PersonForm(),
+    'employee_label': EmployeeForm(),   
   }
   return render(request, 'employees/employee_update.html', context)    
 
+@login_required
 def employee_delete(request, id):
-  if request.user.is_authenticated and not request.user.is_anonymous:
-    employee_delete = EmployeeInfo.objects.get(id=id)
-    if request.method == 'POST':
-      employee_delete.delete()
-      messages.info(request, 'تم حذف الموظف بنجاح')
-      return redirect('employees')
+  # الحصول على الكائنات المطلوبة من قاعدة البيانات
+  employee = get_object_or_404(Employee, id=id)
+  person = get_object_or_404(Persons, id=employee.personID_id)
+  basicInfo = get_object_or_404(BasicInfo, id=person.basicInfoID_id)
+
+  # إنشاء نماذج بالكائنات المسترجعة
+  employee_form =  EmployeeForm(instance=employee)
+  person_form = PersonForm(instance=person)
+  basicInfo_form = BasicInfoForm(instance=basicInfo)
+
+  if request.method == 'POST':
+    # حذف الكائن وإضافة رسالة نجاح
+    employee.delete()
+    messages.info(request, 'تم حذف الموظف بنجاح')
+    return redirect('employees')
   else:
-      messages.error(request, 'الرجاء تسجيل الدخول أولاً')
+      handle_form_errors(request, basicInfo_form, person_form, employee_form)
+  
   context = {
-      'employee_delete':employee_delete,
+      'basicInfo_label': basicInfo_form,
+      'person_label': person_form,
+      'employee_label': employee_form,
+
+      'employee_form': employee,
+      'basicInfo_form': basicInfo,
+      'person_form': person,
   }
   return render(request, 'employees/employee_delete.html', context)
 
+@login_required
 def employees(request):
     # التحقق من الأذونات أولاً
     if not request.user.has_perm('emplyees.view_qayd'):
@@ -134,12 +195,12 @@ def employees(request):
         return redirect('companys')
     # الحصول على القيود الخاصة بالشركة الحالية
     try:
-        emp_list = EmployeeInfo.objects.filter(companyID_id=current_company_id)
-    except EmployeeInfo.DoesNotExist:
-        emp_list = []  # إذا لم يكن هناك أي كائنات، العودة إلى قائمة فارغة    
+        employees = Employee.objects.filter(companyID_id=current_company_id)
+    except Employee.DoesNotExist:
+        employees = []  # إذا لم يكن هناك أي كائنات، العودة إلى قائمة فارغة    
     # إعداد السياق
     context = {
-        'all_emp': emp_list,
+        'employees': employees,
     }
     # عرض الصفحة مع البيانات
     return render(request, 'employees/employees.html', context)

@@ -3,11 +3,11 @@
   <div class="content">
     <div class="modal-content">
       <div class="modal-body">
-        <h4 class="main-title">بطاقة تعريف الموظف :  {{employee_reade.personID.fullName_ar}}</h4>
+        <h4 class="main-title">بطاقة تعريف الموظف :  {{employee_form.personID.fullName_ar}}</h4>
         <br />
         <!-- <a href="{% url 'index' %}" class="btn btn-warning">الرئيسة</a> -->
         <a href="{% url 'employees' %}" class="btn btn-main">جميع الموظفين</a>
-        <a href="{% url 'employee_update' emp_form.id %}" class="btn btn-main">تعديل</a>
+        <a href="{% url 'employee_update' employee_form.id %}" class="btn btn-main">تعديل</a>
         <br />
         <br />
         {% include 'partials/_alerts.html' %}

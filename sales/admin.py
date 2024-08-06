@@ -4,18 +4,16 @@ from import_export.admin import ImportExportModelAdmin
 # Register your models here.
 
 @admin.register(Customers)
-class SuppliersImportExport(ImportExportModelAdmin):
+class CustomersImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'legalPersonsID']
+    list_display = ['id', 'legalPersonID']
 
-@admin.register(SalesInvoiceHead)
-class InvoiceHeadImportExport(ImportExportModelAdmin):
+@admin.register(InvoicesSalesHead)
+class InvoicesSalesHeadImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id', 'supplierID']
 
-@admin.register(SalesInvoiceBody)
-class InvoiceBodyImportExport(ImportExportModelAdmin):
+@admin.register(InvoicesSalesBody)
+class InvoicesSalesBodyImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'itemsDetailstID', 'quantity', 'unit_price', 'discount', 'total_price_before_tax']
-
-
+    list_display = ['id', 'itemID', 'quantity', 'unit_price', 'discount', 'total_price_before_tax']

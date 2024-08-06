@@ -7,7 +7,7 @@
             {% else %}
                 {{msg.tags|title}}
             {% endif %}
-        </strong> :
+        </strong> : 
         {{msg|safe }}  <!-- تأكد من استخدام الفلتر safe لعرض HTML -->
         <button type="button" style="display: flex; width: 20px;" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
