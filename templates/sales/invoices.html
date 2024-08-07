@@ -1,24 +1,77 @@
-{% extends 'base.html' %} {% load static %} 
-{% block title %} | Qayds 
-{% endblock %} 
-{% block content %}
+{% extends 'base.html' %} {% load static %} {% block title %} | Qayds 
+{% endblock %} {% block content %}
 <style>
-  /* تحسين عرض الجدول على الأجهزة الصغيرة */
-  @media (max-width: 767.98px) {
-      th, td {
-          white-space: nowrap;
-      }
+  @media (max-width: 768px) {
+    .table-responsive thead {
+      display: none;
+    }
+
+    .table-responsive tbody, 
+    .table-responsive th, 
+    .table-responsive td {
+      display: block;
+    }
+
+    .table-responsive tr {
+      margin-bottom: 15px;
+    }
+
+
+    .table-responsive td, 
+    .table-responsive th {
+      direction: rtl; /* لضبط الاتجاه من اليمين إلى اليسار */
+      text-align: right;
+      padding-right: 25%;
+      position: relative;
+      width: 100vw;
+    }
+
+    .table-responsive td::before, 
+    .table-responsive th::before {
+      content: attr(data-label);
+      position: absolute;
+      right: 0;
+      width: 20%;
+      padding-right: 10px;
+      margin: -12px 1px 2px 2px;
+      padding: 12px 8px 12px 0px;
+      font-weight: bold;
+      background-color: rgb(219, 219, 219);
+    }
   }
+
+
 </style>
+
 <div class="content-wrapper">
-  <div class="main-title"><h4 class="form-group col-md-9">فواتير المبيعات</h4></div>
+  <div class="main-title">
+    <h4 class="form-group col-md-9">فواتير المبيعات</h4>
+  </div>
   <form method="GET" class="form-inline my-2 my-lg-0">
-    <a href="{% url 'create_invoice_sales' %}" class="btn btn-main">إضافة فاتورة جديدة</a>
-    <button class="btn btn-main" type="submit">بحث<i class="fa-solid fa-magnifying-glass"></i></button>
-    <a href="{% url 'invoices' %}" class="btn btn-main" type="submit">إعادة تعيين<i class="fa-solid fa-rotate-right"></i></a>
-    <input class="form-control mr-sm-2 remove-outline" name="search_emp" placeholder="بحث برقم الفاتورة"/>
-    <input class="form-control mr-sm-2 remove-outline" name="search_iqama" placeholder="بحث بالمورد"/>
-    <input class="form-control mr-sm-2 remove-outline" name="search_border" placeholder="بحث بإجمالي المبلغ"/>
+    <a href="{% url 'create_invoice_sales' %}" class="btn btn-main"
+      >إضافة فاتورة جديدة</a
+    >
+    <button class="btn btn-main" type="submit">
+      بحث<i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+    <a href="{% url 'invoices' %}" class="btn btn-main" type="submit"
+      >إعادة تعيين<i class="fa-solid fa-rotate-right"></i
+    ></a>
+    <input
+      class="form-control mr-sm-2 remove-outline"
+      name="search_emp"
+      placeholder="بحث برقم الفاتورة"
+    />
+    <input
+      class="form-control mr-sm-2 remove-outline"
+      name="search_iqama"
+      placeholder="بحث بالمورد"
+    />
+    <input
+      class="form-control mr-sm-2 remove-outline"
+      name="search_border"
+      placeholder="بحث بإجمالي المبلغ"
+    />
   </form>
   <div class="content">
     {% include 'partials/_alerts.html' %}
@@ -41,20 +94,30 @@
           <tbody>
             {% for invoice in invoices %}
             <tr>
-              <th scope="row">{{ forloop.counter }}</th>
-              <td>{{ invoice.sequence }}</td>
-              <td>{{ invoice.date|date:"Y-m-d" }}</td>
-              <td>{{ invoice.supplierID }}</td>
-              <td>{{ invoice.created_by }}</td>
-              <td>{{ invoice.approve }}</td>
-              <td>
-                <a href="{% url 'invoice_update' invoice.id %}" class="btn-link">
+              <th data-label="#" scope="row">{{ forloop.counter }}</th>
+              <td data-label="رقم الفاتورة">{{ invoice.sequence }}</td>
+              <td data-label="التاريخ">{{ invoice.date|date:"Y-m-d" }}</td>
+              <td data-label="العميل">{{ invoice.customerID }}</td>
+              <td data-label="الإجمالي">{{ invoice.created_by }}</td>
+              <td data-label="المستخدم">{{ invoice.created_by }}</td>
+              <td data-label="إعتماد">{{ invoice.approve }}</td>
+              <td data-label="الإجرات">
+                <a
+                  href="{% url 'update_invoice_sales' invoice.id %}"
+                  class="btn-link"
+                >
                   <i class="fas fa-edit"></i>
                 </a>
-                <a href="{% url 'invoice_reade'  invoice.id %}" class="btn-link">
+                <a
+                  href="{% url 'reade_invoice_sales'  invoice.id %}"
+                  class="btn-link"
+                >
                   <i class="fa fa-print" aria-hidden="true"></i>
                 </a>
-                <a href="{% url 'invoice_delete' invoice.id %}" class="btn-link">
+                <a
+                  href="{% url 'delete_invoice_sales' invoice.id %}"
+                  class="btn-link"
+                >
                   <i class="fa fa-trash" aria-hidden="true"></i>
                 </a>
               </td>

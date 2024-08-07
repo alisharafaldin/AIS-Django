@@ -45,18 +45,41 @@
 <div class="form-row">
   <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
     <div class="form-row">
-      <h6 style="font-weight: bold" class="col-md-3">التاريخ</h6>
-      <div class="form-group col-md-6">{{head_form.date}}</div>
+      <h6 style="font-weight: bold" class="col-md-2">التاريخ</h6>
+      <div class="form-group col-md-3">{{head_form.date}}</div>
+      <h6 style="font-weight: bold" class="col-md-2">نوع العملية</h6>
+      <div class="form-group col-md-3">{{head_form.typeTransactionID}}</div>
     </div>
     <div class="form-row">
-      <h6 style="font-weight: bold" class="col-md-3">مصدر القيد</h6>
-      <div class="form-group col-md-6">{{head_form.typeTransactionID}}</div>
+      <h6 style="font-weight: bold" class="col-md-2">العميل</h6>
+      <div class="form-group col-md-8">{{head_form.customerID}}</div>
+    </div>
+    <div class="form-row">
+      <h6 style="font-weight: bold" class="col-md-2">الوصف</h6>
+      <div class="form-group col-md-8">{{head_form.description}}</div>
+    </div>
+      <div class="form-row">
+        <h6 style="font-weight: bold" class="col-md-2">طريقة الدفع</h6>
+        <div class="form-group col-md-3">{{head_form.paymentMethodID}}</div>
+        <h6 style="font-weight: bold" class="col-md-2">طريقة التسليم</h6>
+        <div class="form-group col-md-3">{{head_form.deliveryMethodID}}</div>
     </div>
   </div>
   <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
+    <div class="card text-bg-light mb-10" >
+      <div class="card-header">تفاصيل بيانات العميل</div>
+      <div class="card-body">
+       <div class="form-row">
+          <h6 style="font-weight: bold" class="col-md-3">رقم الهاتف</h6>
+          <div class="form-group col-md-6">{{customer.legalPersonID.basicInfoID.phone}}</div>
+        </div>
+        <div class="form-row">
+          <h6 style="font-weight: bold" class="col-md-3">البريد الإلكتروني</h6>
+          <div class="form-group col-md-6">{{customer.legalPersonID.basicInfoID.email}}</div>
+        </div>
+      </div>
+    </div>
     <div class="form-row">
-      <h6 style="font-weight: bold" class="col-md-3">الوصف</h6>
-      <div class="form-group col-md-6">{{head_form.description}}</div>
     </div>
     <div class="form-row">
       <h6 style="font-weight: bold" class="col-md-3">المرفقات</h6>
@@ -71,27 +94,29 @@
         <th scope="col">{{ formset.total_form_count }}</th>
         <th scope="col">المنتج</th>
         <th scope="col">الكمية</th>
+        <th scope="col">وحدة القياس</th>
         <th scope="col">سعر الوحدة</th>
         <th scope="col">الخصم</th>
         <th scope="col">الإجمالي قبل الضريبة</th>
         <th scope="col">نسبة الضريبة</th>
-        <th scope="col">المشروع</th>
-        <th scope="col">الموظف</th>
+        <th scope="col">قيمة الضريبة</th>
+        <th scope="col">الإجمالي بعد الضريبة</th>
       </tr>
     </thead>
     {{ formset.management_form }} 
     <tbody id="formset-container">
         {% for form in formset %}
         <tr class="form-container">
-            <td data-label="حذف"><button class="btn btn-danger">-</button></td>
-            <td data-label="المنتج">{{form.itemsDetailstID}}</td>
-            <td data-label="الكمية">{{form.quantity}}</td>
-            <td data-label="سعر الوحدة">{{form.unit_price}}</td>
-            <td data-label="الخصم">{{form.discount}}</td>
-            <td data-label="الإجمالي قبل الضريبة">{{form.total_price_before_tax}}</td>
-            <td data-label="نسبة الضريبة">{{form.tax_rate}}</td>
-            <td data-label="قيمة الضريبة">{{form.tax_value}}</td>
-            <td data-label="الإجمالي بعد الضريبة">{{form.total_price_after_tax}}</td>
+          <td data-label="المنتج">{{form.itemID}}</td>
+          <td data-label="الكمية">{{form.quantity}}</td>
+          <td data-label="وحدة القياس">{{form.measuringUnitID}}</td>
+          <td data-label="سعر الوحدة">{{form.unit_price}}</td>
+          <td data-label="الخصم">{{form.discount}}</td>
+          <td data-label="الإجمالي قبل الضريبة">{{form.total_price_before_tax}}</td>
+          <td data-label="نسبة الضريبة">{{form.tax_rate}}</td>
+          <td data-label="قيمة الضريبة">{{form.tax_value}}</td>
+          <td data-label="الإجمالي بعد الضريبة">{{form.total_price_after_tax}}</td>
+          <td data-label="حذف"><button class="btn btn-danger">-</button></td>
         </tr>
     {% endfor %}
     </tbody>

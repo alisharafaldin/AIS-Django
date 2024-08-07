@@ -20,6 +20,18 @@ def handle_form_errors(head_form, request):
         for error in errors:
             messages.error(request, f"خطأ في النموذج في الحقل '{field}': {error}")
 
+def handle_invoice_form_errors(head_form, formset, request):
+    """وظيفة مساعد لمعالجة الأخطاء وعرض الرسائل المناسبة."""
+    for field, errors in head_form.errors.items():
+        for error in errors:
+            messages.error(request, f"خطأ في نموذج الرأس في الحقل '{field}': {error}")
+    for form_index, form in enumerate(formset.forms):
+        for field, errors in form.errors.items():
+            for error in errors:
+                messages.error(request, f"خطأ في نموذج التفاصيل {form_index + 1} في الحقل '{field}': {error}")
+    for error in formset.non_form_errors():
+        messages.error(request, f"خطأ في الـ FormSet: {error}")
+
 def calculate_totals(details_queryset):
     """ وظيفة مساعدة لعمل مجاميع القيود """
     total_d = sum(item.debit for item in details_queryset)
@@ -133,7 +145,7 @@ def customer_update(request, id):
       customer.companyID = Company.objects.get(id=request.session.get('current_company_id'))
       customer.save()
 
-      messages.success(request, 'تم إنشاء شركة بنجاح') 
+      messages.success(request, f' تم تعديل بيانات العميل : {customer.legalPersonID.name_ar} ') 
       return redirect('customers')
     else :      
       # عرض رسائل الخطأ من النماذج
@@ -247,7 +259,6 @@ def invoices_sales(request):
     return render(request, 'sales/invoices.html', context)
 
 # دالة إنشاء فاتورة جديدة
-
 @login_required 
 def create_invoice_sales(request):
     """
@@ -265,7 +276,7 @@ def create_invoice_sales(request):
       current_company_id = request.session.get('current_company_id')
       if not current_company_id:
         messages.error(request, 'لم يتم تحديد الشركة الحالية.')
-        return redirect('sales')
+        return redirect('invoices_sales')
     
       if head_form.is_valid() and formset.is_valid():
         head = head_form.save(commit=False)
@@ -279,14 +290,15 @@ def create_invoice_sales(request):
             body.invoiceHeadID = head  # استخدام head مباشرة بدلاً من head.instance
             body.save()
         messages.success(request, 'تم إضافة فاتورة مبيعات جديدة')
-        return redirect('qayds')
+        return redirect('invoices_sales')
       else:
         # دالة عرض الأخطاء
-        handle_form_errors(head_form, formset, request)
+        handle_invoice_form_errors(head_form, formset, request)
         # إعادة عرض النماذج مع الأخطاء
-        return render(request, 'accounts/qayd_create.html', {
+        return render(request, 'sales/invoice_create.html', {
             'head_form': head_form,
             'formset': formset,
+            # 'customer':Customers.objects.get(all)
         })
     else:
         # إعداد النماذج عند طلب GET
@@ -297,3 +309,15 @@ def create_invoice_sales(request):
        'formset': formset,
     }
     return render(request, 'sales/invoice_create.html', context)
+
+@login_required 
+def reade_invoice_sales(request):
+    pass
+
+@login_required 
+def update_invoice_sales(request):
+    pass
+
+@login_required 
+def delete_invoice_sales(request):
+    pass
