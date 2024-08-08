@@ -200,23 +200,30 @@ class Skills(models.Model):
   def __str__(self):
     return str(self.name_ar)
  
-class DeliveryMethods(models.Model):
+class TypeDelivery(models.Model):
   name_ar = models.CharField(verbose_name='طريقة التسليم عربي',max_length=100)
   name_en = models.CharField(verbose_name='طريقة التسليم إنجليزي',max_length=100,blank=True, null=True)
   def __str__(self):
     return str(self.name_ar)  
   
-class PaymentMethods(models.Model):
+class TypePayment(models.Model):
   name_ar = models.CharField(verbose_name='طريقة الدفع عربي',max_length=100)
   name_en = models.CharField(verbose_name='طريقة الدفع إنجليزي',max_length=100,blank=True, null=True)
   def __str__(self):
     return str(self.name_ar)  
   
-class MeasuringUnits(models.Model):
+class TypeUnit(models.Model):
   name_ar = models.CharField(verbose_name='وحدة القياس عربي',max_length=100)
   name_en = models.CharField(verbose_name='وحدة القياس إنجليزي',max_length=100,blank=True, null=True)
   def __str__(self):
     return str(self.name_ar) 
+
+class Inventory(models.Model):
+  name_ar = models.CharField(verbose_name='المخزن عربي',max_length=100)
+  name_en = models.CharField(verbose_name='المخزن إنجليزي',max_length=100,blank=True, null=True)
+  def __str__(self):
+    return str(self.name_ar) 
+  
 
 class BasicInfo(models.Model):
     nationalityID = models.ForeignKey(Countries, verbose_name='الجنسية', related_name='nationalityID', default=1, on_delete=models.PROTECT, blank=True, null=True) 

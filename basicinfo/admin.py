@@ -133,18 +133,23 @@ class LanguagesImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id', 'name_ar']
 
-@admin.register(DeliveryMethods)
-class DeliveryMethodImportExport(ImportExportModelAdmin):
+@admin.register(TypeDelivery)
+class TypeDeliveryImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id', 'name_ar']
 
-@admin.register(PaymentMethods)
-class PaymentMethodsImportExport(ImportExportModelAdmin):
+@admin.register(Inventory)
+class InventoryImportE(ImportExportModelAdmin):
     pass
     list_display = ['id', 'name_ar']
 
-@admin.register(MeasuringUnits)
-class MeasuringUnitsImportExport(ImportExportModelAdmin):
+@admin.register(TypePayment)
+class TypePaymentImportExport(ImportExportModelAdmin):
+    pass
+    list_display = ['id', 'name_ar']
+
+@admin.register(TypeUnit)
+class TypeUnitImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id', 'name_ar']
 

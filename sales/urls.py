@@ -3,10 +3,10 @@ from . import views
 
 urlpatterns = [  
     path('', views.invoices_sales, name='invoices_sales'),
-    path('create_invoice_sales', views.create_invoice_sales, name='create_invoice_sales'),
-    path('reade_invoice_sales/<int:id>', views.reade_invoice_sales, name='reade_invoice_sales'),
-    path('update_invoice_sales/<int:id>', views.update_invoice_sales, name='update_invoice_sales'),
-    path('delete_invoice_sales/<int:id>', views.delete_invoice_sales, name='delete_invoice_sales'),
+    path('invoice_sales_create', views.invoice_sales_create, name='invoice_sales_create'),
+    path('invoice_sales_reade/<int:id>', views.invoice_sales_reade, name='invoice_sales_reade'),
+    path('invoice_sales_update/<int:id>', views.invoice_sales_update, name='invoice_sales_update'),
+    path('invoice_sales_delete/<int:id>', views.invoice_sales_delete, name='invoice_sales_delete'),
 
     path('customers', views.customers, name='customers'),
     path('customer_create', views.customer_create, name='customer_create'),

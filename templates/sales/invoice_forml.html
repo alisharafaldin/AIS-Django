@@ -1,68 +1,32 @@
 
-<style>
-  @media (max-width: 768px) {
-    .table-responsive thead {
-      display: none;
-    }
-
-    .table-responsive tbody, 
-    .table-responsive th, 
-    .table-responsive td {
-      display: block;
-    }
-
-    .table-responsive tr {
-      margin-bottom: 15px;
-    }
-
-
-    .table-responsive td, 
-    .table-responsive th {
-      direction: rtl; /* لضبط الاتجاه من اليمين إلى اليسار */
-      text-align: right;
-      padding-right: 25%;
-      position: relative;
-      width: 100vw;
-    }
-
-    .table-responsive td::before, 
-    .table-responsive th::before {
-      content: attr(data-label);
-      position: absolute;
-      right: 0;
-      width: 20%;
-      padding-right: 10px;
-      margin: -12px 1px 2px 2px;
-      padding: 12px 8px 12px 0px;
-      font-weight: bold;
-      background-color: rgb(219, 219, 219);
-    }
-  }
-
-
-</style>
-
 <div class="form-row">
   <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
     <div class="form-row">
-      <h6 style="font-weight: bold" class="col-md-2">التاريخ</h6>
-      <div class="form-group col-md-3">{{head_form.date}}</div>
-      <h6 style="font-weight: bold" class="col-md-2">نوع العملية</h6>
-      <div class="form-group col-md-3">{{head_form.typeTransactionID}}</div>
+      <h6 style="font-weight: bold" class="col-md-2"></h6>
+      <div class="form-group col-md-4">{{invoice_head_form.typeTransactionID}}</div>
+      <h6 style="font-weight: bold" class="col-md-1">التاريخ</h6>
+      <div class="form-group col-md-3">{{invoice_head_form.date}}</div>
+      <div class="form-group col-md-6" style="display: none;">{{invoice_head_form.created_by}}</div>
     </div>
     <div class="form-row">
       <h6 style="font-weight: bold" class="col-md-2">العميل</h6>
-      <div class="form-group col-md-8">{{head_form.customerID}}</div>
+      <div class="form-group col-md-8">{{invoice_head_form.customerID}}</div>
     </div>
     <div class="form-row">
       <h6 style="font-weight: bold" class="col-md-2">الوصف</h6>
-      <div class="form-group col-md-8">{{head_form.description}}</div>
+      <div class="form-group col-md-8">{{invoice_head_form.description}}</div>
     </div>
       <div class="form-row">
         <h6 style="font-weight: bold" class="col-md-2">طريقة الدفع</h6>
-        <div class="form-group col-md-3">{{head_form.paymentMethodID}}</div>
+        <div class="form-group col-md-3">{{invoice_head_form.typePaymentID}}</div>
         <h6 style="font-weight: bold" class="col-md-2">طريقة التسليم</h6>
-        <div class="form-group col-md-3">{{head_form.deliveryMethodID}}</div>
+        <div class="form-group col-md-3">{{invoice_head_form.typeDeliveryID}}</div>
+    </div>
+    <div class="form-row">
+      <h6 style="font-weight: bold" class="col-md-2">المخزن</h6>
+      <div class="form-group col-md-3">{{invoice_head_form.inventoryID}}</div>
+      <h6 style="font-weight: bold" class="col-md-2">المرفقات</h6>
+      <div class="form-group col-md-3">{{invoice_head_form.attachments}}</div>
     </div>
   </div>
   <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
@@ -71,20 +35,17 @@
       <div class="card-body">
        <div class="form-row">
           <h6 style="font-weight: bold" class="col-md-3">رقم الهاتف</h6>
-          <div class="form-group col-md-6">{{customer.legalPersonID.basicInfoID.phone}}</div>
+          <div class="form-group col-md-6"></div>
         </div>
         <div class="form-row">
           <h6 style="font-weight: bold" class="col-md-3">البريد الإلكتروني</h6>
-          <div class="form-group col-md-6">{{customer.legalPersonID.basicInfoID.email}}</div>
+          <div class="form-group col-md-6"></div>
         </div>
       </div>
     </div>
     <div class="form-row">
     </div>
-    <div class="form-row">
-      <h6 style="font-weight: bold" class="col-md-3">المرفقات</h6>
-      <div class="form-group col-md-6">{{head_form.attachments}}</div>
-    </div>
+  
   </div>
 </div>
 <div class="table-responsive">
@@ -94,46 +55,42 @@
         <th scope="col">{{ formset.total_form_count }}</th>
         <th scope="col">المنتج</th>
         <th scope="col">الكمية</th>
-        <th scope="col">وحدة القياس</th>
         <th scope="col">سعر الوحدة</th>
-        <th scope="col">الخصم</th>
-        <th scope="col">الإجمالي قبل الضريبة</th>
-        <th scope="col">نسبة الضريبة</th>
-        <th scope="col">قيمة الضريبة</th>
-        <th scope="col">الإجمالي بعد الضريبة</th>
+        <!-- <th scope="col">الخصم</th> -->
+        <th scope="col">الإجمالي</th>
+        <!-- <th scope="col">نسبة الضريبة</th>
+        <th scope="col">قيمة الضريبة</th> -->
+        <!-- <th scope="col">الإجمالي بعد الضريبة</th> -->
       </tr>
     </thead>
-    {{ formset.management_form }} 
+    {{ invoice_body_form.management_form }} 
     <tbody id="formset-container">
-        {% for form in formset %}
+        {% for form in invoice_body_form %}
         <tr class="form-container">
+          <td data-label="حذف"><button class="btn btn-danger">-</button></td>
+          <td style="display: none;">{{ form.DELETE }}</td>
+          <td style="display: none;">{{ form.id }}</td>
           <td data-label="المنتج">{{form.itemID}}</td>
           <td data-label="الكمية">{{form.quantity}}</td>
-          <td data-label="وحدة القياس">{{form.measuringUnitID}}</td>
           <td data-label="سعر الوحدة">{{form.unit_price}}</td>
-          <td data-label="الخصم">{{form.discount}}</td>
-          <td data-label="الإجمالي قبل الضريبة">{{form.total_price_before_tax}}</td>
-          <td data-label="نسبة الضريبة">{{form.tax_rate}}</td>
+          <!-- <td data-label="الخصم">{{form.discount}}</td> -->
+          <td data-label="الإجمالي">{{form.total_price_before_tax}}</td>
+          <!-- <td data-label="نسبة الضريبة">{{form.tax_rate}}</td>
           <td data-label="قيمة الضريبة">{{form.tax_value}}</td>
-          <td data-label="الإجمالي بعد الضريبة">{{form.total_price_after_tax}}</td>
-          <td data-label="حذف"><button class="btn btn-danger">-</button></td>
+          <td data-label="الإجمالي بعد الضريبة">{{form.total_price_after_tax}}</td> -->
         </tr>
     {% endfor %}
     </tbody>
     <tbody>
       <tr>
         <td><a class="btn" style="background-color: green;" id="add-form">+</a></td>
+        <!-- <td></td>
         <td></td>
+        <td></td> -->
+        <th>الإجمالي</th>
+        <th id="quantity">الكمية : </th>
         <td></td>
-        <td></td>
-        <th>المجموع</th>
-        <th id="total-d">مجموع مدين : {{total_d}}</th>
-        <th id="total-c">مجموع الدائن : {{total_c}}</th>
-        {% if difference == 0 %}
-        <th id="result">الفرق : <span style="color: green;">{{difference}}</span></th>
-        {% else %}
-        <th id="result">الفرق : <span style="color: red;">{{difference}}</span></th>
-        {% endif %}
+        <th id="total_price_before_tax">المبلغ: </th>
       </tr>
     </tbody>
   </table>

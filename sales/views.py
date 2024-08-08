@@ -2,7 +2,7 @@ import io
 from typing import Any
 from django.shortcuts import render , redirect, get_object_or_404
 from basicinfo.forms import BasicInfoForm, LegalPersonsForm
-from basicinfo.models import BasicInfo, LegalPersons
+from basicinfo.models import BasicInfo, LegalPersons, Inventory
 from django.contrib import messages
 from . models import Customers, InvoicesSalesHead, InvoicesSalesBody
 from companys.models import Company
@@ -20,7 +20,7 @@ def handle_form_errors(head_form, request):
         for error in errors:
             messages.error(request, f"خطأ في النموذج في الحقل '{field}': {error}")
 
-def handle_invoice_form_errors(head_form, formset, request):
+def handle_formset_errors(head_form, formset, request):
     """وظيفة مساعد لمعالجة الأخطاء وعرض الرسائل المناسبة."""
     for field, errors in head_form.errors.items():
         for error in errors:
@@ -227,6 +227,12 @@ def customers(request):
     return render(request, 'sales/customers.html', context)
 
 # # دالة عرض جميع القيود
+def calculate_totals(details_queryset):
+    """ وظيفة مساعدة لعمل مجاميع القيود """
+    total_d = sum(item.debit for item in details_queryset)
+    total_c = sum(item.credit for item in details_queryset)
+    return total_d, total_c, total_d - total_c
+
 @login_required
 def invoices_sales(request):
     """
@@ -249,7 +255,6 @@ def invoices_sales(request):
         invoices_list = InvoicesSalesHead.objects.filter(companyID_id=current_company_id)
     except InvoicesSalesHead.DoesNotExist:
         invoices_list = []  # إذا لم يكن هناك أي كائنات، العودة إلى قائمة فارغة
-    
     # إعداد السياق
     context = {
         'invoices': invoices_list,
@@ -258,16 +263,12 @@ def invoices_sales(request):
     # عرض الصفحة مع البيانات
     return render(request, 'sales/invoices.html', context)
 
-# دالة إنشاء فاتورة جديدة
 @login_required 
-def create_invoice_sales(request):
-    """
-    وظيفة هذه الدالة هي إنشاء فاتورة مبيعات جديدة خاصة بالشركة التي قام المستخدم بتسجيل الدخول إليها
-    """
+def invoice_sales_create(request):
     if not request.user.has_perm('accounts.add_qayd'):
         messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لإنشاء القيود المحاسبية.")
         return redirect('invoices_salse')
-    
+
     if request.method == 'POST':
       head_form = InvoiceHeadForm(request.POST, request.FILES)
       formset = InvoiceBodyFormSet(request.POST)
@@ -293,7 +294,7 @@ def create_invoice_sales(request):
         return redirect('invoices_sales')
       else:
         # دالة عرض الأخطاء
-        handle_invoice_form_errors(head_form, formset, request)
+        handle_formset_errors(head_form, formset, request)
         # إعادة عرض النماذج مع الأخطاء
         return render(request, 'sales/invoice_create.html', {
             'head_form': head_form,
@@ -305,19 +306,101 @@ def create_invoice_sales(request):
         head_form = InvoiceHeadForm()
         formset = InvoiceBodyFormSet(queryset=InvoicesSalesBody.objects.none())
     context = {
-       'head_form': head_form,
-       'formset': formset,
+       'invoice_head_form': head_form,
+       'invoice_body_form': formset,
+
+        'invoice_head_label': InvoiceHeadForm(),
+        'invoice_body_label': InvoiceBodyForm(), 
     }
     return render(request, 'sales/invoice_create.html', context)
 
-@login_required 
-def reade_invoice_sales(request):
-    pass
+@login_required
+def invoice_sales_reade(request, id):
+    invoice_head = InvoicesSalesHead.objects.get(id=id)
+    invoice_body = InvoicesSalesBody.objects.filter(invoiceHeadID=id)
+    context = {
+        'invoice_body_label': invoice_body,
+        'invoice_head_label': invoice_head,
+        'invoice_head_form': invoice_head,
+        'invoice_body_form': invoice_body,
+    }
+    return render(request, 'sales/invoice_reade.html', context)
 
 @login_required 
-def update_invoice_sales(request):
-    pass
+def invoice_sales_update(request, id):
+    if not request.user.has_perm('accounts.change_qayd'):
+        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لتعديل فواتير المبيعات.")
+        return redirect('index')
+    
+    invoice_update = get_object_or_404(InvoicesSalesHead, id=id)
+    # استخدام formset للحصول على جميع نماذج QaydDetails المرتبطة بـ Qayd المحدد
+    InvoiceBodyFormSet = modelformset_factory(InvoicesSalesBody, form=InvoiceBodyForm, extra=1)
+    queryset = InvoicesSalesBody.objects.filter(invoiceHeadID=invoice_update)
+
+    if request.method == 'POST':
+        head_form = InvoiceHeadForm(request.POST, request.FILES, instance=invoice_update)
+        formset = InvoiceBodyFormSet(request.POST, queryset=queryset)
+    
+        if head_form.is_valid() and formset.is_valid():
+          head = head_form.save(commit=False)
+          head.updated_by = request.user
+          head.companyID = Company.objects.get(id=request.session.get('current_company_id'))
+          head.save()
+        
+          for form in formset:
+            if form.cleaned_data.get('DELETE', False):
+                if form.instance.pk:
+                    form.instance.delete()  # حذف النموذج من قاعدة البيانات
+            else:
+                body = form.save(commit=False)
+                body.invoiceHeadID = head
+                body.save()
+
+          messages.success(request, f'تم تحديث بيانات فاتورة مبيعات {id} بنجاح')
+          return redirect('invoices_sales')
+        else:
+            # دالة عرض الأخطاء
+            handle_formset_errors(head_form, formset, request)
+    else:
+        head_form = InvoiceHeadForm(instance=invoice_update)
+        formset = InvoiceBodyFormSet(queryset=queryset)
+    # total_d, total_c, difference = calculate_totals(queryset)
+    context = {
+         'invoice_head': invoice_update,
+
+        'invoice_head_form': head_form,
+        'invoice_body_form': formset,
+        
+        'invoice_head_label': InvoiceHeadForm(),
+        'invoice_body_label': InvoiceBodyForm(),  
+    #     'total_d': total_d,
+    #     'total_c': total_c,
+    #     'difference': difference,
+    }
+    return render(request, 'sales/invoice_update.html', context)
 
 @login_required 
-def delete_invoice_sales(request):
-    pass
+def invoice_sales_delete(request, id):
+    if not request.user.has_perm('sales.delete_sales'):
+        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لحذف القيود المحاسبية.")
+        return redirect('index')
+    if request.user.is_authenticated and not request.user.is_anonymous:
+        qayd_id = InvoicesSalesHead.objects.get(id=id)
+        if 'btndelete' in request.POST:
+            qayd_id.delete()
+            messages.success(request, f'تم حذف القيد {id} بنجاح')
+            return redirect('invoices_sales')
+    else:
+        messages.error(request, 'الرجاء تسجيل الدخول أولاً')
+    
+    qayd_id_details = InvoicesSalesBody.objects.filter(invoiceHeadID=id)
+    # total_d, total_c, difference = calculate_totals(qayd_id_details)
+
+    context = {
+        'invoice_head_form': qayd_id,
+        'invoice_body_form': qayd_id_details,
+        # 'total_d': total_d,
+        # 'total_c': total_c,
+        # 'difference': difference,
+    }
+    return render(request, 'sales/invoice_delete.html', context)

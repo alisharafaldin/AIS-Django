@@ -1,25 +1,26 @@
 *{
     direction: rtl !important;
 } 
-/*   Start Customize Navbar */
-a#navbarDropdown {
-  display: flex !important;
-  align-items: baseline;
-}
 
-ul.navbar-nav.mr-auto-navbav {
-  display: flex !important;
-  align-items: center;
-  justify-content: space-evenly;
-}
+/* ==================== Start Customize Navbar ====================*/
+  a#navbarDropdown {
+    display: flex !important;
+    align-items: baseline;
+  }
 
-.user-panel.mt-3.pb-3.mb-3.d-flex {
-  margin: 0 !important;
-  padding: 2px !important;
-}
+  ul.navbar-nav.mr-auto-navbav {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-evenly;
+  }
 
+  .user-panel.mt-3.pb-3.mb-3.d-flex {
+    margin: 0 !important;
+    padding: 2px !important;
+  }
 
-/*   End Customize Navbar */
+/* =======================  End Customize Navbar =======================*/
+
 .title-label {
   background:#ececec;
   color: rgb(88, 88, 88);
@@ -249,3 +250,45 @@ html, body{
     padding: 0 5px;
     overflow: hidden;
   }
+
+  /*  =================== Start Customize Table ======================= */
+  @media (max-width: 768px) {
+    .table-responsive thead {
+      display: none;
+    }
+
+    .table-responsive tbody, 
+    .table-responsive th, 
+    .table-responsive td {
+      display: block;
+    }
+
+    .table-responsive tr {
+      margin-bottom: 15px;
+    }
+
+
+    .table-responsive td, 
+    .table-responsive th {
+      direction: rtl; /* لضبط الاتجاه من اليمين إلى اليسار */
+      text-align: right;
+      padding-right: 30%;
+      position: relative;
+      width: 100vw;
+    }
+
+    .table-responsive td::before, 
+    .table-responsive th::before {
+      content: attr(data-label);
+      position: absolute;
+      right: 0;
+      width: 25%;
+      padding-right: 10px;
+      margin: -12px 1px 2px 2px;
+      padding: 12px 8px 12px 0px;
+      font-weight: bold;
+      background-color: rgb(219, 219, 219);
+    }
+  }
+/*===================   End Customize Table ======================= */
+

@@ -1,7 +1,6 @@
 {% extends 'base.html' %} {% load static %} {% block title %} | Invoice Sales
 New {% endblock %} {% block content %}
 
-
 <div class="content-wrapper">
   <div class="main-title">
     <h4 class="form-group col-md-9">فاتورة مبيعات جديدة</h4>
@@ -12,7 +11,13 @@ New {% endblock %} {% block content %}
       {% csrf_token %}
       <br />
       <button type="submit" name="btnsave" class="btn btn-save">إضافة</button>
-      <a href="{% url 'invoices_sales' %}" class="btn btn-close" data-dismiss="modal" aria-label="Close">إلغاء</a>
+      <a
+        href="{% url 'invoices_sales' %}"
+        class="btn btn-close"
+        data-dismiss="modal"
+        aria-label="Close"
+        >إلغاء</a
+      >
       <br />
       <br />
       <br />
@@ -24,5 +29,8 @@ New {% endblock %} {% block content %}
     </div>
   </div>
 </div>
-<script type="module" src="{% static 'dist/js/add-remove-invoice-form.js' %}"></script>
+<script
+  type="module"
+  src="{% static 'dist/js/add-remove-invoice-form.js' %}"
+></script>
 {% endblock %}

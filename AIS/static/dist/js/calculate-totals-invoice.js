@@ -1,3 +1,5 @@
+console.log("calculate-totals-invoice.js has been loaded");
+
 // دالة لجمع القيم من الحقول المحددة
 function sumValues(inputs) {
   let total = 0;
@@ -7,26 +9,29 @@ function sumValues(inputs) {
   return total;
 }
 
-// دالة لحساب المجموعات والفرق بينها
+// دالة لحساب المجموعات وتحديثها في الصفحة
 export function calculateTotals() {
-  const quantity = document.querySelectorAll(".quantity");
-  const discount = document.querySelectorAll(".discount");
-  const tax_value = document.querySelectorAll(".tax_value");
-  const total_price_before_tax = document.querySelectorAll(".total_price_before_tax");
-  const total_price_after_tax = document.querySelectorAll(".total_price_after_tax");
+  const quantityFields = document.querySelectorAll(".quantity");
+  const discountFields = document.querySelectorAll(".discount");
+  const taxValueFields = document.querySelectorAll(".tax_value");
+  const totalPriceBeforeTaxFields = document.querySelectorAll(
+    ".total_price_before_tax"
+  );
+  const totalPriceAfterTaxFields = document.querySelectorAll(
+    ".total_price_after_tax"
+  );
 
-  const t_quantity = sumValues(quantity);
-  const t_discount = sumValues(discount);
-  const t_tax_value = sumValues(tax_value);
-  const t_total_price_before_tax = sumValues(total_price_before_tax);
-  const t_total_price_after_tax = sumValues(total_price_after_tax);
+  const sumQuantity = sumValues(quantityFields);
+  const sumDiscount = sumValues(discountFields);
+  const sumTaxValue = sumValues(taxValueFields);
+  const sumTotalPriceBeforeTax = sumValues(totalPriceBeforeTaxFields);
+  const sumTotalPriceAfterTax = sumValues(totalPriceAfterTaxFields);
 
-
-    updateTotal("total-c", totalCredit);
-    updateTotal("total-d", totalDebit);
-    updateTotal("result", difference);
-
-    return difference === 0;  // نحتاج إلى إعادة قيمة صحيحة إذا كان التوازن صحيحًا
+  updateTotal("quantity", sumQuantity);
+  updateTotal("discount", sumDiscount);
+  updateTotal("tax_value", sumTaxValue);
+  updateTotal("total_price_before_tax", sumTotalPriceBeforeTax);
+  updateTotal("total_price_after_tax", sumTotalPriceAfterTax);
 }
 
 // دالة لتحديث النتيجة على الصفحة
@@ -40,3 +45,9 @@ function updateTotal(elementId, total) {
 document.addEventListener("DOMContentLoaded", (event) => {
   calculateTotals();
 });
+
+ // إضافة مستمعين لتحديث القيم عند تغيير الحقول
+  const inputs = document.querySelectorAll(".quantity, .total_price_before_tax");
+  inputs.forEach((input) => {
+    input.addEventListener("input", calculateTotals);
+  });
