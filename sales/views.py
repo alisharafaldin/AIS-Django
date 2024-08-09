@@ -2,6 +2,7 @@ import io
 from typing import Any
 from django.shortcuts import render , redirect, get_object_or_404
 from basicinfo.forms import BasicInfoForm, LegalPersonsForm
+from django.db.models import Sum
 from basicinfo.models import BasicInfo, LegalPersons, Inventory
 from django.contrib import messages
 from . models import Customers, InvoicesSalesHead, InvoicesSalesBody
@@ -251,6 +252,7 @@ def invoices_sales(request):
         return redirect('companys')
 
     # الحصول على القيود الخاصة بالشركة الحالية
+
     try:
         invoices_list = InvoicesSalesHead.objects.filter(companyID_id=current_company_id)
     except InvoicesSalesHead.DoesNotExist:
@@ -318,11 +320,17 @@ def invoice_sales_create(request):
 def invoice_sales_reade(request, id):
     invoice_head = InvoicesSalesHead.objects.get(id=id)
     invoice_body = InvoicesSalesBody.objects.filter(invoiceHeadID=id)
+       # تجميع الكميات والأسعار
+    total_quantity = invoice_body.aggregate(Sum('quantity'))['quantity__sum'] or 0
+    total_price_before_tax = invoice_body.aggregate(Sum('total_price_before_tax'))['total_price_before_tax__sum'] or 0.0
+
     context = {
         'invoice_body_label': invoice_body,
         'invoice_head_label': invoice_head,
         'invoice_head_form': invoice_head,
         'invoice_body_form': invoice_body,
+        'total_quantity':total_quantity,
+        'total_price_before_tax':total_price_before_tax,
     }
     return render(request, 'sales/invoice_reade.html', context)
 

@@ -1,6 +1,30 @@
 {% extends 'base.html' %} {% load static %} {% block title %} | Qayds 
 {% endblock %} {% block content %}
 
+<style>
+  table {
+  width: 100%;
+  table-layout: auto;
+}
+
+th {
+  text-align: center;
+}
+ td {
+  padding: 5px !important;
+    text-align: center;
+    vertical-align: middle !important;
+    width: auto !important;
+    white-space: nowrap;
+    width: fit-content !important;
+}
+td input {
+  padding: 5px;
+  text-align: center;
+}
+
+</style>
+
 <div class="content-wrapper">
   <div class="main-title">
     <h4 class="form-group col-md-9">فواتير المبيعات</h4>
@@ -43,9 +67,9 @@
               <th scope="col">رقم الفاتورة</th>
               <th scope="col">تاريخ الفاتورة</th>
               <th scope="col">العميل</th>
-              <th scope="col">الإجمالي</th>
+              <!-- <th scope="col">الإجمالي</th>
               <th scope="col">المستخدم</th>
-              <th scope="col">معتمد</th>
+              <th scope="col">معتمد</th> -->
               <th scope="col">إجراءات</th>
             </tr>
           </thead>
@@ -56,9 +80,9 @@
               <td data-label="رقم الفاتورة">{{ invoice.sequence }}</td>
               <td data-label="التاريخ">{{ invoice.date|date:"Y-m-d" }}</td>
               <td data-label="العميل">{{ invoice.customerID }}</td>
-              <td data-label="الإجمالي">{{ invoice.details }}</td>
-              <td data-label="المستخدم">{{ invoice.created_by }}</td>
-              <td data-label="إعتماد">{{ invoice.approve }}</td>
+              <!-- <td data-label="الإجمالي">{{ invoice.details }}</td> -->
+              <!-- <td data-label="المستخدم">{{ invoice.created_by }}</td> -->
+              <!-- <td data-label="إعتماد">{{ invoice.approve }}</td> -->
               <td data-label="الإجرات">
                 <a
                   href="{% url 'invoice_sales_update' invoice.id %}"

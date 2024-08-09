@@ -1,32 +1,86 @@
+{% load humanize %}
 
+<style>
+   @media (max-width: 768px) {
+    .view-mobile {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .view-mobile h6 {
+      font-weight: bold !important;
+        background-color: #cdcdcd !important;
+        color: black;
+        padding: 8px;
+        border-radius: 7px;
+        width: 143px !important;
+    }
+  }
+  table {
+  width: 100%;
+  table-layout: auto;
+}
+
+th {
+  text-align: center;
+}
+
+ td {
+  padding: 1px !important;
+    text-align: center;
+    vertical-align: middle !important;
+    width: auto !important;
+    white-space: wrap;
+    /* width: fit-content !important; */
+}
+td input {
+  padding: 0px;
+  text-align: center;
+}
+
+</style>
 <div class="form-row">
   <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
     <div class="form-row">
       <h6 style="font-weight: bold" class="col-md-2"></h6>
       <div class="form-group col-md-4">{{invoice_head_form.typeTransactionID}}</div>
-      <h6 style="font-weight: bold" class="col-md-1">التاريخ</h6>
-      <div class="form-group col-md-3">{{invoice_head_form.date}}</div>
       <div class="form-group col-md-6" style="display: none;">{{invoice_head_form.created_by}}</div>
+        <div class="view-mobile">
+          <h6 style="font-weight: bold" class="col-md-1">التاريخ</h6>
+          <div class="form-group col-md-3">{{invoice_head_form.date}}</div>
+        </div>
+        <div class="view-mobile">
+          <h6 style="font-weight: bold" class="col-md-2">العميل</h6>
+          <div class="form-group col-md-8">{{invoice_head_form.customerID}}</div>
+        </div>
     </div>
+
     <div class="form-row">
-      <h6 style="font-weight: bold" class="col-md-2">العميل</h6>
-      <div class="form-group col-md-8">{{invoice_head_form.customerID}}</div>
-    </div>
-    <div class="form-row">
-      <h6 style="font-weight: bold" class="col-md-2">الوصف</h6>
-      <div class="form-group col-md-8">{{invoice_head_form.description}}</div>
+      <div class="view-mobile">
+        <h6 style="font-weight: bold" class="col-md-2">الوصف</h6>
+        <div class="form-group col-md-8">{{invoice_head_form.description}}</div>
+      </div>
     </div>
       <div class="form-row">
-        <h6 style="font-weight: bold" class="col-md-2">طريقة الدفع</h6>
-        <div class="form-group col-md-3">{{invoice_head_form.typePaymentID}}</div>
-        <h6 style="font-weight: bold" class="col-md-2">طريقة التسليم</h6>
-        <div class="form-group col-md-3">{{invoice_head_form.typeDeliveryID}}</div>
+        <div class="view-mobile">
+          <h6 style="font-weight: bold" class="col-md-2">طريقة الدفع</h6>
+          <div class="form-group col-md-3">{{invoice_head_form.typePaymentID}}</div>
+        </div>
+        <div class="view-mobile">
+          <h6 style="font-weight: bold" class="col-md-2">طريقة التسليم</h6>
+          <div class="form-group col-md-3">{{invoice_head_form.typeDeliveryID}}</div>
+        </div>
     </div>
     <div class="form-row">
-      <h6 style="font-weight: bold" class="col-md-2">المخزن</h6>
-      <div class="form-group col-md-3">{{invoice_head_form.inventoryID}}</div>
-      <h6 style="font-weight: bold" class="col-md-2">المرفقات</h6>
-      <div class="form-group col-md-3">{{invoice_head_form.attachments}}</div>
+      <div class="view-mobile">
+        <h6 style="font-weight: bold" class="col-md-2">المخزن</h6>
+        <div class="form-group col-md-3">{{invoice_head_form.inventoryID}}</div>
+      </div>
+      <div class="view-mobile">
+        <h6 style="font-weight: bold" class="col-md-2">المرفقات</h6>
+        <div class="form-group col-md-3">{{invoice_head_form.attachments}}</div>
+      </div>
     </div>
   </div>
   <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
@@ -88,11 +142,32 @@
         <td></td>
         <td></td> -->
         <th>الإجمالي</th>
-        <th id="quantity">الكمية : </th>
+        <th id="quantity">{{total_quantity|intcomma}} </th>
         <td></td>
-        <th id="total_price_before_tax">المبلغ: </th>
+        <th id="total_price_before_tax">{{total_price_before_tax|floatformat:2|intcomma}} </th>
       </tr>
     </tbody>
   </table>
 </div>
      
+<script>
+  // دالة لتغيير الكلاسات بناءً على حجم الشاشة
+function handleResize() {
+  const elements = document.querySelectorAll('.form-row');
+  
+  if (window.matchMedia("(max-width: 768px)").matches) {
+    // إذا كانت الشاشة أقل من أو تساوي 768 بكسل
+    elements.forEach(element => {
+      element.classList.remove('form-row'); // إزالة الكلاس
+      // element.classList.add('view-mobile'); // إضافة كلاس جديد (اختياري)
+    });
+  } else {
+    // إذا كانت الشاشة أكبر من 768 بكسل
+    elements.forEach(element => {
+      element.classList.remove('view-mobile h6'); // إزالة الكلاس الجديد (إذا تم إضافته)
+      element.classList.add('form-row'); // إعادة الكلاس الأصلي (اختياري)
+    });
+  }
+}
+handleResize()
+</script>

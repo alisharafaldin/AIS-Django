@@ -9,7 +9,7 @@ class Company(models.Model):
     legalPersonID = models.OneToOneField(LegalPersons, on_delete=models.CASCADE, blank=True)
 
     def __str__(self):
-        return str(self.owner)
+        return str(self.legalPersonID)
 
 class CompanyUser(models.Model):
     companyID = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='companys')

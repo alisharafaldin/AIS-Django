@@ -252,7 +252,7 @@ html, body{
   }
 
   /*  =================== Start Customize Table ======================= */
-  @media (max-width: 768px) {
+  /* @media (max-width: 768px) {
     .table-responsive thead {
       display: none;
     }
@@ -270,7 +270,7 @@ html, body{
 
     .table-responsive td, 
     .table-responsive th {
-      direction: rtl; /* لضبط الاتجاه من اليمين إلى اليسار */
+      direction: rtl; 
       text-align: right;
       padding-right: 30%;
       position: relative;
@@ -289,6 +289,6 @@ html, body{
       font-weight: bold;
       background-color: rgb(219, 219, 219);
     }
-  }
+  } */
 /*===================   End Customize Table ======================= */
 

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from employees.models import Employee
+from sales.models import InvoicesSalesHead
 from shrfntod.models import Posts
 from accounts.models import Qayd
 from django.contrib import messages
@@ -14,10 +15,12 @@ def index(request):
     current_company_id = request.session.get('current_company_id')
     emp_list = Employee.objects.filter(companyID_id=current_company_id)
     qayd_list = Qayd.objects.filter(companyID_id=current_company_id)
+    invoicesSales_list = InvoicesSalesHead.objects.filter(companyID_id=current_company_id)
 
     context = {
         'emp_count': emp_list,
         'qayds' : qayd_list,
+        'invoicesSales_list':invoicesSales_list,
     }
     return render(request , 'pages/index.html' , context)
 
