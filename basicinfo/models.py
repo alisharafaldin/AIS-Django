@@ -1,5 +1,7 @@
 from django.db import models
+from colorfield.fields import ColorField
 from django.contrib.auth.models import User
+
 
 class Countries(models.Model):
   name_ar = models.CharField(verbose_name='إسم الدولة عربي',max_length=50)
@@ -172,19 +174,18 @@ class SubProject(models.Model):
     
 class Size(models.Model):
     name = models.CharField(verbose_name='المقاس',max_length=100)
-    name_gr = models.CharField(verbose_name='مقاس المملكة المتحدة',max_length=100)
-    name_fr = models.CharField(verbose_name='مقاس فرنسا',max_length=100)
-    name_us = models.CharField(verbose_name='مقاس الولايات المتحدة',max_length=100)
-    name_de = models.CharField(verbose_name='مقاس ألمانيا',max_length=100)
-    name_it = models.CharField(verbose_name='مقاس إيطاليا',max_length=100)
+    name_gr = models.CharField(verbose_name='مقاس المملكة المتحدة',max_length=100,blank=True, null=True)
+    name_fr = models.CharField(verbose_name='مقاس فرنسا',max_length=100,blank=True, null=True)
+    name_us = models.CharField(verbose_name='مقاس الولايات المتحدة',max_length=100,blank=True, null=True)
+    name_de = models.CharField(verbose_name='مقاس ألمانيا',max_length=100,blank=True, null=True)
+    name_it = models.CharField(verbose_name='مقاس إيطاليا',max_length=100,blank=True, null=True)
     def __str__(self):
         return str(self.name)
 
 class Color(models.Model):
     name_ar = models.CharField(verbose_name='اللون عربي',max_length=100)
-    name_en = models.CharField(verbose_name='اللون إنجليزي',max_length=100)
-    color = models.CharField(max_length=7, default="#FFFFFF", help_text="Enter the color in hex format, e.g., #FFFFFF")
-
+    name_en = models.CharField(verbose_name='اللون إنجليزي',max_length=100,blank=True, null=True)
+    color = models.CharField(max_length=7, default="#FF0000", help_text="Enter the color in hex format, e.g., #FFFFFF")
     def __str__(self):
         return str(self.name_ar)
 
@@ -216,21 +217,14 @@ class TypeUnit(models.Model):
   name_ar = models.CharField(verbose_name='وحدة القياس عربي',max_length=100)
   name_en = models.CharField(verbose_name='وحدة القياس إنجليزي',max_length=100,blank=True, null=True)
   def __str__(self):
-    return str(self.name_ar) 
-
-class Inventory(models.Model):
-  name_ar = models.CharField(verbose_name='المخزن عربي',max_length=100)
-  name_en = models.CharField(verbose_name='المخزن إنجليزي',max_length=100,blank=True, null=True)
-  def __str__(self):
-    return str(self.name_ar) 
+    return str(self.name_ar)  
   
-
 class BasicInfo(models.Model):
     nationalityID = models.ForeignKey(Countries, verbose_name='الجنسية', related_name='nationalityID', default=1, on_delete=models.PROTECT, blank=True, null=True) 
-    countryID = models.ForeignKey(Countries, verbose_name='بلد الإقامة', related_name='countryID', default=1,  on_delete=models.PROTECT, blank=True, null=True) 
-    regionID = models.ForeignKey(Region, verbose_name='المنطقة', default=1, on_delete=models.PROTECT, blank=True, null=True)
-    stateID = models.ForeignKey(States, verbose_name='الولاية', default=1, on_delete=models.PROTECT, blank=True, null=True)
-    cityID = models.ForeignKey(Cities, verbose_name='المدينة', default=1, on_delete=models.PROTECT, blank=True, null=True) 
+    countryID = models.ForeignKey(Countries, verbose_name='بلد الإقامة', related_name='countryID', default=1, on_delete=models.PROTECT, blank=True, null=True) 
+    regionID = models.ForeignKey(Region, verbose_name='المنطقة', on_delete=models.PROTECT, blank=True, null=True)
+    stateID = models.ForeignKey(States, verbose_name='الولاية', on_delete=models.PROTECT, blank=True, null=True)
+    cityID = models.ForeignKey(Cities, verbose_name='المدينة', on_delete=models.PROTECT, blank=True, null=True) 
     address = models.CharField(verbose_name='وصف العنوان',max_length=100, blank=True, null=True)
     google_maps_location = models.URLField(verbose_name='العنوان على خرائط قوقل', max_length=500, blank=True, null=True)
     phone = models.CharField(verbose_name='رقم الهاتف',max_length=100, blank=True, null=True)
@@ -239,9 +233,9 @@ class BasicInfo(models.Model):
     website = models.CharField(verbose_name='الموقع الإلكتروني',max_length=100, blank=True, null=True)
     fax = models.CharField(verbose_name='فاكس',max_length=100, blank=True, null=True)
     POBox = models.CharField(verbose_name='صندوق بريد',max_length=100, blank=True, null=True)
-    bankID = models.ForeignKey(Bank, verbose_name='البنك', default=1,on_delete=models.PROTECT, blank=True, null=True)
-    branchBankID = models.ForeignKey(BranchBank, verbose_name='فرع البنك', default=1,on_delete=models.PROTECT, blank=True, null=True) 
-    typeAccBankID = models.ForeignKey(TypeAccBank, verbose_name='نوع الحساب', default=1,on_delete=models.PROTECT, blank=True, null=True) 
+    bankID = models.ForeignKey(Bank, verbose_name='البنك', on_delete=models.PROTECT, blank=True, null=True)
+    branchBankID = models.ForeignKey(BranchBank, verbose_name='فرع البنك', on_delete=models.PROTECT, blank=True, null=True) 
+    typeAccBankID = models.ForeignKey(TypeAccBank, verbose_name='نوع الحساب', on_delete=models.PROTECT, blank=True, null=True) 
     accountNumber = models.CharField(verbose_name='رقم الحساب المصرفي',max_length=100, blank=True, null=True)
     IBANNumber = models.CharField(verbose_name='رقم الآيبان المصرفي',max_length=100, blank=True, null=True)
     ownerAccount = models.CharField(verbose_name='إسم صاحب الحساب',max_length=100, blank=True, null=True)
@@ -255,6 +249,8 @@ class BasicInfo(models.Model):
     created_at = models.DateTimeField(verbose_name='تاريخ الإنشاء',auto_now_add=True, blank=True, null=True)
     updated_by = models.ForeignKey(User, verbose_name='المُعدِل', related_name='updated_by', on_delete=models.PROTECT, blank=True, null=True)
     updated_at = models.DateTimeField(verbose_name='تاريخ التعديل', auto_now=True, blank=True, null=True)
+    def __int__ (self):
+        return self.id
 
 class LegalPersons(models.Model):
     basicInfoID = models.OneToOneField(BasicInfo, on_delete=models.CASCADE, related_name='legal_persons', blank=True)
@@ -268,7 +264,7 @@ class LegalPersons(models.Model):
     phoneAdmin = models.CharField(verbose_name='هاتف الموظف المسؤول',max_length=100, blank=True, null=True)
     taxNumber = models.CharField(verbose_name='الرقم الضريبي',max_length=100, blank=True, null=True)
     def __str__(self):
-        return str(self.acronym_ar)
+        return str(self.name_ar)
     
 class Persons(models.Model):
     basicInfoID = models.OneToOneField(BasicInfo, on_delete=models.CASCADE, related_name='persons', blank=True)
@@ -286,11 +282,11 @@ class Persons(models.Model):
     typeID = models.ForeignKey(TypeID , verbose_name='نوع الهوية', default=1,on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
     id_number = models.CharField(verbose_name='رقم الهوية',max_length=100, blank=True, null=True)
     id_ExpiredDate = models.DateField(verbose_name='تاريخ إنتهاء الهوية', blank=True, null=True)    
-    workTradeID = models.ForeignKey(WorkTrade, verbose_name='المهنة', default=1, on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
-    workSpecialtyID = models.ForeignKey(WorkSpecialty, verbose_name='التخصص', default=1, on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
-    skillsID = models.ManyToManyField(Skills, verbose_name='المهارات', default=1, blank=True) #لن يتم حزف الصنف في حالة حذف الموظف
-    languagesID = models.ManyToManyField(Languages, verbose_name='اللغات', default=1, blank=True) #لن يتم حزف الصنف في حالة حذف الموظف
-    jobTitleID = models.ForeignKey(JobTitle, verbose_name='المسمى الوظيفي', default=1, on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
+    workTradeID = models.ForeignKey(WorkTrade, verbose_name='المهنة', on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
+    workSpecialtyID = models.ForeignKey(WorkSpecialty, verbose_name='التخصص', on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
+    skillsID = models.ManyToManyField(Skills, verbose_name='المهارات', blank=True) #لن يتم حزف الصنف في حالة حذف الموظف
+    languagesID = models.ManyToManyField(Languages, verbose_name='اللغات', blank=True) #لن يتم حزف الصنف في حالة حذف الموظف
+    jobTitleID = models.ForeignKey(JobTitle, verbose_name='المسمى الوظيفي', on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
    
     def __str__(self):
         return str(self.f_Name_ar)

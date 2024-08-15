@@ -138,11 +138,6 @@ class TypeDeliveryImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id', 'name_ar']
 
-@admin.register(Inventory)
-class InventoryImportE(ImportExportModelAdmin):
-    pass
-    list_display = ['id', 'name_ar']
-
 @admin.register(TypePayment)
 class TypePaymentImportExport(ImportExportModelAdmin):
     pass
@@ -156,12 +151,12 @@ class TypeUnitImportExport(ImportExportModelAdmin):
 @admin.register(BasicInfo)
 class BasicInfoImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id']
+    list_display = ['id', 'nationalityID', 'countryID', 'regionID', 'stateID', 'cityID', 'address', 'phone', 'phoneOther']
 
 @admin.register(LegalPersons)
 class LegalPersonsImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'name_ar']
+    list_display = ['id', 'basicInfoID', 'name_ar', 'businessTypeID']
 
 @admin.register(Persons)
 class PersonImportExport(ImportExportModelAdmin):

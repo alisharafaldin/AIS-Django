@@ -22,7 +22,7 @@ class InvoiceHeadForm(forms.ModelForm):
             'typePaymentID': forms.Select(attrs={'class':'form-control', 'placeholder':'طريقة الدفع'}),
             'typeDeliveryID': forms.Select(attrs={'class':'form-control', 'placeholder':'طريقة التسليم'}),
             'description': forms.Textarea(attrs={'class':'form-control', 'placeholder':'وصف الفاتورة', 'style':'height: 50px;'}),
-            'attachments': forms.ClearableFileInput(attrs={'class':'form-control', 'placeholder':'مرفقات الفاتورة', 'value':"{{qayd_form.attachments}}"}),
+            'attachments': forms.ClearableFileInput(attrs={'class':'form-control'}),
             'updated_at': forms.DateTimeInput(attrs={'class':'form-control', 'type':'datetime-local', 'placeholder':'تاريخ التعديل'}),
             'details': forms.CheckboxSelectMultiple,
         }
@@ -43,25 +43,19 @@ class InvoiceBodyForm(forms.ModelForm):
             'tax_rate': forms.NumberInput(attrs={'class':'form-control tax_rate', 'placeholder':'نسبة الضريبة'}),
             'tax_value': forms.NumberInput(attrs={'readonly':'readonly','class':'form-control tax_value', 'placeholder':'قيمة الضريبة'}),
             'total_price_after_tax': forms.NumberInput(attrs={'readonly':'readonly','class':'form-control total_price_after_tax', 'placeholder':'إجمالي السعر بعد الخصم'}),
-    }
-    #التأكد من أن على الأقل إحدى القيمتين ليست صفراً
-    # def clean(self):
-    #     cleaned_data = super().clean()
-    #     credit = cleaned_data.get('credit')
-    #     debit = cleaned_data.get('debit')
-    #     if credit == 0 and debit == 0:
-    #         raise forms.ValidationError('يجب أن تكون إحدى القيمتين على الأقل غير صفرية أو حذف السطر.')
-    #     return cleaned_data
-
-# نموذج المجموعة مع دالة التحقق
-InvoiceBodyFormSet = modelformset_factory(
-    InvoicesSalesBody,
-    form=InvoiceBodyForm,
-    extra=2, # عدد النماذج الإفتراضية
-    can_delete=True, # إمكانية الحذف
-    min_num=2, # الحد الأدنى لعدد النماذج
-    validate_min=True, # التحقق من عدد النماذج
-    ) 
+        }
+    #التأكد من إضافة منتج قبل الحفظ
+    def clean(self):
+        cleaned_data = super().clean()
+        # التحقق مما إذا كان السطر محددًا للحذف
+        delete = cleaned_data.get('DELETE')
+        if delete:
+            return cleaned_data  # تجاوز التحقق إذا كان السطر سيتم حذفه
+        item = cleaned_data.get('itemID')
+        # التحقق من أن itemID ليس None وأنه يحتوي على قيمة صحيحة
+        if not item:
+            raise forms.ValidationError('يجب إضافة منتج أو حذف السطر.')
+        return cleaned_data
 
 # إنشاء نموذج المجموعة باستخدام الفئة الأساسية المخصصة
-InvoiceBodyFormSet = modelformset_factory(InvoicesSalesBody, form=InvoiceBodyForm, extra=2)
+InvoiceBodyFormSet = modelformset_factory(InvoicesSalesBody, form=InvoiceBodyForm, can_delete=True, extra=2)

@@ -54,7 +54,7 @@
           <tbody id="formset-container">
               {% for form in formset %}
               <tr class="form-container">
-                  <td><button class="remove-form btn btn-danger">-</button></td>
+                  <td><button class="remove-form btn btn-danger">- {{ forloop.counter }} </button></td>
                   <td style="display: none;">{{ form.DELETE }}</td>
                   <td style="display: none;">{{ form.id }}</td>
                   <td>{{ form.accountID }}</td>

@@ -42,3 +42,7 @@ class Items(models.Model):
     available = models.BooleanField(verbose_name='متاح', default=True, blank=True, null=True)
     def __str__(self):
         return self.name_ar
+    
+    class Meta:
+    #ترتيب العناصر حسب الآي دي
+        ordering = ['name_ar']

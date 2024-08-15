@@ -19,19 +19,14 @@ def signup(request):
             password = request.POST.get('password')
             user.set_password(password)
             user.save()
-            
-            # إنشاء وربط ملف UserProfile و Person مع المستخدم الجديد
-            # UserProfile.objects.create(userID=user, personID=Person.objects.create())
-            
-            # يمكنك إجراء عمليات إضافية هنا مثل تسجيل الدخول تلقائيًا
-            
             # توجيه المستخدم إلى الصفحة بعد التسجيل بنجاح
             return redirect('index')  # اسم العرض بعد تسجيل المستخدم بنجاح
     else:
         user_form = UserForm()
-    
+        user_profile_form = UserProfileForm()
     context = {
         'user_form': user_form,
+        'user_profile_form':user_profile_form,
     }
     return render(request, 'profiles/signup.html', context)
 

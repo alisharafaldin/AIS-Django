@@ -1,9 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
-from basicinfo.models import LegalPersons, TypePayment, TypeDelivery, TypeUnit, TypeTransaction, Inventory
+from basicinfo.models import LegalPersons, TypePayment, TypeDelivery, TypeTransaction, Cities, States, Region, Countries
 from companys.models import Company
+from employees.models import Employee
 from django.utils import timezone
-from django.db.models.signals import pre_save, post_delete
 from products.models import Items
 
 class Customers(models.Model):
@@ -12,7 +12,24 @@ class Customers(models.Model):
     legalPersonID = models.OneToOneField(LegalPersons, on_delete=models.CASCADE, blank=True)
     def __str__(self):
         return  str(self.legalPersonID) 
-  
+
+class Inventory (models.Model):
+    companyID = models.ForeignKey(Company, on_delete=models.PROTECT,blank=True)
+    sequence = models.PositiveIntegerField(editable=False)  # الحقل التسلسلي
+    name_ar = models.CharField(verbose_name='المخزن عربي',max_length=100)
+    name_en = models.CharField(verbose_name='المخزن إنجليزي',max_length=100,blank=True, null=True)
+    countryID = models.ForeignKey(Countries, verbose_name='الدولة', default=1,  on_delete=models.PROTECT, blank=True, null=True) 
+    regionID = models.ForeignKey(Region, verbose_name='المنطقة', default=1, on_delete=models.PROTECT, blank=True, null=True)
+    stateID = models.ForeignKey(States, verbose_name='الولاية', default=1, on_delete=models.PROTECT, blank=True, null=True)
+    cityID = models.ForeignKey(Cities, verbose_name='المدينة', default=1, on_delete=models.PROTECT, blank=True, null=True) 
+    address = models.CharField(verbose_name='وصف العنوان',max_length=100, blank=True, null=True)
+    google_maps_location = models.URLField(verbose_name='العنوان على خرائط قوقل', max_length=500, blank=True, null=True)
+    administrator = models.ForeignKey(Employee, verbose_name='الموظف المسؤول', on_delete=models.PROTECT, blank=True, null=True)
+    phoneAdmin = models.CharField(verbose_name='هاتف الموظف المسؤول',max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.name_ar)
+      
 class InvoicesSalesHead (models.Model):
     companyID = models.ForeignKey(Company, on_delete=models.PROTECT,blank=True)
     sequence = models.PositiveIntegerField(editable=False)  # الحقل التسلسلي
@@ -37,7 +54,7 @@ class InvoicesSalesHead (models.Model):
 class InvoicesSalesBody(models.Model):
     invoiceHeadID = models.ForeignKey(InvoicesSalesHead, on_delete=models.CASCADE, related_name='sales_invoice', blank=True)
     itemID = models.ForeignKey(Items, verbose_name='المنتج', on_delete=models.PROTECT, blank=True, null=True)
-    quantity = models.DecimalField(verbose_name='الكمية', default=1, max_digits=6, decimal_places=2, blank=True, null=True)
+    quantity = models.DecimalField(verbose_name='الكمية', default=1, max_digits=6, decimal_places=0, blank=True, null=True)
     unit_price = models.DecimalField(verbose_name='سعر البيع', default=1, max_digits=10, decimal_places=2, blank=True, null=True)
     discount = models.DecimalField(verbose_name='خصم مسموح به', default=0, max_digits=6, decimal_places=2, blank=True, null=True)
     total_price_before_tax = models.DecimalField(verbose_name='السعر قبل الضريبة', max_digits=10, decimal_places=2, blank=True, null=True)
@@ -51,5 +68,9 @@ class InvoicesSalesBody(models.Model):
         self.total_price_after_tax = self.total_price_before_tax + self.tax_value
         super().save(*args, **kwargs)
 
+    @property
+    def total_items(self):
+        return self.itemID.count()
+    
     def __str__(self):
         return f"{self.itemID} - {self.quantity} x {self.unit_price} = {self.total_price_after_tax}"

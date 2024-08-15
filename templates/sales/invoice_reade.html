@@ -2,40 +2,28 @@
 Sales ( {{Invoice_reade.id}} ) {% endblock %} {% block content %}
 <div class="content-wrapper">
   <h4 class="main-title">
-    طباعة فاتورة مبيعات رقم : ( {{invoice_head_form.sequence}} )
+    طباعة {{invoice_head_form.typeTransactionID}} رقم : ( {{invoice_head_form.sequence}} )
   </h4>
   <div class="content">
-    <a href="{% url 'invoice_sales_reade' invoice_head_form.id %}" class="btn-link"
-      ><i class="fas fa-print"></i
-    ></a>
-    <a href="{% url 'invoice_sales_update' invoice_head_form.id %}" class="btn-link"
+
+    <a
+      href="{% url 'invoice_sales_update' invoice_head_form.id %}"
+      class="btn-link"
       ><i class="fas fa-edit"></i
     ></a>
-    <a href="{% url 'invoice_sales_delete' invoice_head_form.id %}" class="btn-link"
+    <a
+      href="{% url 'invoice_sales_delete' invoice_head_form.id %}"
+      class="btn-link"
       ><i class="fas fa-trash"></i
     ></a>
-    <a href="{% url 'invoices' %}" class="btn-link"
+    <a href="{% url 'invoices_sales' %}" class="btn-link"
       ><i class="fas fa-close"></i
     ></a>
-    <br />
-    <br />
-    <form method="POST">
+    <form method="GET">
       {% csrf_token %} {% include 'partials/_alerts.html' %}
 
-            {% include 'sales/invoice_forml.html' %}
-
+      {% include 'sales/invoice_forml.html' %}
     </form>
-    <br />
-    <div class="form-col">
-      <h6 class="form-group col-md-6">
-        تم إنشاء القيد بواسطة : {{Invoice_reade.created_by}} بتاريخ :
-        {{Invoice_reade.created_at}}
-      </h6>
-      <h6 class="form-group col-md-6">
-        آخر تحديث بواسطة : {{Invoice_reade.updated_by}} بتاريخ :
-        {{Invoice_reade.updated_at}}
-      </h6>
-    </div>
   </div>
 </div>
 {% endblock %}

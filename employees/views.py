@@ -21,8 +21,8 @@ def handle_form_errors(request, *forms):
 
 @login_required 
 def employee_create(request):
-    if not request.user.has_perm('employee.add_qayd'):
-        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لإنشاء القيود المحاسبية.")
+    if not request.user.has_perm('employee.add_employee'):
+        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لإضافة موظفين جدد.")
         return redirect('employees')
     
     if request.method == 'POST':
@@ -101,6 +101,9 @@ def employee_reade(request, id):
 
 @login_required
 def employee_update(request, id):
+  if not request.user.has_perm('employee.change_employee'):
+    messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لتعديل بيانات الموظفين.")
+    return redirect('employees')
   # الحصول على الكائنات المطلوبة من قاعدة البيانات
   employee = get_object_or_404(Employee, id=id)
   person = get_object_or_404(Persons, id=employee.personID_id)
@@ -153,6 +156,9 @@ def employee_update(request, id):
 
 @login_required
 def employee_delete(request, id):
+  if not request.user.has_perm('employee.delete_employee'):
+    messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لحذف الموظفين.")
+    return redirect('employees')
   # الحصول على الكائنات المطلوبة من قاعدة البيانات
   employee = get_object_or_404(Employee, id=id)
   person = get_object_or_404(Persons, id=employee.personID_id)
@@ -185,7 +191,7 @@ def employee_delete(request, id):
 @login_required
 def employees(request):
     # التحقق من الأذونات أولاً
-    if not request.user.has_perm('emplyees.view_qayd'):
+    if not request.user.has_perm('employees.view_employeeinfo'):
         messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة للإطلاع على ملفات الموظفين.")
         return redirect('index')
     # الحصول على الشركة الحالية من جلسة المستخدم

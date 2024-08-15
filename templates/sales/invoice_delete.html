@@ -3,27 +3,28 @@
 <div class="content-wrapper">
   <h4 class="main-title">حذف فاتورة مبيعات رقم : ( {{invoice_head_form.sequence}} )</h4>
   <div class="content">
-    <br />
+    <a
+      href="{% url 'invoice_sales_update' invoice_head_form.id %}"
+      class="btn-link"
+      ><i class="fas fa-edit"></i
+    ></a>
+    <a
+      href="{% url 'invoice_sales_reade' invoice_head_form.id %}"
+      class="btn-link"
+      ><i class="fas fa-print"></i
+    ></a>
+    <a href="{% url 'invoices_sales' %}" class="btn-link"
+      ><i class="fas fa-close"></i
+    ></a>
     <form method="POST">
       {% csrf_token %} {% include 'partials/_alerts.html' %} 
       
       {% include 'sales/invoice_forml.html' %}
 
-      <button type="submit" name="btndelete" class="btn btn-danger">
-        تأكيد الحذف
-      </button>
+      <button type="submit" name="btndelete" class="btn btn-danger">تأكيد الحذف</button>
       <a href="{% url 'invoices_sales' %}" class="btn btn-close">إلغاء</a>
     </form>
     <br />
-    <div class="form-row">
-      <h6 class="form-group col-md-6" name="user">
-        مُنشئ القيد : {{invoice_head_form.created_by}}
-      </h6>
-    </div>
   </div>
 </div>
-<script
-  type="module"
-  src="{% static 'dist/js/calculate-totals-invoice.js' %}"
-></script>
 {% endblock %}

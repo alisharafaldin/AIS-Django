@@ -10,7 +10,8 @@ class UserProfile(models.Model):
     phone = models.CharField(verbose_name='رقم الهاتف',max_length=100, blank=True, null=True)
     phoneOther = models.CharField(verbose_name='رقم هاتف آخر',max_length=100, blank=True, null=True)
     photo = models.ImageField(verbose_name='صورة شخصية', upload_to='photos/%Y/%m/%d/', null=True, blank=True)
-    active = models.BooleanField(default=False, verbose_name="نشط", blank=True, null=True)
+    terms = models.BooleanField(default=False, verbose_name="الشروط", blank=True, null=True)
+    active = models.BooleanField(default=True, verbose_name="نشط", blank=True, null=True)
 
    
     def __str__(self):

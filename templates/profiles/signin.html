@@ -12,7 +12,7 @@
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
+      <p class="login-box-msg">قم بتسجيل الدخول</p>
       {% if request.user.is_authenticated %}
       <h4 class="alert alert-warning">
         Welcome, <strong>{{request.user.username}} </strong> you are now logged
@@ -51,7 +51,7 @@
         <div class="row">
           <div class="col-8">
             <div class="icheck-primary">
-              <label for="rememberme">Remember Me</label>
+              <label for="rememberme">تذكرني</label>
               <input
                 type="checkbox"
                 checked
@@ -67,7 +67,7 @@
               name="btnlogin"
               class="btn btn-primary btn-block btn-flat"
             >
-              Sign In
+            تسجيل الدخول
             </button>
           </div>
         </div>
@@ -75,18 +75,16 @@
       <div class="social-auth-links text-center mb-3">
         <p>- OR -</p>
         <a href="#" class="btn btn-block btn-primary">
-          <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
+          <i class="fab fa-facebook mr-2"></i> تسجيل الدخول باستخدام الفيسبوك
         </a>
         <a href="#" class="btn btn-block btn-danger">
-          <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
+          <i class="fab fa-google-plus mr-2"></i> تسجيل الدخول باستخدام Google
         </a>
       </div>
       <!-- /.social-auth-links -->
-      <p class="mb-1"><a href="#">I forgot my password</a></p>
+      <p class="mb-1"><a href="#">لقد نسيت كلمة المرور الخاصة بي</a></p>
       <p class="mb-0">
-        <a href="{% url 'signup' %}" class="text-center"
-          >Register a new membership</a
-        >
+        <a href="{% url 'signup' %}" class="text-center">تسجيل عضوية جديدة</a>
       </p>
       {% endif %}
     </div>

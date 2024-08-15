@@ -18,18 +18,18 @@ export function calculateTotals() {
 
   const result = document.getElementById("result");
   if (difference !== 0) {
-      result.style.color = "red";
-      result.textContent = `التوازن غير صحيح. فرق ${difference.toFixed(2)}`;
-    } else {
-      result.style.color = "green";
-      result.textContent = `التوازن صحيح.`;
-    }
+    result.style.color = "red";
+    result.textContent = `التوازن غير صحيح. فرق ${difference.toFixed(2)}`;
+  } else {
+    result.style.color = "green";
+    result.textContent = `التوازن صحيح.`;
+  }
 
-    updateTotal("total-c", totalCredit);
-    updateTotal("total-d", totalDebit);
-    updateTotal("result", difference);
+  updateTotal("total-c", totalCredit);
+  updateTotal("total-d", totalDebit);
+  updateTotal("result", difference);
 
-    return difference === 0;  // نحتاج إلى إعادة قيمة صحيحة إذا كان التوازن صحيحًا
+  return difference === 0; // نحتاج إلى إعادة قيمة صحيحة إذا كان التوازن صحيحًا
 }
 
 // دالة لتحديث النتيجة على الصفحة

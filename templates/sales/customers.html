@@ -1,15 +1,13 @@
-{% extends 'base.html' %}
-{% load static %} 
-{% block title %} | customers {% endblock %}
-{% block content %}
+{% extends 'base.html' %} {% load static %} {% block title %} | customers 
+{% endblock %} {% block content %}
 <style>
   @media (max-width: 768px) {
     .table-responsive thead {
       display: none;
     }
 
-    .table-responsive tbody, 
-    .table-responsive th, 
+    .table-responsive tbody,
+    .table-responsive th,
     .table-responsive td {
       display: block;
     }
@@ -18,8 +16,7 @@
       margin-bottom: 15px;
     }
 
-
-    .table-responsive td, 
+    .table-responsive td,
     .table-responsive th {
       direction: rtl; /* لضبط الاتجاه من اليمين إلى اليسار */
       text-align: right;
@@ -28,7 +25,7 @@
       width: 100vw;
     }
 
-    .table-responsive td::before, 
+    .table-responsive td::before,
     .table-responsive th::before {
       content: attr(data-label);
       position: absolute;
@@ -41,68 +38,112 @@
       background-color: rgb(219, 219, 219);
     }
   }
-
-
 </style>
-
 <div class="content-wrapper">
   <div class="main-title">
     <h4 class="form-group col-md-9">العملاء | Customers</h4>
   </div>
   <form method="GET" class="form-inline my-2 my-lg-0">
-    <a href="{% url 'customer_create' %}" class="btn btn-main" target="blank">إضافة عميل جديد</a>
+    <a href="{% url 'customer_create' %}" class="btn btn-main" target="blank"
+      >إضافة عميل جديد</a
+    >
     <!-- Start Search -->
-    <button class="btn btn-main" type="submit">بحث<i class="fa-solid fa-magnifying-glass"></i></button>
-    <a href="{% url 'customers' %}" class="btn btn-main" type="submit">إعادة تعيين<i class="fa-solid fa-rotate-right"></i></a>
-    <input class="form-control mr-sm-2 remove-outline" name="search_emp" placeholder="بحث بالإسم"/>
-    <input class="form-control mr-sm-2 remove-outline" name="search_iqama" placeholder="بحث برقم الحدود"/>
-    <input class="form-control mr-sm-2 remove-outline" name="search_border" placeholder="بحث برقم الإقامة"/>
-    <input class="form-control mr-sm-2 remove-outline" name="search_company" placeholder="تصفية بالشركة"/>
+    <button class="btn btn-main" type="submit">
+      بحث<i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+    <a href="{% url 'customers' %}" class="btn btn-main" type="submit"
+      >إعادة تعيين<i class="fa-solid fa-rotate-right"></i
+    ></a>
+    <input
+      class="form-control mr-sm-2 remove-outline"
+      name="search_emp"
+      placeholder="بحث بالإسم"
+    />
+    <input
+      class="form-control mr-sm-2 remove-outline"
+      name="search_iqama"
+      placeholder="بحث برقم الحدود"
+    />
+    <input
+      class="form-control mr-sm-2 remove-outline"
+      name="search_border"
+      placeholder="بحث برقم الإقامة"
+    />
+    <input
+      class="form-control mr-sm-2 remove-outline"
+      name="search_company"
+      placeholder="تصفية بالشركة"
+    />
     <!-- End Search -->
   </form>
-  <br>
+  <br />
   {% include 'partials/_alerts.html' %}
   <div class="content">
-     <div class="table-responsive">
-       <table class="table table-hover">
-         <thead>
-           <tr>
-             <th scope="row">#</th>
-             <th scope="row">الإسم</th>
-             <th scope="row">النوع</th>
-             <th scope="row">العنوان</th>
-             <th scope="row">رقم الهاتف</th>
-             <th scope="row">رقم جوال</th>
-             <th scope="row">الإجراءات</th>
-           </tr>
-         </thead>
-         <tbody>
-           {% for customer in customers %}
-           <tr>
-             <!-- لعمل ارقام تسلسلة -->
-             <th data-label="#" scope="col">{{forloop.counter}}</th>
-             <!-- تفاصيل الجدول -->
-             <td data-label="الإسم">{{customer.legalPersonID.name_ar}}</td>
-             <td data-label="النوع">{{customer.legalPersonID.businessTypeID}}</td>
-             <td data-label="العنوان">{{customer.legalPersonID.basicInfoID.address}}</td>
-             <td data-label="رقم الهاتف">{{customer.legalPersonID.basicInfoID.phone}}</td>
-             <td data-label="رقم جوال">{{customer.legalPersonID.basicInfoID.phoneOther}}</td>
-             <td data-label="الإجراءات">
-               <a class="btn-link" href="{% url 'customer_update' customer.id %}">
-                 <i class="fas fa-edit"></i>
-               </a>
-               <a href="{% url 'customer_reade' customer.id %}" class="btn-link">
-                 <i class="fa fa-print " aria-hidden="true"></i>
-               </a>
-               <a href="{% url 'customer_delete' customer.id %}" class="btn-link">
-                 <i class="fa fa-trash" aria-hidden="true"></i>
-               </a>
-             </td>
-           </tr>
-           {% endfor %}
-         </tbody>
-       </table>
-     </div>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="row">#</th>
+            <th scope="row">الإسم</th>
+            <th scope="row">النوع</th>
+            <th scope="row">العنوان</th>
+            <th scope="row">رقم الهاتف</th>
+            <th scope="row">رقم جوال</th>
+            <th scope="row">الإجراءات</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for customer in customers %}
+          <tr>
+            <!-- لعمل ارقام تسلسلة -->
+            <th data-label="#" scope="col">{{forloop.counter}}</th>
+            <!-- تفاصيل الجدول -->
+            <td data-label="الإسم">{{customer.legalPersonID.name_ar}}</td>
+            <td data-label="النوع">
+              {{customer.legalPersonID.businessTypeID}}
+            </td>
+            <td data-label="العنوان">
+              {% if customer.legalPersonID.basicInfoID.google_maps_location %}
+              {{customer.legalPersonID.basicInfoID.address}}
+              <a href="{{customer.legalPersonID.basicInfoID.google_maps_location}}">
+                <i class="fa-solid fa-location-dot"></i>
+              </a>
+              {% else %}
+              {{customer.legalPersonID.basicInfoID.address}}
+              {% endif %}
+            </td>
+            <td data-label="رقم الهاتف">
+              {{customer.legalPersonID.basicInfoID.phone}}
+              <a href="tel:{{customer.legalPersonID.basicInfoID.phone}}"class="btn-link">
+                <i class="fa fa-phone" style="color: green;"></i></a>
+              <a href="https://wa.me/{{customer.legalPersonID.basicInfoID.phone}}"
+                class="btn-link"><i class="fa-brands fa-whatsapp"  style="color: green;"></i></a>
+            </td>
+            <td data-label="هاتف آخر">
+              <a href="tel:{{customer.legalPersonID.basicInfoID.phoneOther}}">{{customer.legalPersonID.basicInfoID.phoneOther}}</a>
+            </td>
+            <td data-label="الإجراءات">
+              <a
+                class="btn-link"
+                href="{% url 'customer_update' customer.id %}"
+              >
+                <i class="fas fa-edit"></i>
+              </a>
+              <a href="{% url 'customer_reade' customer.id %}" class="btn-link">
+                <i class="fa fa-print" aria-hidden="true"></i>
+              </a>
+              <a
+                href="{% url 'customer_delete' customer.id %}"
+                class="btn-link"
+              >
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 {% endblock %}

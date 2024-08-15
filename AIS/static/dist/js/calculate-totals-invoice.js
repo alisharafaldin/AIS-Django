@@ -1,5 +1,3 @@
-console.log("calculate-totals-invoice.js has been loaded");
-
 // دالة لجمع القيم من الحقول المحددة
 function sumValues(inputs) {
   let total = 0;
@@ -12,36 +10,28 @@ function sumValues(inputs) {
 // دالة لحساب المجموعات وتحديثها في الصفحة
 export function calculateTotals() {
   const quantityFields = document.querySelectorAll(".quantity");
-  const discountFields = document.querySelectorAll(".discount");
-  const taxValueFields = document.querySelectorAll(".tax_value");
-  const totalPriceBeforeTaxFields = document.querySelectorAll(
-    ".total_price_before_tax"
-  );
   const totalPriceAfterTaxFields = document.querySelectorAll(
     ".total_price_after_tax"
   );
 
-  
   const sumQuantity = sumValues(quantityFields);
-  const sumDiscount = sumValues(discountFields);
-  const sumTaxValue = sumValues(taxValueFields);
-  const sumTotalPriceBeforeTax = sumValues(totalPriceBeforeTaxFields);
   const sumTotalPriceAfterTax = sumValues(totalPriceAfterTaxFields);
 
   updateTotal("quantity", sumQuantity);
-  updateTotal("discount", sumDiscount);
-  updateTotal("tax_value", sumTaxValue);
-  updateTotal("total_price_before_tax", sumTotalPriceBeforeTax);
   updateTotal("total_price_after_tax", sumTotalPriceAfterTax);
 }
 
 // دالة لتحديث النتيجة على الصفحة
 function updateTotal(elementId, total) {
   const totalField = document.getElementById(elementId);
-  if (totalField.tagName === "INPUT" && totalField.readOnly) {
-    totalField.value = total.toFixed(2);
+  if (totalField) {
+    if (totalField.tagName === "INPUT" && totalField.readOnly) {
+      totalField.value = total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    } else {
+      totalField.textContent = total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    }
   } else {
-    totalField.textContent = total.toFixed(2);
+    console.warn(`Element with ID '${elementId}' not found.`);
   }
 }
 

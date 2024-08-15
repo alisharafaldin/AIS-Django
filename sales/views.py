@@ -3,7 +3,7 @@ from typing import Any
 from django.shortcuts import render , redirect, get_object_or_404
 from basicinfo.forms import BasicInfoForm, LegalPersonsForm
 from django.db.models import Sum
-from basicinfo.models import BasicInfo, LegalPersons, Inventory
+from basicinfo.models import BasicInfo, LegalPersons
 from django.contrib import messages
 from . models import Customers, InvoicesSalesHead, InvoicesSalesBody
 from companys.models import Company
@@ -41,7 +41,7 @@ def calculate_totals(details_queryset):
 
 @login_required 
 def customer_create(request):
-    if not request.user.has_perm('customer.add_qayd'):
+    if not request.user.has_perm('customers.add_customers'):
         messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لإضافة عملاء.")
         return redirect('customers')
     
@@ -207,7 +207,7 @@ def customer_delete(request, id):
 
 def customers(request):
     # التحقق من الأذونات أولاً
-    if not request.user.has_perm('emplyees.view_qayd'):
+    if not request.user.has_perm('customers.view_customers'):
         messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة للإطلاع على ملفات الموظفين.")
         return redirect('index')
     # الحصول على الشركة الحالية من جلسة المستخدم
@@ -236,40 +236,32 @@ def calculate_totals(details_queryset):
 
 @login_required
 def invoices_sales(request):
-    """
-    عرض جميع الكائنات من نموذج invoice في صفحة invoices.html.
-    يجب أن يكون المستخدم مسجلاً للدخول للوصول إلى هذه الصفحة.
-    """
     # التحقق من الأذونات أولاً
-    if not request.user.has_perm('accounts.view_invoice'):
+    if not request.user.has_perm('sales.view_invoicessaleshead'):
         messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة للإطلاع على فواتير المبيعات.")
         return redirect('index')
-    
     # الحصول على الشركة الحالية من جلسة المستخدم
     current_company_id = request.session.get('current_company_id')
     if not current_company_id:
         messages.error(request, 'الرجاء تحديد الشركة للعمل عليها.')
         return redirect('companys')
-
     # الحصول على القيود الخاصة بالشركة الحالية
-
     try:
-        invoices_list = InvoicesSalesHead.objects.filter(companyID_id=current_company_id)
+        invoices_list = InvoicesSalesHead.objects.filter(companyID_id=current_company_id).order_by("-id")
     except InvoicesSalesHead.DoesNotExist:
         invoices_list = []  # إذا لم يكن هناك أي كائنات، العودة إلى قائمة فارغة
     # إعداد السياق
     context = {
         'invoices': invoices_list,
     }
-    
     # عرض الصفحة مع البيانات
     return render(request, 'sales/invoices.html', context)
 
 @login_required 
 def invoice_sales_create(request):
-    if not request.user.has_perm('accounts.add_qayd'):
+    if not request.user.has_perm('sales.add_invoicessaleshead'):
         messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لإنشاء القيود المحاسبية.")
-        return redirect('invoices_salse')
+        return redirect('invoices_sales')
 
     if request.method == 'POST':
       head_form = InvoiceHeadForm(request.POST, request.FILES)
@@ -307,7 +299,9 @@ def invoice_sales_create(request):
         # إعداد النماذج عند طلب GET
         head_form = InvoiceHeadForm()
         formset = InvoiceBodyFormSet(queryset=InvoicesSalesBody.objects.none())
+        is_edit_mode = True  # أو True بناءً على وضع النموذج
     context = {
+       'is_edit_mode':is_edit_mode,
        'invoice_head_form': head_form,
        'invoice_body_form': formset,
 
@@ -318,43 +312,52 @@ def invoice_sales_create(request):
 
 @login_required
 def invoice_sales_reade(request, id):
-    invoice_head = InvoicesSalesHead.objects.get(id=id)
+    if not request.user.has_perm('sales.view_invoicessaleshead'):
+        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة للإطلاع على فواتير المبيعات.")
+        return redirect('invoices_sales')
+    
+    invoice_head =  get_object_or_404(InvoicesSalesHead, id=id)
     invoice_body = InvoicesSalesBody.objects.filter(invoiceHeadID=id)
-       # تجميع الكميات والأسعار
-    total_quantity = invoice_body.aggregate(Sum('quantity'))['quantity__sum'] or 0
-    total_price_before_tax = invoice_body.aggregate(Sum('total_price_before_tax'))['total_price_before_tax__sum'] or 0.0
 
+    # تجميع الكميات والأسعار
+    total_quantity = invoice_body.aggregate(Sum('quantity'))['quantity__sum'] or 0
+    total_price_after_tax = invoice_body.aggregate(Sum('total_price_after_tax'))['total_price_after_tax__sum'] or 0.0
+   
+    customer = Customers.objects.get(id=invoice_head.customerID_id)
+    is_edit_mode = False  # أو True بناءً على وضع النموذج
     context = {
+       'is_edit_mode':is_edit_mode,
+       'customer':customer,
         'invoice_body_label': invoice_body,
         'invoice_head_label': invoice_head,
+
         'invoice_head_form': invoice_head,
         'invoice_body_form': invoice_body,
+
         'total_quantity':total_quantity,
-        'total_price_before_tax':total_price_before_tax,
+        'total_price_after_tax':total_price_after_tax,
     }
     return render(request, 'sales/invoice_reade.html', context)
 
 @login_required 
 def invoice_sales_update(request, id):
-    if not request.user.has_perm('accounts.change_qayd'):
+    if not request.user.has_perm('sales.change_invoicessaleshead'):
         messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لتعديل فواتير المبيعات.")
-        return redirect('index')
-    
-    invoice_update = get_object_or_404(InvoicesSalesHead, id=id)
+        return redirect('invoices_sales')
+    invoice_head = get_object_or_404(InvoicesSalesHead, id=id)
+
     # استخدام formset للحصول على جميع نماذج QaydDetails المرتبطة بـ Qayd المحدد
     InvoiceBodyFormSet = modelformset_factory(InvoicesSalesBody, form=InvoiceBodyForm, extra=1)
-    queryset = InvoicesSalesBody.objects.filter(invoiceHeadID=invoice_update)
+    queryset = InvoicesSalesBody.objects.filter(invoiceHeadID=invoice_head)
 
     if request.method == 'POST':
-        head_form = InvoiceHeadForm(request.POST, request.FILES, instance=invoice_update)
+        head_form = InvoiceHeadForm(request.POST, request.FILES, instance=invoice_head)
         formset = InvoiceBodyFormSet(request.POST, queryset=queryset)
-    
         if head_form.is_valid() and formset.is_valid():
           head = head_form.save(commit=False)
           head.updated_by = request.user
           head.companyID = Company.objects.get(id=request.session.get('current_company_id'))
           head.save()
-        
           for form in formset:
             if form.cleaned_data.get('DELETE', False):
                 if form.instance.pk:
@@ -363,35 +366,34 @@ def invoice_sales_update(request, id):
                 body = form.save(commit=False)
                 body.invoiceHeadID = head
                 body.save()
-
           messages.success(request, f'تم تحديث بيانات فاتورة مبيعات {id} بنجاح')
           return redirect('invoices_sales')
         else:
             # دالة عرض الأخطاء
             handle_formset_errors(head_form, formset, request)
     else:
-        head_form = InvoiceHeadForm(instance=invoice_update)
+        head_form = InvoiceHeadForm(instance=invoice_head)
         formset = InvoiceBodyFormSet(queryset=queryset)
-    # total_d, total_c, difference = calculate_totals(queryset)
-    context = {
-         'invoice_head': invoice_update,
 
+    customer = Customers.objects.get(id=invoice_head.customerID_id)
+    is_edit_mode = True  # أو True بناءً على وضع النموذج
+    
+    context = {
+        'customer':customer,
+        'is_edit_mode':is_edit_mode,
+        'invoice_head': invoice_head,
         'invoice_head_form': head_form,
         'invoice_body_form': formset,
-        
         'invoice_head_label': InvoiceHeadForm(),
         'invoice_body_label': InvoiceBodyForm(),  
-    #     'total_d': total_d,
-    #     'total_c': total_c,
-    #     'difference': difference,
     }
     return render(request, 'sales/invoice_update.html', context)
 
 @login_required 
 def invoice_sales_delete(request, id):
-    if not request.user.has_perm('sales.delete_sales'):
-        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لحذف القيود المحاسبية.")
-        return redirect('index')
+    if not request.user.has_perm('sales.delete_invoicessaleshead'):
+        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لحذف فواتير المبيعات.")
+        return redirect('invoices_sales')
     if request.user.is_authenticated and not request.user.is_anonymous:
         qayd_id = InvoicesSalesHead.objects.get(id=id)
         if 'btndelete' in request.POST:
@@ -401,14 +403,20 @@ def invoice_sales_delete(request, id):
     else:
         messages.error(request, 'الرجاء تسجيل الدخول أولاً')
     
-    qayd_id_details = InvoicesSalesBody.objects.filter(invoiceHeadID=id)
+    invoice_body = InvoicesSalesBody.objects.filter(invoiceHeadID=id)
     # total_d, total_c, difference = calculate_totals(qayd_id_details)
 
+       # تجميع الكميات والأسعار
+    total_quantity = invoice_body.aggregate(Sum('quantity'))['quantity__sum'] or 0
+    total_price_after_tax = invoice_body.aggregate(Sum('total_price_after_tax'))['total_price_after_tax__sum'] or 0.0
+
+    is_edit_mode = False  # أو True بناءً على وضع النموذج
     context = {
+       'is_edit_mode':is_edit_mode,
         'invoice_head_form': qayd_id,
-        'invoice_body_form': qayd_id_details,
-        # 'total_d': total_d,
-        # 'total_c': total_c,
-        # 'difference': difference,
+        'invoice_body_form': invoice_body,
+
+         'total_quantity':total_quantity,
+        'total_price_after_tax':total_price_after_tax,
     }
     return render(request, 'sales/invoice_delete.html', context)

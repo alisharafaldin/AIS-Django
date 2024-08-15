@@ -6,7 +6,6 @@ class BasicInfoForm(forms.ModelForm):
         model = BasicInfo
         fields = '__all__'
         widgets = {
-            'basicInfoID': forms.Select(attrs={'class':'form-control', 'placeholder':'المعلومات الأساسية'}),
             'nationalityID': forms.Select(attrs={'class':'form-control', 'placeholder':'الجنسية'}),
             'countryID': forms.Select(attrs={'class':'form-control', 'placeholder':'الدولة'}),
             'regionID': forms.Select(attrs={'class':'form-control', 'placeholder':'المنطقة'}),
@@ -38,6 +37,7 @@ class PersonForm(forms.ModelForm):
         model = Persons
         fields = '__all__'
         widgets = {
+            'basicInfoID': forms.Select(attrs={'class':'form-control', 'placeholder':'المعلومات الأساسية'}),
             'f_Name_ar': forms.TextInput(attrs={'class':'form-control', 'placeholder':'الإسم الأول'}),
             's_Name_ar': forms.TextInput(attrs={'class':'form-control', 'placeholder':'الإسم الثاني'}),
             't_Name_ar': forms.TextInput(attrs={'class':'form-control', 'placeholder':'الإسم الثالث'}),
@@ -64,6 +64,7 @@ class LegalPersonsForm (forms.ModelForm):
       model = LegalPersons
       fields = '__all__'
       widgets = {
+        'basicInfoID': forms.Select(attrs={'class':'form-control', 'placeholder':'المعلومات الأساسية'}),
         'name_ar': forms.TextInput(attrs={'class':'form-control','placeholder':'إسم الشركة عربي'}),
         'acronym_ar': forms.TextInput(attrs={'class':'form-control','placeholder':'الإسم المختصر عربي'}),
         'name_en': forms.TextInput(attrs={'class':'form-control','placeholder':'إسم الشركة إنجليزي'}),

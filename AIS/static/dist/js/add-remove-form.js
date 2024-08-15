@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const container = document.getElementById("formset-container");
   const addButton = document.getElementById("add-form");
   const totalForms = document.getElementById("id_form-TOTAL_FORMS");
-  
+
   let formCount = parseInt(totalForms.value);
 
   // دالة لإضافة مستمعين للأحداث على الحقول
@@ -55,12 +55,14 @@ document.addEventListener("DOMContentLoaded", function () {
         if (creditInput) creditInput.value = "-1";
         if (debitInput) debitInput.value = "-1";
         calculateTotals(); // تحديث المجموع بعد إزالة نموذج
+
         deleteInput.checked = true; // تحديد خانة حذف النموذج
         formContainer.style.display = "none"; // إخفاء النموذج من الواجهة
       } else {
         formContainer.remove(); // إزالة النموذج من الواجهة
         formCount--; // تقليل عداد النماذج
         totalForms.value = formCount; // تحديث عدد النماذج الإجمالي
+        calculateTotals(); // تحديث المجموع بعد إزالة نموذج
       }
     }
   });
@@ -84,4 +86,6 @@ document.addEventListener("DOMContentLoaded", function () {
   //   }
 
   calculateTotals(); // تحديث المجموع عند تغير القيم
+  // }
+
 });

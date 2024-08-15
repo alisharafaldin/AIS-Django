@@ -6,8 +6,10 @@
   </h4>
   <div class="content">
     <br />
-    <form method="POST" action="">
-      {% csrf_token %} {% include 'partials/_alerts.html' %}
+    <form method="POST">
+      {% csrf_token %}
+       
+      {% include 'partials/_alerts.html' %}
       <button type="submit" name="btnsave" class="btn btn-save">
         حفظ التعديل
       </button>
@@ -17,18 +19,6 @@
 
       {% include 'sales/invoice_forml.html' %}
     </form>
-    <div class="form-col">
-      <h6 class="form-group col-md-6">
-        مُنشئ القيد : {{invoice_head.created_by}}
-      </h6>
-      <h6 class="form-group col-md-6">
-        تاريخ الإنشاء : {{invoice_head.created_at}}
-      </h6>
-    </div>
   </div>
 </div>
-<script
-  type="module"
-  src="{% static 'dist/js/calculate-totals-invoice.js' %}"
-></script>
 {% endblock %}
