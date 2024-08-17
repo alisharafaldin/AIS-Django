@@ -15,8 +15,10 @@ class InvoiceHeadForm(forms.ModelForm):
         model = InvoicesSalesHead
         fields = '__all__'
         widgets = {
-            'date': forms.DateTimeInput(attrs={'class':'form-control',  'type':'datetime-local' , 'placeholder':'التاريخ '}),
+            'date': forms.DateInput(attrs={'class':'form-control',  'type':'date' , 'placeholder':'التاريخ '}),
             'customerID': forms.Select(attrs={'class':'form-control', 'placeholder':'العميل'}),
+            'rate': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'سعر الصرف'}),
+            'currencyID': forms.Select(attrs={'class':'form-control', 'placeholder':'العملة'}),
             'typeTransactionID': forms.Select(attrs={'disabled': 'disabled','class':'form-control', 'placeholder':'نوع المعاملة'}),
             'inventoryID': forms.Select(attrs={'class':'form-control', 'placeholder':'المخزن'}),
             'typePaymentID': forms.Select(attrs={'class':'form-control', 'placeholder':'طريقة الدفع'}),

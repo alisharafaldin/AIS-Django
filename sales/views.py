@@ -11,6 +11,23 @@ from . forms import CustomerForm, InvoiceHeadForm, InvoiceBodyForm, InvoiceBodyF
 from django.forms import modelformset_factory
 from django.contrib.auth.decorators import login_required
 
+# from django.template.loader import render_to_string
+# from django.http import HttpResponse
+# from xhtml2pdf import pisa
+
+# def invoice_pdf(request, id):
+#     invoice = get_object_or_404(InvoicesSalesHead, id=id)
+#     print(invoice.id)
+#     html = render_to_string('sales/invoice_print_pdf.html', {'invoice': invoice})
+#     response = HttpResponse(content_type='application/pdf')
+#     response['Content-Disposition'] = f'attachment; filename="invoice_{id}.pdf"'
+    
+#     pisa_status = pisa.CreatePDF(html, dest=response)
+    
+#     if pisa_status.err:
+#        return HttpResponse('We had some errors <pre>' + html + '</pre>')
+#     return response
+
 # Create your views here.
 
 # دوال لإنشاء وتحديث وقراءة وحذف القيود المحاسبية
@@ -377,7 +394,7 @@ def invoice_sales_update(request, id):
 
     customer = Customers.objects.get(id=invoice_head.customerID_id)
     is_edit_mode = True  # أو True بناءً على وضع النموذج
-    
+
     context = {
         'customer':customer,
         'is_edit_mode':is_edit_mode,
@@ -420,3 +437,21 @@ def invoice_sales_delete(request, id):
         'total_price_after_tax':total_price_after_tax,
     }
     return render(request, 'sales/invoice_delete.html', context)
+
+# @login_required
+# def invoice_pdf(request, id):
+#     # جلب بيانات الفاتورة من قاعدة البيانات
+#     invoice = get_object_or_404(InvoicesSalesHead, id=id)
+
+#     # جلب قالب الفاتورة الذي تريد تحويله إلى PDF
+#     html_string = render_to_string('sales/invoice_reade.html', {'invoice': invoice})
+
+#     # تحويل HTML إلى PDF باستخدام WeasyPrint
+#     html = HTML(string=html_string)
+#     pdf_file = html.write_pdf()
+
+#     # إعداد الاستجابة كملف PDF
+#     response = HttpResponse(pdf_file, content_type='application/pdf')
+#     response['Content-Disposition'] = f'attachment; filename="invoice_{id}.pdf"'
+
+#     return response

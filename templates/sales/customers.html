@@ -104,12 +104,12 @@
             </td>
             <td data-label="العنوان">
               {% if customer.legalPersonID.basicInfoID.google_maps_location %}
-              {{customer.legalPersonID.basicInfoID.address}}
-              <a href="{{customer.legalPersonID.basicInfoID.google_maps_location}}">
+              {{customer.legalPersonID.basicInfoID.countryID}} - {{customer.legalPersonID.basicInfoID.address}}
+              <a href="{{customer.legalPersonID.basicInfoID.google_maps_location}}" target="blank">
                 <i class="fa-solid fa-location-dot"></i>
               </a>
               {% else %}
-              {{customer.legalPersonID.basicInfoID.address}}
+              {{customer.legalPersonID.basicInfoID.countryID}} - {{customer.legalPersonID.basicInfoID.address}}
               {% endif %}
             </td>
             <td data-label="رقم الهاتف">

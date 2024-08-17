@@ -16,5 +16,5 @@ class CategoryImportExport(ImportExportModelAdmin):
 @admin.register(Items)
 class ItemsImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'itemGropID' , 'purchasingPrice', 'sellingPrice', 'name_en', 'colorID', 'sizeID', 'description', 'photo']
+    list_display = ['id', 'itemGropID', 'name_ar', 'purchasingPrice', 'sellingPrice', 'colorID', 'sizeID', 'description', 'photo']
 

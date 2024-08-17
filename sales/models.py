@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from basicinfo.models import LegalPersons, TypePayment, TypeDelivery, TypeTransaction, Cities, States, Region, Countries
 from companys.models import Company
 from employees.models import Employee
-from django.utils import timezone
 from products.models import Items
 
 class Customers(models.Model):
@@ -33,12 +32,14 @@ class Inventory (models.Model):
 class InvoicesSalesHead (models.Model):
     companyID = models.ForeignKey(Company, on_delete=models.PROTECT,blank=True)
     sequence = models.PositiveIntegerField(editable=False)  # الحقل التسلسلي
+    date = models.DateField(verbose_name='التاريخ', blank=True, null=True)
     typeTransactionID = models.ForeignKey(TypeTransaction, verbose_name='نوع العملية', default=4, on_delete=models.PROTECT, blank=True, null=True)
     inventoryID = models.ForeignKey(Inventory, verbose_name='المخزن', on_delete=models.PROTECT, blank=True, null=True)
     customerID = models.ForeignKey(Customers, verbose_name='العميل', on_delete=models.PROTECT)
+    currencyID = models.ForeignKey(Countries , verbose_name='العملة', default=3, on_delete=models.PROTECT, blank=True, null=True)
+    rate = models.DecimalField(verbose_name='سعر الصرف', default=1, max_digits=6, decimal_places=2, blank=True, null=True)
     typePaymentID = models.ForeignKey(TypePayment, verbose_name='طريقة الدفع', default=1, on_delete=models.PROTECT, blank=True, null=True)
     typeDeliveryID = models.ForeignKey(TypeDelivery, verbose_name='طريقة التسليم', default=1, on_delete=models.PROTECT, blank=True, null=True)
-    date = models.DateTimeField(verbose_name='التاريخ', default=timezone.now , blank=True, null=True)
     description = models.TextField(verbose_name='الوصف', default="فاتورة مبيعات جديدة", max_length=250, blank=True, null=True)
     attachments = models.FileField(verbose_name='المرفقات', blank=True, null=True)
     approve = models.BooleanField(verbose_name='إعتماد', default=False, blank=True, null=True) 
