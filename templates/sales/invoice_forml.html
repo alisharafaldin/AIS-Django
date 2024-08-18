@@ -73,7 +73,11 @@ td {
     <div class="form-row">
       <!-- <div class="view-mobile"> -->
         <h6 style="font-weight: bold" class="col-md-2">العملة</h6>
+        {% if is_edit_mode %}
         <div class="form-group col-md-3">{{invoice_head_form.currencyID}}</div>
+        {% else %}
+        <div class="form-group col-md-3">{{invoice_head_form.currencyID.currency_ar}}</div>
+        {% endif %}
       <!-- </div> -->
       <!-- <div class="view-mobile"> -->
         <h6 style="font-weight: bold" class="col-md-2">سعر الصرف</h6>

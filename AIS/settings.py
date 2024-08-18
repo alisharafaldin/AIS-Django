@@ -54,9 +54,10 @@ INSTALLED_APPS = [
     'import_export',
     'django.contrib.humanize',
     'taggit',
-    'rest_framework',
     'purchases.apps.PurchasesConfig',
     'sales.apps.SalesConfig',
+    'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -69,7 +70,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'companys.middleware.CurrentCompanyMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # عنوان React app
+]
+
 
 ROOT_URLCONF = 'AIS.urls'
 

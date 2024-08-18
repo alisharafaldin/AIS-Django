@@ -11,6 +11,17 @@ from . forms import CustomerForm, InvoiceHeadForm, InvoiceBodyForm, InvoiceBodyF
 from django.forms import modelformset_factory
 from django.contrib.auth.decorators import login_required
 
+from rest_framework import viewsets, generics
+from .serializers import CustomersSerializer
+
+class CustomerViewSet(viewsets.ModelViewSet):
+    queryset = Customers.objects.all()
+    serializer_class = CustomersSerializer
+
+# class CustomersListView(generics.ListAPIView):
+#     queryset = Customers.objects.all()
+#     serializer_class = CustomersSerializer
+
 # from django.template.loader import render_to_string
 # from django.http import HttpResponse
 # from xhtml2pdf import pisa

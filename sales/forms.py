@@ -1,5 +1,6 @@
 from django import forms
 from .models import Customers, InvoicesSalesHead, InvoicesSalesBody
+from basicinfo.models import Countries
 from django.forms import modelformset_factory
 
 class CustomerForm(forms.ModelForm):
@@ -11,6 +12,11 @@ class CustomerForm(forms.ModelForm):
    }
 
 class InvoiceHeadForm(forms.ModelForm):
+    currencyID = forms.ModelChoiceField(
+        queryset=Countries.objects.all(),
+        empty_label="اختر العملة",
+        widget=forms.Select(attrs={'class': 'form-control'}),
+    )
     class Meta:
         model = InvoicesSalesHead
         fields = '__all__'
@@ -18,7 +24,8 @@ class InvoiceHeadForm(forms.ModelForm):
             'date': forms.DateInput(attrs={'class':'form-control',  'type':'date' , 'placeholder':'التاريخ '}),
             'customerID': forms.Select(attrs={'class':'form-control', 'placeholder':'العميل'}),
             'rate': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'سعر الصرف'}),
-            'currencyID': forms.Select(attrs={'class':'form-control', 'placeholder':'العملة'}),
+            # 'currencyID': forms.Select(attrs={'class':'form-control', 'placeholder':'العملة'}),
+            # 'currency_ar': forms.Select(attrs={'class':'form-control', 'placeholder':' العملة'}),
             'typeTransactionID': forms.Select(attrs={'disabled': 'disabled','class':'form-control', 'placeholder':'نوع المعاملة'}),
             'inventoryID': forms.Select(attrs={'class':'form-control', 'placeholder':'المخزن'}),
             'typePaymentID': forms.Select(attrs={'class':'form-control', 'placeholder':'طريقة الدفع'}),
@@ -28,6 +35,10 @@ class InvoiceHeadForm(forms.ModelForm):
             'updated_at': forms.DateTimeInput(attrs={'class':'form-control', 'type':'datetime-local', 'placeholder':'تاريخ التعديل'}),
             'details': forms.CheckboxSelectMultiple,
         }
+
+    def __init__(self, *args, **kwargs):
+        super(InvoiceHeadForm, self).__init__(*args, **kwargs)
+        self.fields['currencyID'].label_from_instance = lambda obj: obj.currency_ar
 
 class InvoiceBodyForm(forms.ModelForm):
     DELETE = forms.BooleanField(required=False, initial=False)

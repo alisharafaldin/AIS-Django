@@ -1,7 +1,12 @@
-from django.urls import path
+from rest_framework.routers import DefaultRouter
+from django.urls import path, include
 from . import views 
 
+router = DefaultRouter()
+router.register(r'customers', views.CustomerViewSet)
+
 urlpatterns = [  
+    path('api/', include(router.urls)),
     path('', views.invoices_sales, name='invoices_sales'),
     path('invoice_sales_create', views.invoice_sales_create, name='invoice_sales_create'),
     path('invoice_sales_reade/<int:id>', views.invoice_sales_reade, name='invoice_sales_reade'),
