@@ -10,7 +10,7 @@ class Customers(models.Model):
     sequence = models.PositiveIntegerField(editable=False)  # الحقل التسلسلي
     legalPersonID = models.OneToOneField(LegalPersons, on_delete=models.CASCADE, blank=True)
     def __str__(self):
-        return  str(self.legalPersonID) 
+        return  str(self.legalPersonID) + ' : ID : ' + str(self.sequence)
 
 class Inventory (models.Model):
     companyID = models.ForeignKey(Company, on_delete=models.PROTECT,blank=True)
@@ -41,7 +41,7 @@ class InvoicesSalesHead (models.Model):
     typePaymentID = models.ForeignKey(TypePayment, verbose_name='طريقة الدفع', default=1, on_delete=models.PROTECT, blank=True, null=True)
     typeDeliveryID = models.ForeignKey(TypeDelivery, verbose_name='طريقة التسليم', default=1, on_delete=models.PROTECT, blank=True, null=True)
     description = models.TextField(verbose_name='الوصف', default="فاتورة مبيعات جديدة", max_length=250, blank=True, null=True)
-    attachments = models.FileField(verbose_name='المرفقات', blank=True, null=True)
+    attachments = models.FileField(verbose_name='المرفقات',upload_to='attachments/%Y/%m/%d/', blank=True, null=True)
     approve = models.BooleanField(verbose_name='إعتماد', default=False, blank=True, null=True) 
     details = models.ManyToManyField(Items, through='InvoicesSalesBody', related_name='invoices', blank=True)
     created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name='created_by_invoS', blank=True, null=True)

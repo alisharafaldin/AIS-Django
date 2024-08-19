@@ -1,7 +1,7 @@
 import io
 from typing import Any
 from django.shortcuts import render , redirect, get_object_or_404
-from basicinfo.forms import BasicInfoForm, LegalPersonsForm
+from basicinfo.forms import BasicInfoForm, LegalPersonsForm, InvoiceSearchForm
 from django.db.models import Sum
 from basicinfo.models import BasicInfo, LegalPersons
 from django.contrib import messages
@@ -10,6 +10,7 @@ from companys.models import Company
 from . forms import CustomerForm, InvoiceHeadForm, InvoiceBodyForm, InvoiceBodyFormSet
 from django.forms import modelformset_factory
 from django.contrib.auth.decorators import login_required
+from django.utils.dateparse import parse_date
 
 from rest_framework import viewsets, generics
 from .serializers import CustomersSerializer
@@ -40,6 +41,8 @@ class CustomerViewSet(viewsets.ModelViewSet):
 #     return response
 
 # Create your views here.
+
+
 
 # دوال لإنشاء وتحديث وقراءة وحذف القيود المحاسبية
 
@@ -262,6 +265,27 @@ def calculate_totals(details_queryset):
     total_c = sum(item.credit for item in details_queryset)
     return total_d, total_c, total_d - total_c
 
+def invoices_sales_search(request):
+    search_name = request.GET.get('search_name')
+    search_invoice = request.GET.get('search_invoice')
+    search_date = request.GET.get('search_date')
+    search_currency = request.GET.get('search_currency')
+    if search_date:
+        invoices = InvoicesSalesHead.objects.filter(date=search_date)
+    elif search_name:
+        invoices = InvoicesSalesHead.objects.filter(customerID__legalPersonID__name_ar__icontains=search_name)
+    elif search_invoice:
+        invoices = InvoicesSalesHead.objects.filter(sequence=search_invoice)
+    elif search_currency:
+        invoices = InvoicesSalesHead.objects.filter(currencyID=search_currency)
+    else:
+        invoices = InvoicesSalesHead.objects.all()
+    context = {
+        'invoices': invoices,
+        'invoice_search_form':InvoiceSearchForm(),
+    }
+    return render(request, 'sales/invoices.html', context)
+
 @login_required
 def invoices_sales(request):
     # التحقق من الأذونات أولاً
@@ -273,14 +297,21 @@ def invoices_sales(request):
     if not current_company_id:
         messages.error(request, 'الرجاء تحديد الشركة للعمل عليها.')
         return redirect('companys')
-    # الحصول على القيود الخاصة بالشركة الحالية
+    # الحصول على فواتير المبيعات الخاصة بالشركة الحالية
     try:
-        invoices_list = InvoicesSalesHead.objects.filter(companyID_id=current_company_id).order_by("-id")
+          # الحصول على فواتير المبيعات الخاصة بالشركة الحالية
+        invoices = InvoicesSalesHead.objects.filter(companyID_id=current_company_id).annotate(
+        total_sum=Sum('sales_invoice__total_price_after_tax')).order_by("-id")
     except InvoicesSalesHead.DoesNotExist:
-        invoices_list = []  # إذا لم يكن هناك أي كائنات، العودة إلى قائمة فارغة
+        invoices = []  # إذا لم يكن هناك أي كائنات، العودة إلى قائمة فارغة
+
+        # total_sum_all_invoices = invoices.aggregate(total_sum=Sum('total_sum'))['total_sum'] or 0
+   # حساب إجمالي جميع الفواتير
+
     # إعداد السياق
     context = {
-        'invoices': invoices_list,
+        'invoices': invoices,
+        # 'total_sum_all_invoices':total_sum_all_invoices,
     }
     # عرض الصفحة مع البيانات
     return render(request, 'sales/invoices.html', context)

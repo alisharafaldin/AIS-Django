@@ -6,7 +6,7 @@
   </h4>
   <div class="content">
     <br />
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
       {% csrf_token %}
        
       {% include 'partials/_alerts.html' %}

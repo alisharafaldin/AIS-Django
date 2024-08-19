@@ -49,7 +49,7 @@ td {
 
     <div class="form-row">
       <h6 style="font-weight: bold" class="col-md-2">العميل</h6>
-      <div class="form-group col-md-8">{{invoice_head_form.customerID}} <span style="color: #808080;">ID : {{invoice_head_form.customerID_id}}</span></div>
+      <div class="form-group col-md-8">{{invoice_head_form.customerID}}</div>
     </div>
 
     <div class="form-row">
@@ -191,11 +191,18 @@ td {
         <th>{{total_quantity|intcomma}} </th>
         <td></td>
         <th>{{total_price_after_tax|floatformat:2|intcomma}} </th>
-     
         {% endif %} 
        </tr>
     </tbody>
   </table>
+  
+  {% if invoice_head_form.attachments %}
+  <embed src="{{ invoice_head_form.attachments.url }}" type="application/pdf" width="100%" height="600px" />
+  <!-- <img class="card-img-top" src="{{ invoice_head_form.attachments.url }}" alt="صورة المرفق" style="max-width: 100%; height: auto;"/> -->
+  {% else %}
+  <h6>لا توجد مرفقات</h6>
+  {% endif %}
+
 </div>
 <div class="form-col">
   <h6 class="form-group col-md-6 info-invo">تم إنشاء الفاتورة بواسطة : {{invoice_head_form.created_by}} </h6>

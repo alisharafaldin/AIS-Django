@@ -1,5 +1,6 @@
 {% extends 'base.html' %} {% load static %} {% block title %} | Qayds 
 {% endblock %} {% block content %}
+{% load humanize %}
 
 <style>
   table {
@@ -29,31 +30,16 @@ td input {
   <div class="main-title">
     <h4 class="form-group col-md-9">فواتير المبيعات</h4>
   </div>
-  <form method="GET" class="form-inline my-2 my-lg-0">
-    <a href="{% url 'invoice_sales_create' %}" class="btn btn-main"
-      >إضافة فاتورة جديدة</a
-    >
-    <button class="btn btn-main" type="submit">
-      بحث<i class="fa-solid fa-magnifying-glass"></i>
-    </button>
-    <a href="{% url 'invoices' %}" class="btn btn-main" type="submit"
-      >إعادة تعيين<i class="fa-solid fa-rotate-right"></i
-    ></a>
-    <input
-      class="form-control mr-sm-2 remove-outline"
-      name="search_emp"
-      placeholder="بحث برقم الفاتورة"
-    />
-    <input
-      class="form-control mr-sm-2 remove-outline"
-      name="search_iqama"
-      placeholder="بحث بالمورد"
-    />
-    <input
-      class="form-control mr-sm-2 remove-outline"
-      name="search_border"
-      placeholder="بحث بإجمالي المبلغ"
-    />
+  <form method="GET" class="form-inline my-2 my-lg-0" action="{% url 'invoices_sales_search' %}">
+    <a href="{% url 'invoice_sales_create' %}" class="btn btn-main">إضافة فاتورة جديدة</a>
+    <button class="btn btn-main" type="submit">بحث<i class="fa-solid fa-magnifying-glass"></i></button>
+    <a href="{% url 'invoices_sales' %}" class="btn btn-main" type="submit">إعادة تعيين<i class="fa-solid fa-rotate-right"></i></a>
+    <input class="form-control mr-sm-2 remove-outline" name="search_name" placeholder="بحث بإسم العميل"/>
+    <input class="form-control mr-sm-2 remove-outline" type="date" name="search_date" placeholder="بحث بالتاريخ"/>
+    <input class="form-control mr-sm-2 remove-outline" name="search_invoice" placeholder="بحث برقم الفاتورة"/>
+    <div class="form-group col-md-3">{{invoice_search_form.currencyID}}</div>
+
+    <!-- <input class="form-control mr-sm-2 remove-outline" name="search_currency" value="{{invoice_search_form.currencyID}}" placeholder="بحث بالعملة"/> -->
   </form>
   <div class="content">
     {% include 'partials/_alerts.html' %}
@@ -67,7 +53,7 @@ td input {
               <th scope="col">رقم الفاتورة</th>
               <th scope="col">تاريخ الفاتورة</th>
               <th scope="col">العميل</th>
-              <!-- <th scope="col">عدد الأصناف</th> -->
+              <th scope="col">إجمالي الفاتورة</th>
               <!-- <th scope="col">المستخدم</th>
               <th scope="col">معتمد</th> -->
               <th scope="col">إجراءات</th>
@@ -80,7 +66,7 @@ td input {
               <td data-label="رقم الفاتورة">{{ invoice.sequence }}</td>
               <td data-label="التاريخ">{{ invoice.date|date:"Y-m-d" }}</td>
               <td data-label="العميل">{{ invoice.customerID.legalPersonID.acronym_ar }}</td>
-              <!-- <td data-label="عدد الأصناف">{{ invoice.total_items }}</td> -->
+              <td data-label="إجمالي الفاتورة">{{ invoice.total_sum|floatformat:2|intcomma }}</td>
               <!-- <td data-label="المستخدم">{{ invoice.created_by }}</td> -->
               <!-- <td data-label="إعتماد">{{ invoice.approve }}</td> -->
               <td data-label="الإجرات">

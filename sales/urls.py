@@ -8,6 +8,7 @@ router.register(r'customers', views.CustomerViewSet)
 urlpatterns = [  
     path('api/', include(router.urls)),
     path('', views.invoices_sales, name='invoices_sales'),
+    path('invoices_sales_search', views.invoices_sales_search, name='invoices_sales_search'),
     path('invoice_sales_create', views.invoice_sales_create, name='invoice_sales_create'),
     path('invoice_sales_reade/<int:id>', views.invoice_sales_reade, name='invoice_sales_reade'),
     path('invoice_sales_update/<int:id>', views.invoice_sales_update, name='invoice_sales_update'),
@@ -20,4 +21,4 @@ urlpatterns = [
     path('customer_reade/<int:id>', views.customer_reade, name='customer_reade'),
     path('customer_delete/<int:id>', views.customer_delete, name='customer_delete'),
 
-]
+]  

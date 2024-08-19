@@ -1,5 +1,15 @@
 from django import forms
-from .models import Persons, LegalPersons, BasicInfo
+from .models import Persons, LegalPersons, BasicInfo, Countries
+
+
+class InvoiceSearchForm(forms.Form):
+    search = forms.CharField(required=False, label='اسم العميل')
+    currencyID = forms.ModelChoiceField(
+        queryset=Countries.objects.all(),
+        label='العملة',
+        empty_label="اختر العملة",
+        required=False
+    )
 
 class BasicInfoForm(forms.ModelForm):
     class Meta:

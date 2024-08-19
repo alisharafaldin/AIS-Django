@@ -7,7 +7,7 @@ New {% endblock %} {% block content %}
   </div>
   <div class="content">
     {% include 'partials/_alerts.html' %}
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       <br />
       <button type="submit" name="btnsave" class="btn btn-save">إضافة</button>
