@@ -164,17 +164,17 @@ def employee_delete(request, id):
   person = get_object_or_404(Persons, id=employee.personID_id)
   basicInfo = get_object_or_404(BasicInfo, id=person.basicInfoID_id)
 
-  # إنشاء نماذج بالكائنات المسترجعة
-  employee_form =  EmployeeForm(instance=employee)
-  person_form = PersonForm(instance=person)
-  basicInfo_form = BasicInfoForm(instance=basicInfo)
-
   if request.method == 'POST':
-    # حذف الكائن وإضافة رسالة نجاح
-    employee.delete()
-    messages.info(request, 'تم حذف الموظف بنجاح')
+    # حذف الكائنات بالترتيب المناسب لتجنب القيود المرجعية
+    basicInfo.delete()  # حذف BasicInfo أولاً
+
+    messages.info(request, 'تم حذف الموظف وجميع البيانات المرتبطة به بنجاح.')
     return redirect('employees')
   else:
+      # إنشاء نماذج بالكائنات المسترجعة
+      employee_form =  EmployeeForm(instance=employee)
+      person_form = PersonForm(instance=person)
+      basicInfo_form = BasicInfoForm(instance=basicInfo)
       handle_form_errors(request, basicInfo_form, person_form, employee_form)
   
   context = {

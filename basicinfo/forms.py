@@ -1,14 +1,37 @@
 from django import forms
 from .models import Persons, LegalPersons, BasicInfo, Countries
+from sales.models import Customers, Inventory
 
 
 class InvoiceSearchForm(forms.Form):
-    search = forms.CharField(required=False, label='اسم العميل')
+    search = forms.CharField(
+        required=False, 
+        label='اسم العميل',
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'اسم العميل'})
+    )
+
     currencyID = forms.ModelChoiceField(
         queryset=Countries.objects.all(),
         label='العملة',
         empty_label="اختر العملة",
-        required=False
+        required=False,
+        widget=forms.Select(attrs={'name':'search_currencyID', 'class':'form-control', 'placeholder':'العملة'})
+    )
+
+    inventoryID = forms.ModelChoiceField(
+        queryset=Inventory.objects.all(),
+        label='المخزن',
+        empty_label="اختر المخزن",
+        required=False,
+        widget=forms.Select(attrs={'name':'search_inventoryID','class':'form-control', 'placeholder':'المخزن'})
+    )
+
+    customerID = forms.ModelChoiceField(
+        queryset=Customers.objects.all(),
+        label='العميل',
+        empty_label="اختر العميل",
+        required=False,
+        widget=forms.Select(attrs={'name':'search_customerID','class':'form-control', 'placeholder':'العميل'})
     )
 
 class BasicInfoForm(forms.ModelForm):

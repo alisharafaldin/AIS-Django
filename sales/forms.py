@@ -21,12 +21,10 @@ class InvoiceHeadForm(forms.ModelForm):
         model = InvoicesSalesHead
         fields = '__all__'
         widgets = {
-            'date': forms.DateInput(attrs={'class':'form-control',  'type':'date' , 'placeholder':'التاريخ '}),
+            'date': forms.DateInput(attrs={'class':'form-control', 'type':'date', 'placeholder':'التاريخ'}),
             'customerID': forms.Select(attrs={'class':'form-control', 'placeholder':'العميل'}),
             'rate': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'سعر الصرف'}),
-            # 'currencyID': forms.Select(attrs={'class':'form-control', 'placeholder':'العملة'}),
-            # 'currency_ar': forms.Select(attrs={'class':'form-control', 'placeholder':' العملة'}),
-            'typeTransactionID': forms.Select(attrs={'disabled': 'disabled','class':'form-control', 'placeholder':'نوع المعاملة'}),
+            'typeTransactionID': forms.Select(attrs={'disabled':'disabled','class':'form-control', 'placeholder':'نوع المعاملة'}),
             'inventoryID': forms.Select(attrs={'class':'form-control', 'placeholder':'المخزن'}),
             'typePaymentID': forms.Select(attrs={'class':'form-control', 'placeholder':'طريقة الدفع'}),
             'typeDeliveryID': forms.Select(attrs={'class':'form-control', 'placeholder':'طريقة التسليم'}),
@@ -37,9 +35,16 @@ class InvoiceHeadForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        company_id = kwargs.pop('companyID', None)  # استلام الشركة الحالية من العرض
         super(InvoiceHeadForm, self).__init__(*args, **kwargs)
+        # تخصيص تسمية حقل currencyID
         self.fields['currencyID'].label_from_instance = lambda obj: obj.currency_ar
 
+        # تصفية العملاء بناءً على الشركة
+        if company_id:
+            self.fields['customerID'].queryset = Customers.objects.filter(companyID_id=company_id)
+
+    
 class InvoiceBodyForm(forms.ModelForm):
     DELETE = forms.BooleanField(required=False, initial=False)
     class Meta:
@@ -57,6 +62,12 @@ class InvoiceBodyForm(forms.ModelForm):
             'tax_value': forms.NumberInput(attrs={'readonly':'readonly','class':'form-control tax_value', 'placeholder':'قيمة الضريبة'}),
             'total_price_after_tax': forms.NumberInput(attrs={'readonly':'readonly','class':'form-control total_price_after_tax', 'placeholder':'إجمالي السعر بعد الخصم'}),
         }
+
+    # def __init__(self, *args, **kwargs):
+        # company_id = kwargs.pop('companyID', None)  # استلام الشركة الحالية من العرض
+        # تصفية العملاء بناءً على الشركة
+        # self.fields['itemID'].queryset = Customers.objects.filter(itemID_id=company_id)
+    
     #التأكد من إضافة منتج قبل الحفظ
     def clean(self):
         cleaned_data = super().clean()

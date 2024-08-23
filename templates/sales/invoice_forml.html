@@ -34,70 +34,44 @@ td {
 </style>
 
 <div class="form-row main">
+  <div style="display: none;">{{invoice_head_form.created_by}}</div>
+  <!-- معلومات الفاتورة -->
   <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
-    <div class="form-group col-md-6" style="display: none;">{{invoice_head_form.created_by}}</div>
-
-    <!-- <div class="form-row">
-      <h6 style="font-weight: bold" class="col-md-2">نوع العملية</h6>
-      <div class="form-group col-md-4">{{invoice_head_form.typeTransactionID}}</div>
-    </div> -->
-    
     <div class="form-row">
       <h6 style="font-weight: bold" class="col-md-2">التاريخ</h6>
       <div class="form-group col-md-4">{{invoice_head_form.date}}</div>
     </div>
-
     <div class="form-row">
       <h6 style="font-weight: bold" class="col-md-2">العميل</h6>
       <div class="form-group col-md-8">{{invoice_head_form.customerID}}</div>
     </div>
-
     <div class="form-row">
-      <!-- <div class="view-mobile"> -->
         <h6 style="font-weight: bold" class="col-md-2">الوصف</h6>
         <div class="form-group col-md-8">{{invoice_head_form.description}}</div>
-      <!-- </div> -->
     </div>
-
     <div class="form-row">
-        <!-- <div class="view-mobile"> -->
           <h6 style="font-weight: bold" class="col-md-2">طريقة الدفع</h6>
           <div class="form-group col-md-3">{{invoice_head_form.typePaymentID}}</div>
-        <!-- </div> -->
-        <!-- <div class="view-mobile"> -->
           <h6 style="font-weight: bold" class="col-md-2">طريقة التسليم</h6>
           <div class="form-group col-md-3">{{invoice_head_form.typeDeliveryID}}</div>
-        <!-- </div> -->
     </div>
-
     <div class="form-row">
-      <!-- <div class="view-mobile"> -->
         <h6 style="font-weight: bold" class="col-md-2">العملة</h6>
         {% if is_edit_mode %}
         <div class="form-group col-md-3">{{invoice_head_form.currencyID}}</div>
         {% else %}
         <div class="form-group col-md-3">{{invoice_head_form.currencyID.currency_ar}}</div>
         {% endif %}
-      <!-- </div> -->
-      <!-- <div class="view-mobile"> -->
         <h6 style="font-weight: bold" class="col-md-2">سعر الصرف</h6>
         <div class="form-group col-md-3">{{invoice_head_form.rate}}</div>
-      <!-- </div> -->
     </div>
-
     <div class="form-row">
-      <!-- <div class="view-mobile"> -->
         <h6 style="font-weight: bold" class="col-md-2">المخزن</h6>
         <div class="form-group col-md-3">{{invoice_head_form.inventoryID}}</div>
-      <!-- </div> -->
-      <!-- <div class="view-mobile"> -->
-        <h6 style="font-weight: bold" class="col-md-2">المرفقات</h6>
-        <div class="form-group col-md-3">{{invoice_head_form.attachments}}</div>
-      <!-- </div> -->
     </div>
-
   </div>
 
+  <!-- بيانات العميل -->
   <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
     <div class="card text-bg-light mb-10" >
       <div class="card-header">بيانات العميل : </div>
@@ -130,17 +104,15 @@ td {
             {% endif %}
           </div>
         </div>
-
         <div class="form-row">
           <h6 style="font-weight: bold" class="col-md-3">الجنسية</h6>
           <div class="form-group col-md-6">{{customer.legalPersonID.basicInfoID.nationalityID}}</div>
         </div>
-
       </div>
     </div>
   </div>
-
 </div>
+
 <div class="table-responsive">
   <table class="table table-hover">
     <thead>
@@ -195,10 +167,17 @@ td {
        </tr>
     </tbody>
   </table>
-  
+  <div class="form-row">
+        <h6 style="font-weight: bold" class="col-md-2">المرفقات</h6>
+        <div class="form-group col-md-3">{{invoice_head_form.attachments}}</div>
+  </div>
+
   {% if invoice_head_form.attachments %}
-  <embed src="{{ invoice_head_form.attachments.url }}" type="application/pdf" width="100%" height="600px" />
-  <!-- <img class="card-img-top" src="{{ invoice_head_form.attachments.url }}" alt="صورة المرفق" style="max-width: 100%; height: auto;"/> -->
+  <div class="form-row">
+    <!-- <embed src="{{ invoice_head_form.attachments.url }}" type="application/pdf" width="100%" height="600px" /> -->
+    <img class="card-img-top" src="{{ invoice_head_form.attachments.url }}" alt="صورة المرفق" style="width: 80%; height: auto;"/>
+  </div>
+
   {% else %}
   <h6>لا توجد مرفقات</h6>
   {% endif %}

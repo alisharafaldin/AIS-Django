@@ -25,10 +25,23 @@ class Inventory (models.Model):
     google_maps_location = models.URLField(verbose_name='العنوان على خرائط قوقل', max_length=500, blank=True, null=True)
     administrator = models.ForeignKey(Employee, verbose_name='الموظف المسؤول', on_delete=models.PROTECT, blank=True, null=True)
     phoneAdmin = models.CharField(verbose_name='هاتف الموظف المسؤول',max_length=100, blank=True, null=True)
-
     def __str__(self):
         return str(self.name_ar)
       
+# class InventoryTransfers(models.Model):
+#     from_inventory = models.ForeignKey(Inventory, on_delete=models.CASCADE, related_name='transfers_from')
+#     to_inventory = models.ForeignKey(Inventory, on_delete=models.CASCADE, related_name='transfers_to')
+#     date = models.DateTimeField(auto_now_add=True)
+#     def __str__(self):
+#         return f"Transfer from {self.from_inventory.name_ar} to {self.to_inventory.name_ar} on {self.date}"
+    
+# class InventoryTransferDetails(models.Model):
+#     inventoryTransferID = models.ForeignKey(InventoryTransfers, on_delete=models.CASCADE, related_name='transfer_details')
+#     product = models.ForeignKey(Items, on_delete=models.CASCADE)
+#     quantity = models.PositiveIntegerField()
+#     def __str__(self):
+#         return f"{self.quantity} units of {self.product.name} transferred"
+    
 class InvoicesSalesHead (models.Model):
     companyID = models.ForeignKey(Company, on_delete=models.PROTECT,blank=True)
     sequence = models.PositiveIntegerField(editable=False)  # الحقل التسلسلي
@@ -44,6 +57,7 @@ class InvoicesSalesHead (models.Model):
     attachments = models.FileField(verbose_name='المرفقات',upload_to='attachments/%Y/%m/%d/', blank=True, null=True)
     approve = models.BooleanField(verbose_name='إعتماد', default=False, blank=True, null=True) 
     details = models.ManyToManyField(Items, through='InvoicesSalesBody', related_name='invoices', blank=True)
+    salesRepID = models.ForeignKey(Employee, verbose_name='مندوب المبيعات', on_delete=models.PROTECT, blank=True, null=True)
     created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name='created_by_invoS', blank=True, null=True)
     created_at = models.DateTimeField(verbose_name='تاريخ الإنشاء',auto_now_add=True, blank=True, null=True)
     updated_by = models.ForeignKey(User, verbose_name='المُعدِل', related_name='updated_by_invoS', on_delete=models.PROTECT, blank=True, null=True)
@@ -54,7 +68,7 @@ class InvoicesSalesHead (models.Model):
   
 class InvoicesSalesBody(models.Model):
     invoiceHeadID = models.ForeignKey(InvoicesSalesHead, on_delete=models.CASCADE, related_name='sales_invoice', blank=True)
-    itemID = models.ForeignKey(Items, verbose_name='المنتج', on_delete=models.PROTECT, blank=True, null=True)
+    itemID = models.ForeignKey(Items, verbose_name='المنتج', on_delete=models.PROTECT,related_name='sales_details', blank=True, null=True)
     quantity = models.DecimalField(verbose_name='الكمية', default=1, max_digits=6, decimal_places=0, blank=True, null=True)
     unit_price = models.DecimalField(verbose_name='سعر البيع', default=1, max_digits=10, decimal_places=2, blank=True, null=True)
     discount = models.DecimalField(verbose_name='خصم مسموح به', default=0, max_digits=6, decimal_places=2, blank=True, null=True)

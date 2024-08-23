@@ -1,45 +1,51 @@
-{% extends 'base.html' %} {% load static %} {% block title %} | Qayds 
-{% endblock %} {% block content %}
-{% load humanize %}
+{% extends 'base.html' %} {% load static %} {% block title %} | Qayds {% endblock %} {% block content %} {% load humanize %}
 
 <style>
   table {
-  width: 100%;
-  table-layout: auto;
-}
+    width: 100%;
+    table-layout: auto;
+  }
 
-th {
-  text-align: center;
-}
- td {
-  padding: 5px !important;
+  th {
+    text-align: center;
+  }
+  td {
+    padding: 5px !important;
     text-align: center;
     vertical-align: middle !important;
     width: auto !important;
     white-space: nowrap;
     width: fit-content !important;
-}
-td input {
-  padding: 5px;
-  text-align: center;
-}
-
+  }
+  td input {
+    padding: 5px;
+    text-align: center;
+  }
 </style>
 
 <div class="content-wrapper">
   <div class="main-title">
     <h4 class="form-group col-md-9">فواتير المبيعات</h4>
   </div>
-  <form method="GET" class="form-inline my-2 my-lg-0" action="{% url 'invoices_sales_search' %}">
-    <a href="{% url 'invoice_sales_create' %}" class="btn btn-main">إضافة فاتورة جديدة</a>
-    <button class="btn btn-main" type="submit">بحث<i class="fa-solid fa-magnifying-glass"></i></button>
-    <a href="{% url 'invoices_sales' %}" class="btn btn-main" type="submit">إعادة تعيين<i class="fa-solid fa-rotate-right"></i></a>
-    <input class="form-control mr-sm-2 remove-outline" name="search_name" placeholder="بحث بإسم العميل"/>
+  <form
+    method="GET"
+    class="form-inline my-2 my-lg-0"
+    action="{% url 'invoices_sales_search' %}"
+  >
+    <a href="{% url 'invoice_sales_create' %}" class="btn btn-main"
+      >إضافة فاتورة جديدة</a
+    >
+    <button class="btn btn-main" type="submit">
+      بحث<i class="fa-solid fa-magnifying-glass"></i></button>
+    <a href="{% url 'invoices_sales' %}" class="btn btn-main" type="submit"
+      >إعادة تعيين<i class="fa-solid fa-rotate-right"></i></a>
+    {{invoice_search_form.customerID}}
     <input class="form-control mr-sm-2 remove-outline" type="date" name="search_date" placeholder="بحث بالتاريخ"/>
-    <input class="form-control mr-sm-2 remove-outline" name="search_invoice" placeholder="بحث برقم الفاتورة"/>
-    <div class="form-group col-md-3">{{invoice_search_form.currencyID}}</div>
-
+    {{invoice_search_form.currencyID}}
+    {{invoice_search_form.inventoryID}}
+    <input class="form-control mr-sm-2 remove-outline" name="search_invoice_number" placeholder="بحث برقم الفاتورة"/>
     <!-- <input class="form-control mr-sm-2 remove-outline" name="search_currency" value="{{invoice_search_form.currencyID}}" placeholder="بحث بالعملة"/> -->
+
   </form>
   <div class="content">
     {% include 'partials/_alerts.html' %}
@@ -54,8 +60,8 @@ td input {
               <th scope="col">تاريخ الفاتورة</th>
               <th scope="col">العميل</th>
               <th scope="col">إجمالي الفاتورة</th>
-              <!-- <th scope="col">المستخدم</th>
-              <th scope="col">معتمد</th> -->
+              <th scope="col">العملة</th>
+              <!-- <th scope="col">معتمد</th> -->
               <th scope="col">إجراءات</th>
             </tr>
           </thead>
@@ -65,9 +71,15 @@ td input {
               <th data-label="#" scope="row">{{ forloop.counter }}</th>
               <td data-label="رقم الفاتورة">{{ invoice.sequence }}</td>
               <td data-label="التاريخ">{{ invoice.date|date:"Y-m-d" }}</td>
+              {% if invoice.attachments %}
+              <td data-label="العميل" style="color: #28b78d; font-weight: bold;">{{ invoice.customerID.legalPersonID.acronym_ar }}</td>
+              {% else  %}
               <td data-label="العميل">{{ invoice.customerID.legalPersonID.acronym_ar }}</td>
-              <td data-label="إجمالي الفاتورة">{{ invoice.total_sum|floatformat:2|intcomma }}</td>
-              <!-- <td data-label="المستخدم">{{ invoice.created_by }}</td> -->
+              {% endif  %}
+              <td data-label="إجمالي الفاتورة">
+                {{ invoice.total_sum|floatformat:2|intcomma }}
+              </td>
+              <td data-label="العملة">{{ invoice.currencyID}}</td>
               <!-- <td data-label="إعتماد">{{ invoice.approve }}</td> -->
               <td data-label="الإجرات">
                 <a
@@ -91,7 +103,14 @@ td input {
               </td>
             </tr>
             {% endfor %}
+
           </tbody>
+          <tr>
+            <th>إجمالي قيمة فواتير المبيعات</th>
+            <th></th>
+            <td></td>
+            <th>{{total_invoices_sum|floatformat:2|intcomma}}</th>
+           </tr>
         </table>
       </div>
     </form>

@@ -151,7 +151,7 @@ def company_delete(request, id):
 
   if request.method == 'POST':
     # حذف الكائن وإضافة رسالة نجاح
-    company.delete()
+    basicInfo.delete()
     messages.info(request, 'تم حذف الشركة بنجاح')
     return redirect('companys')
   else:

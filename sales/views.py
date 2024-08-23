@@ -19,31 +19,6 @@ class CustomerViewSet(viewsets.ModelViewSet):
     queryset = Customers.objects.all()
     serializer_class = CustomersSerializer
 
-# class CustomersListView(generics.ListAPIView):
-#     queryset = Customers.objects.all()
-#     serializer_class = CustomersSerializer
-
-# from django.template.loader import render_to_string
-# from django.http import HttpResponse
-# from xhtml2pdf import pisa
-
-# def invoice_pdf(request, id):
-#     invoice = get_object_or_404(InvoicesSalesHead, id=id)
-#     print(invoice.id)
-#     html = render_to_string('sales/invoice_print_pdf.html', {'invoice': invoice})
-#     response = HttpResponse(content_type='application/pdf')
-#     response['Content-Disposition'] = f'attachment; filename="invoice_{id}.pdf"'
-    
-#     pisa_status = pisa.CreatePDF(html, dest=response)
-    
-#     if pisa_status.err:
-#        return HttpResponse('We had some errors <pre>' + html + '</pre>')
-#     return response
-
-# Create your views here.
-
-
-
 # دوال لإنشاء وتحديث وقراءة وحذف القيود المحاسبية
 
 def handle_form_errors(head_form, request):
@@ -265,25 +240,53 @@ def calculate_totals(details_queryset):
     total_c = sum(item.credit for item in details_queryset)
     return total_d, total_c, total_d - total_c
 
+@login_required
 def invoices_sales_search(request):
-    search_name = request.GET.get('search_name')
-    search_invoice = request.GET.get('search_invoice')
-    search_date = request.GET.get('search_date')
-    search_currency = request.GET.get('search_currency')
+    # الحصول على معايير البحث من الطلب
+    search_name = request.GET.get('search_name', '')
+    search_invoice_number = request.GET.get('search_invoice_number', '')
+    search_date = request.GET.get('search_date', '')
+    search_currencyID = request.GET.get('currencyID', '')
+    search_inventoryID = request.GET.get('inventoryID', '')
+    search_customerID = request.GET.get('customerID', '')
+    
+    # التصفية بناءً على معايير البحث
+    invoices_query = InvoicesSalesHead.objects.all()
+    
     if search_date:
-        invoices = InvoicesSalesHead.objects.filter(date=search_date)
-    elif search_name:
-        invoices = InvoicesSalesHead.objects.filter(customerID__legalPersonID__name_ar__icontains=search_name)
-    elif search_invoice:
-        invoices = InvoicesSalesHead.objects.filter(sequence=search_invoice)
-    elif search_currency:
-        invoices = InvoicesSalesHead.objects.filter(currencyID=search_currency)
-    else:
-        invoices = InvoicesSalesHead.objects.all()
+        invoices_query = invoices_query.filter(date=search_date)
+    if search_name:
+        invoices_query = invoices_query.filter(customerID__legalPersonID__name_ar__icontains=search_name)
+    if search_invoice_number:
+        invoices_query = invoices_query.filter(sequence=search_invoice_number)
+    if search_currencyID:
+        invoices_query = invoices_query.filter(currencyID=search_currencyID)
+    if search_inventoryID:
+        invoices_query = invoices_query.filter(inventoryID=search_inventoryID)
+    if search_customerID:
+        invoices_query = invoices_query.filter(customerID=search_customerID)
+    
+    # الحصول على الشركة الحالية من الجلسة
+    current_company_id = request.session.get('current_company_id')
+    if not current_company_id:
+        messages.error(request, 'الرجاء تحديد الشركة للعمل عليها.')
+        return redirect('companys')
+
+    # تصفية الفواتير بناءً على الشركة الحالية
+    invoices_query = invoices_query.filter(companyID_id=current_company_id).annotate(
+        total_sum=Sum('sales_invoice__total_price_after_tax')).order_by("-id")
+
+      # حساب الإجمالي الكلي لجميع الفواتير
+    total_invoices_sum = invoices_query.aggregate(total_sum=Sum('sales_invoice__total_price_after_tax'))['total_sum'] or 0
+
+    # إعداد السياق
     context = {
-        'invoices': invoices,
-        'invoice_search_form':InvoiceSearchForm(),
+        'invoices': invoices_query,
+        'invoice_search_form': InvoiceSearchForm(request.GET),
+        'total_invoices_sum':total_invoices_sum,
     }
+
+    # عرض الصفحة مع البيانات
     return render(request, 'sales/invoices.html', context)
 
 @login_required
@@ -299,76 +302,76 @@ def invoices_sales(request):
         return redirect('companys')
     # الحصول على فواتير المبيعات الخاصة بالشركة الحالية
     try:
-          # الحصول على فواتير المبيعات الخاصة بالشركة الحالية
+        # الحصول على فواتير المبيعات الخاصة بالشركة الحالية
         invoices = InvoicesSalesHead.objects.filter(companyID_id=current_company_id).annotate(
         total_sum=Sum('sales_invoice__total_price_after_tax')).order_by("-id")
+
+        # حساب الإجمالي الكلي لجميع الفواتير
+        total_invoices_sum = invoices.aggregate(total_sum=Sum('sales_invoice__total_price_after_tax'))['total_sum'] or 0
+
     except InvoicesSalesHead.DoesNotExist:
         invoices = []  # إذا لم يكن هناك أي كائنات، العودة إلى قائمة فارغة
-
-        # total_sum_all_invoices = invoices.aggregate(total_sum=Sum('total_sum'))['total_sum'] or 0
-   # حساب إجمالي جميع الفواتير
-
-    # إعداد السياق
     context = {
         'invoices': invoices,
-        # 'total_sum_all_invoices':total_sum_all_invoices,
+        'invoice_search_form':InvoiceSearchForm(request.GET),
+        'total_invoices_sum':total_invoices_sum,
     }
     # عرض الصفحة مع البيانات
     return render(request, 'sales/invoices.html', context)
 
-@login_required 
+@login_required
 def invoice_sales_create(request):
     if not request.user.has_perm('sales.add_invoicessaleshead'):
-        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لإنشاء القيود المحاسبية.")
+        messages.info(request, f"عذراً {request.user}، ليس لديك الأذونات اللازمة لإنشاء قيود محاسبية.")
         return redirect('invoices_sales')
 
-    if request.method == 'POST':
-      head_form = InvoiceHeadForm(request.POST, request.FILES)
-      formset = InvoiceBodyFormSet(request.POST)
-
-      # التحقق من وجود current_company_id في الجلسة قبل استخدامه.
-      current_company_id = request.session.get('current_company_id')
-      if not current_company_id:
+    # التحقق من وجود current_company_id في الجلسة قبل استخدامه.
+    current_company_id = request.session.get('current_company_id')
+    if not current_company_id:
         messages.error(request, 'لم يتم تحديد الشركة الحالية.')
         return redirect('invoices_sales')
     
-      if head_form.is_valid() and formset.is_valid():
-        head = head_form.save(commit=False)
-        head.created_by = request.user  # تعيين created_by فقط عند إنشاء فاتورة جديد
-        head.companyID = get_object_or_404(Company, id=current_company_id)
-        head.save()
+    if request.method == 'POST':
+        # تمرير companyID إلى النموذج عند تقديم البيانات
+        head_form = InvoiceHeadForm(request.POST, request.FILES, companyID=current_company_id)
+        formset = InvoiceBodyFormSet(request.POST)
 
-        for form in formset:
-          if form.cleaned_data:  # تأكد من أن النموذج يحتوي على بيانات صالحة
-            body = form.save(commit=False)
-            body.invoiceHeadID = head  # استخدام head مباشرة بدلاً من head.instance
-            body.save()
-        messages.success(request, 'تم إضافة فاتورة مبيعات جديدة')
-        return redirect('invoices_sales')
-      else:
-        # دالة عرض الأخطاء
-        handle_formset_errors(head_form, formset, request)
-        # إعادة عرض النماذج مع الأخطاء
-        return render(request, 'sales/invoice_create.html', {
-            'head_form': head_form,
-            'formset': formset,
-            # 'customer':Customers.objects.get(all)
-        })
+        if head_form.is_valid() and formset.is_valid():
+            head = head_form.save(commit=False)
+            head.created_by = request.user  # تعيين created_by فقط عند إنشاء فاتورة جديد
+            head.companyID = get_object_or_404(Company, id=current_company_id)
+            head.save()
+
+            for form in formset:
+                if form.cleaned_data:  # تأكد من أن النموذج يحتوي على بيانات صالحة
+                    body = form.save(commit=False)
+                    body.invoiceHeadID = head
+                    body.save()
+            messages.success(request, 'تم إضافة فاتورة مبيعات جديدة')
+            return redirect('invoices_sales')
+        else:
+            # دالة عرض الأخطاء
+            handle_formset_errors(head_form, formset, request)
+            # إعادة عرض النماذج مع الأخطاء
+            return render(request, 'sales/invoice_create.html', {
+                'head_form': head_form,
+                'formset': formset,
+            })
     else:
         # إعداد النماذج عند طلب GET
-        head_form = InvoiceHeadForm()
+        head_form = InvoiceHeadForm(companyID=current_company_id)
         formset = InvoiceBodyFormSet(queryset=InvoicesSalesBody.objects.none())
-        is_edit_mode = True  # أو True بناءً على وضع النموذج
-    context = {
-       'is_edit_mode':is_edit_mode,
-       'invoice_head_form': head_form,
-       'invoice_body_form': formset,
+        is_edit_mode = True  # حدد إذا كنت في وضع إنشاء أو تعديل
 
-        'invoice_head_label': InvoiceHeadForm(),
-        'invoice_body_label': InvoiceBodyForm(), 
-    }
-    return render(request, 'sales/invoice_create.html', context)
-
+        context = {
+            'is_edit_mode': is_edit_mode,
+            'invoice_head_form': head_form,
+            'invoice_body_form': formset,
+            'invoice_head_label': InvoiceHeadForm(),
+            'invoice_body_label': InvoiceBodyForm(),
+        }
+        return render(request, 'sales/invoice_create.html', context)
+    
 @login_required
 def invoice_sales_reade(request, id):
     if not request.user.has_perm('sales.view_invoicessaleshead'):
@@ -450,6 +453,7 @@ def invoice_sales_update(request, id):
 
 @login_required 
 def invoice_sales_delete(request, id):
+
     if not request.user.has_perm('sales.delete_invoicessaleshead'):
         messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لحذف فواتير المبيعات.")
         return redirect('invoices_sales')
@@ -461,11 +465,8 @@ def invoice_sales_delete(request, id):
             return redirect('invoices_sales')
     else:
         messages.error(request, 'الرجاء تسجيل الدخول أولاً')
-    
     invoice_body = InvoicesSalesBody.objects.filter(invoiceHeadID=id)
-    # total_d, total_c, difference = calculate_totals(qayd_id_details)
-
-       # تجميع الكميات والأسعار
+    # تجميع الكميات والأسعار
     total_quantity = invoice_body.aggregate(Sum('quantity'))['quantity__sum'] or 0
     total_price_after_tax = invoice_body.aggregate(Sum('total_price_after_tax'))['total_price_after_tax__sum'] or 0.0
 
@@ -480,20 +481,4 @@ def invoice_sales_delete(request, id):
     }
     return render(request, 'sales/invoice_delete.html', context)
 
-# @login_required
-# def invoice_pdf(request, id):
-#     # جلب بيانات الفاتورة من قاعدة البيانات
-#     invoice = get_object_or_404(InvoicesSalesHead, id=id)
 
-#     # جلب قالب الفاتورة الذي تريد تحويله إلى PDF
-#     html_string = render_to_string('sales/invoice_reade.html', {'invoice': invoice})
-
-#     # تحويل HTML إلى PDF باستخدام WeasyPrint
-#     html = HTML(string=html_string)
-#     pdf_file = html.write_pdf()
-
-#     # إعداد الاستجابة كملف PDF
-#     response = HttpResponse(pdf_file, content_type='application/pdf')
-#     response['Content-Disposition'] = f'attachment; filename="invoice_{id}.pdf"'
-
-#     return response
