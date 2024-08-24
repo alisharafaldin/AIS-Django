@@ -84,27 +84,27 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{% url 'accounts' %}" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>جدول الحسابات</p>
-              </a>
-            </li>
-            <li class="nav-item">
               <a href="{% url 'qayds' %}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>قيود اليومية</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="pages/forms/editors.html" class="nav-link">
+              <a href="{% url 'accounts' %}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
-                <p>مراكز التكلة</p>
+                <p>شجرة الحسابات</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'account_statement' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>كشف حساب</p>
               </a>
             </li>
             <li class="nav-item">
               <a href="pages/forms/editors.html" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
-                <p>كشف حساب</p>
+                <p>مراكز التكلة</p>
               </a>
             </li>
           </ul>

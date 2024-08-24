@@ -249,10 +249,13 @@ def invoices_sales_search(request):
     search_currencyID = request.GET.get('currencyID', '')
     search_inventoryID = request.GET.get('inventoryID', '')
     search_customerID = request.GET.get('customerID', '')
+    start_date = request.GET.get('start_date','')
+    end_date = request.GET.get('end_date','')
     
-    # التصفية بناءً على معايير البحث
     invoices_query = InvoicesSalesHead.objects.all()
-    
+    # استعلام الفواتير بين تاريخين
+    if start_date and end_date:
+        invoices_query = invoices_query.filter(date__range=[start_date, end_date])
     if search_date:
         invoices_query = invoices_query.filter(date=search_date)
     if search_name:

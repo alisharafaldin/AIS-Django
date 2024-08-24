@@ -25,7 +25,7 @@
 
 <div class="content-wrapper">
   <div class="main-title">
-    <h4 class="form-group col-md-9">فواتير المبيعات</h4>
+    <h4 class="form-group col-md-9">كشف حساب</h4>
   </div>
   <form method="GET" class="form-inline my-2 my-lg-0" action="{% url 'invoices_sales_search' %}">
     <a href="{% url 'invoice_sales_create' %}" class="btn btn-main">إضافة فاتورة جديدة</a>
@@ -41,9 +41,8 @@
     {{invoice_search_form.currencyID}}
     {{invoice_search_form.inventoryID}}
     <input class="form-control mr-sm-2 remove-outline" name="search_invoice_number" placeholder="بحث برقم الفاتورة"/>
-
   </form>
-  <div class="content">
+ <div class="content">
     {% include 'partials/_alerts.html' %}
     <form method="POST">
       {% csrf_token %}
@@ -52,60 +51,41 @@
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">رقم الفاتورة</th>
-              <th scope="col">تاريخ الفاتورة</th>
-              <th scope="col">العميل</th>
-              <th scope="col">إجمالي الفاتورة</th>
+              <th scope="col">رقم القيد</th>
+              <th scope="col">تاريخ القيد</th>
+              <th scope="col">الحساب</th>
+              <th scope="col">البيان</th>
               <th scope="col">العملة</th>
-              <!-- <th scope="col">معتمد</th> -->
-              <th scope="col">إجراءات</th>
+              <th scope="col">مدين</th>
+              <th scope="col">دائن</th>
+              <th scope="col">الرصيد</th>
             </tr>
           </thead>
           <tbody>
-            {% for invoice in invoices %}
+            {% for qayd_details in qayds_details %}
             <tr>
               <th data-label="#" scope="row">{{ forloop.counter }}</th>
-              <td data-label="رقم الفاتورة">{{ invoice.sequence }}</td>
-              <td data-label="التاريخ">{{ invoice.date|date:"Y-m-d" }}</td>
-              {% if invoice.attachments %}
-              <td data-label="العميل" style="color: #28b78d; font-weight: bold;">{{ invoice.customerID.legalPersonID.acronym_ar }}</td>
-              {% else  %}
-              <td data-label="العميل">{{ invoice.customerID.legalPersonID.acronym_ar }}</td>
-              {% endif  %}
-              <td data-label="إجمالي الفاتورة">
-                {{ invoice.total_sum|floatformat:2|intcomma }}
-              </td>
-              <td data-label="العملة">{{ invoice.currencyID}}</td>
-              <!-- <td data-label="إعتماد">{{ invoice.approve }}</td> -->
-              <td data-label="الإجرات">
-                <a
-                  href="{% url 'invoice_sales_update' invoice.id %}"
-                  class="btn-link"
-                >
-                  <i class="fas fa-edit"></i>
-                </a>
-                <a
-                  href="{% url 'invoice_sales_reade'  invoice.id %}"
-                  class="btn-link"
-                >
-                  <i class="fa fa-print" aria-hidden="true"></i>
-                </a>
-                <a
-                  href="{% url 'invoice_sales_delete' invoice.id %}"
-                  class="btn-link"
-                >
-                  <i class="fa fa-trash" aria-hidden="true"></i>
-                </a>
-              </td>
+              <td data-label="رقم القيد">{{ qayd_details.detail.qaydID.sequence }}</td>
+              <td data-label="التاريخ">{{ qayd_details.detail.qaydID.date|date:"Y-m-d" }}</td>
+              <td data-label="الحساب">{{ qayd_details.detail.accountID }}</td>
+              <td data-label="البيان">{{ qayd_details.detail.description_details }}</td>
+              <td data-label="العملة">{{ qayd_details.detail.currencyID}}</td>
+              <td data-label="مدين">{{ qayd_details.detail.debit }}</td>
+              <td data-label="دائن">{{ qayd_details.detail.credit }}</td>
+              <td data-label="دائن">{{ qayd_details.balance  }}</td>
             </tr>
             {% endfor %}
-
           </tbody>
           <tr>
-            <th>إجمالي قيمة فواتير المبيعات</th>
-            <th></th>
             <td></td>
-            <th>{{total_invoices_sum|floatformat:2|intcomma}}</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <th>{{total_debit|floatformat:2|intcomma}}</th>
+            <th>{{total_credit|floatformat:2|intcomma}}</th>
+            <th>{{difference|floatformat:2|intcomma}}</th>
            </tr>
         </table>
       </div>

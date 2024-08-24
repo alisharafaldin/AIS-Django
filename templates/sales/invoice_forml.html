@@ -20,14 +20,14 @@ td {
     flex-wrap: nowrap;
     flex-direction: row;
   }
-
+  
   .form-row h6 {
     width: 50% !important;
-        background-color: #dee2e6 !important;
-        color: #243743 !important;
-        border-radius: 7px !important;
-        text-align: center !important;
-        align-content: space-around !important;
+    background-color: #dee2e6 !important;
+    color: hsl(203, 30%, 20%) !important;
+    border-radius: 7px !important;
+    text-align: center !important;
+    align-content: space-around !important;
   }
 }
 
@@ -38,6 +38,8 @@ td {
   <!-- معلومات الفاتورة -->
   <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
     <div class="form-row">
+      <h6 style="font-weight: bold" class="col-md-6">فاتورة مبيعات</h6>
+      <div class="form-group col-md-2">( {{invoice_head_form.sequence}} )</div>
       <h6 style="font-weight: bold" class="col-md-2">التاريخ</h6>
       <div class="form-group col-md-4">{{invoice_head_form.date}}</div>
     </div>

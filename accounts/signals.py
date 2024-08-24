@@ -1,7 +1,7 @@
 from django.db.models.signals import pre_save, post_delete
 from django.db import models
 from django.dispatch import receiver
-from .models import Qayd
+from .models import Qayd, AccountsTree
 
 @receiver(pre_save, sender=Qayd)
 def set_qayd_sequence(sender, instance, **kwargs):
@@ -12,3 +12,5 @@ def set_qayd_sequence(sender, instance, **kwargs):
             instance.sequence = last_qayd.sequence + 1
         else:
             instance.sequence = 1
+
+

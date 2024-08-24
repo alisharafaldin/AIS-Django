@@ -1,30 +1,42 @@
 import io
-from typing import Any
 from django.shortcuts import render , redirect
 from django.contrib import messages
 from . models import AccountsTree, Qayd, QaydDetails
 from companys.models import Company
+from django.db.models import Sum
 from . forms import AccountsTreeForm, QaydForm, QaydDetailsForm, QaydDetailsFormSet
 from django.forms import modelformset_factory
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
-
+from django.db.models import Q #لعمل أكثر من تصفية
 from django.http import FileResponse
 from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 
 @login_required 
 def account_create(request):
+     # التحقق من وجود current_company_id في الجلسة قبل استخدامه.
+    current_company_id = request.session.get('current_company_id')
+    if not current_company_id:
+        messages.error(request, 'لم يتم تحديد الشركة الحالية.')
+        return redirect('invoices_sales')
+    
     if request.method == 'POST':
-        add_acc = AccountsTreeForm(request.POST, request.FILES)
-        if add_acc.is_valid():
-            add_acc.save()
+        accountTree_form = AccountsTreeForm(request.POST, request.FILES)
+        if accountTree_form.is_valid():
+            account = accountTree_form.save(commit=False)
+            # account.created_by = request.user  # تعيين created_by فقط عند إنشاء قيد جديد
+            account.companyID = get_object_or_404(Company, id=current_company_id)
+            account.save()
             messages.success(request, 'تمت الإضافة بنجاح') 
+            return redirect('accounts')
+    else:
+        form = AccountsTreeForm(companyID=current_company_id)
     context = {
         'acc_form': AccountsTreeForm(),
+        'form':form,
     }    
     return render(request,'accounts/account_create.html', context)
 
@@ -75,11 +87,19 @@ def account_delete(request, id):
 
 @login_required
 def accounts(request):
-    accounts = AccountsTree.objects.all().order_by("typeID")
-    accounts2 = accounts.order_by("code")
+      # التحقق من وجود current_company_id في الجلسة قبل استخدامه.
+    current_company_id = request.session.get('current_company_id')
+    if not current_company_id:
+        messages.error(request, 'لم يتم تحديد الشركة الحالية.')
+        return redirect('invoices_sales')
+        
+        # تصفية القيود الخاصة بالشركة أو العامة
+    accounts = AccountsTree.objects.filter(
+        Q(companyID=current_company_id) | Q(companyID__isnull=True)
+    ).order_by("categoryID", "code")
     context = {
-        'accounts':accounts2,
-    }    
+        'accounts': accounts,
+    }
     return render(request,'accounts/accounts.html', context)
 
 @login_required
@@ -112,6 +132,7 @@ def calculate_totals(details_queryset):
     return total_d, total_c, total_d - total_c
 
 # دالة إنشاء قيد جديد
+
 @login_required 
 def qayd_create(request):
     """
@@ -121,39 +142,51 @@ def qayd_create(request):
         messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لإنشاء القيود المحاسبية.")
         return redirect('qayds')
     
+    # التحقق من وجود current_company_id في الجلسة قبل استخدامه.
+    current_company_id = request.session.get('current_company_id')
+    if not current_company_id:
+        messages.error(request, 'لم يتم تحديد الشركة الحالية.')
+        return redirect('invoices_sales')
+    
     if request.method == 'POST':
-      head_form = QaydForm(request.POST, request.FILES)
-      formset = QaydDetailsFormSet(request.POST)
+        head_form = QaydForm(request.POST, request.FILES)
+        formset = QaydDetailsFormSet(
+            request.POST, 
+            request.FILES, 
+            form_kwargs={'companyID': current_company_id}  # تمرير companyID للنموذج
+        )
 
-      if head_form.is_valid() and formset.is_valid():
-        head = head_form.save(commit=False)
-        head.created_by = request.user  # تعيين created_by فقط عند إنشاء قيد جديد
-        head.companyID = Company.objects.get(id=request.session.get('current_company_id'))
-     
-        head.save()
+        if head_form.is_valid() and formset.is_valid():
+            head = head_form.save(commit=False)
+            head.created_by = request.user  # تعيين created_by فقط عند إنشاء قيد جديد
+            head.companyID = get_object_or_404(Company, id=current_company_id)
+            head.save()
 
-        for form in formset:
-          if form.cleaned_data:  # تأكد من أن النموذج يحتوي على بيانات صالحة
-            body = form.save(commit=False)
-            body.qaydID = head  # استخدام head مباشرة بدلاً من head.instance
-            body.save()
-        messages.success(request, 'تم إضافة قيد جديد بنجاح')
-        return redirect('qayds')
-      else:
-        # دالة عرض الأخطاء
-        handle_form_errors(head_form, formset, request)
-        # إعادة عرض النماذج مع الأخطاء
-        return render(request, 'accounts/qayd_create.html', {
-            'head_form': head_form,
-            'formset': formset,
-        })
+            for form in formset:
+                if form.cleaned_data:  # تأكد من أن النموذج يحتوي على بيانات صالحة
+                    body = form.save(commit=False)
+                    body.qaydID = head  # استخدام head مباشرة بدلاً من head.instance
+                    body.save()
+            messages.success(request, 'تم إضافة قيد جديد بنجاح')
+            return redirect('qayds')
+        else:
+            # دالة عرض الأخطاء
+            handle_form_errors(head_form, formset, request)
+            # إعادة عرض النماذج مع الأخطاء
+            return render(request, 'accounts/qayd_create.html', {
+                'head_form': head_form,
+                'formset': formset,
+            })
     else:
         # إعداد النماذج عند طلب GET
-        head_form = QaydForm()
-        formset = QaydDetailsFormSet(queryset=QaydDetails.objects.none())
+        head_form = QaydForm() 
+        formset = QaydDetailsFormSet(
+            queryset=QaydDetails.objects.none(),  # لا توجد بيانات افتراضية
+            form_kwargs={'companyID': current_company_id}  # تمرير companyID للنموذج
+        )
     context = {
-       'head_form': head_form,
-       'formset': formset,
+        'head_form': head_form,
+        'formset': formset,
     }
     return render(request, 'accounts/qayd_create.html', context)
 
@@ -209,6 +242,13 @@ def qayd_update(request, id):
     if not request.user.has_perm('accounts.change_qayd'):
         messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لتعديل القيود المحاسبية.")
         return redirect('qayds')
+    
+    # التحقق من وجود current_company_id في الجلسة قبل استخدامه.
+    current_company_id = request.session.get('current_company_id')
+    if not current_company_id:
+        messages.error(request, 'لم يتم تحديد الشركة الحالية.')
+        return redirect('invoices_sales')
+    
     qayd_update = get_object_or_404(Qayd, id=id)
     # استخدام formset للحصول على جميع نماذج QaydDetails المرتبطة بـ Qayd المحدد
     QaydDetailsFormSet = modelformset_factory(QaydDetails, form=QaydDetailsForm, extra=1)
@@ -216,8 +256,12 @@ def qayd_update(request, id):
 
     if request.method == 'POST':
         head_form = QaydForm(request.POST, request.FILES, instance=qayd_update)
-        formset = QaydDetailsFormSet(request.POST, queryset=queryset)
-    
+        formset = QaydDetailsFormSet(
+            request.POST, 
+            queryset=queryset, 
+            form_kwargs={'companyID': current_company_id}  # تمرير companyID للنموذج
+        )
+
         if head_form.is_valid() and formset.is_valid():
           head = head_form.save(commit=False)
           head.updated_by = request.user
@@ -240,7 +284,10 @@ def qayd_update(request, id):
             handle_form_errors(head_form, formset, request)
     else:
         head_form = QaydForm(instance=qayd_update)
-        formset = QaydDetailsFormSet(queryset=queryset)
+        formset = QaydDetailsFormSet(
+            queryset=queryset,  # لا توجد بيانات افتراضية
+            form_kwargs={'companyID': current_company_id}  # تمرير companyID للنموذج
+        )
     total_d, total_c, difference = calculate_totals(queryset)
     context = {
         'qayd_update': qayd_update,
@@ -328,4 +375,94 @@ def generate_qayd_pdf(request, id):
     buffer.seek(0)
     # إرجاع استجابة PDF
     return FileResponse(buffer, as_attachment=True, filename='qayd.pdf')
+
+
+#------------------- التقارير ---------------------
+
+
+@login_required
+def account_statement_search(request):
+    # الحصول على معايير البحث من الطلب
+    search_name = request.GET.get('search_name', '')
+    search_invoice_number = request.GET.get('search_invoice_number', '')
+    search_date = request.GET.get('search_date', '')
+    search_currencyID = request.GET.get('currencyID', '')
+    search_inventoryID = request.GET.get('inventoryID', '')
+    search_customerID = request.GET.get('customerID', '')
+    start_date = request.GET.get('start_date','')
+    end_date = request.GET.get('end_date','')
+    
+    invoices_query = QaydDetailsForm.objects.all()
+    # استعلام الفواتير بين تاريخين
+    if start_date and end_date:
+        invoices_query = invoices_query.filter(date__range=[start_date, end_date])
+    if search_date:
+        invoices_query = invoices_query.filter(date=search_date)
+    if search_name:
+        invoices_query = invoices_query.filter(customerID__legalPersonID__name_ar__icontains=search_name)
+    if search_invoice_number:
+        invoices_query = invoices_query.filter(sequence=search_invoice_number)
+    if search_currencyID:
+        invoices_query = invoices_query.filter(currencyID=search_currencyID)
+    if search_inventoryID:
+        invoices_query = invoices_query.filter(inventoryID=search_inventoryID)
+    if search_customerID:
+        invoices_query = invoices_query.filter(customerID=search_customerID)
+    
+    # الحصول على الشركة الحالية من الجلسة
+    current_company_id = request.session.get('current_company_id')
+    if not current_company_id:
+        messages.error(request, 'الرجاء تحديد الشركة للعمل عليها.')
+        return redirect('companys')
+
+    # تصفية الفواتير بناءً على الشركة الحالية
+    invoices_query = invoices_query.filter(companyID_id=current_company_id).annotate(
+        total_sum=Sum('sales_invoice__total_price_after_tax')).order_by("-id")
+
+      # حساب الإجمالي الكلي لجميع الفواتير
+    total_invoices_sum = invoices_query.aggregate(total_sum=Sum('sales_invoice__total_price_after_tax'))['total_sum'] or 0
+
+    # إعداد السياق
+    context = {
+        'invoices': invoices_query,
+        'invoice_search_form': QaydDetailsForm(request.GET),
+        'total_invoices_sum':total_invoices_sum,
+    }
+
+    # عرض الصفحة مع البيانات
+    return render(request, 'accounts/account_statement.html', context)
+
+@login_required 
+def account_statement(request):
+    if not request.user.has_perm('accounts.view_qayd'):
+        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة للإطلاع على كشوفات الحساب.")
+        return redirect('qayds')
+    
+    if request.user.is_authenticated and not request.user.is_anonymous:
+        # الحصول على كافة التفاصيل مرتبة حسب التاريخ أو أي معيار آخر
+        qayds_details = QaydDetails.objects.all().order_by('date_details')
+
+        # إعداد قائمة لحفظ تفاصيل القيد مع الرصيد
+        detailed_with_balance = []
+        balance = 0
+
+        for detail in qayds_details:
+            balance += detail.debit - detail.credit
+            detailed_with_balance.append({
+                'detail': detail,
+                'balance': balance
+            })
+
+        total_debit, total_credit, difference = calculate_totals(qayds_details)
+        
+        context = {
+            'qayds_details': detailed_with_balance,
+            'qayd_details_form': QaydDetailsForm(),
+            'total_debit': total_debit,
+            'total_credit': total_credit,
+            'difference': difference,
+        }
+        return render(request, 'accounts/account_statement.html', context)
+
+
 

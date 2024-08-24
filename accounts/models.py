@@ -3,11 +3,12 @@ from django.contrib.auth.models import User
 from basicinfo.models import Project, Countries, TypeTransaction
 from employees.models import Employee
 from companys.models import Company
-from datetime import datetime
 from django.utils import timezone
 from django.db.models.signals import pre_save, post_delete
 from django.dispatch import receiver
+from django.db.models.signals import post_save
 from mptt.models import MPTTModel, TreeForeignKey
+# from .models import AccountsTree
 #  لتجنب مشكلة الاستيراد الدائري (Circular Import)
 
 def get_shareholdersInfo():
@@ -46,6 +47,7 @@ class AccountCategory(models.Model):
     return str(self.category_ar)
 
 class AccountsTree(MPTTModel):
+  companyID = models.ForeignKey(Company, on_delete=models.PROTECT,blank=True, null=True)
   name_ar = models.CharField(verbose_name='إسم الحساب عربي',max_length=100, blank=True, null=True)
   name_en = models.CharField(verbose_name='إسم الحساب إنجليزي',max_length=100, blank=True, null=True)
   typeID = models.ForeignKey(AccountType, verbose_name='نوع الحساب', default=1, on_delete=models.CASCADE, blank=True, null=True)
@@ -54,13 +56,25 @@ class AccountsTree(MPTTModel):
   code = models.CharField(verbose_name='رمز الحساب',max_length=100, blank=True, null=True)
   description = models.CharField(verbose_name='وصف الحساب',max_length=100, blank=True, null=True)
   is_can_pay = models.BooleanField(verbose_name='إمكانية الدفع', blank=True, null=True)
+  is_can_pay = models.BooleanField(verbose_name='إمكانية الدفع', blank=True, null=True)
   parent = TreeForeignKey('self', verbose_name='الحساب الأب', on_delete=models.CASCADE, related_name='children', blank=True, null=True,)
+  level = models.IntegerField(verbose_name='مستوى الحساب', blank=True, null=True)  # المستوى سيتم تحديده تلقائيًا
 
   class MPTTMeta:
-      order_insertion_by = ['name_ar']
+    order_insertion_by = ['name_ar']
+    
+  def save(self, *args, **kwargs):
+    # تحديد المستوى بناءً على وجود حساب أب أو عدمه
+    if self.parent:
+        self.level = self.parent.level + 1
+    else:
+        self.level = 1
+    super().save(*args, **kwargs)
 
   def __str__(self):
-    return str(self.name_ar)
+    if self.companyID:
+      return f"{self.name_ar} - {self.code} {self.companyID.legalPersonID.acronym_ar}"
+    return f"{self.name_ar} - {self.code}"
     
 class Qayd(models.Model):
   companyID = models.ForeignKey(Company, on_delete=models.PROTECT,blank=True)

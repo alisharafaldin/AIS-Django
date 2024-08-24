@@ -31,12 +31,13 @@
           <tr>
             <th scope="col">#</th>
             <th scope="col">رمز الحساب</th>
+            <th scope="col">المستوى</th>
             <th scope="col">إسم الحساب عربي</th>
-            <th scope="col">إسم الحساب إنجليزي</th>
+            <!-- <th scope="col">إسم الحساب إنجليزي</th> -->
             <th scope="col">نوع الحساب</th>
             <th scope="col">طبيعة الحساب</th>
             <th scope="col">تصنيف الحساب</th>
-            <th scope="col">الوصف</th>
+            <!-- <th scope="col">الوصف</th> -->
             <th scope="col">إمكانية الدفع والتحصيل</th>
             <th scope="col">إجراءات</th>
           </tr>
@@ -49,12 +50,13 @@
               <th scope="row">{{forloop.counter}}</th>
               <!-- تفاصيل الجدول -->
               <td>{{account.code}}</td>
-              <td>{{account.name_en}}</td>
+              <td>{{account.level}}</td>
               <td>{{account.name_ar}}</td>
+              <!-- <td>{{account.name_en}}</td> -->
               <td>{{account.typeID}}</td>
               <td>{{account.natureID}}</td>
               <td>{{account.categoryID}}</td>
-              <td>{{account.description}}</td>
+              <!-- <td>{{account.description}}</td> -->
               <td>{{account.is_can_pay}}</td>
               <td>
                 <a class="btn-link" href="{% url 'account_update' account.id %}">
@@ -74,12 +76,13 @@
               <th scope="row">{{forloop.counter}}</th>
               <!-- تفاصيل الجدول -->
               <td>{{account.code}}</td>
-              <td>{{account.name_en}}</td>
+              <td>{{account.level}}</td>
               <td>{{account.name_ar}}</td>
+              <!-- <td>{{account.name_en}}</td> -->
               <td >{{account.typeID}}</td>
               <td>{{account.natureID}}</td>
               <td>{{account.categoryID}}</td>
-              <td>{{account.description}}</td>
+              <!-- <td>{{account.description}}</td> -->
               <td>{{account.is_can_pay}}</td>
               <td>
                 <a class="btn-link" href="{% url 'account_update' account.id %}">

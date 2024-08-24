@@ -24,11 +24,11 @@ class AccountStatementImportExport(ImportExportModelAdmin):
 @admin.register(AccountCategory)
 class AccountCategoryImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id']
+    list_display = ['id', 'statementID','category_ar', 'category_en']
 
 @admin.register(AccountsTree)
 class AccountsTreeAdmin(DraggableMPTTAdmin, ImportExportModelAdmin):
-    list_display = ('tree_actions', 'indented_title', 'id', 'name_ar', 'typeID', 'natureID', 'categoryID', 'code', 'description', 'is_can_pay', 'parent')
+    list_display = ('tree_actions', 'indented_title', 'id', 'level', 'name_ar', 'typeID', 'natureID', 'categoryID', 'code', 'description', 'is_can_pay', 'parent')
     list_display_links = ('indented_title',)
 
 # admin.site.register(AccountsTree, AccountsTreeAdmin)

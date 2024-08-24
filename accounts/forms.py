@@ -1,7 +1,8 @@
 from django import forms
 from .models import Qayd, QaydDetails , AccountsTree
 from django.forms import modelformset_factory
-from django.forms import BaseModelFormSet
+from django.db.models import Q #لعمل أكثر من تصفية
+
 
 class AccountsTreeForm(forms.ModelForm):
     class Meta:
@@ -14,6 +15,7 @@ class AccountsTreeForm(forms.ModelForm):
             'typeID': forms.Select(attrs={'class':'form-control', 'placeholder':'نوع الحساب'}),
             'natureID': forms.Select(attrs={'class':'form-control', 'placeholder':'طبيعة الميزانية'}),
             'parent': forms.Select(attrs={'class':'form-control', 'placeholder':'الحساب الأب'}),
+            'level': forms.Select(attrs={'class':'form-control', 'placeholder':'المستوى'}),
             'categoryID': forms.Select(attrs={'class':'form-control', 'placeholder':'تصنيف الحساب'}),
             'description': forms.TextInput(attrs={'class':'form-control', 'placeholder':'وصف الحساب'}),
             'is_can_pay': forms.CheckboxInput(attrs={'class':'form-control', 'placeholder':'إمكانية الدفع و السداد من الحساب'}),     
@@ -48,6 +50,19 @@ class QaydDetailsForm(forms.ModelForm):
             'projectID': forms.Select(attrs={'class':'form-control', 'placeholder':'المشروع'}),
             'empID': forms.Select(attrs={'class':'form-control', 'placeholder':'الموظف'}), 
         }
+
+    def __init__(self, *args, **kwargs):
+        company_id = kwargs.pop('companyID', None)
+        super(QaydDetailsForm, self).__init__(*args, **kwargs)
+        if company_id:
+            print(f"Filtering accounts with companyID: {company_id}")  # Debugging line
+            self.fields['accountID'].queryset = AccountsTree.objects.filter(
+                Q(companyID=company_id) | Q(companyID__isnull=True), 
+                typeID=2
+            )
+        else:
+            self.fields['accountID'].queryset = AccountsTree.objects.none()
+
     #التأكد من أن على الأقل إحدى القيمتين ليست صفراً
     def clean(self):
         cleaned_data = super().clean()

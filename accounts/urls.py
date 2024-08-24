@@ -5,6 +5,8 @@ from . import views
 urlpatterns = [  
     path('', views.accounts, name='accounts'),
     path('accounts_tree', views.accounts_tree, name='accounts_tree'),
+    path('account_statement', views.account_statement, name='account_statement'),
+    path('account_statement_search', views.account_statement_search, name='account_statement_search'),
     path('account_create', views.account_create, name='account_create'),
     path('account_reade/<int:id>', views.account_reade, name='account_reade'),
     path('account_update/<int:id>', views.account_update, name='account_update'),
