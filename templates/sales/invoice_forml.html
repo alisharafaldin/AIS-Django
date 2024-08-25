@@ -38,8 +38,6 @@ td {
   <!-- معلومات الفاتورة -->
   <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
     <div class="form-row">
-      <h6 style="font-weight: bold" class="col-md-6">فاتورة مبيعات</h6>
-      <div class="form-group col-md-2">( {{invoice_head_form.sequence}} )</div>
       <h6 style="font-weight: bold" class="col-md-2">التاريخ</h6>
       <div class="form-group col-md-4">{{invoice_head_form.date}}</div>
     </div>
@@ -52,12 +50,8 @@ td {
         <div class="form-group col-md-8">{{invoice_head_form.description}}</div>
     </div>
     <div class="form-row">
-          <h6 style="font-weight: bold" class="col-md-2">طريقة الدفع</h6>
-          <div class="form-group col-md-3">{{invoice_head_form.typePaymentID}}</div>
-          <h6 style="font-weight: bold" class="col-md-2">طريقة التسليم</h6>
-          <div class="form-group col-md-3">{{invoice_head_form.typeDeliveryID}}</div>
-    </div>
-    <div class="form-row">
+      <h6 style="font-weight: bold" class="col-md-2">المخزن</h6>
+      <div class="form-group col-md-3">{{invoice_head_form.inventoryID}}</div>
         <h6 style="font-weight: bold" class="col-md-2">العملة</h6>
         {% if is_edit_mode %}
         <div class="form-group col-md-3">{{invoice_head_form.currencyID}}</div>
@@ -67,53 +61,7 @@ td {
         <h6 style="font-weight: bold" class="col-md-2">سعر الصرف</h6>
         <div class="form-group col-md-3">{{invoice_head_form.rate}}</div>
     </div>
-    <div class="form-row">
-        <h6 style="font-weight: bold" class="col-md-2">المخزن</h6>
-        <div class="form-group col-md-3">{{invoice_head_form.inventoryID}}</div>
-    </div>
   </div>
-
-  <!-- بيانات العميل -->
-  <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
-    <div class="card text-bg-light mb-10" >
-      <div class="card-header">بيانات العميل : </div>
-      <div class="card-body">
-        <div class="form-row">
-          <h6 style="font-weight: bold" class="col-md-3">العنوان</h6>
-          <div class="form-group col-md-6">
-            {% if customer.legalPersonID.basicInfoID.google_maps_location %}
-            {{customer.legalPersonID.basicInfoID.countryID}} - {{customer.legalPersonID.basicInfoID.address}}
-            <a href="{{customer.legalPersonID.basicInfoID.google_maps_location}}" target="blank">
-              <i class="fa-solid fa-location-dot"></i>
-            </a>
-            {% else %}
-            {{customer.legalPersonID.basicInfoID.countryID}} - {{customer.legalPersonID.basicInfoID.address}}
-            {% endif %}
-          </div>
-        </div>
-       <div class="form-row">
-          <h6 style="font-weight: bold" class="col-md-3">رقم الهاتف</h6>
-          <div class="form-group col-md-6">
-            {% if customer.legalPersonID.basicInfoID.phone %}
-            {{customer.legalPersonID.basicInfoID.phone}} 
-            <a href="tel:{{customer.legalPersonID.basicInfoID.phone}}"class="btn-link">
-              <i class="fa fa-phone" style="color: green;"></i></a>
-            <a href="https://wa.me/{{customer.legalPersonID.basicInfoID.phone}}"
-              class="btn-link"><i class="fa-brands fa-whatsapp"  style="color: green;"></i></a>
-            {{customer.legalPersonID.basicInfoID.phoneOther}}
-            {% else %}
-            {{customer.legalPersonID.basicInfoID.phone}} - {{customer.legalPersonID.basicInfoID.phoneOther}}
-            {% endif %}
-          </div>
-        </div>
-        <div class="form-row">
-          <h6 style="font-weight: bold" class="col-md-3">الجنسية</h6>
-          <div class="form-group col-md-6">{{customer.legalPersonID.basicInfoID.nationalityID}}</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 <div class="table-responsive">
   <table class="table table-hover">
@@ -170,6 +118,53 @@ td {
     </tbody>
   </table>
   <div class="form-row">
+      <!-- بيانات العميل -->
+  <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
+    <div class="card text-bg-light mb-10" >
+      <div class="card-header">بيانات العميل : {{invoice_head_form.customerID}}</div>
+      <div class="card-body">
+        <div class="form-row">
+          <h6 style="font-weight: bold" class="col-md-3">العنوان</h6>
+          <div class="form-group col-md-6">
+            {% if customer.legalPersonID.basicInfoID.google_maps_location %}
+            {{customer.legalPersonID.basicInfoID.countryID}} - {{customer.legalPersonID.basicInfoID.address}}
+            <a href="{{customer.legalPersonID.basicInfoID.google_maps_location}}" target="blank">
+              <i class="fa-solid fa-location-dot"></i>
+            </a>
+            {% else %}
+            {{customer.legalPersonID.basicInfoID.countryID}} - {{customer.legalPersonID.basicInfoID.address}}
+            {% endif %}
+          </div>
+        </div>
+       <div class="form-row">
+          <h6 style="font-weight: bold" class="col-md-3">رقم الهاتف</h6>
+          <div class="form-group col-md-6">
+            {% if customer.legalPersonID.basicInfoID.phone %}
+            {{customer.legalPersonID.basicInfoID.phone}} 
+            <a href="tel:{{customer.legalPersonID.basicInfoID.phone}}"class="btn-link">
+              <i class="fa fa-phone" style="color: green;"></i></a>
+            <a href="https://wa.me/{{customer.legalPersonID.basicInfoID.phone}}"
+              class="btn-link"><i class="fa-brands fa-whatsapp"  style="color: green;"></i></a>
+            {{customer.legalPersonID.basicInfoID.phoneOther}}
+            {% else %}
+            {{customer.legalPersonID.basicInfoID.phone}} - {{customer.legalPersonID.basicInfoID.phoneOther}}
+            {% endif %}
+          </div>
+        </div>
+        <div class="form-row">
+          <h6 style="font-weight: bold" class="col-md-3">الجنسية</h6>
+          <div class="form-group col-md-6">{{customer.legalPersonID.basicInfoID.nationalityID}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <h6 style="font-weight: bold" class="col-md-2">طريقة الدفع</h6>
+      <div class="form-group col-md-3">{{invoice_head_form.typePaymentID}}</div>
+      <h6 style="font-weight: bold" class="col-md-2">طريقة التسليم</h6>
+      <div class="form-group col-md-3">{{invoice_head_form.typeDeliveryID}}</div>
+</div>
+  </div>
+</div>
         <h6 style="font-weight: bold" class="col-md-2">المرفقات</h6>
         <div class="form-group col-md-3">{{invoice_head_form.attachments}}</div>
   </div>

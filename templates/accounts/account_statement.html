@@ -27,20 +27,20 @@
   <div class="main-title">
     <h4 class="form-group col-md-9">كشف حساب</h4>
   </div>
-  <form method="GET" class="form-inline my-2 my-lg-0" action="{% url 'invoices_sales_search' %}">
-    <a href="{% url 'invoice_sales_create' %}" class="btn btn-main">إضافة فاتورة جديدة</a>
-    <button class="btn btn-main" type="submit">بحث<i class="fa-solid fa-magnifying-glass"></i></button>
-    <a href="{% url 'invoices_sales' %}" class="btn btn-main" type="submit">إعادة تعيين<i class="fa-solid fa-rotate-right"></i></a>
+  <form method="GET" class="form-inline my-2 my-lg-0" action="{% url 'account_statement_search' %}">
+    {{account_statement_search.accountID}}
+    {{account_statement_search.qaydID.sequence }}
+    {{account_statement_search.customerID}}
+    {{account_statement_search.currencyID}}
+    {{account_statement_search.inventoryID}}
     <div style="width: 100%;">
       <label style="max-width: 35%; font-weight: bold; background-color:rgb(201, 201, 201);" class="btn btn-main">من</label>
       <input style="width: 35%; background-color:black;" class="btn btn-main"  type="date" name="start_date" placeholder="بحث بالتاريخ"/>
       <label style="max-width: 35%; font-weight: bold; background-color:rgb(201, 201, 201);" class="btn btn-main">إلى</label>
       <input style="width: 35%; background-color:black;" class="btn btn-main"  type="date" name="end_date" placeholder="بحث بالتاريخ"/>
     </div>
-    {{invoice_search_form.customerID}}
-    {{invoice_search_form.currencyID}}
-    {{invoice_search_form.inventoryID}}
-    <input class="form-control mr-sm-2 remove-outline" name="search_invoice_number" placeholder="بحث برقم الفاتورة"/>
+    <button class="btn btn-main" type="submit">بحث<i class="fa-solid fa-magnifying-glass"></i></button>
+    <a href="{% url 'account_statement' %}" class="btn btn-main" type="submit">إعادة تعيين<i class="fa-solid fa-rotate-right"></i></a>
   </form>
  <div class="content">
     {% include 'partials/_alerts.html' %}

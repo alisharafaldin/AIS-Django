@@ -1,13 +1,13 @@
 from django import forms
-from .models import Persons, LegalPersons, BasicInfo, Countries
 from sales.models import Customers, Inventory
-
+from .models import Persons, LegalPersons, BasicInfo, Countries
+from accounts.models import AccountsTree
 
 class InvoiceSearchForm(forms.Form):
-    search = forms.CharField(
+    sequence = forms.CharField(
         required=False, 
-        label='اسم العميل',
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'اسم العميل'})
+        label='رقم القيد',
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'رقم القيد'})
     )
 
     currencyID = forms.ModelChoiceField(
@@ -33,6 +33,25 @@ class InvoiceSearchForm(forms.Form):
         required=False,
         widget=forms.Select(attrs={'name':'search_customerID','class':'form-control', 'placeholder':'العميل'})
     )
+
+    accountID = forms.ModelChoiceField(
+        queryset=AccountsTree.objects.all(),
+        label='الحساب',
+        empty_label="اختر الحساب",
+        required=False,
+        widget=forms.Select(attrs={'name':'search_accountID','class':'form-control', 'placeholder':'العميل'})
+    )
+
+    def __init__(self, *args, **kwargs):
+        company_id = kwargs.pop('companyID', None)  # احصل على companyID من kwargs
+        super(InvoiceSearchForm, self).__init__(*args, **kwargs)
+
+        if company_id:
+            # تخصيص queryset بناءً على companyID
+            self.fields['currencyID'].queryset = Countries.objects.filter(companyID=company_id)
+            self.fields['inventoryID'].queryset = Inventory.objects.filter(companyID=company_id)
+            self.fields['customerID'].queryset = Customers.objects.filter(companyID=company_id)
+
 
 class BasicInfoForm(forms.ModelForm):
     class Meta:

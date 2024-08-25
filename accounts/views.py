@@ -4,6 +4,7 @@ from django.contrib import messages
 from . models import AccountsTree, Qayd, QaydDetails
 from companys.models import Company
 from django.db.models import Sum
+from basicinfo.forms import InvoiceSearchForm
 from . forms import AccountsTreeForm, QaydForm, QaydDetailsForm, QaydDetailsFormSet
 from django.forms import modelformset_factory
 from django.shortcuts import get_object_or_404
@@ -376,57 +377,59 @@ def generate_qayd_pdf(request, id):
     # إرجاع استجابة PDF
     return FileResponse(buffer, as_attachment=True, filename='qayd.pdf')
 
-
 #------------------- التقارير ---------------------
-
 
 @login_required
 def account_statement_search(request):
     # الحصول على معايير البحث من الطلب
-    search_name = request.GET.get('search_name', '')
-    search_invoice_number = request.GET.get('search_invoice_number', '')
-    search_date = request.GET.get('search_date', '')
+    start_date = request.GET.get('start_date','')
+    end_date = request.GET.get('end_date','')
+    search_accountID = request.GET.get('accountID', '')
+    search_qayd_number = request.GET.get('sequence', '')
     search_currencyID = request.GET.get('currencyID', '')
     search_inventoryID = request.GET.get('inventoryID', '')
     search_customerID = request.GET.get('customerID', '')
-    start_date = request.GET.get('start_date','')
-    end_date = request.GET.get('end_date','')
     
-    invoices_query = QaydDetailsForm.objects.all()
-    # استعلام الفواتير بين تاريخين
-    if start_date and end_date:
-        invoices_query = invoices_query.filter(date__range=[start_date, end_date])
-    if search_date:
-        invoices_query = invoices_query.filter(date=search_date)
-    if search_name:
-        invoices_query = invoices_query.filter(customerID__legalPersonID__name_ar__icontains=search_name)
-    if search_invoice_number:
-        invoices_query = invoices_query.filter(sequence=search_invoice_number)
-    if search_currencyID:
-        invoices_query = invoices_query.filter(currencyID=search_currencyID)
-    if search_inventoryID:
-        invoices_query = invoices_query.filter(inventoryID=search_inventoryID)
-    if search_customerID:
-        invoices_query = invoices_query.filter(customerID=search_customerID)
-    
-    # الحصول على الشركة الحالية من الجلسة
+     # الحصول على الشركة الحالية من جلسة المستخدم
     current_company_id = request.session.get('current_company_id')
     if not current_company_id:
         messages.error(request, 'الرجاء تحديد الشركة للعمل عليها.')
         return redirect('companys')
+    
+    qayds = Qayd.objects.filter(companyID_id=current_company_id).order_by('date')
+    qayds_details = QaydDetails.objects.filter(qaydID__in=qayds)
 
-    # تصفية الفواتير بناءً على الشركة الحالية
-    invoices_query = invoices_query.filter(companyID_id=current_company_id).annotate(
-        total_sum=Sum('sales_invoice__total_price_after_tax')).order_by("-id")
-
-      # حساب الإجمالي الكلي لجميع الفواتير
-    total_invoices_sum = invoices_query.aggregate(total_sum=Sum('sales_invoice__total_price_after_tax'))['total_sum'] or 0
-
-    # إعداد السياق
+    if start_date and end_date:
+        qayds = qayds.filter(date__range=[start_date, end_date])
+        qayds_details = qayds_details.filter(qaydID__in=qayds)
+    if search_qayd_number:
+        qayds_details = qayds_details.filter(sequence=search_qayd_number)
+    if search_currencyID:
+        qayds_details = qayds_details.filter(currencyID=search_currencyID)
+    if search_inventoryID:
+        qayds_details = qayds_details.filter(inventoryID=search_inventoryID)
+    if search_customerID:
+        qayds_details = qayds_details.filter(customerID=search_customerID)
+    if search_accountID:
+        qayds_details = qayds_details.filter(accountID=search_accountID)
+    
+    detailed_with_balance = []
+    balance = 0
+    for detail in qayds_details:
+        balance += detail.debit - detail.credit
+        detailed_with_balance.append({
+            'detail': detail,
+            'balance': balance
+        })
+    total_debit, total_credit, difference = calculate_totals(qayds_details)
+    
     context = {
-        'invoices': invoices_query,
-        'invoice_search_form': QaydDetailsForm(request.GET),
-        'total_invoices_sum':total_invoices_sum,
+        'qayds_details': detailed_with_balance,
+        'qayd_details_form': QaydDetailsForm(),
+        'account_statement_search': InvoiceSearchForm(request.GET),
+        'total_debit': total_debit,
+        'total_credit': total_credit,
+        'difference': difference,
     }
 
     # عرض الصفحة مع البيانات
@@ -438,26 +441,31 @@ def account_statement(request):
         messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة للإطلاع على كشوفات الحساب.")
         return redirect('qayds')
     
+    # الحصول على الشركة الحالية من جلسة المستخدم
+    current_company_id = request.session.get('current_company_id')
+    if not current_company_id:
+        messages.error(request, 'الرجاء تحديد الشركة للعمل عليها.')
+        return redirect('companys')
+    
     if request.user.is_authenticated and not request.user.is_anonymous:
-        # الحصول على كافة التفاصيل مرتبة حسب التاريخ أو أي معيار آخر
-        qayds_details = QaydDetails.objects.all().order_by('date_details')
+        qayds = Qayd.objects.filter(companyID_id=current_company_id).order_by('date')
+        # الحصول على كافة التفاصيل المتعلقة بالقيود المرتبطة بالشركة الحالية، مرتبة حسب التاريخ
+        qayds_details = QaydDetails.objects.filter(qaydID__in=qayds)
 
-        # إعداد قائمة لحفظ تفاصيل القيد مع الرصيد
         detailed_with_balance = []
         balance = 0
-
         for detail in qayds_details:
             balance += detail.debit - detail.credit
             detailed_with_balance.append({
                 'detail': detail,
                 'balance': balance
             })
-
         total_debit, total_credit, difference = calculate_totals(qayds_details)
         
         context = {
             'qayds_details': detailed_with_balance,
             'qayd_details_form': QaydDetailsForm(),
+            'account_statement_search': InvoiceSearchForm(request.GET),
             'total_debit': total_debit,
             'total_credit': total_credit,
             'difference': difference,

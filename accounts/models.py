@@ -10,11 +10,9 @@ from django.db.models.signals import post_save
 from mptt.models import MPTTModel, TreeForeignKey
 # from .models import AccountsTree
 #  لتجنب مشكلة الاستيراد الدائري (Circular Import)
-
 def get_shareholdersInfo():
       from hadena.models import ShareholdersInfo
       return ShareholdersInfo
-
 def get_cycle():
       from hadena.models import Cycle
       return Cycle

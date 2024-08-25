@@ -43,8 +43,7 @@ class InvoiceHeadForm(forms.ModelForm):
         # تصفية العملاء بناءً على الشركة
         if company_id:
             self.fields['customerID'].queryset = Customers.objects.filter(companyID_id=company_id)
-
-    
+   
 class InvoiceBodyForm(forms.ModelForm):
     DELETE = forms.BooleanField(required=False, initial=False)
     class Meta:
