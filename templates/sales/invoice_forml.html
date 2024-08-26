@@ -121,7 +121,11 @@ td {
       <!-- بيانات العميل -->
   <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
     <div class="card text-bg-light mb-10" >
+      {% if is_edit_mode %}
+      <div class="card-header">بيانات العميل : </div>
+      {% else %}
       <div class="card-header">بيانات العميل : {{invoice_head_form.customerID}}</div>
+      {% endif %}
       <div class="card-body">
         <div class="form-row">
           <h6 style="font-weight: bold" class="col-md-3">العنوان</h6>

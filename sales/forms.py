@@ -1,7 +1,10 @@
 from django import forms
 from .models import Customers, InvoicesSalesHead, InvoicesSalesBody
 from basicinfo.models import Countries
+from products.models import Items
 from django.forms import modelformset_factory
+from django_select2.forms import Select2Widget
+
 
 class CustomerForm(forms.ModelForm):
     class Meta:
@@ -17,12 +20,20 @@ class InvoiceHeadForm(forms.ModelForm):
         empty_label="اختر العملة",
         widget=forms.Select(attrs={'class': 'form-control'}),
     )
+    customerID = forms.ModelChoiceField(
+        queryset=Customers.objects.all(),
+        label='العميل',
+        empty_label="اختر العميل",
+        required=False,
+        widget=Select2Widget(attrs={'class':'form-control',
+                                     'placeholder':'العميل',
+                                       'style': 'data-width:100%', 'height': '100px'}),)
+
     class Meta:
         model = InvoicesSalesHead
         fields = '__all__'
         widgets = {
             'date': forms.DateInput(attrs={'class':'form-control', 'type':'date', 'placeholder':'التاريخ'}),
-            'customerID': forms.Select(attrs={'class':'form-control', 'placeholder':'العميل'}),
             'rate': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'سعر الصرف'}),
             'typeTransactionID': forms.Select(attrs={'disabled':'disabled','class':'form-control', 'placeholder':'نوع المعاملة'}),
             'inventoryID': forms.Select(attrs={'class':'form-control', 'placeholder':'المخزن'}),
@@ -46,13 +57,20 @@ class InvoiceHeadForm(forms.ModelForm):
    
 class InvoiceBodyForm(forms.ModelForm):
     DELETE = forms.BooleanField(required=False, initial=False)
+    itemID = forms.ModelChoiceField(
+        queryset=Items.objects.all(),
+        label='المنتج',
+        empty_label="اختر المنتج",
+        required=False,
+        widget=Select2Widget(attrs={'class':'form-control',
+                                     'placeholder':'المنتج',
+                                       'data-width': '100%', 'height': '36px'}))
     class Meta:
         model = InvoicesSalesBody
         fields = '__all__'
         widgets = {
             'DELETE': forms.CheckboxInput(),
             'invoiceHeadID': forms.Select(attrs={'class':'form-control', 'placeholder':'رأس الفاتورة'}),
-            'itemID': forms.Select(attrs={'class':'form-control itemID', 'placeholder':'المنتج'}),
             'quantity': forms.NumberInput(attrs={'class':'form-control debit-input quantity', 'placeholder':'الكمية'}),
             'unit_price': forms.NumberInput(attrs={'class':'form-control unit_price', 'placeholder':'سعر الوحدة'}),
             'discount': forms.NumberInput(attrs={'class':'form-control discount' , 'placeholder':'الخصم'}),

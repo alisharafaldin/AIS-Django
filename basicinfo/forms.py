@@ -2,6 +2,7 @@ from django import forms
 from sales.models import Customers, Inventory
 from .models import Persons, LegalPersons, BasicInfo, Countries
 from accounts.models import AccountsTree
+from django_select2.forms import Select2Widget
 
 class InvoiceSearchForm(forms.Form):
     sequence = forms.CharField(
@@ -31,7 +32,7 @@ class InvoiceSearchForm(forms.Form):
         label='العميل',
         empty_label="اختر العميل",
         required=False,
-        widget=forms.Select(attrs={'name':'search_customerID','class':'form-control', 'placeholder':'العميل'})
+        widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'العميل'})
     )
 
     accountID = forms.ModelChoiceField(
@@ -39,13 +40,14 @@ class InvoiceSearchForm(forms.Form):
         label='الحساب',
         empty_label="اختر الحساب",
         required=False,
-        widget=forms.Select(attrs={'name':'search_accountID','class':'form-control', 'placeholder':'العميل'})
+        widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'العميل'})
     )
 
     def __init__(self, *args, **kwargs):
         company_id = kwargs.pop('companyID', None)  # احصل على companyID من kwargs
         super(InvoiceSearchForm, self).__init__(*args, **kwargs)
-
+        # تخصيص تسمية حقل currencyID
+        self.fields['currencyID'].label_from_instance = lambda obj: obj.currency_ar
         if company_id:
             # تخصيص queryset بناءً على companyID
             self.fields['currencyID'].queryset = Countries.objects.filter(companyID=company_id)

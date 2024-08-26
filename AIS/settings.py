@@ -26,8 +26,8 @@ SECRET_KEY = 'django-insecure-5a&qb+fj^5eh_3p9q1$bpsu0@lz=^&p+d8#3-5ci_zv^#h6tim
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.205.208']
-# ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.1.6']
+# ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.205.208']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.1.6']
 # ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.0.123']
 
 
@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'sales.apps.SalesConfig',
     'rest_framework',
     'corsheaders',
+    'django_select2',
 ]
 
 MIDDLEWARE = [
