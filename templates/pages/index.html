@@ -38,6 +38,7 @@
     <div class="container-fluid">
       <!-- Small boxes (Stat box) -->
       <div class="row">
+        <!-- بداية فواتير المشتريات -->
         <div class="col-lg-3 col-6">
           <!-- small box -->
           <div class="small-box bg-info">
@@ -53,7 +54,9 @@
             ></a>
           </div>
         </div>
-        <!-- ./col -->
+        <!-- نهاية فواتير المشتريات -->
+
+        <!-- بداية فواتير المشتريات -->
         <div class="col-lg-3 col-6">
           <!-- small box -->
           <div class="small-box bg-success">
@@ -62,21 +65,59 @@
               <p>فواتير المبيعات</p>
             </div>
             <div class="icon">
-              <i class="ion ion-stats-bars"></i>
+              <i class="fas fa-shopping-cart"></i>
             </div>
             <a href="{% url 'invoices_sales' %}" class="small-box-footer"
               >المزيد <i class="fas fa-arrow-circle-right"></i
             ></a>
           </div>
-        </div>
-        <!-- ./col -->
+        </div> 
+        <!-- نهاية فواتير المبيعات -->
+        
+          <!-- بداية الموردين -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-secondary">
+              <div class="inner">
+                <h3>0</h3>
+                <p>الموردين</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-bag"></i>
+              </div>
+              <a href="#" class="small-box-footer"
+                >المزيد <i class="fas fa-arrow-circle-right"></i
+              ></a>
+            </div>
+          </div>
+          <!-- نهاية الموردين -->
+  
+          <!-- بداية العملاء -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-primary">
+              <div class="inner">
+                <h3>{{customers_list.count}}<sup style="font-size: 20px"></sup></h3>
+                <p>العملاء</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-stats-bars"></i>
+              </div>
+              <a href="{% url 'customers' %}" class="small-box-footer"
+                >المزيد <i class="fas fa-arrow-circle-right"></i
+              ></a>
+            </div>
+          </div> 
+          <!-- نهاية العملاء -->
+
+        <!--بداية القوى العاملة -->
         <div class="col-lg-3 col-6">
           <!-- small box -->
           <div class="small-box bg-warning">
             <div class="inner">
               <h3>{{emp_count.count}}</h3>
 
-              <p>عدد القوى العاملة</p>
+              <p>القوى العاملة</p>
             </div>
             <div class="icon">
               <i class="ion ion-person-add"></i>
@@ -86,14 +127,15 @@
             ></a>
           </div>
         </div>
-        <!-- ./col -->
+        <!-- نهاية القوى العاملة -->
+
+        <!-- بداية قيود اليومية -->
         <div class="col-lg-3 col-6">
           <!-- small box -->
           <div class="small-box bg-danger">
             <div class="inner">
               <h3>{{qayds.count}}</h3>
-
-              <p>عدد قيود اليومية</p>
+              <p>قيود اليومية</p>
             </div>
             <div class="icon">
               <i class="ion ion-pie-graph"></i>
@@ -103,12 +145,9 @@
             ></a>
           </div>
         </div>
-        <!-- ./col -->
-      </div>
-      <!-- /.row -->
-      <!-- Main row -->
+        <!-- نهاية قيود اليومية -->
 
-      <!-- /.row (main row) -->
+      </div>
     </div>
     <!-- /.container-fluid -->
   </section>

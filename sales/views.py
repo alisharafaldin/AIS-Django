@@ -1,10 +1,11 @@
 from django.shortcuts import render , redirect, get_object_or_404
 from basicinfo.forms import BasicInfoForm, LegalPersonsForm, InvoiceSearchForm
-from django.db.models import Sum
+from django.db.models import Sum, Count
 from basicinfo.models import BasicInfo, LegalPersons
 from django.contrib import messages
 from . models import Customers, InvoicesSalesHead, InvoicesSalesBody
 from companys.models import Company
+from accounts.models import Qayd, QaydDetails
 from . forms import CustomerForm, InvoiceHeadForm, InvoiceBodyForm, InvoiceBodyFormSet
 from django.forms import modelformset_factory
 from django.contrib.auth.decorators import login_required
@@ -209,6 +210,7 @@ def customer_delete(request, id):
   }
   return render(request, 'sales/customer_delete.html', context)
 
+@login_required
 def customers(request):
     # التحقق من الأذونات أولاً
     if not request.user.has_perm('customers.view_customers'):
@@ -221,15 +223,43 @@ def customers(request):
         return redirect('companys')
     # الحصول على القيود الخاصة بالشركة الحالية
     try:
-        customers = Customers.objects.filter(companyID_id=current_company_id)
+        customers = Customers.objects.filter(companyID_id=current_company_id).annotate(
+        total_Count=Count('sales_customer__sequence')).order_by("-total_Count")
+        # حساب الإجمالي الكلي لجميع الفواتير
+        total_invoice_Count = customers.aggregate(total_Count=Count('sales_customer__sequence'))['total_Count'] or 0
     except Customers.DoesNotExist:
         customers = []  # إذا لم يكن هناك أي كائنات، العودة إلى قائمة فارغة    
     # إعداد السياق
     context = {
         'customers': customers,
+        'total_invoice_Count': total_invoice_Count,
     }
     # عرض الصفحة مع البيانات
     return render(request, 'sales/customers.html', context)
+
+@login_required
+def customer_sales_invoices(request, customer_id):
+    # الحصول على الشركة الحالية من جلسة المستخدم
+    current_company_id = request.session.get('current_company_id')
+    if not current_company_id:
+        messages.error(request, 'الرجاء تحديد الشركة للعمل عليها.')
+        return redirect('companys')
+    # الحصول على العميل المحدد
+    customer = get_object_or_404(Customers, id=customer_id)
+    try:
+        # الحصول على فواتير المبيعات الخاصة بالعميل في الشركة الحالية
+        invoices = InvoicesSalesHead.objects.filter(companyID_id=current_company_id, customerID=customer).annotate(
+        total_sum=Sum('sales_invoice__total_price_after_tax')).order_by("-id")
+        # حساب الإجمالي الكلي لجميع الفواتير
+        total_invoices_sum = invoices.aggregate(total_sum=Sum('sales_invoice__total_price_after_tax'))['total_sum'] or 0
+    except InvoicesSalesHead.DoesNotExist:
+        invoices = []  # إذا لم يكن هناك أي كائنات، العودة إلى قائمة فارغة
+    context = {
+        'invoices': invoices,
+        'invoice_search_form':InvoiceSearchForm(request.GET),
+        'total_invoices_sum':total_invoices_sum,
+    }
+    return render(request, 'sales/invoices.html', context)
 
 # # دالة عرض جميع القيود
 def calculate_totals(details_queryset):
@@ -287,36 +317,6 @@ def invoices_sales_search(request):
         'total_invoices_sum':total_invoices_sum,
     }
 
-    # عرض الصفحة مع البيانات
-    return render(request, 'sales/invoices.html', context)
-
-@login_required
-def invoices_sales(request):
-    # التحقق من الأذونات أولاً
-    if not request.user.has_perm('sales.view_invoicessaleshead'):
-        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة للإطلاع على فواتير المبيعات.")
-        return redirect('index')
-    # الحصول على الشركة الحالية من جلسة المستخدم
-    current_company_id = request.session.get('current_company_id')
-    if not current_company_id:
-        messages.error(request, 'الرجاء تحديد الشركة للعمل عليها.')
-        return redirect('companys')
-    # الحصول على فواتير المبيعات الخاصة بالشركة الحالية
-    try:
-        # الحصول على فواتير المبيعات الخاصة بالشركة الحالية
-        invoices = InvoicesSalesHead.objects.filter(companyID_id=current_company_id).annotate(
-        total_sum=Sum('sales_invoice__total_price_after_tax')).order_by("-id")
-
-        # حساب الإجمالي الكلي لجميع الفواتير
-        total_invoices_sum = invoices.aggregate(total_sum=Sum('sales_invoice__total_price_after_tax'))['total_sum'] or 0
-
-    except InvoicesSalesHead.DoesNotExist:
-        invoices = []  # إذا لم يكن هناك أي كائنات، العودة إلى قائمة فارغة
-    context = {
-        'invoices': invoices,
-        'invoice_search_form':InvoiceSearchForm(request.GET),
-        'total_invoices_sum':total_invoices_sum,
-    }
     # عرض الصفحة مع البيانات
     return render(request, 'sales/invoices.html', context)
 
@@ -454,7 +454,6 @@ def invoice_sales_update(request, id):
 
 @login_required 
 def invoice_sales_delete(request, id):
-
     if not request.user.has_perm('sales.delete_invoicessaleshead'):
         messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لحذف فواتير المبيعات.")
         return redirect('invoices_sales')
@@ -482,4 +481,60 @@ def invoice_sales_delete(request, id):
     }
     return render(request, 'sales/invoice_delete.html', context)
 
+# def post_invoice_to_journal(invoice):
+#     # إنشاء القيد الرئيسي
+#     qayd = Qayd.objects.create(date=invoice.date, description=f"ترحيل فاتورة مبيعات #{invoice.id}",
+#                         companyID=invoice.companyID, created_by=invoice.created_by)
+    
+#     # 1. إضافة قيد مدين للمدينين
+#     QaydDetails.objects.create(qaydID=qayd, accountID=debtors_account, debit=invoice.total_amount, credit=0, 
+#                         description_details=f"فاتورة مبيعات #{invoice.id} - مدينون")
+    
+#     # 2. إضافة قيد دائن للمبيعات
+#     QaydDetails.objects.create(qaydID=qayd, accountID=sales_account, debit=0, credit=invoice.total_amount, 
+#                         description_details=f"فاتورة مبيعات #{invoice.id} - مبيعات")
+    
+#     # 3. إضافة قيد دائن للمخزون
+#     QaydDetails.objects.create(qaydID=qayd, accountID=inventory_account,debit=0, credit=invoice.cost, 
+#                         description_details=f"فاتورة مبيعات #{invoice.id} - تخفيض المخزون")
+    
+#     # 4. إضافة قيد مدين لتكلفة البضاعة المباعة
+#     QaydDetails.objects.create(qaydID=qayd, accountID=cogs_account, debit=invoice.cost, credit=0,
+#                         description_details=f"فاتورة مبيعات #{invoice.id} - تكلفة البضاعة المباعة")
 
+#     # حفظ القيد الرئيسي
+#     qayd.save()
+    
+#     # تحديث حالة الفاتورة إلى "مرحل"
+#     invoice.is_posted = True
+#     invoice.save()
+
+#     return qayd
+
+@login_required
+def invoices_sales(request):
+    # التحقق من الأذونات أولاً
+    if not request.user.has_perm('sales.view_invoicessaleshead'):
+        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة للإطلاع على فواتير المبيعات.")
+        return redirect('index')
+    # الحصول على الشركة الحالية من جلسة المستخدم
+    current_company_id = request.session.get('current_company_id')
+    if not current_company_id:
+        messages.error(request, 'الرجاء تحديد الشركة للعمل عليها.')
+        return redirect('companys')
+    # الحصول على فواتير المبيعات الخاصة بالشركة الحالية
+    try:
+        # الحصول على فواتير المبيعات الخاصة بالشركة الحالية
+        invoices = InvoicesSalesHead.objects.filter(companyID_id=current_company_id).annotate(
+        total_sum=Sum('sales_invoice__total_price_after_tax')).order_by("-id")
+        # حساب الإجمالي الكلي لجميع الفواتير
+        total_invoices_sum = invoices.aggregate(total_sum=Sum('sales_invoice__total_price_after_tax'))['total_sum'] or 0
+    except InvoicesSalesHead.DoesNotExist:
+        invoices = []  # إذا لم يكن هناك أي كائنات، العودة إلى قائمة فارغة
+    context = {
+        'invoices': invoices,
+        'invoice_search_form':InvoiceSearchForm(request.GET),
+        'total_invoices_sum':total_invoices_sum,
+    }
+    # عرض الصفحة مع البيانات
+    return render(request, 'sales/invoices.html', context)

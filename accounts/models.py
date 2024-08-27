@@ -8,6 +8,7 @@ from django.db.models.signals import pre_save, post_delete
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from mptt.models import MPTTModel, TreeForeignKey
+from sales.models import InvoicesSalesHead
 # from .models import AccountsTree
 #  لتجنب مشكلة الاستيراد الدائري (Circular Import)
 def get_shareholdersInfo():
@@ -77,7 +78,8 @@ class AccountsTree(MPTTModel):
 class Qayd(models.Model):
   companyID = models.ForeignKey(Company, on_delete=models.PROTECT,blank=True)
   sequence = models.PositiveIntegerField(editable=False)  # الحقل التسلسلي
-  typeTransactionID = models.ForeignKey(TypeTransaction , verbose_name='نوع العملية', default=1, on_delete=models.PROTECT, null=True)
+  invoicesSalesID = models.ForeignKey(InvoicesSalesHead , verbose_name='فاتورة المبيعات', on_delete=models.PROTECT, blank=True, null=True)
+  typeTransactionID = models.ForeignKey(TypeTransaction , verbose_name='نوع العملية', default=1, on_delete=models.PROTECT, blank=True)
   date = models.DateTimeField(verbose_name='التاريخ', default=timezone.now , blank=True, null=True)
   description = models.TextField(verbose_name='وصف القيد', default="قيد يومية جديد", max_length=250, blank=True, null=True)
   attachments = models.FileField(verbose_name='مرفقات القيد', blank=True, null=True)

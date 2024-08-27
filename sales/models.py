@@ -48,7 +48,7 @@ class InvoicesSalesHead (models.Model):
     date = models.DateField(verbose_name='التاريخ', blank=True, null=True)
     typeTransactionID = models.ForeignKey(TypeTransaction, verbose_name='نوع العملية', default=4, on_delete=models.PROTECT, blank=True, null=True)
     inventoryID = models.ForeignKey(Inventory, verbose_name='المخزن', on_delete=models.PROTECT, blank=True, null=True)
-    customerID = models.ForeignKey(Customers, verbose_name='العميل', on_delete=models.PROTECT)
+    customerID = models.ForeignKey(Customers, verbose_name='العميل', related_name='sales_customer', on_delete=models.PROTECT)
     currencyID = models.ForeignKey(Countries , verbose_name='العملة', default=3, on_delete=models.PROTECT, blank=True, null=True)
     rate = models.DecimalField(verbose_name='سعر الصرف', default=1, max_digits=6, decimal_places=2, blank=True, null=True)
     typePaymentID = models.ForeignKey(TypePayment, verbose_name='طريقة الدفع', default=1, on_delete=models.PROTECT, blank=True, null=True)

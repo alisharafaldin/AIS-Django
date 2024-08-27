@@ -10,6 +10,7 @@ urlpatterns = [
     path('', views.invoices_sales, name='invoices_sales'),
     path('invoices_sales_search', views.invoices_sales_search, name='invoices_sales_search'),
     path('invoice_sales_create', views.invoice_sales_create, name='invoice_sales_create'),
+    path('customer_sales_invoices/<int:customer_id>', views.customer_sales_invoices, name='customer_sales_invoices'),
     path('invoice_sales_reade/<int:id>', views.invoice_sales_reade, name='invoice_sales_reade'),
     path('invoice_sales_update/<int:id>', views.invoice_sales_update, name='invoice_sales_update'),
     path('invoice_sales_delete/<int:id>', views.invoice_sales_delete, name='invoice_sales_delete'),
