@@ -2,15 +2,19 @@ from django.urls import path
 from . import views 
 
 urlpatterns = [  
-    # path('', views.purchases, name='purchases'),
-    # path('purchase_create', views.purchase_create, name='purchase_create'),
-    # path('purchase_reade/<int:id>', views.purchase_reade, name='purchase_reade'),
-    # path('purchase_update/<int:id>', views.purchase_update, name='purchase_update'),
-    # path('purchase_delete/<int:id>', views.purchase_delete, name='purchase_delete'),
- 
-    path('invoices', views.invoices, name='invoices'),
-    path('invoice_create', views.invoice_create, name='invoice_create'),
-    # path('invoice_reade/<int:id>', views.invoice_reade, name='invoice_reade'),
-    # path('invoice_update/<int:id>', views.invoice_update, name='invoice_update'),
-    # path('invoice_delete/<int:id>', views.invoice_delete, name='invoice_delete'),
+    path('', views.invoices_purchases, name='invoices_purchases'),
+    path('invoices_purchases_search', views.invoices_purchases_search, name='invoices_purchases_search'),
+    path('invoice_purchases_create', views.invoice_purchases_create, name='invoice_purchases_create'),
+    path('supplier_purchases_invoices/<int:supplier_id>', views.supplier_purchases_invoices, name='supplier_purchases_invoices'),
+    path('invoice_purchases_reade/<int:id>', views.invoice_purchases_reade, name='invoice_purchases_reade'),
+    path('invoice_purchases_update/<int:id>', views.invoice_purchases_update, name='invoice_purchases_update'),
+    path('invoice_purchases_delete/<int:id>', views.invoice_purchases_delete, name='invoice_purchases_delete'),
+    # path('post_invoice_purchases_to_journal/<int:id>', views.post_invoice_purchases_to_journal, name='post_invoice_purchases_to_journal'),
+    # path('invoice/<int:id>/pdf/', views.invoice_pdf, name='invoice_pdf'),
+
+    path('suppliers', views.suppliers, name='suppliers'),
+    path('supplier_create', views.supplier_create, name='supplier_create'),
+    path('supplier_update/<int:id>', views.supplier_update, name='supplier_update'),
+    path('supplier_reade/<int:id>', views.supplier_reade, name='supplier_reade'),
+    path('supplier_delete/<int:id>', views.supplier_delete, name='supplier_delete'),
 ]

@@ -73,6 +73,29 @@
         </li>
         <!-- End G Sales -->
 
+                <!-- Start G Sales -->
+                <li class="nav-item has-treeview">
+                  <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-edit"></i>
+                    <p>المبيعات<i class="fas fa-angle-left right"></i></p>
+                  </a>
+                  <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      <a href="{% url 'suppliers' %}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>الموردين</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="{% url 'invoices_purchases' %}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>فواتير المشتريات</p>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <!-- End G Sales -->
+        
         <!-- Start G Accounts -->
          <li class="nav-item has-treeview">
           <a href="#" class="nav-link">

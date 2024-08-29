@@ -481,36 +481,6 @@ def invoice_sales_delete(request, id):
     }
     return render(request, 'sales/invoice_delete.html', context)
 
-# def post_invoice_to_journal(invoice):
-#     # إنشاء القيد الرئيسي
-#     qayd = Qayd.objects.create(date=invoice.date, description=f"ترحيل فاتورة مبيعات #{invoice.id}",
-#                         companyID=invoice.companyID, created_by=invoice.created_by)
-    
-#     # 1. إضافة قيد مدين للمدينين
-#     QaydDetails.objects.create(qaydID=qayd, accountID=debtors_account, debit=invoice.total_amount, credit=0, 
-#                         description_details=f"فاتورة مبيعات #{invoice.id} - مدينون")
-    
-#     # 2. إضافة قيد دائن للمبيعات
-#     QaydDetails.objects.create(qaydID=qayd, accountID=sales_account, debit=0, credit=invoice.total_amount, 
-#                         description_details=f"فاتورة مبيعات #{invoice.id} - مبيعات")
-    
-#     # 3. إضافة قيد دائن للمخزون
-#     QaydDetails.objects.create(qaydID=qayd, accountID=inventory_account,debit=0, credit=invoice.cost, 
-#                         description_details=f"فاتورة مبيعات #{invoice.id} - تخفيض المخزون")
-    
-#     # 4. إضافة قيد مدين لتكلفة البضاعة المباعة
-#     QaydDetails.objects.create(qaydID=qayd, accountID=cogs_account, debit=invoice.cost, credit=0,
-#                         description_details=f"فاتورة مبيعات #{invoice.id} - تكلفة البضاعة المباعة")
-
-#     # حفظ القيد الرئيسي
-#     qayd.save()
-    
-#     # تحديث حالة الفاتورة إلى "مرحل"
-#     invoice.is_posted = True
-#     invoice.save()
-
-#     return qayd
-
 @login_required
 def invoices_sales(request):
     # التحقق من الأذونات أولاً
@@ -538,3 +508,34 @@ def invoices_sales(request):
     }
     # عرض الصفحة مع البيانات
     return render(request, 'sales/invoices.html', context)
+
+def post_invoice_sales_to_journal(invoice):
+    # إنشاء القيد الرئيسي
+    qayd = Qayd.objects.create(date=invoice.date, description=f"ترحيل فاتورة مبيعات #{invoice.sequence}",
+                        companyID=invoice.companyID, invoicesSalesID=invoice.id, created_by=invoice.created_by)
+    
+    # 1. إضافة قيد مدين للمدينين
+    QaydDetails.objects.create(qaydID=qayd, accountID=7, debit=invoice.total_price_after_tax, credit=0, 
+                        description_details=f"فاتورة مبيعات #{invoice.sequence} -  مدينون تجاريون {invoice.customerID}")
+    
+    # 2. إضافة قيد دائن للمبيعات
+    QaydDetails.objects.create(qaydID=qayd, accountID=24, debit=0, credit=invoice.total_price_after_tax, 
+                        description_details=f"فاتورة مبيعات #{invoice.sequence} - مبيعات {invoice.customerID}")
+    
+    # 3. إضافة قيد دائن للمخزون
+    QaydDetails.objects.create(qaydID=qayd, accountID=26 ,debit=0, credit=invoice.cost, 
+                        description_details=f"فاتورة مبيعات #{invoice.sequence} - تخفيض مخزون {invoice.inventoryID}")
+    
+    # 4. إضافة قيد مدين لتكلفة البضاعة المباعة
+    QaydDetails.objects.create(qaydID=qayd, accountID=25, debit=invoice.cost, credit=0,
+                        description_details=f"فاتورة مبيعات #{invoice.id} - تكلفة البضاعة المباعة")
+
+    # حفظ القيد الرئيسي
+    qayd.save()
+    
+    # تحديث حالة الفاتورة إلى "مرحل"
+    invoice.is_posted = True
+    invoice.save()
+
+    return qayd
+

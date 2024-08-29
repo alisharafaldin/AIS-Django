@@ -1,0 +1,196 @@
+
+{% load static %} 
+{% load humanize %}
+
+<style>
+td {
+  padding: 1px !important;
+  text-align: center;
+}
+.info-invo {
+  font-size: 10px;
+  margin: 0;
+}
+@media (max-width: 768px) {
+  .form-row.main {
+    flex-wrap: wrap !important;
+  }
+  .form-row {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+  }
+  
+  .form-row h6 {
+    width: 50% !important;
+    background-color: #dee2e6 !important;
+    color: hsl(203, 30%, 20%) !important;
+    border-radius: 7px !important;
+    text-align: center !important;
+    align-content: space-around !important;
+  }
+}
+
+</style>
+
+<div class="form-row main">
+  <div style="display: none;">{{invoice_head_form.created_by}}</div>
+  <!-- معلومات الفاتورة -->
+  <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
+    <div class="form-row">
+      <h6 style="font-weight: bold" class="col-md-2">التاريخ</h6>
+      <div class="form-group col-md-4">{{invoice_head_form.date}}</div>
+    </div>
+    <div class="form-row">
+      <h6 style="font-weight: bold" class="col-md-2">العميل</h6>
+      <div class="form-group col-md-8">{{invoice_head_form.supplierID}}</div>
+    </div>
+    <div class="form-row">
+        <h6 style="font-weight: bold" class="col-md-2">الوصف</h6>
+        <div class="form-group col-md-8">{{invoice_head_form.description}}</div>
+    </div>
+    <div class="form-row">
+      <h6 style="font-weight: bold" class="col-md-2">المخزن</h6>
+      <div class="form-group col-md-3">{{invoice_head_form.inventoryID}}</div>
+        <h6 style="font-weight: bold" class="col-md-2">العملة</h6>
+        {% if is_edit_mode %}
+        <div class="form-group col-md-3">{{invoice_head_form.currencyID}}</div>
+        {% else %}
+        <div class="form-group col-md-3">{{invoice_head_form.currencyID.currency_ar}}</div>
+        {% endif %}
+        <h6 style="font-weight: bold" class="col-md-2">سعر الصرف</h6>
+        <div class="form-group col-md-3">{{invoice_head_form.rate}}</div>
+    </div>
+  </div>
+
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">المنتج</th>
+        <th scope="col">الكمية</th>
+        <th scope="col">سعر الوحدة</th>
+        <th scope="col">الإجمالي</th>
+      </tr>
+    </thead>
+    {{ invoice_body_form.management_form }} 
+    <tbody id="formset-container">
+        {% for form in invoice_body_form %}
+        <tr class="form-container">
+          <!-- <th data-label="#" scope="row"></th> -->
+          {% if is_edit_mode %}
+          <td data-label="حذف" ><button class="btn btn-danger remove-form" >-{{ forloop.counter }} </button></td> 
+          {% else %}
+          <td data-label="حذف" >{{forloop.counter}}</td>
+          {% endif %} 
+          <td style="display: none;">{{ form.DELETE }}</td>
+          <td style="display: none;">{{ form.id }}</td>
+          <td data-label="المنتج">{{form.itemID}}</td>
+          <td data-label="الكمية">{{form.quantity}}</td>
+          {% if is_edit_mode %}
+          <td data-label="سعر الوحدة">{{form.unit_price}}</td>
+          <td data-label="الإجمالي بعد الضريبة">{{form.total_price_after_tax}}</td>
+          {% else %}
+          <td data-label="سعر الوحدة">{{form.unit_price|intcomma}}</td>
+          <td data-label="الإجمالي بعد الضريبة">{{form.total_price_after_tax|intcomma}}</td>
+          {% endif %} 
+        </tr>
+    {% endfor %}
+    </tbody>
+    <tbody>
+      <tr>
+        <td><a class="btn" style="background-color: green;" id="add-form">+</a></td>
+        <!-- <td></td>
+        <td></td>
+        <td></td> -->
+        <th>الإجمالي</th>
+        {% if is_edit_mode %}
+        <th id="quantity"></th>
+        <td></td>
+        <th id="total_price_after_tax"></th>
+        {% else %}
+        <th>{{total_quantity|intcomma}} </th>
+        <td></td>
+        <th>{{total_price_after_tax|floatformat:2|intcomma}} </th>
+        {% endif %} 
+       </tr>
+    </tbody>
+  </table>
+  <div class="form-row">
+      <!-- بيانات العميل -->
+  <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
+    <div class="card text-bg-light mb-10" >
+      {% if is_edit_mode %}
+      <div class="card-header">بيانات العميل : </div>
+      {% else %}
+      <div class="card-header">بيانات العميل : {{invoice_head_form.supplierID}}</div>
+      {% endif %}
+      <div class="card-body">
+        <div class="form-row">
+          <h6 style="font-weight: bold" class="col-md-3">العنوان</h6>
+          <div class="form-group col-md-6">
+            {% if supplier.legalPersonID.basicInfoID.google_maps_location %}
+            {{supplier.legalPersonID.basicInfoID.countryID}} - {{supplier.legalPersonID.basicInfoID.address}}
+            <a href="{{supplier.legalPersonID.basicInfoID.google_maps_location}}" target="blank">
+              <i class="fa-solid fa-location-dot"></i>
+            </a>
+            {% else %}
+            {{supplier.legalPersonID.basicInfoID.countryID}} - {{supplier.legalPersonID.basicInfoID.address}}
+            {% endif %}
+          </div>
+        </div>
+       <div class="form-row">
+          <h6 style="font-weight: bold" class="col-md-3">رقم الهاتف</h6>
+          <div class="form-group col-md-6">
+            {% if supplier.legalPersonID.basicInfoID.phone %}
+            {{supplier.legalPersonID.basicInfoID.phone}} 
+            <a href="tel:{{supplier.legalPersonID.basicInfoID.phone}}"class="btn-link">
+              <i class="fa fa-phone" style="color: green;"></i></a>
+            <a href="https://wa.me/{{supplier.legalPersonID.basicInfoID.phone}}"
+              class="btn-link"><i class="fa-brands fa-whatsapp"  style="color: green;"></i></a>
+            {{supplier.legalPersonID.basicInfoID.phoneOther}}
+            {% else %}
+            {{supplier.legalPersonID.basicInfoID.phone}} - {{supplier.legalPersonID.basicInfoID.phoneOther}}
+            {% endif %}
+          </div>
+        </div>
+        <div class="form-row">
+          <h6 style="font-weight: bold" class="col-md-3">الجنسية</h6>
+          <div class="form-group col-md-6">{{supplier.legalPersonID.basicInfoID.nationalityID}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <h6 style="font-weight: bold" class="col-md-2">طريقة الدفع</h6>
+      <div class="form-group col-md-3">{{invoice_head_form.typePaymentID}}</div>
+      <h6 style="font-weight: bold" class="col-md-2">طريقة التسليم</h6>
+      <div class="form-group col-md-3">{{invoice_head_form.typeDeliveryID}}</div>
+</div>
+  </div>
+</div>
+        <h6 style="font-weight: bold" class="col-md-2">المرفقات</h6>
+        <div class="form-group col-md-3">{{invoice_head_form.attachments}}</div>
+  </div>
+
+  {% if invoice_head_form.attachments %}
+  <div class="form-row">
+    <!-- <embed src="{{ invoice_head_form.attachments.url }}" type="application/pdf" width="100%" height="600px" /> -->
+    <img class="card-img-top" src="{{ invoice_head_form.attachments.url }}" alt="صورة المرفق" style="width: 80%; height: auto;"/>
+  </div>
+
+  {% else %}
+  <h6>لا توجد مرفقات</h6>
+  {% endif %}
+
+</div>
+<div class="form-col">
+  <h6 class="form-group col-md-6 info-invo">تم إنشاء الفاتورة بواسطة : {{invoice_head_form.created_by}} </h6>
+  <h6 class="form-group col-md-6 info-invo"> بتاريخ : {{invoice_head_form.created_at}}</h6>
+  <hr>
+  <h6 class="form-group col-md-6 info-invo">آخر تحديث بواسطة : {{invoice_head_form.updated_by}} </h6>
+  <h6 class="form-group col-md-6 info-invo"> بتاريخ : {{invoice_head_form.updated_at}}</h6>
+
+</div>
+<script type="module" src="{% static 'dist/js/add-remove-form-invoice.js' %}?v=1.0"></script>
+<script type="module" src="{% static 'dist/js/calculate-totals-invoice.js' %}?v=1.0"></script>

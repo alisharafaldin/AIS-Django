@@ -1,0 +1,24 @@
+{% extends 'base.html' %} {% load static %} {% block title %} | Qayd Update (
+{{qayd_update.id}} ) {% endblock %} {% block content %}
+<div class="content-wrapper">
+  <h4 class="main-title">
+    تعديل فاتورة مشتريات رقم : ( {{invoice_head.sequence}} )
+  </h4>
+  <div class="content">
+    <br />
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+       
+      {% include 'partials/_alerts.html' %}
+      <button type="submit" name="btnsave" class="btn btn-save">
+        حفظ التعديل
+      </button>
+      <a href="{% url 'invoices_purchases' %}" class="btn btn-close">إلغاء</a>
+      <br />
+      <br />
+
+      {% include 'purchases/invoice_forml.html' %}
+    </form>
+  </div>
+</div>
+{% endblock %}

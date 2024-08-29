@@ -97,7 +97,7 @@ def accounts(request):
         # تصفية القيود الخاصة بالشركة أو العامة
     accounts = AccountsTree.objects.filter(
         Q(companyID=current_company_id) | Q(companyID__isnull=True)
-    ).order_by("categoryID", "code")
+    ).order_by("code")
     context = {
         'accounts': accounts,
     }

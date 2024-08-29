@@ -1,0 +1,29 @@
+{% extends 'base.html' %} {% load static %} {% block title %} | Reade Invoice
+purchases ( {{Invoice_reade.id}} ) {% endblock %} {% block content %}
+<div class="content-wrapper">
+  <h4 class="main-title">
+    طباعة {{invoice_head_form.typeTransactionID}} رقم : ( {{invoice_head_form.sequence}} )
+  </h4>
+  <div class="content">
+
+    <a
+      href="{% url 'invoice_purchases_update' invoice_head_form.id %}"
+      class="btn-link"
+      ><i class="fas fa-edit"></i
+    ></a>
+    <a
+      href="{% url 'invoice_purchases_delete' invoice_head_form.id %}"
+      class="btn-link"
+      ><i class="fas fa-trash"></i
+    ></a>
+    <a href="{% url 'invoices_purchases' %}" class="btn-link"
+      ><i class="fas fa-close"></i
+    ></a>
+    <form method="GET">
+      {% csrf_token %} {% include 'partials/_alerts.html' %}
+
+      {% include 'purchases/invoice_forml.html' %}
+    </form>
+  </div>
+</div>
+{% endblock %}

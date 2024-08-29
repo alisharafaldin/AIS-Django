@@ -1,0 +1,170 @@
+{% extends 'base.html' %} {% load static %}
+{% block title %} | suppliers {% endblock %} 
+{% block content %}
+<style>
+  /* @media (max-width: 768px) {
+    .table-responsive thead {
+      display: none;
+    }
+
+    .table-responsive tbody,
+    .table-responsive th,
+    .table-responsive td {
+      display: block;
+    }
+
+    .table-responsive tr {
+      margin-bottom: 15px;
+    }
+
+    .table-responsive td,
+    .table-responsive th {
+      direction: rtl; 
+      text-align: right;
+      padding-right: 25%;
+      position: relative;
+      width: 100vw;
+    }
+
+    .table-responsive td::before,
+    .table-responsive th::before {
+      content: attr(data-label);
+      position: absolute;
+      right: 0;
+      width: 20%;
+      padding-right: 10px;
+      margin: -12px 1px 2px 2px;
+      padding: 12px 8px 12px 0px;
+      font-weight: bold;
+      background-color: rgb(219, 219, 219);
+    }
+  } */
+
+  table {
+    width: 100%;
+    table-layout: auto;
+  }
+
+  th {
+    text-align: center;
+  }
+  td {
+    padding: 5px !important;
+    text-align: right;
+    vertical-align: middle !important;
+    width: auto !important;
+    white-space: nowrap;
+    width: fit-content !important;
+  }
+  td input {
+    padding: 5px;
+    text-align: center;
+  }
+</style>
+
+<div class="content-wrapper">
+  <div class="main-title"><h4 class="form-group col-md-9">الموردين | Suppliers</h4></div>
+  <form method="GET" class="form-inline my-2 my-lg-0">
+    <a href="{% url 'supplier_create' %}" class="btn btn-main" target="blank"
+      >إضافة عميل جديد</a
+    >
+    <!-- Start Search -->
+    <button class="btn btn-main" type="submit">
+      بحث<i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+    <a href="{% url 'suppliers' %}" class="btn btn-main" type="submit"
+      >إعادة تعيين<i class="fa-solid fa-rotate-right"></i
+    ></a>
+    <input
+      class="form-control mr-sm-2 remove-outline"
+      name="search_emp"
+      placeholder="بحث بالإسم"
+    />
+    <input
+      class="form-control mr-sm-2 remove-outline"
+      name="search_iqama"
+      placeholder="بحث برقم الحدود"
+    />
+    <input
+      class="form-control mr-sm-2 remove-outline"
+      name="search_border"
+      placeholder="بحث برقم الإقامة"
+    />
+    <input
+      class="form-control mr-sm-2 remove-outline"
+      name="search_company"
+      placeholder="تصفية بالشركة"
+    />
+    <!-- End Search -->
+  </form>
+  <br />
+  {% include 'partials/_alerts.html' %}
+  <div class="content">
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="row">#</th>
+            <th scope="row">الإسم</th>
+            <th scope="row">النوع</th>
+            <th scope="row">عدد الفواتير</th>
+            <th scope="row">العنوان</th>
+            <th scope="row">رقم الهاتف</th>
+            <th scope="row">رقم جوال</th>
+            <th scope="row">الإجراءات</th>
+          </tr>
+        </thead>
+      <tbody>
+          {% for supplier in suppliers %}
+          <tr>
+            <!-- لعمل ارقام تسلسلة -->
+            <th data-label="#" scope="col">{{forloop.counter}}</th>
+            <!-- تفاصيل الجدول -->
+            <td data-label="الإسم">{{supplier.legalPersonID.name_ar}}</td>
+            <td style="text-align: center;" data-label="النوع">{{supplier.legalPersonID.businessTypeID}}</td>
+            <td style="text-align: center;" data-label="عدد الفواتير"><a href="{% url 'supplier_purchases_invoices' supplier.id %}">{{supplier.total_Count}}</a></td>
+            <td style="text-align: center;" data-label="العنوان">
+              <!-- {% if supplier.legalPersonID.basicInfoID.google_maps_location %}
+              {{supplier.legalPersonID.basicInfoID.countryID}} - {{supplier.legalPersonID.basicInfoID.address}} -->
+              <a href="{{supplier.legalPersonID.basicInfoID.google_maps_location}}"target="blank">
+                <i class="fa-solid fa-location-dot"></i>
+              </a>
+            <!-- {% else %} {{supplier.legalPersonID.basicInfoID.countryID}} - {{supplier.legalPersonID.basicInfoID.address}} {% endif %} -->
+            </td>
+            <td data-label="رقم الهاتف">
+              {% if supplier.legalPersonID.basicInfoID.phone %}
+                {{supplier.legalPersonID.basicInfoID.phone}}
+                  <a href="tel:{{supplier.legalPersonID.basicInfoID.phone}}"class="btn-link">
+                    <i class="fa fa-phone" style="color: green"></i>
+                  </a>
+                  <a href="https://wa.me/{{supplier.legalPersonID.basicInfoID.phone}}"class="btn-link">
+                    <i class="fa-brands fa-whatsapp" style="color: green"></i>
+                  </a>
+              {% else %}
+              {% endif %}
+            </td>
+            <td data-label="هاتف آخر">
+              <a href="tel:{{supplier.legalPersonID.basicInfoID.phoneOther}}">
+                {{supplier.legalPersonID.basicInfoID.phoneOther}}</a>
+              </td>
+            <td style="text-align: center;" data-label="الإجراءات">
+              <a class="btn-link" href="{% url 'supplier_update' supplier.id %}"><i class="fas fa-edit"></i>
+              </a>
+              <a href="{% url 'supplier_reade' supplier.id %}" class="btn-link">
+                <i class="fa fa-print" aria-hidden="true"></i>
+              </a>
+              <a
+                href="{% url 'supplier_delete' supplier.id %}"
+                class="btn-link"
+              >
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

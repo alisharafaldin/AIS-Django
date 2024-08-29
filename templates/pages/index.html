@@ -43,13 +43,13 @@
           <!-- small box -->
           <div class="small-box bg-info">
             <div class="inner">
-              <h3>0</h3>
+              <h3>{{invoicesPurchases_list.count}}</h3>
               <p>فواتير المشتريات</p>
             </div>
             <div class="icon">
               <i class="ion ion-bag"></i>
             </div>
-            <a href="#" class="small-box-footer"
+            <a href="{% url 'invoices_purchases' %}" class="small-box-footer"
               >المزيد <i class="fas fa-arrow-circle-right"></i
             ></a>
           </div>
@@ -79,13 +79,13 @@
             <!-- small box -->
             <div class="small-box bg-secondary">
               <div class="inner">
-                <h3>0</h3>
+                <h3>{{suppliers_list.count}}</h3>
                 <p>الموردين</p>
               </div>
               <div class="icon">
                 <i class="ion ion-bag"></i>
               </div>
-              <a href="#" class="small-box-footer"
+              <a href="{% url 'suppliers' %}" class="small-box-footer"
                 >المزيد <i class="fas fa-arrow-circle-right"></i
               ></a>
             </div>

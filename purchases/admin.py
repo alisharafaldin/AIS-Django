@@ -8,13 +8,13 @@ class SuppliersImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id', 'legalPersonID']
 
-@admin.register(InvoiceHead)
-class InvoiceHeadImportExport(ImportExportModelAdmin):
+@admin.register(InvoicesPurchasesHead)
+class InvoicesPurchasesHeadImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id', 'supplierID']
 
-@admin.register(InvoiceBody)
-class InvoiceBodyImportExport(ImportExportModelAdmin):
+@admin.register(InvoicesPurchasesBody)
+class InvoicesPurchasesBodyImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id', 'itemID', 'quantity', 'unit_price', 'discount', 'total_price_before_tax']
 
