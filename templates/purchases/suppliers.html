@@ -120,7 +120,7 @@
             <!-- لعمل ارقام تسلسلة -->
             <th data-label="#" scope="col">{{forloop.counter}}</th>
             <!-- تفاصيل الجدول -->
-            <td data-label="الإسم">{{supplier.legalPersonID.name_ar}}</td>
+            <td data-label="الإسم">{{supplier.legalPersonID.acronym_ar}}</td>
             <td style="text-align: center;" data-label="النوع">{{supplier.legalPersonID.businessTypeID}}</td>
             <td style="text-align: center;" data-label="عدد الفواتير"><a href="{% url 'supplier_purchases_invoices' supplier.id %}">{{supplier.total_Count}}</a></td>
             <td style="text-align: center;" data-label="العنوان">

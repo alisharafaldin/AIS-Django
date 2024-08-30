@@ -1,5 +1,6 @@
 from django import forms
 from sales.models import Customers, Inventory
+from purchases.models import Suppliers
 from .models import Persons, LegalPersons, BasicInfo, Countries
 from accounts.models import AccountsTree
 from django_select2.forms import Select2Widget
@@ -33,6 +34,15 @@ class InvoiceSearchForm(forms.Form):
         empty_label="اختر العميل",
         required=False,
         widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'العميل'})
+    )
+
+    
+    suppliersID = forms.ModelChoiceField(
+        queryset=Suppliers.objects.all(),
+        label='المورد',
+        empty_label="اختر المورد",
+        required=False,
+        widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'المورد'})
     )
 
     accountID = forms.ModelChoiceField(

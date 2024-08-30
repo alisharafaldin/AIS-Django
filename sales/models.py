@@ -53,11 +53,16 @@ class InvoicesSalesHead (models.Model):
     rate = models.DecimalField(verbose_name='سعر الصرف', default=1, max_digits=6, decimal_places=2, blank=True, null=True)
     typePaymentID = models.ForeignKey(TypePayment, verbose_name='طريقة الدفع', default=1, on_delete=models.PROTECT, blank=True, null=True)
     typeDeliveryID = models.ForeignKey(TypeDelivery, verbose_name='طريقة التسليم', default=1, on_delete=models.PROTECT, blank=True, null=True)
-    description = models.TextField(verbose_name='الوصف', default="فاتورة مبيعات جديدة", max_length=250, blank=True, null=True)
-    attachments = models.FileField(verbose_name='المرفقات',upload_to='attachments/%Y/%m/%d/', blank=True, null=True)
-    approve = models.BooleanField(verbose_name='إعتماد', default=False, blank=True, null=True) 
+    description = models.TextField(verbose_name='الوصف', default="مبيعات", max_length=250, blank=True, null=True)
+    recipient = models.CharField(verbose_name='المستلم',max_length=100, blank=True, null=True)
+    address = models.CharField(verbose_name='عنوان المستلم',max_length=200, blank=True, null=True)
+    google_maps_location = models.URLField(verbose_name='العنوان على خرائط قوقل', max_length=500, blank=True, null=True)
+    phone = models.CharField(verbose_name='رقم هاتف المستلم',max_length=50, blank=True, null=True)
+    phoneOther = models.CharField(verbose_name='هاتف آخر',max_length=50, blank=True, null=True)
     details = models.ManyToManyField(Items, through='InvoicesSalesBody', related_name='invoices', blank=True)
     salesRepID = models.ForeignKey(Employee, verbose_name='مندوب المبيعات', on_delete=models.PROTECT, blank=True, null=True)
+    attachments = models.FileField(verbose_name='المرفقات',upload_to='attachments/%Y/%m/%d/', blank=True, null=True)
+    approve = models.BooleanField(verbose_name='إعتماد', default=False, blank=True, null=True) 
     created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name='created_by_invoS', blank=True, null=True)
     created_at = models.DateTimeField(verbose_name='تاريخ الإنشاء',auto_now_add=True, blank=True, null=True)
     updated_by = models.ForeignKey(User, verbose_name='المُعدِل', related_name='updated_by_invoS', on_delete=models.PROTECT, blank=True, null=True)
@@ -69,18 +74,21 @@ class InvoicesSalesHead (models.Model):
 class InvoicesSalesBody(models.Model):
     invoiceHeadID = models.ForeignKey(InvoicesSalesHead, on_delete=models.CASCADE, related_name='sales_invoice', blank=True)
     itemID = models.ForeignKey(Items, verbose_name='المنتج', on_delete=models.PROTECT,related_name='sales_details', blank=True, null=True)
+    inventoryID = models.ForeignKey(Inventory, verbose_name='المخزن', on_delete=models.PROTECT, blank=True, null=True)
     quantity = models.DecimalField(verbose_name='الكمية', default=1, max_digits=6, decimal_places=0, blank=True, null=True)
     unit_price = models.DecimalField(verbose_name='سعر البيع', default=1, max_digits=10, decimal_places=2, blank=True, null=True)
     discount = models.DecimalField(verbose_name='خصم مسموح به', default=0, max_digits=6, decimal_places=2, blank=True, null=True)
     total_price_before_tax = models.DecimalField(verbose_name='السعر قبل الضريبة', max_digits=10, decimal_places=2, blank=True, null=True)
     tax_rate = models.DecimalField(verbose_name='نسبة الضريبة', default=0, max_digits=6, decimal_places=2, blank=True, null=True)
     tax_value = models.DecimalField(verbose_name='قيمة الضريبة', default=0, max_digits=6, decimal_places=2, blank=True, null=True)
-    total_price_after_tax = models.DecimalField(verbose_name='إجمالي السعر بعد الخصم', max_digits=10, decimal_places=2, blank=True, null=True)
+    total_price_after_tax = models.DecimalField(verbose_name='إجمالي السعر بعد الضريبة', max_digits=10, decimal_places=2, blank=True, null=True)
+    total_price_local_currency = models.DecimalField(verbose_name='إجمالي السعر عملة محلية ', max_digits=10, decimal_places=2, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         self.total_price_before_tax =  (self.unit_price - self.discount) * self.quantity
         self.tax_value = self.total_price_before_tax * self.tax_rate / 100
         self.total_price_after_tax = self.total_price_before_tax + self.tax_value
+        self.total_price_local_currency = self.total_price_after_tax / self.invoiceHeadID.rate
         super().save(*args, **kwargs)
 
     @property

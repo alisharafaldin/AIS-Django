@@ -362,6 +362,7 @@ def invoice_sales_create(request):
         # إعداد النماذج عند طلب GET
         head_form = InvoiceHeadForm(companyID=current_company_id)
         formset = InvoiceBodyFormSet(queryset=InvoicesSalesBody.objects.none())
+        # formset = InvoiceBodyFormSet(queryset=InvoicesSalesBody.objects.none(), initial=[{'invoiceHeadID': head_form.instance}])
         is_edit_mode = True  # حدد إذا كنت في وضع إنشاء أو تعديل
 
         context = {

@@ -80,11 +80,26 @@ class InvoiceBodyForm(forms.ModelForm):
             'total_price_after_tax': forms.NumberInput(attrs={'readonly':'readonly','class':'form-control total_price_after_tax', 'placeholder':'إجمالي السعر بعد الخصم'}),
         }
 
+    #تعيين قيمة إفتراضية للمخزن في تفاصيل الفاتورة
     # def __init__(self, *args, **kwargs):
-        # company_id = kwargs.pop('companyID', None)  # استلام الشركة الحالية من العرض
-        # تصفية العملاء بناءً على الشركة
-        # self.fields['itemID'].queryset = Customers.objects.filter(itemID_id=company_id)
-    
+    #     super(InvoiceBodyForm, self).__init__(*args, **kwargs)
+
+    #     invoice_head = None
+        
+    #     if 'instance' in kwargs:
+    #         # إذا كان النموذج يتعامل مع كائن موجود
+    #         invoice_head = kwargs['instance'].invoiceHeadID
+    #     else:
+    #         # إذا كان النموذج جديدًا
+    #         invoice_head = kwargs['initial'].get('invoiceHeadID', None)
+
+    #     if invoice_head and not self.instance.pk:
+    #         # تعيين المخزن الافتراضي من رأس الفاتورة
+    #         self.fields['inventoryID'].initial = invoice_head.inventoryID
+
+    #     # هذا الحقل يظل قابلًا للتعديل
+    #     self.fields['inventoryID'].widget.attrs.update({'class': 'form-control'})
+
     #التأكد من إضافة منتج قبل الحفظ
     def clean(self):
         cleaned_data = super().clean()

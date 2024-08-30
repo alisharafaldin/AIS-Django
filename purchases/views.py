@@ -102,7 +102,7 @@ def supplier_create(request):
 
 @login_required
 def supplier_reade(request, id):
-    supplier = get_object_or_404(suppliers, id=id)
+    supplier = get_object_or_404(Suppliers, id=id)
     legalPerson = get_object_or_404(LegalPersons, id=supplier.legalPersonID_id)
     basicInfo = get_object_or_404(BasicInfo, id=legalPerson.basicInfoID_id)
 

@@ -37,7 +37,7 @@
       <label style="max-width: 35%; font-weight: bold; background-color:rgb(201, 201, 201);" class="btn btn-main">إلى</label>
       <input style="width: 35%; background-color:black;" class="btn btn-main"  type="date" name="end_date" placeholder="بحث بالتاريخ"/>
     </div>
-    {{invoice_search_form.customerID}}
+    {{invoice_search_form.supplierID}}
     {{invoice_search_form.currencyID}}
     {{invoice_search_form.inventoryID}}
     <input class="form-control mr-sm-2 remove-outline" name="search_invoice_number" placeholder="بحث برقم الفاتورة"/>
@@ -54,7 +54,7 @@
               <th scope="col">#</th>
               <th scope="col">رقم الفاتورة</th>
               <th scope="col">تاريخ الفاتورة</th>
-              <th scope="col">العميل</th>
+              <th scope="col">المورد</th>
               <th scope="col">إجمالي الفاتورة</th>
               <th scope="col">العملة</th>
               <!-- <th scope="col">معتمد</th> -->
@@ -68,9 +68,9 @@
               <td data-label="رقم الفاتورة">{{ invoice.sequence }}</td>
               <td data-label="التاريخ">{{ invoice.date|date:"Y-m-d" }}</td>
               {% if invoice.attachments %}
-              <td data-label="العميل" style="color: #28b78d; font-weight: bold;">{{ invoice.customerID.legalPersonID.acronym_ar }}</td>
+              <td data-label="المورد" style="color: #28b78d; font-weight: bold;">{{ invoice.supplierID.legalPersonID.acronym_ar }}</td>
               {% else  %}
-              <td data-label="العميل">{{ invoice.customerID.legalPersonID.acronym_ar }}</td>
+              <td data-label="المورد">{{ invoice.supplierID.legalPersonID.acronym_ar }}</td>
               {% endif  %}
               <td data-label="إجمالي الفاتورة">
                 {{ invoice.total_sum|floatformat:2|intcomma }}

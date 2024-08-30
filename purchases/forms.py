@@ -20,13 +20,13 @@ class InvoiceHeadForm(forms.ModelForm):
         empty_label="اختر العملة",
         widget=forms.Select(attrs={'class': 'form-control'}),
     )
-    customerID = forms.ModelChoiceField(
+    supplierID = forms.ModelChoiceField(
         queryset=Suppliers.objects.all(),
-        label='العميل',
-        empty_label="اختر العميل",
+        label='المورد',
+        empty_label="اختر المورد",
         required=False,
         widget=Select2Widget(attrs={'class':'form-control',
-                                     'placeholder':'العميل',
+                                     'placeholder':'المورد',
                                        'style': 'data-width:100%', 'height': '100px'}),)
     class Meta:
         model = InvoicesPurchasesHead
@@ -52,7 +52,7 @@ class InvoiceHeadForm(forms.ModelForm):
 
         # تصفية العملاء بناءً على الشركة
         if company_id:
-            self.fields['customerID'].queryset = Suppliers.objects.filter(companyID_id=company_id)
+            self.fields['supplierID'].queryset = Suppliers.objects.filter(companyID_id=company_id)
    
 class InvoiceBodyForm(forms.ModelForm):
     DELETE = forms.BooleanField(required=False, initial=False)
