@@ -245,7 +245,7 @@ def supplier_purchases_invoices(request, supplier_id):
     # الحصول على المورد المحدد
     supplier = get_object_or_404(suppliers, id=supplier_id)
     try:
-        # الحصول على فواتير المبيعات الخاصة بالمورد في الشركة الحالية
+        # الحصول على فواتير المشتريات الخاصة بالمورد في الشركة الحالية
         invoices = InvoicesPurchasesHead.objects.filter(companyID_id=current_company_id, supplierID=supplier).annotate(
         total_sum=Sum('purchases_invoice__total_price_after_tax')).order_by("-id")
         # حساب الإجمالي الكلي لجميع الفواتير
@@ -346,7 +346,7 @@ def invoice_purchases_create(request):
                     body = form.save(commit=False)
                     body.invoiceHeadID = head
                     body.save()
-            messages.success(request, 'تم إضافة فاتورة مبيعات جديدة')
+            messages.success(request, 'تم إضافة فاتورة مشتريات جديدة')
             return redirect('invoices_purchases')
         else:
             # دالة عرض الأخطاء
@@ -374,7 +374,7 @@ def invoice_purchases_create(request):
 @login_required
 def invoice_purchases_reade(request, id):
     if not request.user.has_perm('purchases.view_InvoicesPurchasesHead'):
-        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة للإطلاع على فواتير المبيعات.")
+        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة للإطلاع على فواتير المشتريات.")
         return redirect('invoices_purchases')
     
     invoice_head =  get_object_or_404(InvoicesPurchasesHead, id=id)
@@ -403,14 +403,13 @@ def invoice_purchases_reade(request, id):
 @login_required 
 def invoice_purchases_update(request, id):
     if not request.user.has_perm('purchases.change_InvoicesPurchasesHead'):
-        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لتعديل فواتير المبيعات.")
+        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لتعديل فواتير المشتريات.")
         return redirect('invoices_purchases')
     invoice_head = get_object_or_404(InvoicesPurchasesHead, id=id)
 
     # استخدام formset للحصول على جميع نماذج QaydDetails المرتبطة بـ Qayd المحدد
     InvoiceBodyFormSet = modelformset_factory(InvoicesPurchasesBody, form=InvoiceBodyForm, extra=1)
     queryset = InvoicesPurchasesBody.objects.filter(invoiceHeadID=invoice_head)
-
     if request.method == 'POST':
         head_form = InvoiceHeadForm(request.POST, request.FILES, instance=invoice_head)
         formset = InvoiceBodyFormSet(request.POST, queryset=queryset)
@@ -427,7 +426,7 @@ def invoice_purchases_update(request, id):
                 body = form.save(commit=False)
                 body.invoiceHeadID = head
                 body.save()
-          messages.success(request, f'تم تحديث بيانات فاتورة مبيعات {id} بنجاح')
+          messages.success(request, f'تم تحديث بيانات فاتورة مشتريات ( {invoice_head.sequence} ) بنجاح')
           return redirect('invoices_purchases')
         else:
             # دالة عرض الأخطاء
@@ -453,13 +452,13 @@ def invoice_purchases_update(request, id):
 @login_required 
 def invoice_purchases_delete(request, id):
     if not request.user.has_perm('purchases.delete_InvoicesPurchasesHead'):
-        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لحذف فواتير المبيعات.")
+        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة لحذف فواتير المشتريات.")
         return redirect('invoices_purchases')
     if request.user.is_authenticated and not request.user.is_anonymous:
-        qayd_id = InvoicesPurchasesHead.objects.get(id=id)
+        invoice_head = InvoicesPurchasesHead.objects.get(id=id)
         if 'btndelete' in request.POST:
-            qayd_id.delete()
-            messages.success(request, f'تم حذف القيد {id} بنجاح')
+            invoice_head.delete()
+            messages.success(request, f'تم حذف فاتورة مشتريات {invoice_head.sequence} بنجاح')
             return redirect('invoices_purchases')
     else:
         messages.error(request, 'الرجاء تسجيل الدخول أولاً')
@@ -471,7 +470,7 @@ def invoice_purchases_delete(request, id):
     is_edit_mode = False  # أو True بناءً على وضع النموذج
     context = {
        'is_edit_mode':is_edit_mode,
-        'invoice_head_form': qayd_id,
+        'invoice_head_form': invoice_head,
         'invoice_body_form': invoice_body,
 
          'total_quantity':total_quantity,
@@ -483,16 +482,16 @@ def invoice_purchases_delete(request, id):
 def invoices_purchases(request):
     # التحقق من الأذونات أولاً
     if not request.user.has_perm('purchases.view_InvoicesPurchasesHead'):
-        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة للإطلاع على فواتير المبيعات.")
+        messages.info(request, f" عذراً {request.user} ، ليس لديك الأذونات اللازمة للإطلاع على فواتير المشتريات.")
         return redirect('index')
     # الحصول على الشركة الحالية من جلسة المستخدم
     current_company_id = request.session.get('current_company_id')
     if not current_company_id:
         messages.error(request, 'الرجاء تحديد الشركة للعمل عليها.')
         return redirect('companys')
-    # الحصول على فواتير المبيعات الخاصة بالشركة الحالية
+    # الحصول على فواتير المشتريات الخاصة بالشركة الحالية
     try:
-        # الحصول على فواتير المبيعات الخاصة بالشركة الحالية
+        # الحصول على فواتير المشتريات الخاصة بالشركة الحالية
         invoices = InvoicesPurchasesHead.objects.filter(companyID_id=current_company_id).annotate(
         total_sum=Sum('purchases_invoice__total_price_after_tax')).order_by("-id")
         # حساب الإجمالي الكلي لجميع الفواتير
