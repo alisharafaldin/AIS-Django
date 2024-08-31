@@ -72,9 +72,7 @@
               {% else  %}
               <td data-label="المورد">{{ invoice.supplierID.legalPersonID.acronym_ar }}</td>
               {% endif  %}
-              <td data-label="إجمالي الفاتورة">
-                {{ invoice.total_sum|floatformat:2|intcomma }}
-              </td>
+              <td data-label="إجمالي الفاتورة">{{ invoice.total_sum|floatformat:2|intcomma }}</td>
               <td data-label="العملة">{{ invoice.currencyID}}</td>
               <!-- <td data-label="إعتماد">{{ invoice.approve }}</td> -->
               <td data-label="الإجرات">
@@ -102,6 +100,8 @@
 
           </tbody>
           <tr>
+            <td></td>
+            <td></td>
             <td></td>
             <th>الإجمالي</th>
             <td></td>

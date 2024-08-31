@@ -57,6 +57,7 @@
               <th scope="col">العميل</th>
               <th scope="col">إجمالي الفاتورة</th>
               <th scope="col">العملة</th>
+              <th scope="col">إجمالي عملة العملية</th>
               <!-- <th scope="col">معتمد</th> -->
               <th scope="col">إجراءات</th>
             </tr>
@@ -72,10 +73,9 @@
               {% else  %}
               <td data-label="العميل">{{ invoice.customerID.legalPersonID.acronym_ar }}</td>
               {% endif  %}
-              <td data-label="إجمالي الفاتورة">
-                {{ invoice.total_sum|floatformat:2|intcomma }}
-              </td>
+              <td data-label="إجمالي الفاتورة">{{ invoice.total_local_sum|floatformat:2|intcomma }}</td>
               <td data-label="العملة">{{ invoice.currencyID}}</td>
+              <td data-label="إجمالي عملة العملية">{{ invoice.total_sum|floatformat:2|intcomma }}</td>
               <!-- <td data-label="إعتماد">{{ invoice.approve }}</td> -->
               <td data-label="الإجرات">
                 <a
@@ -106,7 +106,9 @@
             <th>الإجمالي</th>
             <td></td>
             <td></td>
-            <th>{{total_invoices_sum|floatformat:2|intcomma}}</th>
+            <th>{{total_local_currency|floatformat:2|intcomma}}</th>
+            <td></td>
+            <th>{{total_sum|floatformat:2|intcomma}}</th>
            </tr>
         </table>
       </div>

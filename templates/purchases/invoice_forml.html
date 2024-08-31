@@ -68,6 +68,7 @@ td {
     <thead>
       <tr>
         <th scope="col">#</th>
+        <th scope="col">المخزن</th>
         <th scope="col">المنتج</th>
         <th scope="col">الكمية</th>
         <th scope="col">سعر الوحدة</th>
@@ -86,6 +87,7 @@ td {
           {% endif %} 
           <td style="display: none;">{{ form.DELETE }}</td>
           <td style="display: none;">{{ form.id }}</td>
+          <td data-label="المخزن">{{form.inventoryID}}</td>
           <td data-label="المنتج">{{form.itemID}}</td>
           <td data-label="الكمية">{{form.quantity}}</td>
           {% if is_edit_mode %}
@@ -101,9 +103,7 @@ td {
     <tbody>
       <tr>
         <td><a class="btn" style="background-color: green;" id="add-form">+</a></td>
-        <!-- <td></td>
-        <td></td>
-        <td></td> -->
+        <td></td> 
         <th>الإجمالي</th>
         {% if is_edit_mode %}
         <th id="quantity"></th>
@@ -118,8 +118,8 @@ td {
     </tbody>
   </table>
   <div class="form-row">
-      <!-- بيانات العميل -->
-  <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
+      <!-- بيانات المورد -->
+  <!-- <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
     <div class="card text-bg-light mb-10" >
       {% if is_edit_mode %}
       <div class="card-header">بيانات العميل : </div>
@@ -167,7 +167,7 @@ td {
       <h6 style="font-weight: bold" class="col-md-2">طريقة التسليم</h6>
       <div class="form-group col-md-3">{{invoice_head_form.typeDeliveryID}}</div>
 </div>
-  </div>
+  </div> -->
 </div>
         <h6 style="font-weight: bold" class="col-md-2">المرفقات</h6>
         <div class="form-group col-md-3">{{invoice_head_form.attachments}}</div>

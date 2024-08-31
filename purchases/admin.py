@@ -11,7 +11,7 @@ class SuppliersImportExport(ImportExportModelAdmin):
 @admin.register(InvoicesPurchasesHead)
 class InvoicesPurchasesHeadImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'supplierID']
+    list_display = ['id', 'sequence', 'supplierID']
 
 @admin.register(InvoicesPurchasesBody)
 class InvoicesPurchasesBodyImportExport(ImportExportModelAdmin):

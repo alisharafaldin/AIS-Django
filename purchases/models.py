@@ -18,7 +18,7 @@ class InvoicesPurchasesHead (models.Model):
     companyID = models.ForeignKey(Company, on_delete=models.PROTECT,blank=True)
     sequence = models.PositiveIntegerField(editable=False)  # الحقل التسلسلي
     date = models.DateField(verbose_name='التاريخ', blank=True, null=True)
-    typeTransactionID = models.ForeignKey(TypeTransaction, verbose_name='نوع العملية', default=4, on_delete=models.PROTECT, blank=True, null=True)
+    typeTransactionID = models.ForeignKey(TypeTransaction, verbose_name='نوع العملية', default=5, on_delete=models.PROTECT, blank=True, null=True)
     inventoryID = models.ForeignKey(Inventory, verbose_name='المخزن', on_delete=models.PROTECT, blank=True, null=True)
     supplierID = models.ForeignKey(Suppliers, verbose_name='المورد', related_name='purchases_supplier', on_delete=models.PROTECT)
     currencyID = models.ForeignKey(Countries , verbose_name='العملة', default=3, on_delete=models.PROTECT, blank=True, null=True)

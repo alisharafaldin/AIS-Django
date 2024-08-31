@@ -78,6 +78,7 @@ class InvoiceBodyForm(forms.ModelForm):
             'tax_rate': forms.NumberInput(attrs={'class':'form-control tax_rate', 'placeholder':'نسبة الضريبة'}),
             'tax_value': forms.NumberInput(attrs={'readonly':'readonly','class':'form-control tax_value', 'placeholder':'قيمة الضريبة'}),
             'total_price_after_tax': forms.NumberInput(attrs={'readonly':'readonly','class':'form-control total_price_after_tax', 'placeholder':'إجمالي السعر بعد الخصم'}),
+            'total_price_local_currency': forms.NumberInput(attrs={'readonly':'readonly','class':'form-control total_price_local_currency', 'placeholder':'إجمالي السعر بعد الخصم'}),
         }
 
     #تعيين قيمة إفتراضية للمخزن في تفاصيل الفاتورة

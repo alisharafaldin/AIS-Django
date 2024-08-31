@@ -70,6 +70,7 @@ class InvoiceBodyForm(forms.ModelForm):
         widgets = {
             'DELETE': forms.CheckboxInput(),
             'invoiceHeadID': forms.Select(attrs={'class':'form-control', 'placeholder':'رأس الفاتورة'}),
+            'inventoryID': forms.Select(attrs={'class':'form-control', 'placeholder':'المخزن'}),
             'quantity': forms.NumberInput(attrs={'class':'form-control debit-input quantity', 'placeholder':'الكمية'}),
             'unit_price': forms.NumberInput(attrs={'class':'form-control unit_price', 'placeholder':'سعر الوحدة'}),
             'discount': forms.NumberInput(attrs={'class':'form-control discount' , 'placeholder':'الخصم'}),

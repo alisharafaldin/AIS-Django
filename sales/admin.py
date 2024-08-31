@@ -22,7 +22,7 @@ class InventoryImportE(ImportExportModelAdmin):
 @admin.register(InvoicesSalesBody)
 class InvoicesSalesBodyImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'invoiceHeadID', 'itemID', 'quantity', 'unit_price', 'discount', 'total_price_before_tax', 'tax_rate', 'tax_value', 'total_price_after_tax']
+    list_display = ['id', 'invoiceHeadID', 'itemID', 'quantity', 'unit_price', 'discount', 'total_price_before_tax', 'total_price_local_currency', 'tax_rate', 'tax_value', 'total_price_after_tax']
 
 class InvoicesSalesBodyInline(admin.TabularInline):
     model = InvoicesSalesBody
