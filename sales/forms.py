@@ -52,7 +52,7 @@ class InvoiceHeadForm(forms.ModelForm):
         self.fields['currencyID'].label_from_instance = lambda obj: obj.currency_ar
 
         # تصفية العملاء بناءً على الشركة
-        if company_id:
+        if company_id: 
             self.fields['customerID'].queryset = Customers.objects.filter(companyID_id=company_id)
    
 class InvoiceBodyForm(forms.ModelForm):

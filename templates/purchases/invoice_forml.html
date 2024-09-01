@@ -117,61 +117,9 @@ td {
        </tr>
     </tbody>
   </table>
-  <div class="form-row">
-      <!-- بيانات المورد -->
-  <!-- <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
-    <div class="card text-bg-light mb-10" >
-      {% if is_edit_mode %}
-      <div class="card-header">بيانات العميل : </div>
-      {% else %}
-      <div class="card-header">بيانات العميل : {{invoice_head_form.supplierID}}</div>
-      {% endif %}
-      <div class="card-body">
-        <div class="form-row">
-          <h6 style="font-weight: bold" class="col-md-3">العنوان</h6>
-          <div class="form-group col-md-6">
-            {% if supplier.legalPersonID.basicInfoID.google_maps_location %}
-            {{supplier.legalPersonID.basicInfoID.countryID}} - {{supplier.legalPersonID.basicInfoID.address}}
-            <a href="{{supplier.legalPersonID.basicInfoID.google_maps_location}}" target="blank">
-              <i class="fa-solid fa-location-dot"></i>
-            </a>
-            {% else %}
-            {{supplier.legalPersonID.basicInfoID.countryID}} - {{supplier.legalPersonID.basicInfoID.address}}
-            {% endif %}
-          </div>
-        </div>
-       <div class="form-row">
-          <h6 style="font-weight: bold" class="col-md-3">رقم الهاتف</h6>
-          <div class="form-group col-md-6">
-            {% if supplier.legalPersonID.basicInfoID.phone %}
-            {{supplier.legalPersonID.basicInfoID.phone}} 
-            <a href="tel:{{supplier.legalPersonID.basicInfoID.phone}}"class="btn-link">
-              <i class="fa fa-phone" style="color: green;"></i></a>
-            <a href="https://wa.me/{{supplier.legalPersonID.basicInfoID.phone}}"
-              class="btn-link"><i class="fa-brands fa-whatsapp"  style="color: green;"></i></a>
-            {{supplier.legalPersonID.basicInfoID.phoneOther}}
-            {% else %}
-            {{supplier.legalPersonID.basicInfoID.phone}} - {{supplier.legalPersonID.basicInfoID.phoneOther}}
-            {% endif %}
-          </div>
-        </div>
-        <div class="form-row">
-          <h6 style="font-weight: bold" class="col-md-3">الجنسية</h6>
-          <div class="form-group col-md-6">{{supplier.legalPersonID.basicInfoID.nationalityID}}</div>
-        </div>
-      </div>
-    </div>
-    <div class="form-row">
-      <h6 style="font-weight: bold" class="col-md-2">طريقة الدفع</h6>
-      <div class="form-group col-md-3">{{invoice_head_form.typePaymentID}}</div>
-      <h6 style="font-weight: bold" class="col-md-2">طريقة التسليم</h6>
-      <div class="form-group col-md-3">{{invoice_head_form.typeDeliveryID}}</div>
-</div>
-  </div> -->
-</div>
         <h6 style="font-weight: bold" class="col-md-2">المرفقات</h6>
         <div class="form-group col-md-3">{{invoice_head_form.attachments}}</div>
-  </div>
+</div>
 
   {% if invoice_head_form.attachments %}
   <div class="form-row">
@@ -182,7 +130,58 @@ td {
   {% else %}
   <h6>لا توجد مرفقات</h6>
   {% endif %}
-
+  <div class="form-row">
+    <h6 style="font-weight: bold" class="col-md-2">طريقة الدفع</h6>
+    <div class="form-group col-md-3">{{invoice_head_form.typePaymentID}}</div>
+      <h6 style="font-weight: bold" class="col-md-2">طريقة التسليم</h6>
+      <div class="form-group col-md-3">{{invoice_head_form.typeDeliveryID}}</div>
+    </div>
+    <div class="form-row">
+    <!-- بيانات المورد -->
+    <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
+      <div class="card text-bg-light mb-10" >
+        {% if is_edit_mode %}
+        <div class="card-header">بيانات المورد : </div>
+        {% else %}
+        <div class="card-header">بيانات العميل : {{invoice_head_form.supplierID}}</div>
+        {% endif %}
+        <div class="card-body">
+          <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">العنوان</h6>
+            <div class="form-group col-md-6">
+              {% if supplier.legalPersonID.basicInfoID.google_maps_location %}
+              {{supplier.legalPersonID.basicInfoID.countryID}} - {{supplier.legalPersonID.basicInfoID.address}}
+              <a href="{{supplier.legalPersonID.basicInfoID.google_maps_location}}" target="blank">
+                <i class="fa-solid fa-location-dot"></i>
+              </a>
+              {% else %}
+              {{supplier.legalPersonID.basicInfoID.countryID}} - {{supplier.legalPersonID.basicInfoID.address}}
+              {% endif %}
+            </div>
+          </div>
+        <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">رقم الهاتف</h6>
+            <div class="form-group col-md-6">
+              {% if supplier.legalPersonID.basicInfoID.phone %}
+              {{supplier.legalPersonID.basicInfoID.phone}} 
+              <a href="tel:{{supplier.legalPersonID.basicInfoID.phone}}"class="btn-link">
+                <i class="fa fa-phone" style="color: green;"></i></a>
+              <a href="https://wa.me/{{supplier.legalPersonID.basicInfoID.phone}}"
+                class="btn-link"><i class="fa-brands fa-whatsapp"  style="color: green;"></i></a>
+              {{supplier.legalPersonID.basicInfoID.phoneOther}}
+              {% else %}
+              {{supplier.legalPersonID.basicInfoID.phone}} - {{supplier.legalPersonID.basicInfoID.phoneOther}}
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-row">
+            <h6 style="font-weight: bold" class="col-md-3">الجنسية</h6>
+            <div class="form-group col-md-6">{{supplier.legalPersonID.basicInfoID.nationalityID}}</div>
+          </div>
+        </div>
+      </div>
+    </div> 
+  </div>
 </div>
 <div class="form-col">
   <h6 class="form-group col-md-6 info-invo">تم إنشاء الفاتورة بواسطة : {{invoice_head_form.created_by}} </h6>

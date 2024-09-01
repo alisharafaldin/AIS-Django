@@ -243,7 +243,7 @@ def supplier_purchases_invoices(request, supplier_id):
         messages.error(request, 'الرجاء تحديد الشركة للعمل عليها.')
         return redirect('companys')
     # الحصول على المورد المحدد
-    supplier = get_object_or_404(suppliers, id=supplier_id)
+    supplier = get_object_or_404(Suppliers, id=supplier_id)
     try:
         # الحصول على فواتير المشتريات الخاصة بالمورد في الشركة الحالية
         invoices = InvoicesPurchasesHead.objects.filter(companyID_id=current_company_id, supplierID=supplier).annotate(
@@ -277,7 +277,7 @@ def invoices_purchases_search(request):
     search_supplierID = request.GET.get('supplierID', '')
     start_date = request.GET.get('start_date','')
     end_date = request.GET.get('end_date','')
-    
+
     invoices_query = InvoicesPurchasesHead.objects.all()
     # استعلام الفواتير بين تاريخين
     if start_date and end_date:
@@ -294,27 +294,37 @@ def invoices_purchases_search(request):
         invoices_query = invoices_query.filter(inventoryID=search_inventoryID)
     if search_supplierID:
         invoices_query = invoices_query.filter(supplierID=search_supplierID)
-    
+
     # الحصول على الشركة الحالية من الجلسة
     current_company_id = request.session.get('current_company_id')
     if not current_company_id:
         messages.error(request, 'الرجاء تحديد الشركة للعمل عليها.')
         return redirect('companys')
 
-    # تصفية الفواتير بناءً على الشركة الحالية
-    invoices_query = invoices_query.filter(companyID_id=current_company_id).annotate(
-        total_sum=Sum('purchases_invoice__total_price_after_tax')).order_by("-id")
+   # الحصول على فواتير المبيعات الخاصة بالشركة الحالية
+    invoices = invoices_query.filter(companyID_id=current_company_id).annotate(
+    total_sum=Sum('sales_invoice__total_price_after_tax'),
+    total_local_sum=Sum('sales_invoice__total_price_local_currency')
+    ).order_by("-id")
 
-      # حساب الإجمالي الكلي لجميع الفواتير
-    total_invoices_sum = invoices_query.aggregate(total_sum=Sum('purchases_invoice__total_price_after_tax'))['total_sum'] or 0
+    # حساب الإجمالي الكلي لجميع الفواتير (بالعملة الأساسية والمحلية)
+    total_invoices_sum = invoices.aggregate(total_sum=Sum('total_sum'),total_local_sum=Sum('total_local_sum'))
 
-    # إعداد السياق
+    # إجمالي الفواتير بالعملة الأساسية
+    total_sum = invoices.aggregate(total_sum=Sum('sales_invoice__total_price_after_tax'))['total_sum'] or 0
+
+    # total_sum = total_invoices_sum['total_sum'] or 0
+
+    # إجمالي الفواتير بالعملة المحلية
+    total_local_currency = invoices.aggregate(total_sum=Sum('sales_invoice__total_price_local_currency'))['total_sum'] or 0
+
     context = {
         'invoices': invoices_query,
         'invoice_search_form': InvoiceSearchForm(request.GET),
+        'total_sum':total_sum,
         'total_invoices_sum':total_invoices_sum,
+        'total_local_currency':total_local_currency,
     }
-
     # عرض الصفحة مع البيانات
     return render(request, 'purchases/invoices.html', context)
 
@@ -369,7 +379,7 @@ def invoice_purchases_create(request):
             'invoice_body_label': InvoiceBodyForm(),
         }
         return render(request, 'purchases/invoice_create.html', context)
-    
+
 @login_required
 def invoice_purchases_reade(request, id):
     if not request.user.has_perm('purchases.view_InvoicesPurchasesHead'):

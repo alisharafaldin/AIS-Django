@@ -35,8 +35,7 @@ class InvoiceSearchForm(forms.Form):
         required=False,
         widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'العميل'})
     )
-
-    
+  
     suppliersID = forms.ModelChoiceField(
         queryset=Suppliers.objects.all(),
         label='المورد',
@@ -63,7 +62,7 @@ class InvoiceSearchForm(forms.Form):
             self.fields['currencyID'].queryset = Countries.objects.filter(companyID=company_id)
             self.fields['inventoryID'].queryset = Inventory.objects.filter(companyID=company_id)
             self.fields['customerID'].queryset = Customers.objects.filter(companyID=company_id)
-
+            self.fields['supplierID'].queryset = Suppliers.objects.filter(companyID=company_id)
 
 class BasicInfoForm(forms.ModelForm):
     class Meta:

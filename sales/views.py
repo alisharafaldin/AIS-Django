@@ -303,9 +303,8 @@ def invoices_sales_search(request):
         messages.error(request, 'الرجاء تحديد الشركة للعمل عليها.')
         return redirect('companys')
 
-    # تصفية الفواتير بناءً على الشركة الحالية
    # الحصول على فواتير المبيعات الخاصة بالشركة الحالية
-    invoices = InvoicesSalesHead.objects.filter(companyID_id=current_company_id).annotate(
+    invoices = invoices_query.filter(companyID_id=current_company_id).annotate(
     total_sum=Sum('sales_invoice__total_price_after_tax'),
     total_local_sum=Sum('sales_invoice__total_price_local_currency')
     ).order_by("-id")
