@@ -77,27 +77,27 @@ td {
     </thead>
     {{ invoice_body_form.management_form }} 
     <tbody id="formset-container">
-        {% for form in invoice_body_form %}
-        <tr class="form-container">
-          <!-- <th data-label="#" scope="row"></th> -->
-          {% if is_edit_mode %}
-          <td data-label="حذف" ><button class="btn btn-danger remove-form" >-{{ forloop.counter }} </button></td> 
-          {% else %}
-          <td data-label="حذف" >{{forloop.counter}}</td>
-          {% endif %} 
-          <td style="display: none;">{{ form.DELETE }}</td>
-          <td style="display: none;">{{ form.id }}</td>
-          <td data-label="المخزن">{{form.inventoryID}}</td>
-          <td data-label="المنتج">{{form.itemID}}</td>
-          <td data-label="الكمية">{{form.quantity}}</td>
-          {% if is_edit_mode %}
-          <td data-label="سعر الوحدة">{{form.unit_price}}</td>
-          <td data-label="الإجمالي بعد الضريبة">{{form.total_price_after_tax}}</td>
-          {% else %}
-          <td data-label="سعر الوحدة">{{form.unit_price|intcomma}}</td>
-          <td data-label="الإجمالي بعد الضريبة">{{form.total_price_after_tax|intcomma}}</td>
-          {% endif %} 
-        </tr>
+      {% for form in invoice_body_form %}
+      <tr class="form-container">
+        <!-- <th data-label="#" scope="row"></th> -->
+        {% if is_edit_mode %}
+        <td data-label="حذف" ><button class="btn btn-danger remove-form" >-{{ forloop.counter }} </button></td> 
+        {% else %}
+        <td data-label="حذف" >{{forloop.counter}}</td>
+        {% endif %} 
+        <td style="display: none;">{{ form.DELETE }}</td>
+        <td style="display: none;">{{ form.id }}</td>
+        <td data-label="المخزن">{{form.inventoryID}}</td>
+        <td data-label="المنتج">{{form.itemID}}</td>
+        <td data-label="الكمية">{{form.quantity}}</td>
+        {% if is_edit_mode %}
+        <td data-label="سعر الوحدة">{{form.unit_price}}</td>
+        <td data-label="الإجمالي بعد الضريبة">{{form.total_price_after_tax}}</td>
+        {% else %}
+        <td data-label="سعر الوحدة">{{form.unit_price|intcomma}}</td>
+        <td data-label="الإجمالي بعد الضريبة">{{form.total_price_after_tax|intcomma}}</td>
+        {% endif %} 
+      </tr>
     {% endfor %}
     </tbody>
     <tbody>

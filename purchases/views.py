@@ -323,7 +323,7 @@ def invoice_purchases_create(request):
     if not request.user.has_perm('purchases.add_InvoicesPurchasesHead'):
         messages.info(request, f"عذراً {request.user}، ليس لديك الأذونات اللازمة لإنشاء قيود فاتورة مشتريات.")
         return redirect('invoices_purchases')
-
+    
     # التحقق من وجود current_company_id في الجلسة قبل استخدامه.
     current_company_id = request.session.get('current_company_id')
     if not current_company_id:
@@ -340,7 +340,7 @@ def invoice_purchases_create(request):
             head.created_by = request.user  # تعيين created_by فقط عند إنشاء فاتورة جديد
             head.companyID = get_object_or_404(Company, id=current_company_id)
             head.save()
-
+            
             for form in formset:
                 if form.cleaned_data:  # تأكد من أن النموذج يحتوي على بيانات صالحة
                     body = form.save(commit=False)
@@ -361,7 +361,6 @@ def invoice_purchases_create(request):
         head_form = InvoiceHeadForm(companyID=current_company_id)
         formset = InvoiceBodyFormSet(queryset=InvoicesPurchasesBody.objects.none())
         is_edit_mode = True  # حدد إذا كنت في وضع إنشاء أو تعديل
-
         context = {
             'is_edit_mode': is_edit_mode,
             'invoice_head_form': head_form,

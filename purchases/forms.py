@@ -53,6 +53,9 @@ class InvoiceHeadForm(forms.ModelForm):
         # تصفية العملاء بناءً على الشركة
         if company_id:
             self.fields['supplierID'].queryset = Suppliers.objects.filter(companyID_id=company_id)
+        # تصفية المخازن بناءً على الشركة
+        # if company_id:
+            # self.fields['inventoryID'].queryset = inv.objects.filter(companyID_id=company_id)
    
 class InvoiceBodyForm(forms.ModelForm):
     DELETE = forms.BooleanField(required=False, initial=False)
