@@ -1,6 +1,7 @@
 from django import forms
 from sales.models import Customers, Inventory
 from purchases.models import Suppliers
+from products.models import Items
 from .models import Persons, LegalPersons, BasicInfo, Countries
 from accounts.models import AccountsTree
 from django_select2.forms import Select2Widget
@@ -25,7 +26,7 @@ class InvoiceSearchForm(forms.Form):
         label='المخزن',
         empty_label="اختر المخزن",
         required=False,
-        widget=forms.Select(attrs={'name':'search_inventoryID','class':'form-control', 'placeholder':'المخزن'})
+        widget=forms.Select(attrs={'class':'form-control', 'placeholder':'المخزن'})
     )
 
     customerID = forms.ModelChoiceField(
@@ -44,6 +45,14 @@ class InvoiceSearchForm(forms.Form):
         widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'المورد'})
     )
 
+    itemID = forms.ModelChoiceField(
+        queryset=Items.objects.all(),
+        label='المنتج',
+        empty_label="اختر المنتج",
+        required=False,
+        widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'المنتج'})
+    )
+   
     accountID = forms.ModelChoiceField(
         queryset=AccountsTree.objects.all(),
         label='الحساب',
@@ -63,6 +72,7 @@ class InvoiceSearchForm(forms.Form):
             self.fields['inventoryID'].queryset = Inventory.objects.filter(companyID=company_id)
             self.fields['customerID'].queryset = Customers.objects.filter(companyID=company_id)
             self.fields['supplierID'].queryset = Suppliers.objects.filter(companyID=company_id)
+            self.fields['itemID'].queryset = Items.objects.filter(companyID=company_id)
 
 class BasicInfoForm(forms.ModelForm):
     class Meta:

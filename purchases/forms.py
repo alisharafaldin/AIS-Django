@@ -50,7 +50,7 @@ class InvoiceHeadForm(forms.ModelForm):
         # تخصيص تسمية حقل currencyID
         self.fields['currencyID'].label_from_instance = lambda obj: obj.currency_ar
 
-        # تصفية العملاء بناءً على الشركة
+        # تصفية الموردين بناءً على الشركة
         if company_id:
             self.fields['supplierID'].queryset = Suppliers.objects.filter(companyID_id=company_id)
         # تصفية المخازن بناءً على الشركة

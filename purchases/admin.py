@@ -16,6 +16,6 @@ class InvoicesPurchasesHeadImportExport(ImportExportModelAdmin):
 @admin.register(InvoicesPurchasesBody)
 class InvoicesPurchasesBodyImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'itemID', 'quantity', 'unit_price', 'discount', 'total_price_before_tax']
+    list_display = ['id', 'inventoryID', 'itemID', 'quantity', 'unit_price', 'discount', 'total_price_before_tax']
 
 
