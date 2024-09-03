@@ -1,5 +1,5 @@
 {% extends 'base.html' %} 
-{% load static %} {% block title %} | Qayds 
+{% load static %} {% block title %} | فوتير المبيعات 
 {% endblock %} {% block content %} 
 {% load humanize %}
 
@@ -97,7 +97,7 @@
             <td data-label="إجمالي الفاتورة">
               {{ invoice.total_local_sum|floatformat:2|intcomma }}
             </td>
-            <td data-label="العملة">{{ invoice.currencyID}}</td>
+            <td data-label="العملة">{{ invoice.currencyID.symbol_ar}}</td>
             <td data-label="إجمالي عملة العملية">
               {{ invoice.total_sum|floatformat:2|intcomma }}
             </td>

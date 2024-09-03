@@ -1,5 +1,5 @@
 {% extends 'base.html' %} 
-{% load static %} {% block title %} | Qayds 
+{% load static %} {% block title %} | Sold Products 
 {% endblock %} {% block content %} 
 {% load humanize %}
 
@@ -70,16 +70,15 @@
         <thead>
           <tr>
             <th scope="col">#</th>
+            <th scope="col">التاريخ</th>
             <th scope="col">المنتج</th>
             <th scope="col">الكمية</th>
             <th scope="col">سعر البيع</th>
             <th scope="col">العملة</th>
             <th scope="col">سعر الصرف</th>
             <th scope="col">الإجمالي</th>
-            <th scope="col">العملة</th>
             <th scope="col">إجمالي عملة العملية</th>
             <th scope="col">مرجع الفاتورة</th>
-            <!-- <th scope="col">معتمد</th> -->
             <th scope="col">إجراءات</th>
           </tr>
         </thead>
@@ -87,46 +86,34 @@
           {% for invoice in sold_products %}
           <tr>
             <th data-label="#" scope="row">{{ forloop.counter }}</th>
+            <td data-label="التاريخ">{{ invoice.invoiceHeadID.date|date:"Y-m-d" }}</td>
+            {% if invoice.invoiceHeadID.attachments %}
+            <td data-label="المنتج" style="color: #28b78d; font-weight: bold">{{ invoice.itemID }}</td>
+            {% else %}
             <td data-label="المنتج">{{ invoice.itemID }}</td>
+            {% endif %}
             <td data-label="الكمية">{{ invoice.quantity }}</td>
             <td data-label="سعر البيع">{{ invoice.unit_price }}</td>
-            <td data-label="العملة">{{ invoice.invoiceHeadID.currencyID }}</td>
+            <td data-label="العملة">{{ invoice.invoiceHeadID.currencyID.symbol_ar }}</td>
             <td data-label="سعر الصرف">{{ invoice.invoiceHeadID.rate }}</td>
-            <td data-label="الإجمالي">{{ invoice.total_price_before_tax }}</td>
-            <td data-label="التاريخ">{{ invoice.invoiceHeadID.date|date:"Y-m-d" }}</td>
+            <td data-label="الإجمالي">{{ invoice.total_price_local_currency|floatformat:2|intcomma }}</td>
+            <td data-label="إجمالي عملة العملية">{{ invoice.total_price_after_tax|floatformat:2|intcomma}}</td>
             <td data-label="الفاتورة">{{ invoice.invoiceHeadID }}</td>
-            {% if invoice.invoiceHeadID.attachments %}
-            <td data-label="العميل" style="color: #28b78d; font-weight: bold">
-              {{ invoice.customerID.legalPersonID.acronym_ar }}
-            </td>
-            {% else %}
-            <td data-label="العميل">
-              {{ invoice.customerID.legalPersonID.acronym_ar }}
-            </td>
-            {% endif %}
-            <td data-label="إجمالي الفاتورة">
-              {{ invoice.total_local_sum|floatformat:2|intcomma }}
-            </td>
-            <td data-label="العملة">{{ invoice.currencyID}}</td>
-            <td data-label="إجمالي عملة العملية">
-              {{ invoice.total_sum|floatformat:2|intcomma }}
-            </td>
-            <!-- <td data-label="إعتماد">{{ invoice.approve }}</td> -->
             <td data-label="الإجرات">
               <a
-                href="{% url 'invoice_sales_update' invoice.id %}"
+                href="{% url 'invoice_sales_update' invoice.invoiceHeadID.id %}"
                 class="btn-link"
               >
                 <i class="fas fa-edit"></i>
               </a>
               <a
-                href="{% url 'invoice_sales_reade' invoice.id %}"
+                href="{% url 'invoice_sales_reade' invoice.invoiceHeadID.id %}"
                 class="btn-link"
               >
                 <i class="fa fa-print" aria-hidden="true"></i>
               </a>
               <a
-                href="{% url 'invoice_sales_delete' invoice.id %}"
+                href="{% url 'invoice_sales_delete' invoice.invoiceHeadID.id %}"
                 class="btn-link"
               >
                 <i class="fa fa-trash" aria-hidden="true"></i>
@@ -138,12 +125,13 @@
         <tr>
           <td></td>
           <th>الإجمالي</th>
-          <th>{{quantity_sum|floatformat:2|intcomma}}</th>
+          <td></td>
+          <th>{{total_quantity|floatformat:2|intcomma}}</th>
           <td></td>
           <td></td>
-          <th>{{total_local_currency|floatformat:2|intcomma}}</th>
           <td></td>
-          <th>{{total_sum|floatformat:2|intcomma}}</th>
+          <th>{{total_local_price|floatformat:2|intcomma}}</th>
+          <th>{{total_price|floatformat:2|intcomma}}</th>
         </tr>
       </table>
     </div>
