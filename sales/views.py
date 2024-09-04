@@ -621,6 +621,7 @@ def sold_products_search(request):
     search_customerID = request.GET.get('customerID', '')
     search_inventoryID = request.GET.get('inventoryID', '')
     search_supplierID = request.GET.get('suppliersID', '')
+    search_ItemGrop = request.GET.get('ItemGrop', '')
     search_itemID = request.GET.get('itemID', '')
     start_date = request.GET.get('start_date', '')
     end_date = request.GET.get('end_date', '')
@@ -646,7 +647,8 @@ def sold_products_search(request):
         invoices_query = invoices_query.filter(invoiceHeadID__supplierID=search_supplierID)
     if search_itemID:
         invoices_query = invoices_query.filter(itemID=search_itemID)
-    
+    if search_ItemGrop:
+        invoices_query = invoices_query.filter(itemID__itemGropID=search_ItemGrop)
     # الحصول على الشركة الحالية من الجلسة
     current_company_id = request.session.get('current_company_id')
     if not current_company_id:

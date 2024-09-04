@@ -1,7 +1,7 @@
 from django import forms
 from sales.models import Customers, Inventory
 from purchases.models import Suppliers
-from products.models import Items
+from products.models import Items, ItemGrop
 from .models import Persons, LegalPersons, BasicInfo, Countries
 from accounts.models import AccountsTree
 from django_select2.forms import Select2Widget
@@ -53,6 +53,14 @@ class InvoiceSearchForm(forms.Form):
         widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'المنتج'})
     )
    
+    ItemGrop = forms.ModelChoiceField(
+        queryset=ItemGrop.objects.all(),
+        label='الأصناف',
+        empty_label="اختر الصنف",
+        required=False,
+        widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'الصنف'})
+    )
+    
     accountID = forms.ModelChoiceField(
         queryset=AccountsTree.objects.all(),
         label='الحساب',
@@ -73,6 +81,7 @@ class InvoiceSearchForm(forms.Form):
             self.fields['customerID'].queryset = Customers.objects.filter(companyID=company_id)
             self.fields['supplierID'].queryset = Suppliers.objects.filter(companyID=company_id)
             self.fields['itemID'].queryset = Items.objects.filter(companyID=company_id)
+            self.fields['ItemGrop'].queryset = ItemGrop.objects.filter(companyID=company_id)
 
 class BasicInfoForm(forms.ModelForm):
     class Meta:

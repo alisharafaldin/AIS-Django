@@ -264,7 +264,7 @@ class LegalPersons(models.Model):
     phoneAdmin = models.CharField(verbose_name='هاتف الموظف المسؤول',max_length=100, blank=True, null=True)
     taxNumber = models.CharField(verbose_name='الرقم الضريبي',max_length=100, blank=True, null=True)
     def __str__(self):
-        return str(self.name_ar)
+        return str(self.name_ar )
     
 class Persons(models.Model):
     basicInfoID = models.OneToOneField(BasicInfo, on_delete=models.CASCADE, related_name='persons', blank=True)

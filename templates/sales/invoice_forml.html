@@ -123,8 +123,10 @@ td {
       <h6 style="font-weight: bold" class="col-md-2">طريقة التسليم</h6>
       <div class="form-group col-md-3">{{invoice_head_form.typeDeliveryID}}</div>
     </div>
-        <h6 style="font-weight: bold" class="col-md-2">المرفقات</h6>
-        <div class="form-group col-md-3">{{invoice_head_form.attachments}}</div>
+    {% if is_edit_mode %}
+    <h6 style="font-weight: bold" class="col-md-2">المرفقات</h6>
+    <div class="form-group col-md-3">{{invoice_head_form.attachments}}</div>
+    {% endif %}
   </div>
 
   {% if invoice_head_form.attachments %}
