@@ -610,7 +610,6 @@ def sold_products(request):
     }
     return render(request, 'sales/sold_products.html', context)
 
-
 @login_required
 def sold_products_search(request):
     # الحصول على معايير البحث من الطلب

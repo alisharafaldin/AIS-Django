@@ -3,6 +3,8 @@ from . import views
 
 urlpatterns = [  
     path('', views.invoices_purchases, name='invoices_purchases'),
+    path('purchased_products', views.purchased_products, name='purchased_products'),
+    path('purchased_products_search', views.purchased_products_search, name='purchased_products_search'),
     path('invoices_purchases_search', views.invoices_purchases_search, name='invoices_purchases_search'),
     path('invoice_purchases_create', views.invoice_purchases_create, name='invoice_purchases_create'),
     path('supplier_purchases_invoices/<int:supplier_id>', views.supplier_purchases_invoices, name='supplier_purchases_invoices'),
