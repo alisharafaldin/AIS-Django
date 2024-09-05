@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'pages.apps.PagesConfig',
     'profiles.apps.ProfilesConfig',
     'accounts.apps.AccountsConfig',
+    'inventorys.apps.InventorysConfig',
     'forex.apps.ForexConfig',
     'effastore.apps.EffastoreConfig',
     'dalilalaemal.apps.DalilalaemalConfig',

@@ -91,7 +91,7 @@
               </td>
               {% endif %}
               <td data-label="إجمالي الفاتورة">
-                {{ invoice.total_sum|floatformat:2|intcomma }}
+                {{ invoice.total_local_sum|floatformat:2|intcomma }}
               </td>
               <td data-label="العملة">{{ invoice.currencyID}}</td>
               <!-- <td data-label="إعتماد">{{ invoice.approve }}</td> -->

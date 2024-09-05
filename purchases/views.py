@@ -414,21 +414,20 @@ def invoices_purchases(request):
         return redirect('companys')
     # الحصول على فواتير المشتريات الخاصة بالشركة الحالية
     try:
-        # الحصول على فواتير المبيعات الخاصة بالشركة الحالية
+     # تصفية الفواتير للشركة الحالية
         invoices = InvoicesPurchasesHead.objects.filter(companyID_id=current_company_id).annotate(
-        total_sum=Sum('purchases_invoice__total_price_after_tax'),
-        total_local_sum=Sum('purchases_invoice__total_price_local_currency')
+            total_sum=Sum('purchases_invoice__total_price_after_tax'),  # إجمالي السعر بعد الضريبة لكل الفواتير
+            total_local_sum=Sum('purchases_invoice__total_price_local_currency')  # إجمالي السعر بالعملة المحلية لكل الفواتير
         ).order_by("-id")
 
-        # حساب الإجمالي الكلي لجميع الفواتير (بالعملة الأساسية والمحلية)
-        # total_invoices_sum = invoices.aggregate(total_sum=Sum('total_sum'),total_local_sum=Sum('total_local_sum'))
+        # حساب الإجمالي الكلي لجميع الفواتير
+        total_invoices_sum = invoices.aggregate(
+            total_sum=Sum('purchases_invoice__total_sum'),  # إجمالي الفواتير بالعملة الأساسية
+            total_local_sum=Sum('purchases_invoice__total_local_sum')  # إجمالي الفواتير بالعملة المحلية
+        )
 
-        # إجمالي الفواتير بالعملة الأساسية
-        total_sum = invoices.aggregate(total_sum=Sum('purchases_invoice__total_price_after_tax'))['total_sum'] or 0
-
-        # إجمالي الفواتير بالعملة المحلية
-        total_local_currency = invoices.aggregate(total_sum=Sum('purchases_invoice__total_price_local_currency'))['total_sum'] or 0
-    
+        total_sum = total_invoices_sum['total_sum'] or 0
+        total_local_currency = total_invoices_sum['total_local_sum'] or 0
     except InvoicesPurchasesHead.DoesNotExist:
         invoices = []  # إذا لم يكن هناك أي كائنات، العودة إلى قائمة فارغة
 
@@ -511,23 +510,26 @@ def invoices_purchases_search(request):
         messages.error(request, 'الرجاء تحديد الشركة للعمل عليها.')
         return redirect('companys')
     
+    # تصفية الفواتير للشركة الحالية
     invoices = invoices_query.filter(companyID_id=current_company_id).annotate(
-    total_sum=Sum('purchases_invoice__total_price_after_tax'),
-    total_local_sum=Sum('purchases_invoice__total_price_local_currency')
+        total_sum=Sum('purchases_invoice__total_price_after_tax'),  # إجمالي السعر بعد الضريبة لكل الفواتير
+        total_local_sum=Sum('purchases_invoice__total_price_local_currency')  # إجمالي السعر بالعملة المحلية لكل الفواتير
     ).order_by("-id")
 
-    # إجمالي الفواتير بالعملة الأساسية
-    total_sum = invoices.aggregate(total_sum=Sum('purchases_invoice__total_price_after_tax'))['total_sum'] or 0
+    # حساب الإجمالي الكلي لجميع الفواتير
+    total_invoices_sum = invoices.aggregate(
+        total_sum=Sum('purchases_invoice__total_sum'),  # إجمالي الفواتير بالعملة الأساسية
+        total_local_sum=Sum('purchases_invoice__total_local_sum')  # إجمالي الفواتير بالعملة المحلية
+    )
 
-    # إجمالي الفواتير بالعملة المحلية
-    total_local_currency = invoices.aggregate(total_sum=Sum('purchases_invoice__total_price_local_currency'))['total_sum'] or 0
-
+    total_sum = total_invoices_sum['total_sum'] or 0
+    total_local_currency = total_invoices_sum['total_local_sum'] or 0
     # إعداد السياق
     context = {
         'invoices': invoices,
         'invoice_search_form': InvoiceSearchForm(request.GET),
         'total_sum':total_sum,
-        # 'total_invoices_sum':total_invoices_sum,
+        'total_invoices_sum':total_invoices_sum,
         'total_local_currency':total_local_currency,
     }
     # عرض الصفحة مع البيانات

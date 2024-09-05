@@ -79,35 +79,58 @@
         </li>
         <!-- End G Sales -->
 
-                <!-- Start G Sales -->
-                <li class="nav-item has-treeview">
-                  <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-edit"></i>
-                    <p>المشتريات<i class="fas fa-angle-left right"></i></p>
-                  </a>
-                  <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                      <a href="{% url 'suppliers' %}" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>الموردين</p>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a href="{% url 'invoices_purchases' %}" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>فواتير المشتريات</p>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a href="{% url 'purchased_products' %}" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>المنتجات المشتراه</p>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <!-- End G Sales -->
+        <!-- Start G Sales -->
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-edit"></i>
+            <p>المشتريات<i class="fas fa-angle-left right"></i></p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{% url 'suppliers' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>الموردين</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'invoices_purchases' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>فواتير المشتريات</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'purchased_products' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>المنتجات المشتراه</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <!-- End G Sales -->
         
+            <!-- Start G Sales -->
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-edit"></i>
+                <p>المخزون<i class="fas fa-angle-left right"></i></p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>المخازن</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'product_quantity_summary' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>المنتجات في المخازن</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- End G المخزون -->
+            
         <!-- Start G Accounts -->
          <li class="nav-item has-treeview">
           <a href="#" class="nav-link">
