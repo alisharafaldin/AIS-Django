@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% load static %} {% block title %} | Sold Products 
+{% extends 'base.html' %} {% load static %} {% block title %} | المخزون 
 {% endblock %} {% block content %} {% load humanize %}
 
 <style>
@@ -32,9 +32,6 @@
     class="form-inline my-2 my-lg-0"
     action="{% url 'product_quantity_summary' %}"
   >
-    <a href="{% url 'invoice_sales_create' %}" class="btn btn-main"
-      >إضافة فاتورة جديدة</a
-    >
     <button class="btn btn-main" type="submit">
       بحث<i class="fa-solid fa-magnifying-glass"></i>
     </button>
@@ -99,10 +96,7 @@
     </div>
     {{search_form.ItemGrop}}
     {{search_form.itemID}}
-    {{search_form.customerID}}
-    {{search_form.currencyID}}
     {{search_form.inventoryID}}
-    <input class="form-control mr-sm-2 remove-outline"name="search_invoice_number"placeholder="بحث برقم الفاتورة"/>
   </form>
   <div class="content">
     {% include 'partials/_alerts.html' %}
@@ -113,10 +107,30 @@
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">المنتج</th>
-              <th scope="col">المشتريات</th>
-              <th scope="col">المبيعات</th>
-              <th scope="col">الكمية المتبقية</th>
+              <th scope="col"><a href="?ordering=item_name&direction={% if direction == 'asc' %}desc{% else %}asc{% endif %}{% for key, value in request.GET.items %}{% if key != 'ordering' and key != 'direction' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                المنتج
+                {% if ordering == 'item_name' %}
+                  {% if direction == 'asc' %}▲{% else %}▼{% endif %}
+                {% endif %}
+              </a></th>
+              <th scope="col"><a href="?ordering=purchased_quantity&direction={% if direction == 'asc' %}desc{% else %}asc{% endif %}{% for key, value in request.GET.items %}{% if key != 'ordering' and key != 'direction' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                الكمية المشتراة
+                {% if ordering == 'purchased_quantity' %}
+                  {% if direction == 'asc' %}▲{% else %}▼{% endif %}
+                {% endif %}
+              </a></th>
+              <th scope="col"><a href="?ordering=sold_quantity&direction={% if direction == 'asc' %}desc{% else %}asc{% endif %}{% for key, value in request.GET.items %}{% if key != 'ordering' and key != 'direction' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                الكمية المباعة
+                {% if ordering == 'sold_quantity' %}
+                  {% if direction == 'asc' %}▲{% else %}▼{% endif %}
+                {% endif %}
+              </a></th>
+              <th scope="col"><a href="?ordering=difference&direction={% if direction == 'asc' %}desc{% else %}asc{% endif %}{% for key, value in request.GET.items %}{% if key != 'ordering' and key != 'direction' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                الكمية المتبقية
+                {% if ordering == 'difference' %}
+                  {% if direction == 'asc' %}▲{% else %}▼{% endif %}
+                {% endif %}
+              </a></th>
             </tr>
           </thead>
           <tbody>
@@ -125,8 +139,12 @@
               <th data-label="#" scope="row">{{ forloop.counter }}</th>
            
               <td data-label="المنتج">{{ invoice.item_name }}</td>
-              <td data-label="المشتريات">{{ invoice.purchased_quantity }}</td>
-              <td data-label="المبيعات">{{ invoice.sold_quantity }}</td>
+              <td data-label="المشتريات"><a href="{% url 'purchased_products_search' %}?itemID={{ invoice.item_id }}&inventoryID={{ search_inventoryID }}&start_date={{ start_date }}&end_date={{ end_date }}">
+                {{ invoice.purchased_quantity }}
+              </a></td>
+              <td data-label="المبيعات"><a href="{% url 'sold_products_search' %}?itemID={{ invoice.item_id }}&inventoryID={{ search_inventoryID }}&start_date={{ start_date }}&end_date={{ end_date }}">
+                {{ invoice.sold_quantity }}
+              </a></td>
               <td data-label="الرصيد">{{ invoice.difference }}</td>
             </tr>
             {% endfor %}

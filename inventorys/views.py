@@ -6,6 +6,9 @@ from django.contrib import messages
 from purchases.models import InvoicesPurchasesBody
 from products.models import Items
 from basicinfo.forms import InvoiceSearchForm
+from django.core.exceptions import ValidationError
+from django.utils.dateparse import parse_date
+from django.db.models import Sum
 
 def product_quantity_summary(request):
     # الحصول على الشركة الحالية من جلسة المستخدم
@@ -22,9 +25,18 @@ def product_quantity_summary(request):
     start_date = request.GET.get('start_date', '')
     end_date = request.GET.get('end_date', '')
 
-    # إجمالي الكميات المشتراة لكل منتج
+    # الحصول على معايير الترتيب من الطلب
+    ordering = request.GET.get('ordering', 'item_name')  # الترتيب الافتراضي بناءً على اسم المنتج
+    direction = request.GET.get('direction', 'asc')  # الاتجاه الافتراضي هو تصاعدي
+
+    # تحديد حقل الترتيب والاتجاه
+    if direction == 'desc':
+        ordering = f'-{ordering}'
+
+    # فلترة الكميات المشتراة والمباعة بناءً على معايير البحث
     purchased_quantities = InvoicesPurchasesBody.objects.filter(
-        invoiceHeadID__companyID_id=current_company_id)
+        invoiceHeadID__companyID_id=current_company_id
+    )
     
     if start_date and end_date:
         purchased_quantities = purchased_quantities.filter(invoiceHeadID__date__range=[start_date, end_date])
@@ -36,13 +48,13 @@ def product_quantity_summary(request):
         purchased_quantities = purchased_quantities.filter(itemID=search_itemID)
     if search_ItemGrop:
         purchased_quantities = purchased_quantities.filter(itemID__itemGropID=search_ItemGrop)
-    
+
     purchased_quantities = purchased_quantities.values('itemID').annotate(
         total_purchased_quantity=Sum('quantity'))
 
-    # إجمالي الكميات المباعة لكل منتج
     sold_quantities = InvoicesSalesBody.objects.filter(
-        invoiceHeadID__companyID_id=current_company_id)
+        invoiceHeadID__companyID_id=current_company_id
+    )
     
     if start_date and end_date:
         sold_quantities = sold_quantities.filter(invoiceHeadID__date__range=[start_date, end_date])
@@ -96,14 +108,24 @@ def product_quantity_summary(request):
     for item in items_comparison:
         item['item_name'] = items_names.get(item['item_id'], 'غير معروف')
 
+    # ترتيب البيانات بناءً على معايير الترتيب بعد الفلترة
+    items_comparison = sorted(items_comparison, key=lambda x: x[ordering.strip('-')], reverse=direction == 'desc')
+
     # إضافة المجاميع الرأسية إلى السياق
     context = {
         'items_comparison': items_comparison,
         'total_purchased_sum': total_purchased_sum,  # مجموع الكميات المشتراة
         'total_sold_sum': total_sold_sum,  # مجموع الكميات المباعة
         'total_difference_sum': total_difference_sum,  # مجموع الفرق
-        # 'search_inventory_id': search_inventory_id,  # تمرير معايير البحث إلى القالب
-        # 'search_item_id': search_item_id,  # تمرير معايير البحث إلى القالب
-        'search_form': InvoiceSearchForm(request.GET),
+        'search_date': search_date,  # تمرير معايير البحث إلى القالب
+        'start_date': start_date,  # تمرير معايير البحث إلى القالب
+        'end_date': end_date,  # تمرير معايير البحث إلى القالب
+        'search_itemID': search_itemID,  # تمرير معايير البحث إلى القالب
+        'search_ItemGrop': search_ItemGrop,  # تمرير معايير البحث إلى القالب
+        'search_inventoryID': search_inventoryID,  # تمرير معايير البحث إلى القالب
+        'search_form': InvoiceSearchForm(request.GET),  # تمرير معايير البحث الحالية
+        'ordering': ordering.strip('-'),  # تمرير ترتيب الحقل الحالي إلى القالب
+        'direction': direction,  # تمرير اتجاه الترتيب الحالي إلى القالب
     }
+    
     return render(request, 'inventorys/product_quantity_summary.html', context)

@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% load static %} {% block title %} | Purchased Products 
+{% extends 'base.html' %} {% load static %} {% block title %} | المنتجات المشتراة
 {% endblock %} {% block content %} {% load humanize %}
 
 <style>
@@ -25,7 +25,7 @@
 
 <div class="content-wrapper">
   <div class="main-title">
-    <h4 class="form-group col-md-9">المنتجات المشتراه</h4>
+    <h4 class="form-group col-md-9">المنتجات المشتراة</h4>
   </div>
   <form
     method="GET"
@@ -116,7 +116,7 @@
               <th scope="col">التاريخ</th>
               <th scope="col">المنتج</th>
               <th scope="col">الكمية</th>
-              <th scope="col">سعر البيع</th>
+              <th scope="col">سعر الشراء</th>
               <th scope="col">العملة</th>
               <th scope="col">سعر الصرف</th>
               <th scope="col">الإجمالي</th>
@@ -140,7 +140,7 @@
               <td data-label="المنتج">{{ invoice.itemID }}</td>
               {% endif %}
               <td data-label="الكمية">{{ invoice.quantity }}</td>
-              <td data-label="سعر البيع">{{ invoice.unit_price }}</td>
+              <td data-label="سعر الشراء">{{ invoice.unit_price }}</td>
               <td data-label="العملة">
                 {{ invoice.invoiceHeadID.currencyID.symbol_ar }}
               </td>
