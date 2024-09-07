@@ -1,0 +1,38 @@
+{% extends 'base.html' %} {% load static %} {% block title %} | Reade Company {% endblock %} {% block content %}
+<div class="content-wrapper">
+  <div class="content">
+    <div class="modal-content">
+      <div class="modal-body">
+        {% include 'partials/_alerts.html' %}
+        <!-- Start Modal Countries -->
+        <form method="POST">
+          <div class="form-row main-title">
+            <h5 class="form-group" id="staticBackdropLabel">
+              بيانات : {{company_form.legalPersonID.name_ar}}
+            </h5>
+          </div>
+          {% csrf_token %}
+          <br />
+          <button type="submit" class="btn btn-save" name="btnempsave">
+            إضافة
+          </button>
+          <a href="{% url 'companys' %}" class="btn btn-close">إلغاء</a>
+
+          <a class="btn-link" href="{% url 'company_update' company_form.id %}">
+            <i class="fas fa-edit"></i>
+          </a>
+          <a href="{% url 'company_reade' company_form.id %}" class="btn-link">
+            <i class="fa fa-print" aria-hidden="true"></i>
+          </a>
+          <a href="{% url 'company_delete' company_form.id %}" class="btn-link">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+          </a>
+          <br />
+          <br />
+          {% include 'companys/company_form.html' %}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

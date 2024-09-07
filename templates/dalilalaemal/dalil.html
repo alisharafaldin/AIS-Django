@@ -1,0 +1,49 @@
+{% extends 'base.html' %} {% load static %} {% block title %} | Companys 
+{% endblock %} {% block content %}
+<div class="content-wrapper">
+  <div class="main-title">
+    <h4 class="form-group col-md-9">جميع أسماء الأعمال</h4>
+  </div>
+  <a href="{% url 'company_create' %}" class="btn btn-main" target="blank"
+    >إضافة إسم عمل جديد</a
+  >
+  <br />
+  {% include 'partials/_alerts.html' %}
+
+  <div class="content form-row justify-content-around">
+    {% for company in companys %}
+    <div class="card" style="width: 18rem">
+      <div class="image" style="height: 254px">
+        {% if company.legalPersonID.basicInfoID.photo %}
+        <img
+          class="card-img-top"
+          src="{{ company.legalPersonID.basicInfoID.photo.url }}"
+          alt="Card image cap"
+        />
+        {% else %}
+        <img
+          class="card-img-top"
+          src="{% static 'dist/img/AIS.png' %}"
+          alt="Card image cap"
+        />
+        {% endif %}
+      </div>
+      <div class="card-body">
+        <div class="card-header" style="font-weight: bold">
+          {{company.legalPersonID.name_ar}}
+        </div>
+        <a href="{% url 'switch_company' company.id %}" class="btn btn-primary"
+          >تسجيل دخول إلى الشركة</a
+        >
+        <a class="btn-link" href="{% url 'company_update' company.id %}">
+          <i class="fas fa-edit"></i>
+        </a>
+        <a href="{% url 'company_reade' company.id %}" class="btn-link">
+          <i class="fa fa-print" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

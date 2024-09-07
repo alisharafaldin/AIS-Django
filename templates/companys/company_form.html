@@ -27,38 +27,41 @@
     <label class="form-group col-md-1 title-label"
       >{{legalPerson_label.who_are_we.label}}</label
     >
-    <div class="form-group col-md-11">{{legalPerson_form.who_are_we}}</div>
+    <div class="form-group col-md-7">{{legalPerson_form.who_are_we}}</div>
+    <label class="form-group col-md-2 title-label"
+      >{{basicInfo_label.nationalityID.label}}</label>
+    <div class="form-group col-md-2">{{basicInfo_form.nationalityID}}</div>
   </div>
     <!--  الجنسية - نوع العمل - الدولة -->
     <div class="form-row">
       <label class="form-group col-md-2 title-label"
-        >{{basicInfo_label.nationalityID.label}}</label
-      >
-      <div class="form-group col-md-2">{{basicInfo_form.nationalityID}}</div>
-      <label class="form-group col-md-2 title-label"
-        >{{legalPerson_label.businessTypeID.label}}</label
-      >
+        >{{legalPerson_label.businessTypeID.label}}</label>
       <div class="form-group col-md-2">{{legalPerson_form.businessTypeID}}</div>
-      <label class="form-group col-md-2 title-label"
-      >{{basicInfo_label.countryID.label}}</label
-    >
-    <div class="form-group col-md-2">{{basicInfo_form.countryID}}</div>
+      <label class="form-group col-md-2 title-label"  
+        >{{legalPerson_label.businessScopeID.label}}</label>
+      <div class="form-group col-md-2">{{legalPerson_form.businessScopeID}}</div>
+      <label class="form-group col-md-2 title-label"    
+        >{{legalPerson_label.businessScopeSpecializationID.label}}</label>
+      <div class="form-group col-md-2">{{legalPerson_form.businessScopeSpecializationID}}</div>
     </div>
-  <!-- المنطقة - الولاية - المدية -->
+    <!-- المنطقة - الولاية - المدية -->
   <div class="form-row">
-  
     <label class="form-group col-md-2 title-label"
+    >{{basicInfo_label.countryID.label}}</label>
+    <div class="form-group col-md-2">{{basicInfo_form.countryID}}</div>
+    
+    <label class="form-group col-md-1 title-label"
       >{{basicInfo_label.regionID.label}}</label
     >
     <div class="form-group col-md-2">{{basicInfo_form.regionID}}</div>
-    <label class="form-group col-md-2 title-label"
+    <label class="form-group col-md-1 title-label"
       >{{basicInfo_label.stateID.label}}</label
     >
     <div class="form-group col-md-2">{{basicInfo_form.stateID}}</div>
-    <label class="form-group col-md-2 title-label"
+    <label class="form-group col-md-1 title-label"
       >{{basicInfo_label.cityID.label}}</label
     >
-    <div class="form-group col-md-2">{{basicInfo_form.cityID}}</div>
+    <div class="form-group col-md-1">{{basicInfo_form.cityID}}</div>
   </div>
   <!-- وصف عنوان مقر الشركة -->
   <div class="form-row">
@@ -172,12 +175,20 @@
     <label class="form-group col-md-1 title-label"
       >{{basicInfo_label.notes.label}}</label
     >
-    <div class="form-group col-md-9">{{basicInfo_form.notes}}</div>
+    <div class="form-group col-md-11">{{basicInfo_form.notes}}</div>
 
-    <label class="form-group col-md-1 title-label"
-      >{{basicInfo_label.active.label}}</label
-    >
-    <div class="form-group col-md-1">{{basicInfo_form.active}}</div>
   </div>
+  <!-- تضمين في دليل الأعمال - تضمين في السجلات المحاسبية -->
+  <div class="form-row">
+       <label class="form-group col-md-1 title-label"
+         >{{basicInfo_label.active.label}}</label>
+       <div class="form-group col-md-1">{{basicInfo_form.active}}</div>
+      <label class="form-group col-md-4 title-label"
+        >{{company_label.includeInDalilAlaemal.label}}</label>
+      <div class="form-group col-md-1">{{company_form.includeInDalilAlaemal}}</div>
+      <label class="form-group col-md-4 title-label"
+        >{{company_label.includeInInAccountingRecords.label}}</label>
+      <div class="form-group col-md-1">{{company_form.includeInInAccountingRecords}}</div>
+    </div>
 </div>
 {% include 'basicinfo/updateDropdown.html' %}

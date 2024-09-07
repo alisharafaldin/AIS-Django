@@ -1,0 +1,139 @@
+{% extends 'base.html' %} {% load static %} {% block title %} | Companys 
+{% endblock %} {% block content %}
+<div class="content-wrapper">
+  <div class="main-title">
+    <h4 class="form-group col-md-9"> دليل الأعمال السودانية في مصر</h4>
+  </div>
+
+    <form method="GET"class="form-inline my-2 my-lg-0"action="{% url 'dalilalaemal_search' %}">
+      <a href="{% url 'company_create' %}" class="btn btn-main" target="blank" >إضافة عمل جديد</a>
+      <button class="btn btn-main" type="submit">بحث<i class="fa-solid fa-magnifying-glass"></i></button>
+      <a href="{% url 'dalilalaemal' %}" class="btn btn-main" type="submit">إعادة تعيين<i class="fa-solid fa-rotate-right"></i></a>
+      <div style="width: 100%; display: flex; align-items: center; gap: 10px;">
+      {{search_form.regionID}} 
+      {{search_form.stateID}}
+      {{search_form.cityID}}
+      {{search_form.businessScopeID}}
+    </form>
+  <br />
+  {% include 'partials/_alerts.html' %}
+
+  <div class="content form-row justify-content-around" >
+    {% for company in companys %}
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <a href="">{{company.legalPersonID.businessScopeID}}</a>
+        <a class="btn-link" href="{% url 'company_update' company.id %}"
+        ><i class="fas fa-edit"></i>
+      </a>
+        <h5>{{company.legalPersonID.name_ar}}</h5>
+        <h6 style="font-size: 12px;">
+        {% if company.legalPersonID.basicInfoID.address %}
+          {{company.legalPersonID.basicInfoID.address}}
+          {% endif %}
+          {% if company.legalPersonID.basicInfoID.google_maps_location %}
+          <a href="{{company.legalPersonID.basicInfoID.google_maps_location}}" class="card-link">
+            <i class="fa-solid fa-location-dot"></i>
+          </a>
+        </h6>
+      {% endif %}
+  
+      </div>
+
+        {% if company.legalPersonID.basicInfoID.photo %}
+        <img
+          class="card-img-top"
+          src="{{ company.legalPersonID.basicInfoID.photo.url }}"
+          alt="Card image cap"
+        />
+        {% else %}
+        <img
+          class="card-img-top"
+          src="{% static 'dist/img/AIS.png' %}"
+          alt="Card image cap"
+        />
+        {% endif %}
+ 
+     
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item" style="display: flex; justify-content: space-evenly;"> 
+          {% if company.legalPersonID.basicInfoID.phone %}
+            إتصال
+            <a href="tel:{{company.legalPersonID.basicInfoID.phone}}"class="btn-link">
+                <i class="fa fa-phone" style="color: green"></i>
+            </a>
+          {% endif %}
+          
+          {% if company.legalPersonID.basicInfoID.phoneOther %}
+          واتساب
+          <a href="https://wa.me/{{company.legalPersonID.basicInfoID.phoneOther}}"class="btn-link">
+            <i class="fa-brands fa-whatsapp" style="color: green"></i>
+          </a>
+          {% endif %}
+        </li>
+    
+    </div>
+    {% endfor %}
+
+  
+
+
+
+
+    <!-- {% for company in companys %}
+    <div class="card" style="width: 18rem">
+      <div class="image" style="height: 254px">
+        <div class="card-header" style="font-weight: bold">
+          {{company.legalPersonID.name_ar}}
+          {% if company.legalPersonID.basicInfoID.google_maps_location %}
+          <a href="{{company.legalPersonID.basicInfoID.google_maps_location}}"target="blank">
+            <i class="fa-solid fa-location-dot"></i>
+          </a>
+          {% endif %}
+          {% if company.legalPersonID.basicInfoID.address %}
+            <h6>{{company.legalPersonID.basicInfoID.address}}</h6>
+          {% endif %}
+        </div>
+        {% if company.legalPersonID.basicInfoID.photo %}
+        <img
+          class="card-img-top"
+          src="{{ company.legalPersonID.basicInfoID.photo.url }}"
+          alt="Card image cap"
+        />
+        {% else %}
+        <img
+          class="card-img-top"
+          src="{% static 'dist/img/AIS.png' %}"
+          alt="Card image cap"
+        />
+        {% endif %}
+      </div>
+      <div class="card-body">
+        <div class="card-header" style="font-weight: bold">
+          {% if company.legalPersonID.basicInfoID.phone %}
+          1 - 
+          <a href="tel:{{company.legalPersonID.basicInfoID.phone}}"class="btn-link">
+              <i class="fa fa-phone" style="color: green"></i>
+            </a>
+            <a href="https://wa.me/{{company.legalPersonID.basicInfoID.phone}}"class="btn-link">
+              <i class="fa-brands fa-whatsapp" style="color: green"></i>
+            </a>
+          {% else %}
+          {% endif %}
+          {% if company.legalPersonID.basicInfoID.phoneOther %}
+          2 - 
+          <a href="tel:{{company.legalPersonID.basicInfoID.phoneOther}}"class="btn-link">
+              <i class="fa fa-phone" style="color: green"></i>
+            </a>
+            <a href="https://wa.me/{{company.legalPersonID.basicInfoID.phoneOther}}"class="btn-link">
+              <i class="fa-brands fa-whatsapp" style="color: green"></i>
+            </a>
+          {% else %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %} -->
+  </div>
+</div>
+{% endblock %}

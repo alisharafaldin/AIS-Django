@@ -45,12 +45,18 @@
         var url = "{% url 'load_branchBank' %}"; // the URL to get the WorkSpecialty
         updateDropdown(url, "id_bankID", "id_branchBankID", "bankID");
       }
+       // Update cities based on selected workTrade
+      function updateBusinessScopeSpecialization() {
+        var url = "{% url 'load_businessScopeSpecialization' %}"; // the URL to get the WorkSpecialty
+        updateDropdown(url, "id_businessScopeID", "id_businessScopeSpecializationID", "businessScopeID");
+      }
       // Call functions when dropdowns change
       $('#id_countryID').change(updateRegions);
       $('#id_regionID').change(updateStates);
       $('#id_stateID').change(updateCity);
       $('#id_workTradeID').change(updateWorkSpecialty);
       $('#id_bankID').change(updateBranchBank);
+      $('#id_businessScopeID').change(updateBusinessScopeSpecialization);
      
     });
 

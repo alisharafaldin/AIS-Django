@@ -2,7 +2,7 @@ from django import forms
 from sales.models import Customers, Inventory
 from purchases.models import Suppliers
 from products.models import Items, ItemGrop
-from .models import Persons, LegalPersons, BasicInfo, Countries
+from .models import Persons, LegalPersons, BasicInfo, Countries, Region, States, Cities, BusinessScope
 from accounts.models import AccountsTree
 from django_select2.forms import Select2Widget
 
@@ -69,6 +69,36 @@ class InvoiceSearchForm(forms.Form):
         widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'العميل'})
     )
 
+    businessScopeID = forms.ModelChoiceField(
+        queryset=BusinessScope.objects.all(),
+        label='مجال العمل',
+        empty_label="اختر مجال العمل",
+        required=False,
+        widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'مجال العمل'})
+    )
+    regionID = forms.ModelChoiceField(
+        queryset=Region.objects.all(),
+        label='المنق',
+        empty_label="اختر المنطقة ",
+        required=False,
+        widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'المنطقة'})
+    )
+    stateID = forms.ModelChoiceField(
+        queryset=States.objects.all(),
+        label='الولاية',
+        empty_label="اختر الولاية ",
+        required=False,
+        widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'الولاية'})
+    )
+    cityID = forms.ModelChoiceField(
+        queryset=Cities.objects.all(),
+        label='المدينة',
+        empty_label="اختر المدينة ",
+        required=False,
+        widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'المدينة'})
+    )
+
+
     def __init__(self, *args, **kwargs):
         company_id = kwargs.pop('companyID', None)  # احصل على companyID من kwargs
         super(InvoiceSearchForm, self).__init__(*args, **kwargs)
@@ -111,7 +141,7 @@ class BasicInfoForm(forms.ModelForm):
             'photo': forms.ClearableFileInput(attrs={'class':'form-control', 'placeholder':'صورة / لوقو'}),
             'notes': forms.TextInput(attrs={'class':'form-control', 'placeholder':'ملاحظات'}),
             'documentLink': forms.TextInput(attrs={'class':'form-control', 'placeholder':'رابط المستندات'}),
-            'active': forms.CheckboxInput(attrs={'class':'form-control', 'placeholder':'ملاحظات'}),
+            'active': forms.CheckboxInput(attrs={'class':'form-control', 'placeholder':'نشط'}),
         }
 
 class PersonForm(forms.ModelForm):
@@ -147,6 +177,8 @@ class LegalPersonsForm (forms.ModelForm):
       fields = '__all__'
       widgets = {
         'basicInfoID': forms.Select(attrs={'class':'form-control', 'placeholder':'المعلومات الأساسية'}),
+        'businessScopeID': forms.Select(attrs={'class':'form-control', 'placeholder':'مجال العمل'}),
+        'businessScopeSpecializationID': forms.Select(attrs={'class':'form-control', 'placeholder':'تخصص مجال العمل'}),
         'name_ar': forms.TextInput(attrs={'class':'form-control','placeholder':'إسم الشركة عربي'}),
         'acronym_ar': forms.TextInput(attrs={'class':'form-control','placeholder':'الإسم المختصر عربي'}),
         'name_en': forms.TextInput(attrs={'class':'form-control','placeholder':'إسم الشركة إنجليزي'}),

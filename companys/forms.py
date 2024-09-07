@@ -5,6 +5,10 @@ class CompanyForm (forms.ModelForm):
   class Meta:
       model = Company
       fields = '__all__'
+      widgets = {
+        'includeInDalilAlaemal': forms.CheckboxInput(attrs={'class':'form-control', 'placeholder':'المستخدم'}),
+        'includeInInAccountingRecords': forms.CheckboxInput(attrs={'class':'form-control', 'placeholder':'المسمى الوظيفي'}),      
+      }
       
 class CompanyUserForm (forms.ModelForm):
   class Meta:

@@ -173,7 +173,7 @@ def company_delete(request, id):
 @login_required
 def companys(request):
   user_companys = CompanyUser.objects.filter(userID=request.user).values_list('companyID', flat=True)
-  companys = Company.objects.filter(id__in=user_companys)
+  companys = Company.objects.filter(id__in=user_companys, includeInInAccountingRecords=True)
   context = {
     'companys': companys,
   }

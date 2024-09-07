@@ -154,6 +154,19 @@ class BusinessType(models.Model):
     def __str__(self):
         return str(self.name_ar)
     
+class BusinessScope(models.Model):
+    name_ar = models.CharField(verbose_name='مجال العمل عربي',max_length=100)
+    name_en = models.CharField(verbose_name='مجال العمل إنجليزي',max_length=100,blank=True, null=True)
+    def __str__(self):
+        return str(self.name_ar)
+    
+class BusinessScopeSpecialization(models.Model):
+    businessScopeID = models.ForeignKey(BusinessScope, verbose_name='معرف مجال العمل',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
+    name_ar = models.CharField(verbose_name='تخصص مجال العمل عربي',max_length=100)
+    name_en = models.CharField(verbose_name='تخصص مجال العمل إنجليزي',max_length=100,blank=True, null=True)
+    def __str__(self):
+        return str(self.name_ar)
+    
 class Project(models.Model):
     name_ar = models.CharField(verbose_name='المشروع عربي',max_length=100)
     name_er = models.CharField(verbose_name='المشروع إنجليزي',max_length=100)
@@ -221,7 +234,7 @@ class TypeUnit(models.Model):
   
 class BasicInfo(models.Model):
     nationalityID = models.ForeignKey(Countries, verbose_name='الجنسية', related_name='nationalityID', default=1, on_delete=models.PROTECT, blank=True, null=True) 
-    countryID = models.ForeignKey(Countries, verbose_name='بلد الإقامة', related_name='countryID', default=1, on_delete=models.PROTECT, blank=True, null=True) 
+    countryID = models.ForeignKey(Countries, verbose_name='بلد الإقامة', related_name='countryID', default=3, on_delete=models.PROTECT, blank=True, null=True) 
     regionID = models.ForeignKey(Region, verbose_name='المنطقة', on_delete=models.PROTECT, blank=True, null=True)
     stateID = models.ForeignKey(States, verbose_name='الولاية', on_delete=models.PROTECT, blank=True, null=True)
     cityID = models.ForeignKey(Cities, verbose_name='المدينة', on_delete=models.PROTECT, blank=True, null=True) 
@@ -259,7 +272,9 @@ class LegalPersons(models.Model):
     name_en = models.CharField(verbose_name='إسم الشركة إنجليزي',max_length=100, blank=True, null=True)
     acronym_en = models.CharField(verbose_name='الإسم المختصر إنجليزي',max_length=100, blank=True, null=True)
     who_are_we = models.TextField(verbose_name='من نحن', max_length=250, blank=True, null=True)
-    businessTypeID = models.ForeignKey(BusinessType, default=1, verbose_name='نوع الشركة',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
+    businessTypeID = models.ForeignKey(BusinessType, default=2, verbose_name='نوع الشركة',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
+    businessScopeID = models.ForeignKey(BusinessScope, verbose_name='مجال العمل',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
+    businessScopeSpecializationID = models.ForeignKey(BusinessScopeSpecialization, verbose_name='تخصص مجال العمل',on_delete=models.PROTECT, blank=True, null=True) #لن يتم حزف الصنف في حالة حذف الموظف
     administrator = models.CharField(verbose_name='الموظف المسؤول',max_length=100, blank=True, null=True)
     phoneAdmin = models.CharField(verbose_name='هاتف الموظف المسؤول',max_length=100, blank=True, null=True)
     taxNumber = models.CharField(verbose_name='الرقم الضريبي',max_length=100, blank=True, null=True)

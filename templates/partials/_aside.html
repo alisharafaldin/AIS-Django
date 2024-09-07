@@ -50,6 +50,35 @@
           </a>
         <ul class="nav nav-treeview">
 
+        <!-- Start Dalil Alaemal -->
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-edit"></i>
+            <p>دليل الأعمال<i class="fas fa-angle-left right"></i></p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{% url 'dalilalaemal' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>دليل الأعمال السودانية في مصر</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'invoices_sales' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>فواتير المبيعات</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'sold_products' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>المنتجات المباعة</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <!-- End Dalil Alaemal -->
+
         <!-- Start G Sales -->
         <li class="nav-item has-treeview">
           <a href="#" class="nav-link">

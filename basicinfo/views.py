@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from basicinfo.models import *
 from django.http import JsonResponse
-from basicinfo.models import Region, States, Cities, WorkSpecialty, BranchBank
+from basicinfo.models import Region, States, Cities, WorkSpecialty, BranchBank, BusinessScope
 
 # Create your views here.
 
@@ -33,3 +33,8 @@ def load_branchBank(request):
     bankID_id = request.GET.get('bankID')
     branchBank = BranchBank.objects.filter(bankID_id=bankID_id).order_by('name_ar')
     return JsonResponse(list(branchBank.values('id', 'name_ar')), safe=False)
+
+def load_businessScopeSpecialization(request):
+    businessScopeID_id = request.GET.get('businessScopeID')
+    businessScopeSpecialization = BusinessScopeSpecialization.objects.filter(businessScopeID_id=businessScopeID_id).order_by('name_ar')
+    return JsonResponse(list(businessScopeSpecialization.values('id', 'name_ar')), safe=False)
