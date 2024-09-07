@@ -1,88 +1,77 @@
 {% extends 'base.html' %} {% load static %} {% block title %} | Companys 
 {% endblock %} {% block content %}
+
+
 <div class="content-wrapper">
   <div class="main-title">
     <h4 class="form-group col-md-9"> دليل الأعمال السودانية في مصر</h4>
   </div>
-  <a href="{% url 'company_create' %}" class="btn btn-main" target="blank"
-    >إضافة عمل جديد</a
-  >
   <br />
   {% include 'partials/_alerts.html' %}
-
+  <form method="GET" action="{% url 'dalilalaemal_search' %}">
+    <a href="{% url 'company_create' %}" class="btn btn-main" target="blank" >إضافة عمل جديد</a>
+    <button class="btn btn-main" type="submit">بحث<i class="fa-solid fa-magnifying-glass"></i></button>
+    <a href="{% url 'dalilalaemal' %}" class="btn btn-main" type="submit">إعادة تعيين<i class="fa-solid fa-rotate-right"></i></a>
+    <div style="width: 100%; display: flex; align-items: center; gap: 10px;">
+      {{search_form.regionID}} 
+      {{search_form.stateID}}
+      {{search_form.stateID}}
+      {{search_form.cityID}}
+      {{search_form.companyID}}
+      {{search_form.businessScopeID}}
+  </div>
+  </form>
   <div class="content form-row justify-content-around" >
     {% for company in companys %}
-    <div class="card" style="width: 18rem;">
-      <div class="card-body">
-        <a href=""></a>
-        <a class="btn-link" href="{% url 'company_update' company.id %}"
-        ><i class="fas fa-edit"></i>
-      </a>
-        <h5></h5>
-        <h6 style="font-size: 12px;">
-         
   
+    <!-- Flexbox container for aligning the cards -->
+    <div class="d-flex justify-content-center align-items-center w-100">
+      <!-- Company Card -->
+      <div class="card" style="width: 500px; ">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 20px;">
+          <div style="padding-right: 20px; padding-left: 10px; display: flex;">
+            {% if company.legalPersonID.basicInfoID.photo %}
+            <img style="width: 50px; height: 50px;" src="{{ company.legalPersonID.basicInfoID.photo.url }}" class="rounded me-2" alt="...">
+            {% else %}
+            <img style="width: 50px; height: 50px;" src="{% static 'dist/img/AIS.png' %}" class="rounded me-2" alt="...">
+            {% endif %}
+            <div style="display: flex; flex-direction: column; padding-right: 10px;">  
+              <strong class="me-auto">{{ company.legalPersonID.name_ar }}</strong>
+              <a style="font-size: 12px;" href="{% url 'dalilalaemal_search' %}?businessScopeID={{ company.legalPersonID.businessScopeID.id }}">{{ company.legalPersonID.businessScopeID }}</a>
+              <span></span>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <h6 style="font-size: 12px;">
+              {% if company.legalPersonID.basicInfoID.google_maps_location %}
+              <a href="{{ company.legalPersonID.basicInfoID.google_maps_location }}" class="card-link">
+                <i class="fa-solid fa-location-dot"></i></a>
+              {% endif %}
+              {% if company.legalPersonID.basicInfoID.address %}
+              {{ company.legalPersonID.basicInfoID.address }}
+              {% endif %}
+            </h6>
+
+            <li class="list-group-item" style="display: flex; justify-content: space-evenly; padding-bottom: 0;">
+              {% if company.legalPersonID.basicInfoID.phone %}
+              إتصال
+              <a href="tel:{{ company.legalPersonID.basicInfoID.phone }}" class="btn-link">
+                <i class="fa fa-phone" style="color: green"></i>
+              </a>
+              {% endif %}
+              {% if company.legalPersonID.basicInfoID.phoneOther %}
+              واتساب
+              <a href="https://wa.me/{{ company.legalPersonID.basicInfoID.phoneOther }}" class="btn-link">
+                <i class="fa-brands fa-whatsapp" style="color: green"></i>
+              </a>
+              {% endif %}
+            </li>
+          </ul>
+        </div>
       </div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item" style="display: flex; justify-content: space-evenly;"> 
-   
-        </li>
-    
     </div>
     {% endfor %}
-
-  
-
-
-
-
-
-
-
-    <!-- Flexbox container for aligning the toasts -->
-    <div  class="d-flex justify-content-center align-items-center w-100">
-
-      <!-- Then put toasts within -->
-      <div class="toast">
-        <div class="toast-header">
-          {% if company.legalPersonID.basicInfoID.photo %}
-          <img style="width: 20px;" src="{{ company.legalPersonID.basicInfoID.photo.url }}" class="rounded me-2" alt="...">
-          {% else %}
-          <img style="width: 20px;" src="{% static 'dist/img/AIS.png' %}" class="rounded me-2" alt="...">
-          {% endif %}
-
-
-          <strong class="me-auto">{{company.legalPersonID.name_ar}}</strong>
-          <small>{{company.legalPersonID.businessScopeID}}</small>
-          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-          {% if company.legalPersonID.basicInfoID.phone %}
-          إتصال
-          <a href="tel:{{company.legalPersonID.basicInfoID.phone}}"class="btn-link">
-              <i class="fa fa-phone" style="color: green"></i>
-          </a>
-        {% endif %}
-        
-        {% if company.legalPersonID.basicInfoID.phoneOther %}
-        واتساب
-        <a href="https://wa.me/{{company.legalPersonID.basicInfoID.phoneOther}}"class="btn-link">
-          <i class="fa-brands fa-whatsapp" style="color: green"></i>
-        </a>
-        {% endif %}
-         {% if company.legalPersonID.basicInfoID.address %}
-          {{company.legalPersonID.basicInfoID.address}}
-          {% endif %}
-          {% if company.legalPersonID.basicInfoID.google_maps_location %}
-          <a href="{{company.legalPersonID.basicInfoID.google_maps_location}}" class="card-link">
-            <i class="fa-solid fa-location-dot"></i>
-          </a>
-      
-          {% endif %}
-        </div>
-      </div>
-    </div>
-
   </div>
-</div>
 {% endblock %}

@@ -3,6 +3,7 @@ from sales.models import Customers, Inventory
 from purchases.models import Suppliers
 from products.models import Items, ItemGrop
 from .models import Persons, LegalPersons, BasicInfo, Countries, Region, States, Cities, BusinessScope
+from companys.models import Company
 from accounts.models import AccountsTree
 from django_select2.forms import Select2Widget
 
@@ -61,6 +62,13 @@ class InvoiceSearchForm(forms.Form):
         widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'الصنف'})
     )
     
+    companyID = forms.ModelChoiceField(
+        queryset=Company.objects.all(),
+        label='الشركة',
+        empty_label="اختر الشركة",
+        required=False,
+        widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'الشركة'})
+    )
     accountID = forms.ModelChoiceField(
         queryset=AccountsTree.objects.all(),
         label='الحساب',
@@ -76,6 +84,7 @@ class InvoiceSearchForm(forms.Form):
         required=False,
         widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'مجال العمل'})
     )
+
     regionID = forms.ModelChoiceField(
         queryset=Region.objects.all(),
         label='المنق',
@@ -83,6 +92,7 @@ class InvoiceSearchForm(forms.Form):
         required=False,
         widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'المنطقة'})
     )
+
     stateID = forms.ModelChoiceField(
         queryset=States.objects.all(),
         label='الولاية',
@@ -90,6 +100,7 @@ class InvoiceSearchForm(forms.Form):
         required=False,
         widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'الولاية'})
     )
+
     cityID = forms.ModelChoiceField(
         queryset=Cities.objects.all(),
         label='المدينة',
@@ -121,7 +132,7 @@ class BasicInfoForm(forms.ModelForm):
             'nationalityID': forms.Select(attrs={'class':'form-control', 'placeholder':'الجنسية'}),
             'countryID': forms.Select(attrs={'class':'form-control', 'placeholder':'الدولة'}),
             'regionID': forms.Select(attrs={'class':'form-control', 'placeholder':'المنطقة'}),
-            'stateID': forms.Select(attrs={'class':'form-control', 'placeholder':'الولاية'}),
+            'stateID': forms.Select(attrs={'class':'form-control', 'data-placeholder': 'اختر الولاية'}),
             'cityID': forms.Select(attrs={'class':'form-control', 'placeholder':'المدينة'}),
             'address': forms.TextInput(attrs={'class':'form-control', 'placeholder':'وصف العنوان '}),
             'google_maps_location': forms.URLInput(attrs={'class':'form-control', 'placeholder':'العوان على خرائط قوقل'}),

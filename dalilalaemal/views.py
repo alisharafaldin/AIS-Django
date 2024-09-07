@@ -41,10 +41,11 @@ def dalilalaemal_search(request):
     search_regionID = request.GET.get('regionID', '')
     search_stateID = request.GET.get('stateID', '')
     search_cityID = request.GET.get('cityID', '')
+    search_companyID = request.GET.get('companyID', '')
     search_businessScopeID = request.GET.get('businessScopeID', '')
     search_google_maps_location = request.GET.get('google_maps_location', '')
 
-    company_query = Company.objects.filter(includeInDalilAlaemal=True)
+    company_query = Company.objects.filter(includeInDalilAlaemal=True).order_by('-id')
 
     # استعلام الفواتير بين تاريخين
     if search_countryID:
@@ -57,11 +58,14 @@ def dalilalaemal_search(request):
         company_query = company_query.filter(legalPersonID__basicInfoID__cityID=search_cityID)
     if search_businessScopeID:
         company_query = company_query.filter(legalPersonID__businessScopeID=search_businessScopeID)
+    if search_companyID:
+        company_query = company_query.filter(id=search_companyID)
 
     # إعداد السياق
     context = {
         'companys': company_query,
         'search_form': InvoiceSearchForm(request.GET),
+        'businessScopeID':search_businessScopeID,
     }
 
     # عرض الصفحة مع البيانات
