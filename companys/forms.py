@@ -6,6 +6,7 @@ class CompanyForm (forms.ModelForm):
       model = Company
       fields = '__all__'
       widgets = {
+        'isDelivery': forms.CheckboxInput(attrs={'class':'form-control', 'placeholder':'يوجد توصيل'}),
         'includeInDalilAlaemal': forms.CheckboxInput(attrs={'class':'form-control', 'placeholder':'المستخدم'}),
         'includeInInAccountingRecords': forms.CheckboxInput(attrs={'class':'form-control', 'placeholder':'المسمى الوظيفي'}),      
       }

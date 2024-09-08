@@ -69,6 +69,7 @@ class InvoiceSearchForm(forms.Form):
         required=False,
         widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'الشركة'})
     )
+    
     accountID = forms.ModelChoiceField(
         queryset=AccountsTree.objects.all(),
         label='الحساب',
@@ -136,6 +137,8 @@ class BasicInfoForm(forms.ModelForm):
             'cityID': forms.Select(attrs={'class':'form-control', 'placeholder':'المدينة'}),
             'address': forms.TextInput(attrs={'class':'form-control', 'placeholder':'وصف العنوان '}),
             'google_maps_location': forms.URLInput(attrs={'class':'form-control', 'placeholder':'العوان على خرائط قوقل'}),
+            'latitude': forms.TextInput(attrs={'class':'form-control', 'type':'number', 'placeholder':'خط العرض latitude'}),
+            'longitude': forms.TextInput(attrs={'class':'form-control', 'type':'number', 'placeholder':'خط الطول longitude'}),
             'phone': forms.TextInput(attrs={'class':'form-control', 'placeholder':'رقم الهاتف'}),
             'phoneOther': forms.TextInput(attrs={'class':'form-control', 'placeholder':'رقم هاتف آخر'}),
             'email': forms.EmailInput(attrs={'class':'form-control', 'placeholder':'إيميل'}),

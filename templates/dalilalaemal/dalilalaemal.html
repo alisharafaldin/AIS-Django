@@ -1,5 +1,33 @@
 {% extends 'base.html' %} {% load static %} {% block title %} | Companys 
 {% endblock %} {% block content %}
+
+<style>
+
+.horizontal-menu-container {
+    overflow-x: auto; /* Enable horizontal scrolling */
+    white-space: nowrap; /* Prevent line breaks */
+}
+
+.horizontal-menu {
+    display: inline-block;
+}
+
+.menu-item {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #333;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+}
+
+.menu-item:hover {
+    background-color: #e0e0e0;
+}
+</style>
+
 <div class="content-wrapper">
   <div class="main-title">
     <h4 class="form-group col-md-9"> دليل الأعمال السودانية في مصر</h4>
@@ -9,13 +37,23 @@
       <a href="{% url 'company_create' %}" class="btn btn-main" target="blank" >إضافة عمل جديد</a>
       <button class="btn btn-main" type="submit">بحث<i class="fa-solid fa-magnifying-glass"></i></button>
       <a href="{% url 'dalilalaemal' %}" class="btn btn-main" type="submit">إعادة تعيين<i class="fa-solid fa-rotate-right"></i></a>
-      <div style="width: 100%; display: flex; align-items: center; gap: 10px;">
+      <div >
         {{search_form.regionID}} 
         {{search_form.stateID}}
         {{search_form.stateID}}
         {{search_form.cityID}}
         {{search_form.companyID}}
         {{search_form.businessScopeID}}
+          
+        <div class="horizontal-menu-container">
+          <div class="horizontal-menu">
+            {% for bs in businessScope %}
+            <a href="#" class="menu-item"> {{bs.name_ar}}</a>
+
+            {% endfor %}
+              <!-- Add more items as needed -->
+          </div>
+      </div>
     </div>
     </form>
   <br />
@@ -25,13 +63,16 @@
     {% for company in companys %}
     <div class="card" style="width: 18rem;">
       <div class="card-body">
-        <a href="">{{company.legalPersonID.businessScopeID}}</a>
+        <a style="font-size: 12px;" href="{% url 'dalilalaemal_search' %}?businessScopeID={{ company.legalPersonID.businessScopeID.id }}">{{ company.legalPersonID.businessScopeID }}</a>
+
         <a class="btn-link" href="{% url 'company_update' company.id %}"
         ><i class="fas fa-edit"></i>
       </a>
         <h5>{{company.legalPersonID.name_ar}}</h5>
         <h6 style="font-size: 12px;">
         {% if company.legalPersonID.basicInfoID.address %}
+        <a style="font-size: 12px;" href="{% url 'dalilalaemal_search' %}?cityID={{ company.legalPersonID.basicInfoID.cityID.id }}">{{ company.legalPersonID.basicInfoID.cityID }}</a> - 
+
           {{company.legalPersonID.basicInfoID.address}}
           {% endif %}
           {% if company.legalPersonID.basicInfoID.google_maps_location %}
@@ -43,18 +84,14 @@
   
       </div>
 
-        {% if company.legalPersonID.basicInfoID.photo %}
+        {% if company.legalPersonID.basicInfoID.attachments %}
         <img
           class="card-img-top"
-          src="{{ company.legalPersonID.basicInfoID.photo.url }}"
+          src="{{ company.legalPersonID.basicInfoID.attachments.url }}"
           alt="Card image cap"
         />
         {% else %}
-        <img
-          class="card-img-top"
-          src="{% static 'dist/img/AIS.png' %}"
-          alt="Card image cap"
-        />
+        <img class="card-img-top" src="{% static 'dist/img/dalilalaemal.JPEG' %}" alt="Card image cap"/>
         {% endif %}
  
      
@@ -71,6 +108,13 @@
           واتساب
           <a href="https://wa.me/{{company.legalPersonID.basicInfoID.phoneOther}}"class="btn-link">
             <i class="fa-brands fa-whatsapp" style="color: green"></i>
+          </a>
+          {% endif %}
+          {% if company.isDelivery %}
+          توصيل
+          <a href="tel:{{company.legalPersonID.basicInfoID.phone}}"class="btn-link">
+            <!-- <i class="fa-brands fa-delivery" style="color: green"></i> -->
+            <i class="fa fa-shipping-fast" style="color: green"></i>
           </a>
           {% endif %}
         </li>

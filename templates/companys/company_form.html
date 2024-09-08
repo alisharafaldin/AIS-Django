@@ -75,7 +75,9 @@
       <label class="form-group col-md-2 title-label"
         >{{basicInfo_label.google_maps_location.label}}</label
       >
-      <div class="form-group col-md-10">{{basicInfo_form.google_maps_location}}</div>
+      <div class="form-group col-md-6">{{basicInfo_form.google_maps_location}}</div>
+      <div class="form-group col-md-2">{{basicInfo_form.longitude}}</div>
+      <div class="form-group col-md-2">{{basicInfo_form.latitude}}</div>
     </div>
   <!-- رقم الهاتف - رقم هاتف آخر - فاكس - صندوق بريد -->
   <div class="form-row">
@@ -181,12 +183,15 @@
   <!-- تضمين في دليل الأعمال - تضمين في السجلات المحاسبية -->
   <div class="form-row">
        <label class="form-group col-md-1 title-label"
+         >{{company_label.isDelivery.label}}</label>
+       <div class="form-group col-md-1">{{company_form.isDelivery}}</div>
+       <label class="form-group col-md-1 title-label"
          >{{basicInfo_label.active.label}}</label>
        <div class="form-group col-md-1">{{basicInfo_form.active}}</div>
-      <label class="form-group col-md-4 title-label"
+      <label class="form-group col-md-3 title-label"
         >{{company_label.includeInDalilAlaemal.label}}</label>
       <div class="form-group col-md-1">{{company_form.includeInDalilAlaemal}}</div>
-      <label class="form-group col-md-4 title-label"
+      <label class="form-group col-md-3 title-label"
         >{{company_label.includeInInAccountingRecords.label}}</label>
       <div class="form-group col-md-1">{{company_form.includeInInAccountingRecords}}</div>
     </div>

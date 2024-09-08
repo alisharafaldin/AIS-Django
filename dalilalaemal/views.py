@@ -1,8 +1,10 @@
 import re
+import requests
 from django.shortcuts import render, redirect
 from companys.models import Company, CompanyUser
 from django.contrib.auth.decorators import login_required
-from basicinfo.forms import InvoiceSearchForm
+from basicinfo.forms import InvoiceSearchForm, BasicInfoForm
+from basicinfo.models import BusinessScope
 # from django.contrib import messages
 # from employees.models import *
 # from .forms import EmpForm
@@ -13,26 +15,28 @@ from basicinfo.forms import InvoiceSearchForm
 
 
 @login_required
-def dalilalaemal(request):
+def dalilalaemal_main(request):
     user_companys = CompanyUser.objects.filter(userID=request.user).values_list('companyID', flat=True)
     companys = Company.objects.filter(id__in=user_companys, includeInDalilAlaemal=True).order_by('-id')
     context = {
         'companys': companys,
         'search_form': InvoiceSearchForm(request.GET),
+        'businessScope':BusinessScope.objects.all()
+    }
+    return render(request, 'dalilalaemal/dalilalaemal_main.html', context)
+
+@login_required
+def dalilalaemal(request):
+    user_companys = CompanyUser.objects.filter(userID=request.user).values_list('companyID', flat=True)
+    companys = Company.objects.filter(id__in=user_companys, includeInDalilAlaemal=True).order_by('-id')
+    context = {
+        'companys': companys,
+        'company_form': BasicInfoForm,
+        'search_form': InvoiceSearchForm(request.GET),
+        'businessScope':BusinessScope.objects.all()
     }
     return render(request, 'dalilalaemal/dalilalaemal.html', context)
 
-# def google_maps_location(request):
-#     # استخدام تعبير عادي لاستخراج الإحداثيات
-#     match = re.search(r'@(-?\d+\.\d+),(-?\d+\.\d+)', request)
-#     if match:
-#         latitude = float(match.group(1))
-#         longitude = float(match.group(2))
-#         print(latitude)
-#         print(longitude)
-#         return latitude, longitude
-
-#     return None, None
 
 @login_required
 def dalilalaemal_search(request):
@@ -66,6 +70,7 @@ def dalilalaemal_search(request):
         'companys': company_query,
         'search_form': InvoiceSearchForm(request.GET),
         'businessScopeID':search_businessScopeID,
+        'businessScope':BusinessScope.objects.all()
     }
 
     # عرض الصفحة مع البيانات
