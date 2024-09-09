@@ -54,7 +54,7 @@ class InvoiceSearchForm(forms.Form):
         widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'المنتج'})
     )
    
-    ItemGrop = forms.ModelChoiceField(
+    itemGropID = forms.ModelChoiceField(
         queryset=ItemGrop.objects.all(),
         label='الأصناف',
         empty_label="اختر الصنف",
@@ -110,7 +110,6 @@ class InvoiceSearchForm(forms.Form):
         widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'المدينة'})
     )
 
-
     def __init__(self, *args, **kwargs):
         company_id = kwargs.pop('companyID', None)  # احصل على companyID من kwargs
         super(InvoiceSearchForm, self).__init__(*args, **kwargs)
@@ -123,7 +122,7 @@ class InvoiceSearchForm(forms.Form):
             self.fields['customerID'].queryset = Customers.objects.filter(companyID=company_id)
             self.fields['supplierID'].queryset = Suppliers.objects.filter(companyID=company_id)
             self.fields['itemID'].queryset = Items.objects.filter(companyID=company_id)
-            self.fields['ItemGrop'].queryset = ItemGrop.objects.filter(companyID=company_id)
+            self.fields['itemGrop'].queryset = ItemGrop.objects.filter(companyID=company_id)
 
 class BasicInfoForm(forms.ModelForm):
     class Meta:
