@@ -1,4 +1,5 @@
 # Create your views here.
+from django.utils import timezone
 from django.db.models import Sum , F,  DecimalField, ExpressionWrapper, Max
 from decimal import Decimal
 from django.shortcuts import render, redirect
@@ -230,7 +231,7 @@ def net_sales(request):
             total_purchase_sum += cost_price
             total_sales_sum += sales_price
             total_net_sales_sum += net_sales
-            total_Profit_rate_sum += Profit_rate
+            total_Profit_rate_sum = total_net_sales_sum / total_purchase_sum * 100
 
             items_comparison.append({
                 'item_id': item_id,
@@ -270,6 +271,7 @@ def net_sales(request):
         'search_form': InvoiceSearchForm(request.GET),  # تمرير معايير البحث الحالية
         'ordering': ordering.strip('-'),  # تمرير ترتيب الحقل الحالي إلى القالب
         'direction': direction,  # تمرير اتجاه الترتيب الحالي إلى القالب
+        'now': timezone.now(),  # تأكد من تمرير الوقت الحالي
     }
     
     return render(request, 'inventorys/net_sales.html', context)

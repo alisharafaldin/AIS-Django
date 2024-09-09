@@ -38,4 +38,4 @@ class InvoicesAdmin(admin.ModelAdmin):
 @admin.register(InvoicesSalesHead)
 class InvoicesSalesHeadImportE(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'typeTransactionID']
+    list_display = ['id', 'sequence', 'date', 'typeTransactionID', 'customerID', 'inventoryID', 'currencyID', 'rate']

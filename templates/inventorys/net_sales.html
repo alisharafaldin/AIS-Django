@@ -1,5 +1,6 @@
 {% extends 'base.html' %} {% load static %} {% block title %} | تقرير إجمالي أرباح المبيعات
 {% endblock %} {% block content %} {% load humanize %}
+{% load tz %}  <!-- تحميل مكتبة الوقت في Django Templates -->
 
 <style>
   table {
@@ -53,7 +54,7 @@
           type="date"
           name="start_date"
           placeholder="بحث بالتاريخ"
-          value="{{start_date}}"
+          value="{% if start_date %}{{ start_date }}{% else %}2024-01-01{% endif %}"
         />
         <span
           style="
@@ -81,7 +82,7 @@
           type="date"
           name="end_date"
           placeholder="بحث بالتاريخ"
-          value="{{end_date}}"
+          value="{% if end_date %}{{ end_date }}{% else %}{{ now|date:'Y-m-d' }}{% endif %}"
         />
         <span
           style="

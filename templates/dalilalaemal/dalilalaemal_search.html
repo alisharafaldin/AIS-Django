@@ -38,7 +38,9 @@
             <div style="display: flex; flex-direction: column; padding-right: 10px;">  
               <strong class="me-auto">{{ company.legalPersonID.name_ar }}</strong>
               <a style="font-size: 12px;" href="{% url 'dalilalaemal_search' %}?businessScopeID={{ company.legalPersonID.businessScopeID.id }}">{{ company.legalPersonID.businessScopeID }}</a>
-              <span></span>
+              <a style="font-size: 12px;" class="btn-link" href="{% url 'company_update' company.id %}"
+              ><i class="fas fa-edit"></i>
+            </a>
             </div>
           </div>
         </div>

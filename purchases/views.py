@@ -531,6 +531,8 @@ def invoices_purchases_search(request):
         'total_sum':total_sum,
         'total_invoices_sum':total_invoices_sum,
         'total_local_currency':total_local_currency,
+        'start_date': start_date,  # تمرير معايير البحث إلى القالب
+        'end_date': end_date,  # تمرير معايير البحث إلى القالب
     }
     # عرض الصفحة مع البيانات
     return render(request, 'purchases/invoices.html', context)
@@ -632,6 +634,8 @@ def purchased_products_search(request):
         'total_local_price': total_local_price,
         'purchased_products': invoices,
         'products_search_form': InvoiceSearchForm(request.GET),
+        'start_date': start_date,  # تمرير معايير البحث إلى القالب
+        'end_date': end_date,  # تمرير معايير البحث إلى القالب
     }
 
     # عرض الصفحة مع البيانات
