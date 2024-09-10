@@ -1,25 +1,24 @@
+
+/* استايل  */
+:root{
+  --mainColor: #243743 !important;
+  --subColor: #003366;
+  --sub2Color: #a0a9ae;
+  --BackgroundColor-Main: #003366 !important;
+  --BackgroundColor-Sub: #efefef !important;
+  --mainTitle: #000000;
+  --subTitle: #10171a;
+  --subTitleContent: #83888a;
+  --bgC-btn-Main: #003366;
+  --bgC-btn-Sub: #a0a9ae;
+  --borderColor: #a0a9ae;
+  --btnDelete: #ff0000;
+}
+
 *{
     direction: rtl !important;
 } 
 
-/* ==================== Start Customize Navbar ====================*/
-a#navbarDropdown {
-  display: flex !important;
-  align-items: baseline;
-  }
-  
-  ul.navbar-nav.mr-auto-navbav {
-    display: flex !important;
-    align-items: center;
-    justify-content: space-evenly;
-  }
-  
-  .user-panel.mt-3.pb-3.mb-3.d-flex {
-    margin: 0 !important;
-    padding: 2px !important;
-  }
-  
-  /* =======================  End Customize Navbar =======================*/
   
   /* ==================== Start Customize Navbar Fixad ====================*/
   .bottom-nav {
@@ -71,6 +70,37 @@ a#navbarDropdown {
 }
   
   /* ==================== End Customize Navbar Fixad ====================*/
+
+
+  /* ==================== End Menu ====================*/
+  .horizontal-menu-container {
+    overflow-x: auto; /* Enable horizontal scrolling */
+    white-space: nowrap; /* Prevent line breaks */
+}
+
+.horizontal-menu {
+    display: inline-block;
+}
+
+.menu-item {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #ffffff;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+    border-radius: 4px;
+    background-color: var(--subColor) !important;;
+}
+
+.menu-item:hover {
+    background-color: #e0e0e0;
+}
+  /* ==================== End Menu ====================*/
+
+
+
+
 .title-label {
   background:#ececec;
   color: rgb(88, 88, 88);
@@ -189,21 +219,6 @@ a#navbarDropdown {
 
 
 
-/* استايل  */
-:root{
-    --mainColor: #243743 !important;
-    --subColor: #28b78d;
-    --sub2Color: #a0a9ae;
-    --BackgroundColor-Main: #28b78d !important;
-    --BackgroundColor-Sub: #efefef !important;
-    --mainTitle: #000000;
-    --subTitle: #10171a;
-    --subTitleContent: #83888a;
-    --bgC-btn-Main: #28b78d;
-    --bgC-btn-Sub: #a0a9ae;
-    --borderColor: #a0a9ae;
-    --btnDelete: #ff0000;
-  }
 .has-treeview:hover{
   color: var(--mainColor) !important;
 }

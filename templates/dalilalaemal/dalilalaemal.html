@@ -1,48 +1,19 @@
-{% extends 'base.html' %} {% load static %} {% block title %} | Companys 
+{% extends 'base_dalilalaemal.html' %} {% load static %} {% block title %} | Companys 
 {% endblock %} {% block content %}
 
-<style>
-
-.horizontal-menu-container {
-    overflow-x: auto; /* Enable horizontal scrolling */
-    white-space: nowrap; /* Prevent line breaks */
-}
-
-.horizontal-menu {
-    display: inline-block;
-}
-
-.menu-item {
-    display: inline-block;
-    padding: 10px 20px;
-    text-decoration: none;
-    color: #333;
-    border: 1px solid #ccc;
-    margin-right: 10px;
-    border-radius: 4px;
-    background-color: #f8f8f8;
-}
-
-.menu-item:hover {
-    background-color: #e0e0e0;
-}
-</style>
-
-<div class="content-wrapper">
+<div class="content">
   <div class="main-title">
     <h4 class="form-group col-md-9"> دليل الأعمال السودانية في مصر</h4>
   </div>
 
     <form method="GET" action="{% url 'dalilalaemal_search' %}">
-      <a href="{% url 'company_create' %}" class="btn btn-main" target="blank" >إضافة عمل جديد</a>
-      <button class="btn btn-main" type="submit">بحث<i class="fa-solid fa-magnifying-glass"></i></button>
+      <button class="btn btn-main" type="submit">فلتر<i class="fa-solid fa-magnifying-glass"></i></button>
       <a href="{% url 'dalilalaemal' %}" class="btn btn-main" type="submit">إعادة تعيين<i class="fa-solid fa-rotate-right"></i></a>
-      <div >
+      <!-- <div >
         {{search_form.regionID}} 
-        {{search_form.stateID}}
-        {{search_form.stateID}}
+        {{search_form.stateID}} -->
         {{search_form.cityID}}
-        {{search_form.companyID}}
+        <!-- {{search_form.companyID}} -->
         {{search_form.businessScopeID}}
           
         <div class="horizontal-menu-container">

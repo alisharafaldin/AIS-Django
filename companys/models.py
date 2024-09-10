@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 class Company(models.Model):
     owner = models.ForeignKey(User, verbose_name='المالك', on_delete=models.PROTECT, related_name='owner_companies', blank=True)
-    legalPersonID = models.OneToOneField(LegalPersons, on_delete=models.CASCADE, blank=True)
+    legalPersonID = models.OneToOneField(LegalPersons, related_name="company", on_delete=models.CASCADE, blank=True)
     isDelivery = models.BooleanField(default=True, verbose_name="يوجد توصيل", blank=True, null=True)
     includeInDalilAlaemal = models.BooleanField(default=True, verbose_name="تضمين في دليل الأعمال", blank=True, null=True)
     includeInInAccountingRecords = models.BooleanField(default=False, verbose_name="تضمين في السجلات المحاسبية", blank=True, null=True)
