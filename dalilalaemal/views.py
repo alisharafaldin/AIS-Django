@@ -68,7 +68,7 @@ def dalilalaemal_search(request):
         selected_city = Cities.objects.filter(id=search_cityID).first()
         if selected_city:
             selected_city_name = selected_city.name_ar
-            
+    
     # إعداد السياق
     context = {
         'companys': company_query,

@@ -7,7 +7,8 @@
     <title>AIS{% block title %}{% endblock %}</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+    
+    <link rel="manifest" href="{% static 'manifest.json' %}">
     <link rel="icon" type="image/jpg" href="{% static 'dist/img/AIS.png' %}">
     <!-- Main Style -->
 
@@ -145,6 +146,18 @@
       <script src="{% static 'django_select2/django_select2.js' %}"></script>
       <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+
+      <script>
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('{% static "service-worker.js" %}')
+            .then(function(registration) {
+              console.log('Service Worker registered with scope:', registration.scope);
+            }).catch(function(error) {
+              console.log('Service Worker registration failed:', error);
+            });
+        }
+      </script>
+      
 
   </body>
 </html>

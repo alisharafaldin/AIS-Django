@@ -1,29 +1,13 @@
-    <!--navbar fixed-->
-    {% load static %}
- 
-  <!-- Navbar fixed -->
-  <div class="bottom-nav">
-    <!-- <a href="" class="nav-item">
-      <i class="far fa-home nav-icon"></i>
-        <span>الرئيسية</span>
-    </a> -->
-    <a href="" class="nav-item">
-      <i class="fas fa-search nav-icon"></i>
-        <span>بحث متقدم</span>
-    </a>
-    <a href="{% url 'dalilalaemal_search' %}" class="nav-center">
-        <div class="nav-circle">
-          <h1 style="color: black;">د</h1>
-        </div>
-    </a>
-    <!-- <a href="" class="nav-item">
-      <i class="far fa-circle nav-icon"></i>
-        <span>المشتريات</span>
-    </a> -->
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdIJcsZD9iOsvD9QLYo4mSN-hWxQkZTqhJd1OzPl49qQ4XTzA/viewform" class="nav-item"  target="_blank">
-      <i class="far fa-add nav-icon"></i>
-      <span>إضافة عمل جديد</span>
-    </a>
+<!--navbar fixed-->
+{% load static %}
+<div class="navbar" id="navbar">
+  <a href="#home"><img class="logo" src="{% static 'dist/img/dalilalaemal.jpg' %}?v=0.1" alt=""></a>
+  <h5>دليل الأعمال السودانية في مصر</h5>
 </div>
 
-  <!-- /.navbar fixed -->
+<div class="content">
+  <!-- <div class=""> -->
+    <img style="width: 100%;" src="{% static 'dist/img/dalilalaemal_haed.jpg' %}?v=0.1" alt="">
+  <!-- </div> -->
+</div>
+

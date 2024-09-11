@@ -2,10 +2,7 @@
 {% endblock %} {% block content %}
 
 <div class="content-wrapper">
-  <div class="">
-    <img style="width: 100%;" src="{% static 'dist/img/dalilalaemal_haed.jpg' %}?v=0.1" alt="">
-  </div>
-  
+
   {% include 'partials/_alerts.html' %}
   <form method="GET" action="{% url 'dalilalaemal_search' %}">
     <!-- <div style="width: 100%; display: flex; align-items: center; gap: 10px;">
