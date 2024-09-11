@@ -10,7 +10,6 @@ class Company(models.Model):
     isDelivery = models.BooleanField(default=True, verbose_name="يوجد توصيل", blank=True, null=True)
     includeInDalilAlaemal = models.BooleanField(default=True, verbose_name="تضمين في دليل الأعمال", blank=True, null=True)
     includeInInAccountingRecords = models.BooleanField(default=False, verbose_name="تضمين في السجلات المحاسبية", blank=True, null=True)
-
     def __str__(self):
         return str(self.legalPersonID)
 

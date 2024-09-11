@@ -1,7 +1,7 @@
 {% extends 'base_dalilalaemal.html' %} {% load static %} {% block title %} | Companys 
 {% endblock %} {% block content %}
 
-<div class="content-wrapper">
+<!-- <div class="content-wrapper"> -->
 
   {% include 'partials/_alerts.html' %}
   <form method="GET" action="{% url 'dalilalaemal_search' %}">
@@ -51,10 +51,10 @@
             {% if company.legalPersonID.basicInfoID.attachments %}
             <img style="width: 50px; height: 50px;" src="{{ company.legalPersonID.basicInfoID.attachments.url }}" class="rounded me-2" alt="...">
             {% else %}
-            <img style="width: 50px; height: 50px;" src="{% static 'dist/img/dalilalaemal.JPEG' %}" class="rounded me-2" alt="...">
+            <img style="width: 50px; height: 50px;" src="{% static 'dist/img/dalilalaemal_logo_sudan.jpg' %}?=0.1" class="rounded me-2" alt="...">
             {% endif %}
             <div style="display: flex; flex-direction: column; padding-right: 10px;">  
-              <strong class="me-auto">{{ company.legalPersonID.name_ar }}</strong>
+              <a href="{% url 'dalilalaemal_single' company.id %}"><strong class="me-auto">{{ company.legalPersonID.name_ar }}</strong></a>
               <a style="font-size: 12px;" href="{% url 'dalilalaemal_search' %}?businessScopeID={{ company.legalPersonID.businessScopeID.id }}">{{ company.legalPersonID.businessScopeID }}</a>
               <a style="font-size: 12px;" class="btn-link" href="{% url 'company_update' company.id %}"
               ><i class="fas fa-edit"></i>

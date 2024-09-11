@@ -7,26 +7,25 @@ from basicinfo.forms import InvoiceSearchForm, BasicInfoForm
 from basicinfo.models import BusinessScope, Cities
 
 @login_required
-def dalilalaemal_main(request):
-    user_companys = CompanyUser.objects.filter(userID=request.user).values_list('companyID', flat=True)
-    companys = Company.objects.filter(id__in=user_companys, includeInDalilAlaemal=True).order_by('-id')
+def dalilalaemal_single(request, id):
+    company = Company.objects.get(id=id)
     context = {
-        'companys': companys,
-        'search_form': InvoiceSearchForm(request.GET),
-        'businessScope':BusinessScope.objects.all()
+        'company': company,
     }
-    return render(request, 'dalilalaemal/dalilalaemal_main.html', context)
+    return render(request, 'dalilalaemal/dalilalaemal_single.html', context)
 
 @login_required
 def dalilalaemal(request):
-    user_companys = CompanyUser.objects.filter(userID=request.user).values_list('companyID', flat=True)
-    companys = Company.objects.filter(id__in=user_companys, includeInDalilAlaemal=True).order_by('-id')
+    business_scopes = BusinessScope.objects.filter(legalpersons__company__isnull=False).distinct()
+
+    scope_data = [
+        (scope.id, scope.name_ar, scope.legalpersons.filter(company__isnull=False).count())
+        for scope in business_scopes
+    ]
+    # قم بترتيب القائمة تنازلياً حسب العدد
+    sorted_scope_data = sorted(scope_data, key=lambda x: x[2], reverse=True)
     context = {
-        'companys': companys,
-        'company_form': BasicInfoForm,
-        'search_form': InvoiceSearchForm(request.GET),
-        'businessScope':BusinessScope.objects.all(),
-        'city': Cities.objects.all()
+        'scope_data': sorted_scope_data
     }
     return render(request, 'dalilalaemal/dalilalaemal.html', context)
 

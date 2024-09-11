@@ -1,9 +1,8 @@
 
 /* استايل  */
 :root{
-  --mainColor: #243743 !important;
+  --mainColor: #ffeb01 !important;
   --subColor: #011c53;
-  --sub2Color: #a0a9ae;
   --BackgroundColor-Main: #003366 !important;
   --BackgroundColor-Sub: #efefef !important;
   --mainTitle: #000000;
@@ -23,7 +22,7 @@
   /* تصميم الـ Navbar */
 .navbar {
   /* background-image: url(" ../img/dalilalaemal_haed.jpg"); */
-  background-color: #ffeb01;
+  background-color: var(--mainColor);
   color: var(--subColor);
   font-weight: bold;
   overflow: hidden;
@@ -107,7 +106,7 @@
 }
 
 .nav-circle {
-    background-color: yellow;
+    background-color: var(--mainColor);
     border-radius: 50%;
     width: 60px;
     height: 60px;
