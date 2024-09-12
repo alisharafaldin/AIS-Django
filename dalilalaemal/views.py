@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from basicinfo.forms import InvoiceSearchForm, BasicInfoForm
 from basicinfo.models import BusinessScope, Cities
 
-@login_required
+# @login_required
 def dalilalaemal_single(request, id):
     company = Company.objects.get(id=id)
     context = {
@@ -14,10 +14,9 @@ def dalilalaemal_single(request, id):
     }
     return render(request, 'dalilalaemal/dalilalaemal_single.html', context)
 
-@login_required
+# @login_required
 def dalilalaemal(request):
     business_scopes = BusinessScope.objects.filter(legalpersons__company__isnull=False).distinct()
-
     scope_data = [
         (scope.id, scope.logo, scope.name_ar, scope.legalpersons.filter(company__isnull=False).count())
         for scope in business_scopes
@@ -29,7 +28,7 @@ def dalilalaemal(request):
     }
     return render(request, 'dalilalaemal/dalilalaemal.html', context)
 
-@login_required
+# @login_required
 def dalilalaemal_search(request):
     # الحصول على معايير البحث من الطلب
     search_cityID = request.GET.get('cityID', None)
@@ -45,15 +44,12 @@ def dalilalaemal_search(request):
         company_query = company_query.filter(legalPersonID__businessScopeID=search_businessScopeID)
     if search_companyID:
         company_query = company_query.filter(id=search_companyID)
-
     # تحويل search_cityID إلى عدد صحيح إذا كانت القيمة ليست فارغة
     try:
-            
         if search_cityID and search_cityID != 'None':        
             search_cityID = int(search_cityID)
         else:
             search_cityID = ""
-
     except ValueError:
         search_cityID = None
 

@@ -1,9 +1,13 @@
 
 /* استايل  */
 :root{
-  --mainColor: #ffeb01 !important;
+  /* --mainColor: #ffeb01 !important; */
+  --mainColor: #ffd43d !important;
+  /* --mainColor: #003366 !important; */
   --subColor: #011c53;
-  --BackgroundColor-Main: #003366 !important;
+  /* --subColor: #011c53; */
+  /* --BackgroundColor-Main: #003366 !important; */
+  --BackgroundColor-Main: #008037 !important;
   --BackgroundColor-Sub: #efefef !important;
   --mainTitle: #000000;
   --subTitle: #10171a;
@@ -44,7 +48,7 @@
   display: block;
   color: white;
   text-align: center;
-  padding: 14px 20px;
+  padding: 0px 20px;
   text-decoration: none;
 }
 
@@ -111,7 +115,7 @@
     position: fixed;
     bottom: 0;
     width: 100%;
-    background-color: #003366; /* لون الخلفية */
+    background-color: var(--subColor); /* لون الخلفية */
     display: flex;
     justify-content: space-between;
     padding: 10px 20px;

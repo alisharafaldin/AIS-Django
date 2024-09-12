@@ -80,20 +80,20 @@
             </h6>
             <li class="list-group-item" style="display: flex; justify-content: space-evenly; padding-bottom: 0;">
               {% if company.legalPersonID.basicInfoID.phone %}
-              إتصال
               <a href="tel:{{ company.legalPersonID.basicInfoID.phone }}" class="btn-link">
+                <span style="color: black; font-weight: 500;">إتصال</span>
                 <i class="fa fa-phone" style="color: green"></i>
               </a>
               {% endif %}
               {% if company.legalPersonID.basicInfoID.phoneOther %}
-              واتساب
               <a href="https://wa.me/{{ company.legalPersonID.basicInfoID.phoneOther }}" class="btn-link">
+                <span style="color: black; font-weight: 500;">واتساب</span>
                 <i class="fa-brands fa-whatsapp" style="color: green"></i>
               </a>
               {% endif %}
               {% if company.isDelivery %}
-              توصيل
               <a href="tel:{{company.legalPersonID.basicInfoID.phone}}"class="btn-link">
+                <span style="color: black; font-weight: 500;">توصيل</span>
                 <!-- <i class="fa-brands fa-delivery" style="color: green"></i> -->
                 <i class="fa fa-shipping-fast" style="color: green"></i>
               </a>
