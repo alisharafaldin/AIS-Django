@@ -48,13 +48,15 @@
       <div class="card" style="width: 500px; ">
         <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 20px;">
           <div style="padding-right: 20px; padding-left: 10px; display: flex;">
-            {% if company.legalPersonID.basicInfoID.attachments %}
-            <img style="width: 50px; height: 50px;" src="{{ company.legalPersonID.basicInfoID.attachments.url }}" class="rounded me-2" alt="...">
-            {% else %}
-            <img style="width: 50px; height: 50px;" src="{% static 'dist/img/dalilalaemal_logo_sudan.jpg' %}?=0.1" class="rounded me-2" alt="...">
-            {% endif %}
+            <a href="{% url 'dalilalaemal_single' company.id %}">
+              {% if company.legalPersonID.basicInfoID.attachments %}
+              <img style="width: 50px; height: 50px;" src="{{ company.legalPersonID.basicInfoID.attachments.url }}" class="rounded me-2" alt="...">
+              {% else %}
+              <img style="width: 50px; height: 50px;" src="{% static 'dist/img/dalilalaemal_logo_sudan.jpg' %}?=0.1" class="rounded me-2" alt="...">
+              {% endif %}
+            </a>
             <div style="display: flex; flex-direction: column; padding-right: 10px;">  
-              <a href="{% url 'dalilalaemal_single' company.id %}"><strong class="me-auto">{{ company.legalPersonID.name_ar }}</strong></a>
+              <a style="color: black;" href="{% url 'dalilalaemal_single' company.id %}"><strong class="me-auto">{{ company.legalPersonID.name_ar }}</strong></a>
               <a style="font-size: 12px;" href="{% url 'dalilalaemal_search' %}?businessScopeID={{ company.legalPersonID.businessScopeID.id }}">{{ company.legalPersonID.businessScopeID }}</a>
               <a style="font-size: 12px;" class="btn-link" href="{% url 'company_update' company.id %}"
               ><i class="fas fa-edit"></i>

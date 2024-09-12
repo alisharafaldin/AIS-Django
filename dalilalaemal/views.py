@@ -19,16 +19,15 @@ def dalilalaemal(request):
     business_scopes = BusinessScope.objects.filter(legalpersons__company__isnull=False).distinct()
 
     scope_data = [
-        (scope.id, scope.name_ar, scope.legalpersons.filter(company__isnull=False).count())
+        (scope.id, scope.logo, scope.name_ar, scope.legalpersons.filter(company__isnull=False).count())
         for scope in business_scopes
     ]
     # قم بترتيب القائمة تنازلياً حسب العدد
-    sorted_scope_data = sorted(scope_data, key=lambda x: x[2], reverse=True)
+    sorted_scope_data = sorted(scope_data, key=lambda x: x[3], reverse=True)
     context = {
         'scope_data': sorted_scope_data
     }
     return render(request, 'dalilalaemal/dalilalaemal.html', context)
-
 
 @login_required
 def dalilalaemal_search(request):
