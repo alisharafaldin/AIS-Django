@@ -1,11 +1,8 @@
 
 /* استايل  */
 :root{
-  /* --mainColor: #ffeb01 !important; */
-  --mainColor: #ffd43d !important;
-  /* --mainColor: #003366 !important; */
+  --mainColor: #ffeb01 !important;
   --subColor: #011c53;
-  /* --subColor: #011c53; */
   /* --BackgroundColor-Main: #003366 !important; */
   --BackgroundColor-Main: #008037 !important;
   --BackgroundColor-Sub: #efefef !important;
@@ -34,6 +31,7 @@
   top: 0;
   width: 100%;
   z-index: 10;
+  position: fixed !important;
   display: flex;
   justify-content: flex-start;
 }
@@ -98,16 +96,16 @@
   }
 
 /* عند تفعيل التمرير */
-.sticky {
+/* .sticky {
   position: fixed;
   top: 0;
   width: 100%;
-}
+} */
 
 /* إضافة مسافة عند تفعيل الثبات */
-.sticky + .style_navar.content {
+/* .sticky + .style_navar.content {
   padding-top: 50px; /* لضمان عدم تغطية المحتوى من قبل الـ navbar */
-}
+
 /* ==================== End Customize Navbar Fixad ====================*/
 
   /* ==================== Start Customize Foooter Fixad ====================*/

@@ -331,6 +331,8 @@ def invoices_sales_search(request):
         'total_sum':total_sum,
         'total_invoices_sum':total_invoices_sum,
         'total_local_currency':total_local_currency,
+        'start_date': start_date,  # تمرير معايير البحث إلى القالب
+        'end_date': end_date,  # تمرير معايير البحث إلى القالب
     }
 
     # عرض الصفحة مع البيانات

@@ -1,47 +1,10 @@
 {% extends 'base_dalilalaemal.html' %} {% load static %} {% block title %} | Companys 
 {% endblock %} {% block content %}
 
-<!-- <div class="content-wrapper"> -->
-
   {% include 'partials/_alerts.html' %}
-  <form method="GET" action="{% url 'dalilalaemal_search' %}">
-    <!-- <div style="width: 100%; display: flex; align-items: center; gap: 10px;">
-    <button class="btn btn-main" type="submit" style="width: 30%;">بحث بالمدينة<i class="fa-solid fa-magnifying-glass"></i></button>
-    {{search_form.businessScopeID}}
-    </div> -->
-    <br>
-    <div style="display: flex; align-items: center; margin-top: 40px;">
-      <!-- <label style="width: 150px; text-align: center;" for="city-select">اختر المدينة:</label> -->
-      <select name="city" id="city-select" class="form-control" onchange="goToCityPage()">
-        <!-- الخيار الافتراضي -->
-        <option value="">اختر المدينة</option>
-        
-        <!-- حلقة للمدن -->
-        {% for city in cities %}
-        <option value="{{ city.id }}"{% if city.id == search_cityID %} selected {% endif %}>
-          {{ city.name_ar }}
-        </option>
-        {% endfor %}
-      </select>
-      <a style="width: 150px;" href="{% url 'dalilalaemal_search' %}?businessScopeID=&cityID=" class="btn btn-main" type="submit">جميع المدن</a>
-    </div>
-    <br>  
 
-    <div class="horizontal-menu-container">
-      <div class="horizontal-menu">
-        {% for bs in businessScope %}
-        <a style="height: 40px;" href="{% url 'dalilalaemal_search' %}?businessScopeID={{bs.id}}&cityID={{search_cityID}}" class="menu-item"> {{bs.name_ar}}</a>
-        {% endfor %}
-          <!-- Add more items as needed -->
-      </div>
-    </div>
-   
-    <div style="width: 100%; display: flex; align-items: center; gap: 10px;">
-  </div>
-  </form>
   <div class="content form-row justify-content-around" >
     {% for company in companys %}
-  
     <!-- Flexbox container for aligning the cards -->
     <div class="d-flex justify-content-center align-items-center w-100">
       <!-- Company Card -->
@@ -106,29 +69,4 @@
     {% endfor %}
   </div>
 
-  <script>
-
-document.addEventListener('DOMContentLoaded', function() {
-    var citySelect = document.getElementById('city-select');
-    
-    // تحقق مما إذا كانت المدينة محددة بالفعل (من search_cityID)
-    if (citySelect.value) {
-        citySelect.options[0].text = citySelect.options[citySelect.selectedIndex].text;
-    }
-});
-function goToCityPage() {
-    var citySelect = document.getElementById('city-select');
-    var selectedCityID = citySelect.value;
-
-    // إنشاء رابط جديد بدون معايير استعلام سابقة
-    var newURL = new URL(window.location.origin + window.location.pathname);
-
-    // إضافة المدينة المختارة كمعيار استعلام
-    newURL.searchParams.set('cityID', selectedCityID);
-
-    // التوجيه إلى الرابط الجديد
-    window.location.href = newURL.toString();
-}
-
-</script>
 {% endblock %}

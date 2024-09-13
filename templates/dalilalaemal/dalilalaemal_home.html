@@ -1,0 +1,105 @@
+{% extends 'base_dalilalaemal.html' %} {% load static %} {% block title %} | الرئيسة 
+{% endblock %} {% block content %}
+
+  {% include 'partials/_alerts.html' %}
+
+  
+  <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .counter-container {
+      display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 18%;
+    /* margin-bottom: 150px; */
+    }
+
+    .counter {
+        background-color: var(--subColor);
+        border-radius: 10px;
+        padding: 15px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 50%;
+        /* margin-bottom: 15px; */
+        height: 30%;
+    }
+
+    .counter h2 {
+        font-size: 24px;
+        margin-bottom: 15px;
+        color: #fff;
+    }
+
+    .counter span {
+        font-size: 40px;
+        font-weight: bold;
+        color: var(--mainColor);
+    }
+
+  </style>
+
+<div class="content form-row justify-content-around" >
+  <div class="counter-container">
+    <a class="counter" href="{% url 'dalilalaemal_all' %}">
+      <h2>أكثر من +</h2>
+      <span id="company-count">0</span>
+      <h2>محل سوداني</h2>
+    </a>
+    <a class="counter" href="{% url 'dalilalaemal' %}">
+      <h2>في</h2>
+      <span id="scope-count">0</span>
+      <h2>مجالات مختلفة</h2>
+    </a>
+    <a class="counter" href="{% url 'dalilalaemal_all' %}">
+      <h2>في</h2>
+      <span id="cities-count">0</span>
+      <h2>مدينة مصرية</h2>
+    </a>
+  </div>
+</div>
+
+
+<script>
+
+  // دالة العد التزايدي
+  function counterAnimation(id, endValue, duration) {
+    const element = document.getElementById(id);
+    let startValue = 0;
+    const increment = endValue / (duration / 10);  // التحسين التدريجي
+    const interval = setInterval(() => {
+      startValue += increment;
+      if (startValue >= endValue) {
+        element.textContent = Math.floor(endValue);  // إظهار القيمة النهائية
+        clearInterval(interval);  // إيقاف العداد
+      } else {
+        element.textContent = Math.floor(startValue);  // تحديث القيمة
+      }
+    }, 10);  // يحدث التحديث كل 10 مللي ثانية
+  }
+
+  // استخدام الدالة
+  const totalCompanies = {{ company }};
+  const totalScopes = {{ businessScope }};
+  const totalCities = {{ cities }};
+
+  // تفعيل العدادات بعد تحميل الصفحة
+  counterAnimation('company-count', totalCompanies, 2000);  // عداد الشركات (2 ثانية)
+  counterAnimation('scope-count', totalScopes, 2500);       // عداد المجالات
+  counterAnimation('cities-count', totalCities, 2600);      // عداد المدن
+
+  console.log(totalCompanies, totalScopes, totalCities);
+</script>
+
+{% endblock %}

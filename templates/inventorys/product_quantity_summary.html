@@ -24,8 +24,10 @@
 </style>
 
 <div class="content-wrapper">
+  <a href="https://wa.me/+966595924802" target="blank" style="color: #0b0f8f; font-weight: bold; text-decoration: none; font-size: 20px;" ><img style="width: 50px;" src="{% static 'dist/img/ais.png' %}?v=0.2" alt="">الإبداع لنظم المعلومات</a>
+
   <div class="main-title">
-    <h4 class="form-group col-md-9">المخزون</h4>
+    <h4 class="form-group col-md-9" style="color: black;">تقرير | حركة المخزون والكميات المتبقية</h4>
   </div>
   <form
     method="GET"
@@ -38,60 +40,25 @@
     <a href="{% url 'product_quantity_summary' %}" class="btn btn-main" type="submit"
       >إعادة تعيين<i class="fa-solid fa-rotate-right"></i
     ></a>
-    <div style="width: 100%; display: flex; align-items: center; gap: 10px">
-      <!-- حقل التاريخ "من" -->
-      <div style="position: relative; width: 48%">
-        <input
-          style="
-            width: 100%;
-            background: white;
-            color: black;
-            padding-right: 30px;
-            border-radius: 5px;
-          "
-          class="btn btn-main"
-          type="date"
-          name="start_date"
-          placeholder="بحث بالتاريخ"
-        />
-        <span
-          style="
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-          "
-        >
-          من
-          <i class="fa fa-calendar"></i>
-        </span>
+    <div style="width: 100%; display: flex; align-items: center; gap: 10px"><!-- حقل التاريخ "من" -->
+      <div style="position: relative; width: 48%;">
+          <input
+              style="width: 100%; background: white; color: black; padding-right: 30px; border-radius: 5px;"
+              class="btn btn-main" type="date" name="start_date" placeholder="بحث بالتاريخ" value="{{start_date}}"/>
+          <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+            من  
+            <i class="fa fa-calendar"></i>
+          </span>
       </div>
       <!-- حقل التاريخ "إلى" -->
-      <div style="position: relative; width: 48%">
-        <input
-          style="
-            width: 100%;
-            background: white;
-            color: black;
-            padding-right: 30px;
-            border-radius: 5px;
-          "
-          class="btn btn-main"
-          type="date"
-          name="end_date"
-          placeholder="بحث بالتاريخ"
-        />
-        <span
-          style="
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-          "
-        >
-          إلى
-          <i class="fa fa-calendar"></i>
-        </span>
+      <div style="position: relative; width: 48%;">
+          <input
+              style="width: 100%; background: white; color: black;; padding-right: 30px; border-radius: 5px;"
+              class="btn btn-main" type="date" name="end_date" placeholder="بحث بالتاريخ" value="{{end_date}}"/>
+          <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+            إلى  
+            <i class="fa fa-calendar"></i>
+          </span>
       </div>
     </div>
     {{search_form.ItemGrop}}
