@@ -1,26 +1,22 @@
-{% extends 'base.html' %} {% load static %} {% block title %} | Create Company
+{% extends 'base_dalilalaemal.html' %} {% load static %} {% block title %} | Create Company
 {% endblock %} {% block content %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <div class="content-wrapper">
-  <div class="content">
+  <div class="content" style="margin-top: 70px;">
     <div class="modal-content">
       <div class="modal-body">
         {% include 'partials/_alerts.html' %}
         <!-- Start Modal Countries -->
-        <form method="POST" enctype="multipart/form-data">
-          <div class="form-row main-title">
-            <h5 class="form-group" id="staticBackdropLabel">
-              إضافة إسم عمل جديد
-            </h5>
-            <button type="submit" class="btn btn-save" name="btnempsave">
-              إضافة
-            </button>
-            <a href="{% url 'companys' %}" class="btn btn-close">إلغاء</a>
+        <form method="POST" enctype="multipart/form-data" >
+          <div class="form-row main-title" style="display: flex; align-items: center; align-content: center;">
+            <h5 class="form-group" style="color: var(--subColor);" id="staticBackdropLabel">إضافة عمل جديد</h5>
+            <button type="submit" class="btn btn-save">إضافة</button>
+            <a href="{% url 'dalil_home' %}" class="btn btn-danger">إلغاء</a>
           </div>
           {% csrf_token %}
           <br />
-          {% include 'companys/company_form.html' %}
+          {% include 'dalilalaemal/dalil_form.html' %}
         </form>
       </div>
     </div>

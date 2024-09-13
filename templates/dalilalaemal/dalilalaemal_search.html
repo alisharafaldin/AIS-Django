@@ -58,7 +58,7 @@
             <div style="display: flex; flex-direction: column; padding-right: 10px;">  
               <a style="color: black;" href="{% url 'dalilalaemal_single' company.id %}"><strong class="me-auto">{{ company.legalPersonID.name_ar }}</strong></a>
               <a style="font-size: 12px;" href="{% url 'dalilalaemal_search' %}?businessScopeID={{ company.legalPersonID.businessScopeID.id }}">{{ company.legalPersonID.businessScopeID }}</a>
-              <a style="font-size: 12px;" class="btn-link" href="{% url 'company_update' company.id %}"
+              <a style="font-size: 12px;" class="btn-link" href="{% url 'update' company.id %}"
               ><i class="fas fa-edit"></i>
             </a>
             </div>

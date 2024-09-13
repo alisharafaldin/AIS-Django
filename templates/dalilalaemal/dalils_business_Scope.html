@@ -1,11 +1,11 @@
 {% extends 'base_dalilalaemal.html' %} {% load static %} {% block title %} | شامل 
 {% endblock %} {% block content %}
+<br />
+<style>
+    .content-wrapper {
+        /* margin-top: 150px; */
 
-<div class="content-wrapper">
-  <br />
-  {% include 'partials/_alerts.html' %}
-
-  <style>
+    }
     .card {
     position: relative;
     background-size: cover;
@@ -67,6 +67,8 @@
         flex-wrap: wrap;
         justify-content: center;
         gap: 20px;
+        margin-top: 150px;
+
     }
 
     .cards-container.a:hover {
@@ -88,6 +90,8 @@
         color: #ffffff;
     } 
   </style>
+
+<div class="content-wrapper">
   <!-- <h1>إحصائيات مجالات العمل</h1> -->
   <div class="cards-container">
         {% for id, logo, label, count in scope_data %}

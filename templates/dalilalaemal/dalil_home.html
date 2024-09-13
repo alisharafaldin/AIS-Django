@@ -17,28 +17,54 @@
 
     .counter-container {
       display: flex;
-    justify-content: space-between;
-    width: 100%;
-    align-items: center;
-    flex-direction: column;
-    margin-top: 18%;
-    /* margin-bottom: 150px; */
+      justify-content: space-between;
+      width: 100%;
+      align-items: center;
+      flex-direction: column;
+      margin-top: 80px;
+      /* margin-bottom: 150px; */
+    }
+    .counter-container {
+     text-decoration: none;
+     /* background-image: url({% static 'dist/img/dalilalaemal_haed.jpg' %}); */
+     
     }
 
+   .content::before{
+      /* position: absolute;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+      background-color: black;
+      border-radius: 10px;
+      content: '';
+      color: #fff;
+      font-size: 24px;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.4;
+      z-index: 0; */
+  }
     .counter {
-        background-color: var(--subColor);
-        border-radius: 10px;
-        padding: 15px;
-        text-align: center;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 50%;
-        /* margin-bottom: 15px; */
-        height: 30%;
+    background-color: var(--subColor);
+    /* background-color: #fff; */
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+    width: 185px;
+    height: 170px;
+    border: solid var(--subColor);
+    z-index: 1;
     }
 
     .counter h2 {
         font-size: 24px;
         margin-bottom: 15px;
+        /* color: var(--subColor); */
         color: #fff;
     }
 
@@ -46,23 +72,24 @@
         font-size: 40px;
         font-weight: bold;
         color: var(--mainColor);
+        text-shadow: 0 2px 2px rgb(0, 0, 0);
     }
 
   </style>
 
 <div class="content form-row justify-content-around" >
   <div class="counter-container">
-    <a class="counter" href="{% url 'dalilalaemal_all' %}">
+    <a class="counter" href="{% url 'dalils' %}">
       <h2>أكثر من +</h2>
       <span id="company-count">0</span>
       <h2>محل سوداني</h2>
     </a>
-    <a class="counter" href="{% url 'dalilalaemal' %}">
+    <a class="counter" href="{% url 'dalils_business_Scope' %}">
       <h2>في</h2>
       <span id="scope-count">0</span>
-      <h2>مجالات مختلفة</h2>
+      <h2>مجال مختلف</h2>
     </a>
-    <a class="counter" href="{% url 'dalilalaemal_all' %}">
+    <a class="counter" href="{% url 'dalils' %}">
       <h2>في</h2>
       <span id="cities-count">0</span>
       <h2>مدينة مصرية</h2>

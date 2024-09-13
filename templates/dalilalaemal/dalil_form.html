@@ -11,17 +11,6 @@
     >
     <div class="form-group col-md-3">{{legalPerson_form.acronym_ar}}</div>
   </div>
-  <!-- إسم الشركة إنجليزي - الإسم المختصر إنجليزي -->
-  <div class="form-row">
-    <label class="form-group col-md-2 title-label"
-      >{{legalPerson_label.name_en.label}}</label
-    >
-    <div class="form-group col-md-5">{{legalPerson_form.name_en}}</div>
-    <label class="form-group col-md-2 title-label"
-      >{{legalPerson_label.acronym_en.label}}</label
-    >
-    <div class="form-group col-md-3">{{legalPerson_form.acronym_en}}</div>
-  </div>
   <!-- من نحن  -->
   <div class="form-row">
     <label class="form-group col-md-1 title-label"
@@ -75,7 +64,7 @@
       <label class="form-group col-md-2 title-label"
         >{{basicInfo_label.google_maps_location.label}}</label
       >
-      <div class="form-group col-md-10">{{basicInfo_form.google_maps_location}}</div>
+      <div class="form-group col-md-6">{{basicInfo_form.google_maps_location}}</div>
     </div>
   <!-- رقم الهاتف - رقم هاتف آخر - فاكس - صندوق بريد -->
   <div class="form-row">
@@ -87,25 +76,6 @@
       >{{basicInfo_label.phoneOther.label}}</label
     >
     <div class="form-group col-md-2">{{basicInfo_form.phoneOther}}</div>
-    <label class="form-group col-md-1 title-label"
-      >{{basicInfo_label.fax.label}}</label
-    >
-    <div class="form-group col-md-1">{{basicInfo_form.fax}}</div>
-    <label class="form-group col-md-2 title-label"
-      >{{basicInfo_label.POBox.label}}</label
-    >
-    <div class="form-group col-md-1">{{basicInfo_form.POBox}}</div>
-  </div>
-  <!-- البريد الإلكتروني - الموقع الإلكتروني -->
-  <div class="form-row">
-    <label class="form-group col-md-2 title-label"
-      >{{basicInfo_label.email.label}}</label
-    >
-    <div class="form-group col-md-4">{{basicInfo_form.email}}</div>
-    <label class="form-group col-md-2 title-label"
-      >{{basicInfo_label.website.label}}</label
-    >
-    <div class="form-group col-md-4">{{basicInfo_form.website}}</div>
   </div>
     <!-- الموظف المسؤول - رقم هاتفه -->
     <div class="form-row">
@@ -118,43 +88,7 @@
       >
       <div class="form-group col-md-5">{{legalPerson_form.phoneAdmin}}</div>
     </div>
-  <!-- البنك - الفرع  حساب -->
-  <div class="form-row">
-    <label class="form-group col-md-1 title-label"
-      >{{basicInfo_label.bankID.label}}</label
-    >
-    <div class="form-group col-md-3">{{basicInfo_form.bankID}}</div>
-    <label class="form-group col-md-1 title-label"
-      >{{basicInfo_label.branchBankID.label}}</label
-    >
-    <div class="form-group col-md-3">{{basicInfo_form.branchBankID}}</div>
-    <label class="form-group col-md-2 title-label"
-      >{{basicInfo_label.typeAccBankID.label}}</label
-    >
-    <div class="form-group col-md-2">{{basicInfo_form.typeAccBankID}}</div>
-  </div>
-  <!-- رقم الحساب - الآي بان -->
-  <div class="form-row">
-    <label class="form-group col-md-2 title-label"
-      >{{basicInfo_label.accountNumber.label}}</label
-    >
-    <div class="form-group col-md-4">{{basicInfo_form.accountNumber}}</div>
-    <label class="form-group col-md-2 title-label"
-      >{{basicInfo_label.IBANNumber.label}}</label
-    >
-    <div class="form-group col-md-4">{{basicInfo_form.IBANNumber}}</div>
-  </div>
-  <!-- حساب البنك بإسم - الرقم الضريبي -->
-  <div class="form-row">
-    <label class="form-group col-md-2 title-label"
-      >{{basicInfo_label.ownerAccount.label}}</label
-    >
-    <div class="form-group col-md-4">{{basicInfo_form.ownerAccount}}</div>
-    <label class="form-group col-md-2 title-label"
-      >{{legalPerson_label.taxNumber.label}}</label
-    >
-    <div class="form-group col-md-4">{{legalPerson_form.taxNumber}}</div>
-  </div>
+
   <!-- الشعار - ملاحظت - نشط -->
   <div class="form-row">
     <label class="form-group col-md-2 title-label"
@@ -165,22 +99,29 @@
       >{{basicInfo_label.attachments.label}}</label
     >
     <div class="form-group col-md-1">{{basicInfo_form.attachments}}</div>
-    <label class="form-group col-md-2 title-label"
-      >{{basicInfo_label.documentLink.label}}</label
-    >
-    <div class="form-group col-md-4">{{basicInfo_form.documentLink}}</div>
   </div>
    <!-- الشعار - ملاحظت - نشط -->
    <div class="form-row">
     <label class="form-group col-md-1 title-label"
       >{{basicInfo_label.notes.label}}</label
     >
-    <div class="form-group col-md-9">{{basicInfo_form.notes}}</div>
+    <div class="form-group col-md-11">{{basicInfo_form.notes}}</div>
 
-    <label class="form-group col-md-1 title-label"
-      >{{basicInfo_label.active.label}}</label
-    >
-    <div class="form-group col-md-1">{{basicInfo_form.active}}</div>
   </div>
+  <!-- تضمين في دليل الأعمال - تضمين في السجلات المحاسبية -->
+  <div class="form-row">
+       <label class="form-group col-md-1 title-label"
+         >{{company_label.isDelivery.label}}</label>
+       <div class="form-group col-md-1">{{company_form.isDelivery}}</div>
+       <label class="form-group col-md-1 title-label"
+         >{{basicInfo_label.active.label}}</label>
+       <div class="form-group col-md-1">{{basicInfo_form.active}}</div>
+      <label class="form-group col-md-3 title-label"
+        >{{company_label.includeInDalilAlaemal.label}}</label>
+      <div class="form-group col-md-1">{{company_form.includeInDalilAlaemal}}</div>
+      <label class="form-group col-md-3 title-label"
+        >{{company_label.includeInInAccountingRecords.label}}</label>
+      <div class="form-group col-md-1">{{company_form.includeInInAccountingRecords}}</div>
+    </div>
 </div>
 {% include 'basicinfo/updateDropdown.html' %}
