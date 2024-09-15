@@ -22,6 +22,7 @@ urlpatterns = [
     path('dalilalaemal/',include('dalilalaemal.urls')),
     path('purchases/',include('purchases.urls')),
     path('inventorys/',include('inventorys.urls')),
+    path('cashreceipt/',include('cashreceipt.urls')),
     
 ] 
 if settings.DEBUG:

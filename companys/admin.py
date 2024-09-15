@@ -6,7 +6,7 @@ from import_export.admin import ImportExportModelAdmin
 @admin.register(Company)
 class CompanyImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'owner', 'legalPersonID']
+    list_display = ['id', 'legalPersonID', 'owner']
 
 @admin.register(CompanyUser)
 class CompanyUserImportExport(ImportExportModelAdmin):

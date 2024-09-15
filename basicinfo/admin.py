@@ -161,7 +161,7 @@ class TypeUnitImportExport(ImportExportModelAdmin):
 @admin.register(BasicInfo)
 class BasicInfoImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'nationalityID', 'countryID', 'regionID', 'stateID', 'cityID', 'address', 'phone', 'phoneOther']
+    list_display = ['id', 'attachments', 'nationalityID', 'countryID', 'regionID', 'stateID', 'cityID', 'address', 'phone', 'phoneOther']
 
 @admin.register(LegalPersons)
 class LegalPersonsImportExport(ImportExportModelAdmin):
@@ -171,6 +171,6 @@ class LegalPersonsImportExport(ImportExportModelAdmin):
 @admin.register(Persons)
 class PersonImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'f_Name_ar', 's_Name_ar', 't_Name_ar']
+    list_display = ['id', 'basicInfoID', 'f_Name_ar', 's_Name_ar', 't_Name_ar']
 
 

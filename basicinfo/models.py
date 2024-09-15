@@ -259,7 +259,7 @@ class BasicInfo(models.Model):
     ownerAccount = models.CharField(verbose_name='إسم صاحب الحساب',max_length=100, blank=True, null=True)
     photo = models.ImageField(verbose_name='صورة / لوقو', upload_to='photos/%Y/%m/%d/', null=True, blank=True)
     notes = models.TextField(verbose_name='ملاحظات', blank=True, null=True)
-    attachments = models.FileField(verbose_name='مرفقات', upload_to='attach_dalil', blank=True, null=True)
+    attachments = models.FileField(verbose_name='مرفقات', upload_to='attach_basicInfo', blank=True, null=True)
     documentLink = models.CharField(verbose_name='رابط المستندات',max_length=100, blank=True, null=True)
     active = models.BooleanField(default=True, verbose_name="نشط", blank=True, null=True)
     delete = models.BooleanField(default=False, verbose_name="حذف", blank=True, null=True)
@@ -284,7 +284,7 @@ class LegalPersons(models.Model):
     phoneAdmin = models.CharField(verbose_name='هاتف الموظف المسؤول',max_length=100, blank=True, null=True)
     taxNumber = models.CharField(verbose_name='الرقم الضريبي',max_length=100, blank=True, null=True)
     def __str__(self):
-        return str(self.name_ar )
+        return str(self.name_ar)
     
 class Persons(models.Model):
     basicInfoID = models.OneToOneField(BasicInfo, on_delete=models.CASCADE, related_name='persons', blank=True)

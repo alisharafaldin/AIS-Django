@@ -26,9 +26,8 @@ SECRET_KEY = 'django-insecure-5a&qb+fj^5eh_3p9q1$bpsu0@lz=^&p+d8#3-5ci_zv^#h6tim
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.205.208']
-# ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.1.4']
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.0.123']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.1.4']
+# ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.0.123']
 
 
 # Application definition
@@ -48,6 +47,7 @@ INSTALLED_APPS = [
     'forex.apps.ForexConfig',
     'effastore.apps.EffastoreConfig',
     'dalilalaemal.apps.DalilalaemalConfig',
+    'cashreceipt.apps.CashreceiptConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

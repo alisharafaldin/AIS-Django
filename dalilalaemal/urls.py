@@ -11,6 +11,6 @@ urlpatterns = [
     path('search', views.dalilalaemal_search, name='dalilalaemal_search'),
     path('single/<int:id>', views.dalilalaemal_single, name='dalilalaemal_single'),
 
-    path('create', views.create, name='create'),
+    path('create', views.create, name='dalil_create'),
     path('update/<int:id>', views.update, name='update'),
 ]

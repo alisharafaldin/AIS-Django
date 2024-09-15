@@ -67,7 +67,30 @@ class InvoicesSalesHead (models.Model):
     created_at = models.DateTimeField(verbose_name='تاريخ الإنشاء',auto_now_add=True, blank=True, null=True)
     updated_by = models.ForeignKey(User, verbose_name='المُعدِل', related_name='updated_by_invoS', on_delete=models.PROTECT, blank=True, null=True)
     updated_at = models.DateTimeField(verbose_name='تاريخ التعديل', auto_now=True, blank=True, null=True)
-    
+  
+#   حقول التخصيص على السندات
+    # received_amount = models.DecimalField(verbose_name='المبلغ المستلم', max_digits=10, decimal_places=2, default=0, blank=True, null=True)  # هذا الحقل لحفظ المبالغ المستلمة من السندات
+    # remaining_amount = models.DecimalField(verbose_name='المبلغ المتبقي', max_digits=10, decimal_places=2, blank=True, null=True)
+
+    # def update_received_amount(self, amount):
+    #     self.received_amount += amount
+    #     self.remaining_amount = self.total_amount - self.received_amount
+    #     self.save()
+
+    # def allocate_receipt_to_invoice(receipt, invoice, amount):
+    #     if amount <= receipt.total_amount and amount <= invoice.remaining_amount:
+    #         allocation = ReceiptAllocation.objects.create(
+    #             receipt_head=receipt,
+    #             invoice=invoice,
+    #             allocated_amount=amount
+    #         )
+    #         invoice.update_received_amount(amount)
+    #         receipt.total_amount -= amount
+    #         receipt.save()
+    #     else:
+    #         raise ValueError("لا يمكن تخصيص مبلغ أكبر من المبلغ المتاح")
+    #         # raise ValueError("Cannot allocate more than available amount")
+
     def __str__(self):
         return f"Invoice {self.id} - {self.customerID}"
   
