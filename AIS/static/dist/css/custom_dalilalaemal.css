@@ -1,12 +1,11 @@
-
 /* استايل  */
 :root{
   --mainColor: #ffeb01 !important;
   --subColor: #011c53;
   /* --BackgroundColor-Main: #003366 !important; */
-  --BackgroundColor-Main: #008037 !important;
+  --BackgroundColor-Home: #0137a3 !important;
   --BackgroundColor-Sub: #efefef !important;
-  --mainTitle: #000000;
+  --mainTitle: #fff;
   --subTitle: #10171a;
   --subTitleContent: #83888a;
   --bgC-btn-Main: #003366;
@@ -22,6 +21,7 @@
     font-style: normal;
     font-variation-settings: "slnt" 0;
 } 
+
 .content-wrapper {
   margin-top: 15%;
 
@@ -44,18 +44,21 @@
   height: 10%;
 }
 
-.logo{
-  width: 50px;
-  border-radius: 5px;
-}
-
 .navbar a {
   float: left;
   display: block;
   color: white;
   text-align: center;
-  padding: 0px 20px;
   text-decoration: none;
+}
+
+.navbar a .logo{
+  width: 50px;
+  border-radius: 5px;
+}
+
+.navbar .title {
+  margin-right: 10px;
 }
 
 .navbar a:hover {
@@ -74,6 +77,7 @@
   /* margin: 0 !important; */
   
 }
+
 .style_navar .content h2 {
   position: absolute;
   top: 50%;
@@ -81,10 +85,12 @@
   font-size: 24px;
   right: 10%;
 }
+
 .style_navar .content img {
   width: 100%;
   border-radius: 5px;
 }
+
 .style_navar .content::before{
   position: absolute;
   display: flex;
@@ -103,20 +109,10 @@
   z-index: 0;
   }
 
-/* عند تفعيل التمرير */
-/* .sticky {
-  position: fixed;
-  top: 0;
-  width: 100%;
-} */
-
-/* إضافة مسافة عند تفعيل الثبات */
-/* .sticky + .style_navar.content {
-  padding-top: 50px; /* لضمان عدم تغطية المحتوى من قبل الـ navbar */
-
 /* ==================== End Customize Navbar Fixad ====================*/
 
-  /* ==================== Start Customize Foooter Fixad ====================*/
+
+/* ==================== Start Customize Foooter Fixad ====================*/
   .bottom-nav {
     position: fixed;
     bottom: 0;
@@ -166,11 +162,11 @@
     height: 30px;
 }
   
-  /* ==================== End Customize footer Fixad ====================*/
+/* ==================== End Customize footer Fixad ====================*/
 
 
-  /* ==================== End Menu ====================*/
-  .horizontal-menu-container {
+/* ==================== End Menu ====================*/
+.horizontal-menu-container {
     overflow-x: auto; /* Enable horizontal scrolling */
     white-space: nowrap; /* Prevent line breaks */
 }
@@ -314,22 +310,27 @@
 .has-treeview:hover{
   color: var(--mainColor) !important;
 }
+
 .active{
   color: var(--mainColor);
 }
+
 .brand-link-image{
   width: 125px !important;
   margin-right: 21% !important;
 }
+
 .card-img{
   width: 100%;
 }
+
 html, body{
-    direction: rtl;
-    text-align: right;
-    height: 100%;
-    width: 100%;
-  }
+  direction: rtl;
+  text-align: right;
+  height: 100%;
+  width: 100%;
+}
+
 .container{
     border: solid var(--borderColor) 1px;
     /* margin: 5px; */
@@ -337,132 +338,98 @@ html, body{
     border-top-right-radius: 10px;
   
   }
-  .main-title{
-    background: var(--mainColor) !important;
-    border-top-right-radius: 5px;
-    padding: 10px;
-    padding-right: 20px;
-    color: #fff;
-    font-weight: bold;
-    border-top: var(--subColor) solid;
-  }
-  .content {
-    margin: 15px;
-  }
-  .btn{
-    padding: 6px;
-    margin: 5px;
-    border-radius: 5px;
-    font-size: 14px;
-    color: #fff;
-  }
-  .btn:hover{
-    color: #fff;
-    /* font-weight: bold; */
-    border-color: var(--mainColor);
-  
-  }
-  .btn-main {
-    background-color: var(--subColor) ;
-  }
-  .btn-save{
-    background-color: var(--subColor) !important;
-    border-color: var(--subColor);
-  }
-  .btn-close{
-    background-color: var(--sub2Color) !important;
-    border-color: var(--sub2Color);
-  }
 
-  .btn-delete{
-    background-color: var(--btnDelete) !important;
-    border-color: var(--btnDelete);
-  }
-  
-  .btn-link{
-    color: var(--mainColor);
-    font-size: 20px;
-  }
-  .current_value{
-    font-weight: bold !important;
-  }
-  .sub-title{
-    background: var(--BackgroundColor-Sub);
-    color: var(--subTitle);
-    padding: 5px;
-    border-radius: 3px;
-    font-weight: bold;
-    font-size: 14px;
-    margin-left: 5px !important;
-    min-width: 110px;
-  }
-  .sub-title-content{
-    width: 160px;
-    margin-left: 5px !important;
-    font-size: 14px;
-    color: var(--subTitleContent);
-    /* min-width: 160px; */
-    border: var(--BackgroundColor-Sub) solid 1px;
-    /* width: auto; */
-    padding: 0 5px;
-    overflow: hidden;
-  }
+.main-title{
+  background: var(--mainColor) !important;
+  border-top-right-radius: 5px;
+  padding: 10px;
+  padding-right: 20px;
+  color: #fff;
+  font-weight: bold;
+  border-top: var(--subColor) solid;
+}
 
-  /* ============== تحسين القوائم المنسدلة ====================== */
-  .select2-container--default .select2-selection--single {
-    height: 38px !important;
-    padding: 5px !important;
-    border-radius: 4px !important;
-    border: 1px solid #ccc !important;
+.content {
+  margin: 15px;
+}
+
+.btn{
+  padding: 6px;
+  margin: 5px;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #fff;
+}
+
+.btn:hover{
+  color: #fff;
+  /* font-weight: bold; */
+  border-color: var(--mainColor);
+}
+
+.btn-main {
+  background-color: var(--subColor) ;
+}
+.btn-save{
+  background-color: var(--subColor) !important;
+  border-color: var(--subColor);
+}
+.btn-close{
+  background-color: var(--sub2Color) !important;
+  border-color: var(--sub2Color);
+}
+
+.btn-delete{
+  background-color: var(--btnDelete) !important;
+  border-color: var(--btnDelete);
+}
+
+.btn-link{
+  color: var(--mainColor);
+  font-size: 20px;
+}
+
+.current_value{
+  font-weight: bold !important;
+}
+
+.sub-title{
+  background: var(--BackgroundColor-Sub);
+  color: var(--subTitle);
+  padding: 5px;
+  border-radius: 3px;
+  font-weight: bold;
+  font-size: 14px;
+  margin-left: 5px !important;
+  min-width: 110px;
+}
+
+.sub-title-content{
+  width: 160px;
+  margin-left: 5px !important;
+  font-size: 14px;
+  color: var(--subTitleContent);
+  /* min-width: 160px; */
+  border: var(--BackgroundColor-Sub) solid 1px;
+  /* width: auto; */
+  padding: 0 5px;
+  overflow: hidden;
+}
+
+/* ============== تحسين القوائم المنسدلة ====================== */
+.select2-container--default .select2-selection--single {
+  height: 38px !important;
+  padding: 5px !important;
+  border-radius: 4px !important;
+  border: 1px solid #ccc !important;
 }
 
 .select2-container--default .select2-selection--single .select2-selection__rendered {
-    line-height: 28px !important;
-  }
-  
-  .select2-container--default .select2-selection--single .select2-selection__arrow {
-    height: 36px !important;
-  }
-  /* ============== تحسين القوائم المنسدلة ====================== */
-  
-  /*  =================== Start Customize Table ======================= */
-  /*@media (max-width: 768px) {
-    .table-responsive thead {
-      display: none;
-    }
+  line-height: 28px !important;
+}
 
-    .table-responsive tbody, 
-    .table-responsive th, 
-    .table-responsive td {
-      display: block;
-    }
-
-    .table-responsive tr {
-      margin-bottom: 15px;
-    }
-
-
-    .table-responsive td, 
-    .table-responsive th {
-      direction: rtl; 
-      text-align: right;
-      padding-right: 30%;
-      position: relative;
-      width: 100vw;
-    }
-
-    .table-responsive td::before, 
-    .table-responsive th::before {
-      content: attr(data-label);
-      position: absolute;
-      right: 0;
-      width: 25%;
-      padding-right: 10px;
-      margin: -12px 1px 2px 2px;
-      padding: 12px 8px 12px 0px;
-      font-weight: bold;
-      background-color: rgb(219, 219, 219);
-    }
-  }*/
-/*===================   End Customize Table ======================= */
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 36px !important;
+}
+/* ============== تحسين القوائم المنسدلة ====================== */
 

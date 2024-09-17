@@ -120,11 +120,15 @@ def dalil_home(request):
     company = Company.objects.filter(includeInDalilAlaemal=True).count()-1
     businessScope = BusinessScope.objects.filter(legalpersons__company__isnull=False).distinct().count()
     cities = Cities.objects.filter(basicInfo__legalpersons__company__isnull=False).distinct().count()
+        # 'search_cityID' = request.GET.get('cityID', None),
 
     context = {
         'company': company,
         'businessScope': businessScope,
-        'cities': cities
+        'cities': cities,
+        'search_cityID': request.GET.get('cityID', None),
+        'cities2': Cities.objects.filter(basicInfo__legalpersons__company__isnull=False).distinct(),
+        
     }
     return render(request, 'dalilalaemal/dalil_home.html', context)
 

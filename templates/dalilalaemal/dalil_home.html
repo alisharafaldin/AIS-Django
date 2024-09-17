@@ -1,42 +1,39 @@
-{% extends 'base_dalilalaemal.html' %} {% load static %} {% block title %} | الرئيسة 
-{% endblock %} {% block content %}
+{% extends 'base_dalilalaemal.html' %} {% load static %} {% block title %} |
+الرئيسة {% endblock %} {% block content %} {% include 'partials/_alerts.html' %}
 
-  {% include 'partials/_alerts.html' %}
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  .content-main {
+    width: 95%;
+    margin: 20% 10px 0 10px;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center !important;
+    align-items: center !important;
+    align-content: center !important;
+    flex-wrap: wrap;
+  }
+  .counter-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    flex-direction: row;
+    margin-top: 5%;
+    text-decoration: none;
+    /* margin-bottom: 150px; */
+  }
 
-  
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .content-main {
-      width: 95%;
-      margin: 20% 10px 0 10px;
-      display: flex !important;
-      flex-direction: column;
-      justify-content: center !important;
-      align-items: center !important;
-      align-content: center !important;
-      flex-wrap: wrap;
-    }
-    .counter-container {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-      align-items: center;
-      flex-direction: row;
-      margin-top: 5%;
-      text-decoration: none;
-      /* margin-bottom: 150px; */
-    }
-
-    .content::before{
-      /* position: absolute;
+  .content::before {
+    /* position: absolute;
       display: flex;
       align-items: center;
       text-align: center;
@@ -52,8 +49,10 @@
       opacity: 0.4;
       z-index: 0; */
   }
-    .counter {
-    background-color: var(--subColor);
+  .counter {
+    /* background-color: var(--subColor); */
+    background-color: var(--BackgroundColor-Home);
+    /* background-color: rgb(236, 236, 236) !important; */
     /* background-color: #fff; */
     border-radius: 10px;
     padding: 15px;
@@ -62,49 +61,97 @@
     margin-bottom: 10px;
     width: 33% !important;
     height: 128px;
-    border: solid var(--subColor);
+    /* border: solid var(--subColor); */
     z-index: 1;
-    }
+  }
 
-    .counter h2 {
-        font-size: 14px;
-        margin-bottom: 5px;
-        color: #fff;
-    }
+  .counter h2 {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: var(--mainTitle);
+    /* font-weight: bold; */
+  }
 
-    .counter span {
-        font-size: 40px;
-        font-weight: bold;
-        color: var(--mainColor);
-        text-shadow: 0 2px 2px rgb(0, 0, 0);
-    }
+  .counter span {
+    font-size: 40px;
+    font-weight: bold;
+    color: var(--mainColor);
+    text-shadow: 0 2px 2px rgb(0, 0, 0);
+  }
 
-    .image-container {
+  .image-container {
     overflow: hidden; /* للتأكد من عدم ظهور الصورة خارج الحاوية أثناء التحريك */
     position: relative;
-}
+  }
 
-.fade-in-image {
+  .fade-in-image {
     opacity: 0; /* البدء بخلفية شفافة */
     transform: translateY(-30px); /* البدء من موقع أعلى */
     animation: fadeInUp 1.5s ease-out forwards; /* تطبيق التأثير */
     width: 100%;
-}
+  }
 
-@keyframes fadeInUp {
+  @keyframes fadeInUp {
     from {
-        opacity: 0;
-        transform: translateY(30px); /* بداية التحريك من أسفل */
+      opacity: 0;
+      transform: translateY(30px); /* بداية التحريك من أسفل */
     }
     to {
-        opacity: 1;
-        transform: translateY(0); /* نهاية التحريك في الموقع النهائي */
+      opacity: 1;
+      transform: translateY(0); /* نهاية التحريك في الموقع النهائي */
     }
-}
-  </style>
+  }
 
-<div class="content-main" >
-  <span style="font-size: 20px;" class="fade-in-image">محلات كتير جنبك .. تلقاها بكل سهولة . .</span>
+  /* بداية تنسقات عنصر البحث */
+/* إعداد الحاوية */
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* تأثير اختيار المدينة */
+.city-search {
+  font-size: 18px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  width: 350px;
+  height: 50px;
+  transition: all 0.3s ease-in-out;
+  outline: none;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  animation: pulse 1.5s infinite;  /* إضافة تأثير الوميض */
+}
+
+/* تأثير عند التركيز على العنصر */
+.city-search:focus {
+  border-color: #5cb85c;
+  box-shadow: 0 0 15px rgba(92, 184, 92, 0.7);
+  transition: all 0.3s ease;
+}
+
+/* إعداد حركة الوميض */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 15px var(--BackgroundColor-Home); /* الضوء الأخضر عند البدء */
+  }
+  50% {
+    box-shadow: 0 0 30px var(--mainColor);  /* زيادة الإضاءة */
+  }
+  100% {
+    box-shadow: 0 0 15px var(--BackgroundColor-Home); /* العودة للإضاءة الخفيفة */
+  }
+}
+
+  /* نهاية تنسقات عنصر البحث */
+</style>
+
+<div class="content-main">
+  <span style="font-size: 20px" class="fade-in-image"
+    >محلات كتير جنبك .. تلقاها بكل سهولة . .</span
+  >
   <div class="counter-container">
     <a class="counter" href="{% url 'dalils' %}">
       <h2>أكثر من +</h2>
@@ -122,10 +169,71 @@
       <h2>مدينة مصرية</h2>
     </a>
   </div>
-  <img src="{% static 'dist/img/مصرسلام.png' %}" alt="" class="fade-in-image">
-  <span style="text-align: justify !important; width: 90%; line-height: 1.8 !important; font-size: 20px;" class="fade-in-image">دليل الأعمال السودانية في مصر هو : <span style="font-weight: bold;">مشروع تعاوني</span> يضم الأعمال والأنشطة التجارية السودانية في مصر , <span style="font-weight: bold;">الهدف من الدليل</span> تعزيز التعاون و الترابط بين البلدين ودفع عجلة الإقتصاد لأصحاب الأعمال ولبلدنا الحبيب الثاني و المِضياف مصر. </span>
+  <div class="search-container">
+    <select name="city" style="font-size: 14px;" id="city-select" class="form-control city-search" onchange="goToCityPage()">
+      <option value="" >اختر المدينة</option>
+      {% for city in cities2 %}
+      <option value="{{ city.id }}">
+        {{ city.name_ar }}
+      </option>
+      {% endfor %}
+    </select>
+  </div>
+  
+  <img src="{% static 'dist/img/مصرسلام.png' %}" alt="" class="fade-in-image" />
+  <span
+    style="
+    text-align: justify !important;
+    width: 95%;
+    line-height: 1.8 !important;
+    font-size: 15px;
+    color: var(--subColor);
+    /* background-color: var(--BackgroundColor-Home); */
+    /* background-color: rgb(236, 236, 236) !important; */
+    padding: 17px;
+    border-radius: 10px;
+    "
+    class="fade-in-image"
+    >دليل الأعمال السودانية في مصر هو :
+    <span style="font-weight: bold">مشروع تعاوني</span> يضم الأعمال والأنشطة
+    التجارية السودانية في مصر ,
+    <span style="font-weight: bold">الهدف من الدليل</span> تعزيز التعاون و
+    الترابط بين البلدين ودفع عجلة الإقتصاد لأصحاب الأعمال ولبلدنا الحبيب الثاني
+    و المِضياف مصر.
+  </span>
 </div>
+<!-- للإنتقال إلى صفحة البحثة عند إمدينة -->
+<script>
+  function goToCityPage() {
+    // الحصول على العنصر المحدد
+    var select = document.getElementById("city-select");
+    // الحصول على قيمة العنصر المختار (معرف المدينة)
+    var cityID = select.value;
 
+    // إذا كانت المدينة مختارة، الانتقال إلى صفحة البحث مع معرف المدينة
+    if (cityID) {
+      window.location.href = "{% url 'dalil_search' %}?cityID=" + cityID;
+    }
+  }
+
+  // تأثير كتابة اختر المدينة
+  document.addEventListener("DOMContentLoaded", function() {
+  var placeholderText = "اختر مدينتك, وتعرف على أعمال السودانيين من حولك";
+  var select = document.getElementById("city-select");
+  var index = 0;
+
+  function typePlaceholder() {
+    if (index < placeholderText.length) {
+      // تحديث قيمة الخيار الافتراضي تدريجياً
+      select.options[0].text = placeholderText.substring(0, index + 1);
+      index++;
+      setTimeout(typePlaceholder, 100);  // سرعة الكتابة (100 مللي ثانية لكل حرف)
+    }
+  }
+
+  typePlaceholder();  // بدء تأثير الكتابة عند تحميل الصفحة
+});
+</script>
 
 <script>
 

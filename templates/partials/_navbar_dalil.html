@@ -1,8 +1,8 @@
 <!--navbar fixed-->
 {% load static %}
 <div class="navbar" id="navbar">
-  <a href="#home"><img class="logo" src="{% static 'dist/img/dalilalaemal_logo.jpg' %}?v=0.2" alt=""></a>
-  <h5>دليل الأعمال السودانية في مصر</h5>
+  <a href="{% url 'dalil_home' %}"><img class="logo" src="{% static 'dist/img/dalilalaemal_logo.jpg' %}?v=0.2" alt=""></a>
+  <h5 class="title">دليل الأعمال السودانية في مصر</h5>
 </div>
 
 <style>
