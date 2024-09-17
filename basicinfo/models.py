@@ -1,6 +1,10 @@
+import os
 from django.db import models
+from django.dispatch import receiver
 from colorfield.fields import ColorField
 from django.contrib.auth.models import User
+from django.db.models.signals import post_delete, pre_save
+
 
 
 class Countries(models.Model):
@@ -46,6 +50,7 @@ class Cities(models.Model):
     name_ar = models.CharField(verbose_name='إسم المدينة عربي',max_length=50, blank=True, null=True)
     name_en = models.CharField(verbose_name='إسم المدينة إنجليزي',max_length=50, blank=True, null=True)
     capitalCity = models.CharField(verbose_name='عاصمةالمحلية',max_length=50, blank=True, null=True)
+    logo = models.ImageField(verbose_name='شعار المدينة', upload_to='logo_cities', blank=True, null=True)
     population = models.IntegerField(verbose_name='عدد السكان', blank=True, null=True)
     def __str__(self):
         return str(self.name_ar)
@@ -157,7 +162,7 @@ class BusinessType(models.Model):
 class BusinessScope(models.Model):
     name_ar = models.CharField(verbose_name='مجال العمل عربي',max_length=100)
     name_en = models.CharField(verbose_name='مجال العمل إنجليزي',max_length=100,blank=True, null=True)
-    logo = models.ImageField(verbose_name='صورة / لوقو', upload_to='logo_businessScope', null=True, blank=True)
+    logo = models.ImageField(verbose_name='شعار المجال', upload_to='logo_businessScope', null=True, blank=True)
     icone = models.CharField(verbose_name='أيقونة المجال',max_length=150,blank=True, null=True)
     
     def __str__(self):

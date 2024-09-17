@@ -84,6 +84,7 @@ def product_quantity_summary(request):
     total_purchased_sum = 0
     total_sold_sum = 0
     total_difference_sum = 0
+    total_sold_qty = 0
 
     for item_id in all_item_ids:
         purchased_qty = purchased_dict.get(item_id, 0)
@@ -94,6 +95,8 @@ def product_quantity_summary(request):
         total_purchased_sum += purchased_qty
         total_sold_sum += sold_qty
         total_difference_sum += difference
+        total_sold_qty += sold_qty
+    
 
         items_comparison.append({
             'item_id': item_id,
@@ -117,6 +120,7 @@ def product_quantity_summary(request):
     context = {
         'items_comparison': items_comparison,
         'total_purchased_sum': total_purchased_sum,  # مجموع الكميات المشتراة
+        'total_sold_qty':total_sold_qty,
         'total_sold_sum': total_sold_sum,  # مجموع الكميات المباعة
         'total_difference_sum': total_difference_sum,  # مجموع الفرق
         'search_date': search_date,  # تمرير معايير البحث إلى القالب
@@ -211,6 +215,7 @@ def net_sales(request):
     total_sales_sum = Decimal('0.00')
     total_net_sales_sum = Decimal('0.00')
     total_Profit_rate_sum = Decimal('0.00')
+    total_sold_qty = Decimal('0.00')
 
     for item_id in all_item_ids:
         max_purchase_price = max_purchase_prices_dict.get(item_id, Decimal('0.00'))
@@ -232,6 +237,7 @@ def net_sales(request):
             total_sales_sum += sales_price
             total_net_sales_sum += net_sales
             total_Profit_rate_sum = total_net_sales_sum / total_purchase_sum * 100
+            total_sold_qty += sold_qty
 
             items_comparison.append({
                 'item_id': item_id,
@@ -259,6 +265,7 @@ def net_sales(request):
     context = {
         'items_comparison': items_comparison,
         'total_purchase_sum': total_purchase_sum,  # مجموع التكلفة
+        'total_sold_qty':total_sold_qty,
         'total_sales_sum': total_sales_sum,  # مجموع المبيعات
         'total_net_sales_sum': total_net_sales_sum,  # مجموع صافي المبيعات
         'total_Profit_rate_sum': total_Profit_rate_sum,
@@ -354,6 +361,7 @@ def net_sales_search(request):
     total_purchase_sum = Decimal('0.00')
     total_sales_sum = Decimal('0.00')
     total_net_sales_sum = Decimal('0.00')
+    total_sold_qty = Decimal('0.00')
 
     for item_id in all_item_ids:
         max_purchase_price = max_purchase_prices_dict.get(item_id, Decimal('0.00'))
@@ -373,6 +381,7 @@ def net_sales_search(request):
             total_purchase_sum += cost_price
             total_sales_sum += sales_price
             total_net_sales_sum += net_sales
+            total_sold_qty += sold_qty
 
             items_comparison.append({
                 'item_id': item_id,
@@ -399,6 +408,7 @@ def net_sales_search(request):
     context = {
         'items_comparison': items_comparison,
         'total_purchase_sum': total_purchase_sum,  # مجموع التكلفة
+        'total_sold_qty':total_sold_qty,
         'total_sales_sum': total_sales_sum,  # مجموع المبيعات
         'total_net_sales_sum': total_net_sales_sum,  # مجموع صافي المبيعات
         'search_date': search_date,  # تمرير معايير البحث إلى القالب

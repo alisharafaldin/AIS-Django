@@ -27,21 +27,7 @@ class Inventory (models.Model):
     phoneAdmin = models.CharField(verbose_name='هاتف الموظف المسؤول', max_length=100, blank=True, null=True)
     def __str__(self):
         return str(self.name_ar)
-      
-# class InventoryTransfers(models.Model):
-#     from_inventory = models.ForeignKey(Inventory, on_delete=models.CASCADE, related_name='transfers_from')
-#     to_inventory = models.ForeignKey(Inventory, on_delete=models.CASCADE, related_name='transfers_to')
-#     date = models.DateTimeField(auto_now_add=True)
-#     def __str__(self):
-#         return f"Transfer from {self.from_inventory.name_ar} to {self.to_inventory.name_ar} on {self.date}"
-    
-# class InventoryTransferDetails(models.Model):
-#     inventoryTransferID = models.ForeignKey(InventoryTransfers, on_delete=models.CASCADE, related_name='transfer_details')
-#     product = models.ForeignKey(Items, on_delete=models.CASCADE)
-#     quantity = models.PositiveIntegerField()
-#     def __str__(self):
-#         return f"{self.quantity} units of {self.product.name} transferred"
-    
+
 class InvoicesSalesHead (models.Model):
     companyID = models.ForeignKey(Company, on_delete=models.PROTECT,blank=True)
     sequence = models.PositiveIntegerField(editable=False)  # الحقل التسلسلي
@@ -68,29 +54,7 @@ class InvoicesSalesHead (models.Model):
     updated_by = models.ForeignKey(User, verbose_name='المُعدِل', related_name='updated_by_invoS', on_delete=models.PROTECT, blank=True, null=True)
     updated_at = models.DateTimeField(verbose_name='تاريخ التعديل', auto_now=True, blank=True, null=True)
   
-#   حقول التخصيص على السندات
-    # received_amount = models.DecimalField(verbose_name='المبلغ المستلم', max_digits=10, decimal_places=2, default=0, blank=True, null=True)  # هذا الحقل لحفظ المبالغ المستلمة من السندات
-    # remaining_amount = models.DecimalField(verbose_name='المبلغ المتبقي', max_digits=10, decimal_places=2, blank=True, null=True)
-
-    # def update_received_amount(self, amount):
-    #     self.received_amount += amount
-    #     self.remaining_amount = self.total_amount - self.received_amount
-    #     self.save()
-
-    # def allocate_receipt_to_invoice(receipt, invoice, amount):
-    #     if amount <= receipt.total_amount and amount <= invoice.remaining_amount:
-    #         allocation = ReceiptAllocation.objects.create(
-    #             receipt_head=receipt,
-    #             invoice=invoice,
-    #             allocated_amount=amount
-    #         )
-    #         invoice.update_received_amount(amount)
-    #         receipt.total_amount -= amount
-    #         receipt.save()
-    #     else:
-    #         raise ValueError("لا يمكن تخصيص مبلغ أكبر من المبلغ المتاح")
-    #         # raise ValueError("Cannot allocate more than available amount")
-
+ 
     def __str__(self):
         return f"Invoice {self.id} - {self.customerID}"
   

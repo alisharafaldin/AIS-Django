@@ -4,7 +4,7 @@
 <!-- <div class="content-wrapper"> -->
 
   {% include 'partials/_alerts.html' %}
-  <form method="GET" action="{% url 'dalilalaemal_search' %}">
+  <form method="GET" action="{% url 'dalil_search' %}">
     <!-- <div style="width: 100%; display: flex; align-items: center; gap: 10px;">
     <button class="btn btn-main" type="submit" style="width: 30%;">بحث بالمدينة<i class="fa-solid fa-magnifying-glass"></i></button>
     {{search_form.businessScopeID}}
@@ -23,14 +23,14 @@
         </option>
         {% endfor %}
       </select>
-      <a style="width: 150px;" href="{% url 'dalilalaemal_search' %}?businessScopeID=&cityID=" class="btn btn-main" type="submit">جميع المدن</a>
+      <a style="width: 150px;" href="{% url 'dalil_search' %}?businessScopeID=&cityID=" class="btn btn-main" type="submit">جميع المدن</a>
     </div>
     <br>  
 
     <div class="horizontal-menu-container">
-      <div class="horizontal-menu">
-        {% for bs in businessScope %}
-        <a style="height: 40px;" href="{% url 'dalilalaemal_search' %}?businessScopeID={{bs.id}}&cityID={{search_cityID}}" class="menu-item"> {{bs.name_ar}}</a>
+      <div class="horizontal-menu" style="display: flex;">
+        {% for id, logo, label, count in businessScope %}
+          <a style="height: 35px; display: flex; flex-direction: row;  align-items: center; background-color: rgb(236, 236, 236) !important; color: black;" href="{% url 'dalil_search' %}?businessScopeID={{id}}&cityID={{search_cityID}}" class="menu-item">{{ label }} ({{ count }})</a>
         {% endfor %}
           <!-- Add more items as needed -->
       </div>
@@ -57,7 +57,7 @@
             </a>
             <div style="display: flex; flex-direction: column; padding-right: 10px;">  
               <a style="color: black;" href="{% url 'dalilalaemal_single' company.id %}"><strong class="me-auto">{{ company.legalPersonID.name_ar }}</strong></a>
-              <a style="font-size: 12px;" href="{% url 'dalilalaemal_search' %}?businessScopeID={{ company.legalPersonID.businessScopeID.id }}">{{ company.legalPersonID.businessScopeID }}</a>
+              <a style="font-size: 12px;" href="{% url 'dalil_search' %}?businessScopeID={{ company.legalPersonID.businessScopeID.id }}">{{ company.legalPersonID.businessScopeID }}</a>
               <a style="font-size: 12px;" class="btn-link" href="{% url 'update' company.id %}"
               ><i class="fas fa-edit"></i>
             </a>
@@ -68,7 +68,7 @@
           <ul class="list-group list-group-flush">
             <h6 style="font-size: 12px;">
               {% if company.legalPersonID.basicInfoID.address %}
-              <a style="font-size: 12px;" href="{% url 'dalilalaemal_search' %}?cityID={{ company.legalPersonID.basicInfoID.cityID.id }}">{{ company.legalPersonID.basicInfoID.cityID }}</a> - 
+              <a style="font-size: 12px;" href="{% url 'dalil_search' %}?cityID={{ company.legalPersonID.basicInfoID.cityID.id }}">{{ company.legalPersonID.basicInfoID.cityID }}</a> - 
               {{ company.legalPersonID.basicInfoID.address }}
               {% endif %}
               {% if company.legalPersonID.basicInfoID.google_maps_location %}

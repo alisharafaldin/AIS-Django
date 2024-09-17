@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from basicinfo.models import  TypePayment, TypeTransaction, Countries
 from companys.models import Company
 from employees.models import Employee
-from accounts.models import AccountsTree
+from accounts. models import AccountsTree
 from sales.models import Customers, InvoicesSalesBody
 # Create your models here.
 

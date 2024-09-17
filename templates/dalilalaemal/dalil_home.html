@@ -5,32 +5,37 @@
 
   
   <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f0f0f0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
     }
-
+    .content-main {
+      width: 95%;
+      margin: 20% 10px 0 10px;
+      display: flex !important;
+      flex-direction: column;
+      justify-content: center !important;
+      align-items: center !important;
+      align-content: center !important;
+      flex-wrap: wrap;
+    }
     .counter-container {
       display: flex;
       justify-content: space-between;
       width: 100%;
       align-items: center;
-      flex-direction: column;
-      margin-top: 80px;
+      flex-direction: row;
+      margin-top: 5%;
+      text-decoration: none;
       /* margin-bottom: 150px; */
     }
-    .counter-container {
-     text-decoration: none;
-     /* background-image: url({% static 'dist/img/dalilalaemal_haed.jpg' %}); */
-     
-    }
 
-   .content::before{
+    .content::before{
       /* position: absolute;
       display: flex;
       align-items: center;
@@ -54,17 +59,16 @@
     padding: 15px;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 15px;
-    width: 185px;
-    height: 170px;
+    margin-bottom: 10px;
+    width: 33% !important;
+    height: 128px;
     border: solid var(--subColor);
     z-index: 1;
     }
 
     .counter h2 {
-        font-size: 24px;
-        margin-bottom: 15px;
-        /* color: var(--subColor); */
+        font-size: 14px;
+        margin-bottom: 5px;
         color: #fff;
     }
 
@@ -75,26 +79,51 @@
         text-shadow: 0 2px 2px rgb(0, 0, 0);
     }
 
+    .image-container {
+    overflow: hidden; /* للتأكد من عدم ظهور الصورة خارج الحاوية أثناء التحريك */
+    position: relative;
+}
+
+.fade-in-image {
+    opacity: 0; /* البدء بخلفية شفافة */
+    transform: translateY(-30px); /* البدء من موقع أعلى */
+    animation: fadeInUp 1.5s ease-out forwards; /* تطبيق التأثير */
+    width: 100%;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px); /* بداية التحريك من أسفل */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0); /* نهاية التحريك في الموقع النهائي */
+    }
+}
   </style>
 
-<div class="content form-row justify-content-around" >
+<div class="content-main" >
+  <span style="font-size: 20px;" class="fade-in-image">محلات كتير جنبك .. تلقاها بكل سهولة . .</span>
   <div class="counter-container">
     <a class="counter" href="{% url 'dalils' %}">
       <h2>أكثر من +</h2>
       <span id="company-count">0</span>
-      <h2>محل سوداني</h2>
+      <h2>عمل سوداني</h2>
     </a>
     <a class="counter" href="{% url 'dalils_business_Scope' %}">
       <h2>في</h2>
       <span id="scope-count">0</span>
       <h2>مجال مختلف</h2>
     </a>
-    <a class="counter" href="{% url 'dalils' %}">
+    <a class="counter" href="{% url 'dalil_cities' %}">
       <h2>في</h2>
       <span id="cities-count">0</span>
       <h2>مدينة مصرية</h2>
     </a>
   </div>
+  <img src="{% static 'dist/img/مصرسلام.png' %}" alt="" class="fade-in-image">
+  <span style="text-align: justify !important; width: 90%; line-height: 1.8 !important; font-size: 20px;" class="fade-in-image">دليل الأعمال السودانية في مصر هو : <span style="font-weight: bold;">مشروع تعاوني</span> يضم الأعمال والأنشطة التجارية السودانية في مصر , <span style="font-weight: bold;">الهدف من الدليل</span> تعزيز التعاون و الترابط بين البلدين ودفع عجلة الإقتصاد لأصحاب الأعمال ولبلدنا الحبيب الثاني و المِضياف مصر. </span>
 </div>
 
 

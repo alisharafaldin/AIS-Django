@@ -151,19 +151,43 @@ def dalils_business_Scope(request):
     return render(request, 'dalilalaemal/dalils_business_Scope.html', context)
 
 # @login_required
-def dalilalaemal_search(request):
+def dalil_cities(request):
+    company_query = Company.objects.filter(includeInDalilAlaemal=True)
+    cities = Cities.objects.filter(basicInfo__legalpersons__company__in=company_query).distinct()
+    scope_data = [
+        (scope.id, scope.logo, scope.name_ar, scope.basicInfo.filter(legalpersons__company__isnull=False).count())
+        for scope in cities
+    ]
+
+    # قم بترتيب القائمة تنازلياً حسب العدد
+    sorted_scope_data = sorted(scope_data, key=lambda x: x[3], reverse=True)
+    context = {
+        'scope_data': sorted_scope_data
+    }
+    return render(request, 'dalilalaemal/dalil_cities.html', context)
+
+# @login_required
+def dalil_search(request):
     # الحصول على معايير البحث من الطلب
     search_cityID = request.GET.get('cityID', None)
     search_companyID = request.GET.get('companyID', '')
     search_businessScopeID = request.GET.get('businessScopeID', '')
+    
+    # استعلام الشركات
     company_query = Company.objects.filter(includeInDalilAlaemal=True).order_by('-id')
-    # استعلام الفواتير بين تاريخين
+    
+    # تصفية الشركات بناءً على المدينة
     if search_cityID:
         company_query = company_query.filter(legalPersonID__basicInfoID__cityID=search_cityID)
+    
+    # تصفية الشركات بناءً على المجال
     if search_businessScopeID:
         company_query = company_query.filter(legalPersonID__businessScopeID=search_businessScopeID)
+    
+    # تصفية الشركات بناءً على معرف الشركة
     if search_companyID:
         company_query = company_query.filter(id=search_companyID)
+    
     # تحويل search_cityID إلى عدد صحيح إذا كانت القيمة ليست فارغة
     try:
         if search_cityID and search_cityID != 'None':        
@@ -173,29 +197,47 @@ def dalilalaemal_search(request):
     except ValueError:
         search_cityID = None
 
-    # الحصول على جميع المدن
-    cities = Cities.objects.all()
-
     # البحث عن المدينة المحددة
     selected_city_name = None
     if search_cityID:
         selected_city = Cities.objects.filter(id=search_cityID).first()
         if selected_city:
             selected_city_name = selected_city.name_ar
+
+    # تصفية المجالات بناءً على المدينة المختارة
+    if search_cityID:
+        business_scopes = BusinessScope.objects.filter(
+            legalpersons__basicInfoID__cityID=search_cityID, legalpersons__company__isnull=False).distinct()
+    else:
+        business_scopes = BusinessScope.objects.filter(legalpersons__company__isnull=False).distinct()
+
+    # إعداد بيانات المجالات
+    if search_cityID:
+        scope_business = [
+            (scope.id, scope.logo, scope.name_ar, scope.legalpersons.filter(company__isnull=False,basicInfoID__cityID=search_cityID).count())
+            for scope in business_scopes
+        ]
+    else:
+        scope_business = [
+            (scope.id, scope.logo, scope.name_ar, scope.legalpersons.filter(company__isnull=False).count())
+            for scope in business_scopes
+        ]
     
+    # ترتيب القائمة تنازلياً حسب العدد
+    sorted_scope_business = sorted(scope_business, key=lambda x: x[3], reverse=True)
+
     # إعداد السياق
     context = {
         'companys': company_query,
         'search_form': InvoiceSearchForm(request.GET),
-        'search_cityID':search_cityID,
+        'search_cityID': search_cityID,
         'selected_city_name': selected_city_name,
-        'search_businessScopeID':search_businessScopeID,
-        'businessScope':BusinessScope.objects.filter(legalpersons__company__isnull=False).distinct(),
+        'search_businessScopeID': search_businessScopeID,
+        'businessScope': sorted_scope_business,
         'cities': Cities.objects.filter(basicInfo__legalpersons__company__isnull=False).distinct(),
     }
-
-    # عرض الصفحة مع البيانات
-    return render(request, 'dalilalaemal/dalilalaemal_search.html', context)
+    
+    return render(request, 'dalilalaemal/dalil_search.html', context)
 
 # @login_required
 def dalils(request):
