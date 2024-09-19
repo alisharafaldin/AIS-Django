@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Sum
 from django.contrib.auth.models import User
 from basicinfo.models import LegalPersons, TypePayment, TypeDelivery, TypeTransaction, Cities, States, Region, Countries
 from companys.models import Company
@@ -10,7 +11,7 @@ class Customers(models.Model):
     sequence = models.PositiveIntegerField(editable=False)  # الحقل التسلسلي
     legalPersonID = models.OneToOneField(LegalPersons, on_delete=models.CASCADE, blank=True)
     def __str__(self):
-        return  str(self.legalPersonID) + ' : ID : ' + str(self.sequence)
+        return  str(self.legalPersonID.acronym_ar)
 
 class Inventory (models.Model):
     companyID = models.ForeignKey(Company, on_delete=models.PROTECT,blank=True)
@@ -29,7 +30,7 @@ class Inventory (models.Model):
         return str(self.name_ar)
 
 class InvoicesSalesHead (models.Model):
-    companyID = models.ForeignKey(Company, on_delete=models.PROTECT,blank=True)
+    companyID = models.ForeignKey(Company, on_delete=models.CASCADE,blank=True)
     sequence = models.PositiveIntegerField(editable=False)  # الحقل التسلسلي
     date = models.DateField(verbose_name='التاريخ', blank=True, null=True)
     typeTransactionID = models.ForeignKey(TypeTransaction, verbose_name='نوع العملية', default=4, on_delete=models.PROTECT, blank=True, null=True)
@@ -47,19 +48,23 @@ class InvoicesSalesHead (models.Model):
     phoneOther = models.CharField(verbose_name='هاتف آخر',max_length=50, blank=True, null=True)
     details = models.ManyToManyField(Items, through='InvoicesSalesBody', related_name='invoices', blank=True)
     salesRepID = models.ForeignKey(Employee, verbose_name='مندوب المبيعات', on_delete=models.PROTECT, blank=True, null=True)
-    attachments = models.FileField(verbose_name='المرفقات',upload_to='attachments/%Y/%m/%d/', blank=True, null=True)
+    attachments = models.FileField(verbose_name='المرفقات',upload_to='attach_sales', blank=True, null=True)
     approve = models.BooleanField(verbose_name='إعتماد', default=False, blank=True, null=True) 
     created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name='created_by_invoS', blank=True, null=True)
     created_at = models.DateTimeField(verbose_name='تاريخ الإنشاء',auto_now_add=True, blank=True, null=True)
     updated_by = models.ForeignKey(User, verbose_name='المُعدِل', related_name='updated_by_invoS', on_delete=models.PROTECT, blank=True, null=True)
     updated_at = models.DateTimeField(verbose_name='تاريخ التعديل', auto_now=True, blank=True, null=True)
   
- 
     def __str__(self):
         return f"Invoice {self.id} - {self.customerID}"
+    
+    @property
+    def total_price_after_tax(self):
+        """حساب إجمالي السعر بعد الضريبة من تفاصيل الفاتورة."""
+        return self.sales_invoice.aggregate(total=Sum('total_price_after_tax'))['total'] or 0
   
 class InvoicesSalesBody(models.Model):
-    invoiceHeadID = models.ForeignKey(InvoicesSalesHead, on_delete=models.CASCADE, related_name='sales_invoice', blank=True)
+    invoiceHeadID = models.ForeignKey(InvoicesSalesHead, on_delete=models.DO_NOTHING, related_name='sales_invoice', blank=True)
     itemID = models.ForeignKey(Items, verbose_name='المنتج', on_delete=models.PROTECT,related_name='sales_details', blank=True, null=True)
     inventoryID = models.ForeignKey(Inventory, verbose_name='المخزن', on_delete=models.PROTECT, blank=True, null=True)
     quantity = models.DecimalField(verbose_name='الكمية', default=1, max_digits=6, decimal_places=0, blank=True, null=True)

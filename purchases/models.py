@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Sum
 from django.contrib.auth.models import User
 from basicinfo.models import LegalPersons
 from companys.models import Company
@@ -12,7 +13,8 @@ class Suppliers(models.Model):
     sequence = models.PositiveIntegerField(editable=False)  # الحقل التسلسلي
     legalPersonID = models.OneToOneField(LegalPersons, on_delete=models.CASCADE, blank=True)
     def __str__(self):
-        return  str(self.legalPersonID) + ' : ID : ' + str(self.sequence)
+        return  str(self.legalPersonID.acronym_ar)
+        # return  str(self.legalPersonID) + ' : ID : ' + str(self.sequence)
     
 class InvoicesPurchasesHead (models.Model):
     companyID = models.ForeignKey(Company, on_delete=models.PROTECT,blank=True)
@@ -26,7 +28,7 @@ class InvoicesPurchasesHead (models.Model):
     typePaymentID = models.ForeignKey(TypePayment, verbose_name='طريقة الدفع', default=1, on_delete=models.PROTECT, blank=True, null=True)
     typeDeliveryID = models.ForeignKey(TypeDelivery, verbose_name='طريقة التسليم', default=1, on_delete=models.PROTECT, blank=True, null=True)
     description = models.TextField(verbose_name='الوصف', default="مشتريات", max_length=250, blank=True, null=True)
-    attachments = models.FileField(verbose_name='المرفقات',upload_to='attachments/%Y/%m/%d/', blank=True, null=True)
+    attachments = models.FileField(verbose_name='المرفقات',upload_to='attach_purchases', blank=True, null=True)
     approve = models.BooleanField(verbose_name='إعتماد', default=False, blank=True, null=True) 
     details = models.ManyToManyField(Items, through='InvoicesPurchasesBody', related_name='invoices_purchases', blank=True)
     salesRepID = models.ForeignKey(Employee, verbose_name='مندوب المبيعات', on_delete=models.PROTECT, blank=True, null=True)
@@ -36,9 +38,15 @@ class InvoicesPurchasesHead (models.Model):
     updated_at = models.DateTimeField(verbose_name='تاريخ التعديل', auto_now=True, blank=True, null=True)
     def __str__(self):
         return f"Invoice {self.id} - {self.supplierID}"
+    
+    @property
+    def total_price_after_tax(self):
+        """حساب إجمالي السعر بعد الضريبة من تفاصيل الفاتورة."""
+        return self.purchases_invoice.aggregate(total=Sum('total_price_after_tax'))['total'] or 0
+  
   
 class InvoicesPurchasesBody(models.Model):
-    invoiceHeadID = models.ForeignKey(InvoicesPurchasesHead, on_delete=models.CASCADE, related_name='purchases_invoice', blank=True)
+    invoiceHeadID = models.ForeignKey(InvoicesPurchasesHead, on_delete=models.DO_NOTHING, related_name='purchases_invoice', blank=True)
     itemID = models.ForeignKey(Items, verbose_name='المنتج', on_delete=models.PROTECT,related_name='purchases_details', blank=True, null=True)
     inventoryID = models.ForeignKey(Inventory, verbose_name='المخزن', on_delete=models.PROTECT, blank=True, null=True)
     quantity = models.DecimalField(verbose_name='الكمية', default=1, max_digits=6, decimal_places=0, blank=True, null=True)

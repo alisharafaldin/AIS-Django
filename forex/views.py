@@ -10,7 +10,6 @@ from django.http import FileResponse
 from reportlab.pdfgen import canvas
 from django.http import HttpResponse
 from django.views.generic import View
-from .pdf import html2pdf
 
 def shareholders(request): 
     if request.method == 'POST' and 'btnsharsave' in request.POST:
