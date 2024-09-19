@@ -11,7 +11,7 @@ class Customers(models.Model):
     sequence = models.PositiveIntegerField(editable=False)  # الحقل التسلسلي
     legalPersonID = models.OneToOneField(LegalPersons, on_delete=models.CASCADE, blank=True)
     def __str__(self):
-        return  str(self.legalPersonID.acronym_ar)
+        return  str(self.legalPersonID) + ' : ID : ' + str(self.sequence)
 
 class Inventory (models.Model):
     companyID = models.ForeignKey(Company, on_delete=models.PROTECT,blank=True)
