@@ -41,7 +41,7 @@ def create(request):
       # إنشاء اشتراك للمستخدم الحالي كمدير للشركة
       CompanyUser.objects.create(userID=request.user, companyID=company, jobTitleID=job_title_admin)     
       messages.success(request, 'تم إنشاء شركة بنجاح') 
-      return redirect('dalils')
+      return redirect('dalil_home')
     else :      
       handle_form_errors(basicInfo_Form, request)
       handle_form_errors(legalPerson_Form, request)
