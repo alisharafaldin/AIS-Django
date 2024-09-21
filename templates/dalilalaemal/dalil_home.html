@@ -118,7 +118,7 @@
   padding: 10px;
   border-radius: 8px;
   border: 2px solid #ccc;
-  width: 350px;
+  width: 35%;
   height: 50px;
   transition: all 0.3s ease-in-out;
   outline: none;
@@ -174,7 +174,7 @@
     </a>
   </div>
   <div class="search-container">
-    <select name="city" style="font-size: 14px; width: auto;" id="city-select" class="form-control city-search" onchange="goToCityPage()">
+    <select name="city" style="font-size: 14px;" id="city-select" class="form-control city-search" onchange="goToCityPage()">
       <option value="" >اختر المدينة</option>
       {% for city in cities2 %}
       <option value="{{ city.id }}">
