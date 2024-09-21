@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from companys.models import Company, CompanyUser, JobTitle
 from django.contrib import messages
 from companys.forms import CompanyForm
+from django.db.models import Q
 
 def handle_form_errors(head_form, request):
     """وظيفة مساعد لمعالجة الأخطاء وعرض الرسائل المناسبة."""
@@ -128,7 +129,6 @@ def dalil_home(request):
         'cities': cities,
         'search_cityID': request.GET.get('cityID', None),
         'cities2': Cities.objects.filter(basicInfo__legalpersons__company__isnull=False).distinct(),
-        
     }
     return render(request, 'dalilalaemal/dalil_home.html', context)
 
@@ -176,9 +176,20 @@ def dalil_search(request):
     search_cityID = request.GET.get('cityID', None)
     search_companyID = request.GET.get('companyID', '')
     search_businessScopeID = request.GET.get('businessScopeID', '')
-    
+    # الحصول على المدخل النصي من المستخدم وتجاهل المسافات
+    search_name = request.GET.get('search_name', '')  # القيمة الافتراضية سلسلة فارغة إذا لم يتم إدخال شيء
+    # إعداد التعبير النمطي لاستبدال "ا" و"أ" وكذلك "ة" و"ه"
+    search_regex = search_name.replace('أ', '[ا|أ]').replace('ا', '[أ|ا]').replace('ة', '[ة|ه]').replace('ه', '[ة|ه]')
+    # إزالة المسافات في نهاية النص إذا كانت موجودة
+    search_regex = search_regex.strip()
+
+
     # استعلام الشركات
     company_query = Company.objects.filter(includeInDalilAlaemal=True).order_by('-id')
+    
+    if search_name:
+        # تنفيذ البحث باستخدام iregex لتجاهل حالة الحروف
+        company_query = company_query.filter(legalPersonID__name_ar__iregex=search_regex)
     
     # تصفية الشركات بناءً على المدينة
     if search_cityID:
@@ -191,7 +202,6 @@ def dalil_search(request):
     # تصفية الشركات بناءً على معرف الشركة
     if search_companyID:
         company_query = company_query.filter(id=search_companyID)
-    
     # تحويل search_cityID إلى عدد صحيح إذا كانت القيمة ليست فارغة
     try:
         if search_cityID and search_cityID != 'None':        
@@ -235,6 +245,7 @@ def dalil_search(request):
         'companys': company_query,
         'search_form': InvoiceSearchForm(request.GET),
         'search_cityID': search_cityID,
+        'search_name': search_name,
         'selected_city_name': selected_city_name,
         'search_businessScopeID': search_businessScopeID,
         'businessScope': sorted_scope_business,

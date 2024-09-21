@@ -6,9 +6,12 @@
     <i class="fas fa-home nav-icon"></i>
       <span>الرئيسة</span>
   </a>
-  <!-- <a href="https://docs.google.com/forms/d/e/1FAIpQLSdIJcsZD9iOsvD9QLYo4mSN-hWxQkZTqhJd1OzPl49qQ4XTzA/viewform" class="nav-center" target="_blank"> -->
+  {% if request.user.is_authenticated  %}
   <a href="{% url 'dalil_create' %}" class="nav-center">
-      <div class="nav-circle">
+  {% else %}
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSdIJcsZD9iOsvD9QLYo4mSN-hWxQkZTqhJd1OzPl49qQ4XTzA/viewform" class="nav-center" target="_blank">
+  {% endif %}  
+    <div class="nav-circle">
         <i class="far fa-add nav-icon" style="color: black;" ></i>
       </div>
     </a>

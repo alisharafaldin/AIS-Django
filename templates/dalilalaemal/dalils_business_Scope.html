@@ -11,7 +11,7 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    width: 250px;
+    width: 170px;
     height: 150px;
     border-radius: 15px;
     overflow: hidden;
@@ -31,7 +31,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        opacity: 0.6;
+        opacity: 0.4;
         z-index: 0;
     }
 
@@ -81,12 +81,13 @@
 
     .card h3 {
         color: #ffffff;
+        font-size: 17px;
         /* margin-bottom: 30px; */
         
     }
     
     .card p {
-        font-size: 20px;
+        font-size: 25px;
         color: #ffffff;
     } 
   </style>
@@ -104,7 +105,7 @@
                 <div class="map-container">
                     <div class="card-content">
                         <h3>{{ label }}</h3>
-                        <p>عدد المحلات : {{ count }}</p>
+                        <p>( {{ count }} )</p>
                     </div>
                 </div>
             </div>

@@ -109,6 +109,7 @@
   justify-content: center;
   margin-top: 10px;
   margin-bottom: 10px;
+  align-items: center;
 }
 
 /* تأثير اختيار المدينة */
@@ -125,6 +126,9 @@
   animation: pulse 1.5s infinite;  /* إضافة تأثير الوميض */
 }
 
+.counter:hover {
+        transform: translateY(-10px);
+}
 /* تأثير عند التركيز على العنصر */
 .city-search:focus {
   border-color: #5cb85c;
@@ -170,7 +174,7 @@
     </a>
   </div>
   <div class="search-container">
-    <select name="city" style="font-size: 14px;" id="city-select" class="form-control city-search" onchange="goToCityPage()">
+    <select name="city" style="font-size: 14px; width: auto;" id="city-select" class="form-control city-search" onchange="goToCityPage()">
       <option value="" >اختر المدينة</option>
       {% for city in cities2 %}
       <option value="{{ city.id }}">
@@ -178,6 +182,11 @@
       </option>
       {% endfor %}
     </select>
+    <form method="GET"class="form-inline my-2 my-lg-0" style="display: flex; flex-direction: row !important; margin-right: 5px;"  action="{% url 'dalil_search' %}">
+      <input class="form-control mr-sm-2 remove-outline" style="width: 70%;" name="search_name"placeholder="أو ابحث بإسم العمل"/>
+      <button class="btn btn-main" type="submit">بحث<i class="fa-solid fa-magnifying-glass"></i></button>
+    </form>
+    
   </div>
   
   <img src="{% static 'dist/img/مصرسلام.png' %}" alt="" class="fade-in-image" />
@@ -190,15 +199,14 @@
     color: var(--subColor);
     /* background-color: var(--BackgroundColor-Home); */
     /* background-color: rgb(236, 236, 236) !important; */
-    padding: 17px;
+    padding: 0px 17px;
     border-radius: 10px;
     "
     class="fade-in-image"
     >دليل الأعمال السودانية في مصر هو :
-    <span style="font-weight: bold">مشروع تعاوني</span> يضم الأعمال والأنشطة
+    <span style="font-weight: bold">دليل إرشادي</span> يضم الأعمال والأنشطة
     التجارية السودانية في مصر ,
-    <span style="font-weight: bold">الهدف من الدليل</span> تعزيز التعاون و
-    الترابط بين البلدين ودفع عجلة الإقتصاد لأصحاب الأعمال ولبلدنا الحبيب الثاني
+    <span style="font-weight: bold">الهدف من الدليل</span> تعزيز التعاون التجاري بين البلدين ودفع عجلة الإقتصاد لأصحاب الأعمال ولبلدنا الحبيب الثاني
     و المِضياف مصر.
   </span>
 </div>
@@ -218,7 +226,7 @@
 
   // تأثير كتابة اختر المدينة
   document.addEventListener("DOMContentLoaded", function() {
-  var placeholderText = "اختر مدينتك, وتعرف على أعمال السودانيين من حولك";
+  var placeholderText = "اختر مدينتك";
   var select = document.getElementById("city-select");
   var index = 0;
 
@@ -227,7 +235,7 @@
       // تحديث قيمة الخيار الافتراضي تدريجياً
       select.options[0].text = placeholderText.substring(0, index + 1);
       index++;
-      setTimeout(typePlaceholder, 100);  // سرعة الكتابة (100 مللي ثانية لكل حرف)
+      setTimeout(typePlaceholder, 50);  // سرعة الكتابة (100 مللي ثانية لكل حرف)
     }
   }
 

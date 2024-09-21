@@ -12,10 +12,9 @@
     <br>
     <div style="display: flex; align-items: center; margin-top: 45px;">
       <!-- <label style="width: 150px; text-align: center;" for="city-select">اختر المدينة:</label> -->
-      <select name="city" id="city-select" style="height: 40px;" class="form-control" onchange="goToCityPage()">
+      <select name="city" id="city-select" style="height: 40px; width: 40%;" class="form-control" onchange="goToCityPage()">
         <!-- الخيار الافتراضي -->
-        <option value="">اختر المدينة, ابحث حسب منطقتك</option>
-        
+        <option value="">اختر المدينة</option>
         <!-- حلقة للمدن -->
         {% for city in cities %}
         <option value="{{ city.id }}"{% if city.id == search_cityID %} selected {% endif %}>
@@ -23,7 +22,11 @@
         </option>
         {% endfor %}
       </select>
-      <a style="width: 150px; height: 40px;" href="{% url 'dalil_search' %}?businessScopeID=&cityID=" class="btn btn-main" type="submit">جميع المدن</a>
+      <form method="GET"class="form-inline my-2 my-lg-0" style="display: flex; flex-direction: row !important; margin-right: 5px;"  action="{% url 'dalil_search' %}">
+        <input class="form-control mr-sm-2 remove-outline" value="{{search_name}}" style="width: 40%;" name="search_name"placeholder="أو ابحث بإسم العمل"/>
+        <button class="btn btn-main" type="submit">بحث<i class="fa-solid fa-magnifying-glass"></i></button>
+      </form>
+      <!-- <a style="width: 150px; height: 40px;" href="{% url 'dalil_search' %}?businessScopeID=&cityID=" class="btn btn-main" type="submit">جميع المدن</a> -->
     </div>
     <br>  
 
