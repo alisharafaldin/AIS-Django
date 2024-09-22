@@ -71,7 +71,7 @@ class BusinessScopeImportExport(ImportExportModelAdmin):
 @admin.register(BusinessScopeSpecialization)
 class BusinessScopeSpecializationImportExport(ImportExportModelAdmin):
     pass
-    list_display = ['id', 'name_ar']
+    list_display = ['id', 'name_ar', 'businessScopeID']
     
 @admin.register(TypeID)
 class TypeIDImportExport(ImportExportModelAdmin):
