@@ -35,7 +35,7 @@ def calculate_totals(details_queryset):
 
 
 @login_required
-def create(request):
+def cashreceipt_create(request):
     if not request.user.has_perm('cashreceipt.add_CashReceiptHead'):
         messages.info(request, f"عذراً {request.user}، ليس لديك الأذونات اللازمة لإنشاء سند قبض.")
         return redirect('cashreceipts')
@@ -65,20 +65,22 @@ def create(request):
                     if not form.cleaned_data.get('inventoryID'):
                         body.inventoryID = head.inventoryID
                     body.save()
-            messages.success(request, 'تم إضافة فاتورة مبيعات جديدة')
+            messages.success(request, 'تم إضافة سند قبض جديد')
             return redirect('cashreceipts')
         else:
             # دالة عرض الأخطاء
             handle_formset_errors(head_form, formset, request)
             # إعادة عرض النماذج مع الأخطاء
-            return render(request, 'cash_receipt/cashReceipt_create.html', {
+            return render(request, 'cashreceipt/cashreceipt_create.html', {
                 'head_form': head_form,
                 'formset': formset,
             })
     else:
         # إعداد النماذج عند طلب GET
         head_form = CashReceiptHeadForm(companyID=current_company_id)
-        formset = CashReceiptFormSet(queryset=CashReceiptBody.objects.none())
+        # formset = CashReceiptFormSet(queryset=CashReceiptBody.objects.none())
+        formset = CashReceiptFormSet(queryset=CashReceiptBody.objects.none(),  # لا توجد بيانات افتراضية
+            form_kwargs={'companyID': current_company_id})  # تمرير companyID للنموذج
         is_edit_mode = True  # حدد إذا كنت في وضع إنشاء أو تعديل
 
         context = {
@@ -88,7 +90,7 @@ def create(request):
             'cash_receipt_head_label': CashReceiptHeadForm(),
             'cash_receipt_body_label': CashReceiptBodyForm(),
         }
-        return render(request, 'cashreceipt/create.html', context)
+        return render(request, 'cashreceipt/cashreceipt_create.html', context)
 
 # @login_required
 # def reade(request, id):

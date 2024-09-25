@@ -35,31 +35,37 @@ td {
 
 <div class="form-row main">
   <div style="display: none;">{{cash_receipt_head_form.created_by}}</div>
-  <!-- معلومات الفاتورة -->
-  <div class="col-md-6 col-sm-12 col-xs-12 mb-10">
+  <!-- معلومات السند -->
+<div class="col-md-6 col-sm-12 col-xs-12 mb-10">
+    <div class="form-row">
+      <h6 style="font-weight: bold" class="col-md-2">الفرع</h6>
+      <div class="form-group col-md-4">{{cash_receipt_head_form.inventoryID}}</div>
+    </div>
     <div class="form-row">
       <h6 style="font-weight: bold" class="col-md-2">التاريخ</h6>
       <div class="form-group col-md-4">{{cash_receipt_head_form.date}}</div>
     </div>
     <div class="form-row">
-      <h6 style="font-weight: bold" class="col-md-2">العميل</h6>
+      <h6 style="font-weight: bold" class="col-md-2">إستلمنا من العميل</h6>
       <div class="form-group col-md-8">{{cash_receipt_head_form.customerID}}</div>
     </div>
     <div class="form-row">
-        <h6 style="font-weight: bold" class="col-md-2">الوصف</h6>
+        <h6 style="font-weight: bold" class="col-md-2">مبلغ وقدره</h6>
+        <div class="form-group col-md-8">{{cash_receipt_head_form.amountCredit}}</div>
+    </div>
+    <div class="form-row">
+        <h6 style="font-weight: bold" class="col-md-2">عبارة عن</h6>
         <div class="form-group col-md-8">{{cash_receipt_head_form.description}}</div>
     </div>
     <div class="form-row">
-      <h6 style="font-weight: bold" class="col-md-2">المخزن</h6>
-      <div class="form-group col-md-3">{{cash_receipt_head_form.inventoryID}}</div>
         <h6 style="font-weight: bold" class="col-md-2">العملة</h6>
         {% if is_edit_mode %}
-        <div class="form-group col-md-3">{{cash_receipt_head_form.currencyID}}</div>
+        <div class="form-group col-md-4">{{cash_receipt_head_form.currencyID}}</div>
         {% else %}
-        <div class="form-group col-md-3">{{cash_receipt_head_form.currencyID.currency_ar}}</div>
+        <div class="form-group col-md-4">{{cash_receipt_head_form.currencyID.currency_ar}}</div>
         {% endif %}
-        <h6 style="font-weight: bold" class="col-md-2">سعر الصرف</h6>
-        <div class="form-group col-md-3">{{cash_receipt_head_form.rate}}</div>
+        <h6 style="font-weight: bold" class="col-md-3">سعر الصرف</h6>
+        <div class="form-group col-md-2">{{cash_receipt_head_form.rate}}</div>
     </div>
   </div>
 
@@ -68,10 +74,14 @@ td {
     <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col">المنتج</th>
-        <th scope="col">الكمية</th>
-        <th scope="col">سعر الوحدة</th>
-        <th scope="col">الإجمالي</th>
+        <th scope="col">الحساب</th>
+        <th scope="col">المبلغ</th>
+        <th scope="col">العملة</th>
+        <th scope="col">سعر الصرف</th>
+        <th scope="col">المبلغ عملة محلية</th>
+        <th scope="col">الموظف</th>
+        <th scope="col">الوصف</th>
+        <th scope="col">رقم العملية</th>
       </tr>
     </thead>
     {{ cash_receipt_body_form.management_form }} 
@@ -86,15 +96,14 @@ td {
           {% endif %} 
           <td style="display: none;">{{ form.DELETE }}</td>
           <td style="display: none;">{{ form.id }}</td>
-          <td data-label="المنتج">{{form.itemID}}</td>
-          <td data-label="الكمية">{{form.quantity}}</td>
-          {% if is_edit_mode %}
-          <td data-label="سعر الوحدة">{{form.unit_price}}</td>
-          <td data-label="الإجمالي بعد الضريبة">{{form.total_price_after_tax}}</td>
-          {% else %}
-          <td data-label="سعر الوحدة">{{form.unit_price|intcomma}}</td>
-          <td data-label="الإجمالي بعد الضريبة">{{form.total_price_after_tax|intcomma}}</td>
-          {% endif %} 
+          <td data-label="الحساب">{{form.accountID}}</td>
+          <td data-label="المبلغ">{{form.amountDebit}}</td>
+          <td data-label="العملة">{{form.currencyID}}</td>
+          <td data-label="سعر الصرف">{{form.rate}}</td>
+          <td data-label="المبلغ عملة محلية">{{form.amountDebit_local_currency}}</td>
+          <td data-label="الموظف">{{form.employeeID}}</td>
+          <td data-label="الوصف">{{form.description}}</td>
+          <td data-label="رقم العملية">{{form.transactionNumber}}</td>
         </tr>
     {% endfor %}
     </tbody>

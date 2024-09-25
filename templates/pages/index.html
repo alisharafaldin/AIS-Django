@@ -8,6 +8,11 @@
     .card-footer .row .col-12:last-child {
       margin-bottom: 0;
     }
+
+    .sub-card {
+      opacity: .8;
+      /* color: black !important; */
+    }
   }
 </style>
 <div class="content-wrapper">
@@ -38,10 +43,82 @@
     <div class="container-fluid">
       <!-- Small boxes (Stat box) -->
       <div class="row">
+               <!-- بداية سندات القبض -->
+               <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-primary">
+                  <div class="inner">
+                    <h3>{{cashReceipt_list.count}}<sup style="font-size: 20px"></sup></h3>
+                    <p>سندات القبض</p>
+                  </div>
+                  <div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                  </div>
+                  <a href="{% url 'cashreceipts' %}" class="small-box-footer"
+                    >المزيد <i class="fas fa-arrow-circle-right"></i
+                  ></a>
+                </div>
+              </div> 
+              <!-- نهاية سندات القبض -->
+      
+        <!-- بداية العملاء -->
+        <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-success">
+            <div class="inner">
+              <h3>{{customers_list.count}}<sup style="font-size: 20px"></sup></h3>
+              <p>العملاء</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-stats-bars"></i>
+            </div>
+            <a href="{% url 'customers' %}" class="small-box-footer"
+              >المزيد <i class="fas fa-arrow-circle-right"></i
+            ></a>
+          </div>
+        </div> 
+        <!-- نهاية العملاء -->
+
+        <!-- بداية فواتير المبيعات -->
+        <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-success sub-card" >
+            <div class="inner">
+              <h3>{{invoicesSales_list.count}}<sup style="font-size: 20px"></sup></h3>
+              <p>فواتير المبيعات</p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+            <a href="{% url 'invoices_sales' %}" class="small-box-footer"
+              >المزيد <i class="fas fa-arrow-circle-right"></i
+            ></a>
+          </div>
+        </div> 
+        <!-- نهاية فواتير المبيعات -->
+  
+        <!-- بداية الموردين -->
+        <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-warning">
+            <div class="inner">
+              <h3>{{suppliers_list.count}}</h3>
+              <p>الموردين</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-bag"></i>
+            </div>
+            <a href="{% url 'suppliers' %}" class="small-box-footer"
+              >المزيد <i class="fas fa-arrow-circle-right"></i
+            ></a>
+          </div>
+        </div>
+        <!-- نهاية الموردين -->
+
         <!-- بداية فواتير المشتريات -->
         <div class="col-lg-3 col-6">
           <!-- small box -->
-          <div class="small-box bg-info">
+          <div class="small-box bg-warning sub-card">
             <div class="inner">
               <h3>{{invoicesPurchases_list.count}}</h3>
               <p>فواتير المشتريات</p>
@@ -56,82 +133,46 @@
         </div>
         <!-- نهاية فواتير المشتريات -->
 
-        <!-- بداية فواتير المشتريات -->
+        <!-- بداية المخزون -->
         <div class="col-lg-3 col-6">
           <!-- small box -->
-          <div class="small-box bg-success">
+          <div class="small-box bg-dark">
             <div class="inner">
-              <h3>{{invoicesSales_list.count}}<sup style="font-size: 20px"></sup></h3>
-              <p>فواتير المبيعات</p>
+              <h3>{{inventory_list.count}}<sup style="font-size: 20px"></sup></h3>
+              <p>المخازن</p>
             </div>
             <div class="icon">
-              <i class="fas fa-shopping-cart"></i>
+              <i class="ion ion-stats-bars"></i>
             </div>
-            <a href="{% url 'invoices_sales' %}" class="small-box-footer"
+            <a href="{% url 'product_quantity_summary' %}" class="small-box-footer"
               >المزيد <i class="fas fa-arrow-circle-right"></i
             ></a>
           </div>
         </div> 
-        <!-- نهاية فواتير المبيعات -->
-        
-          <!-- بداية الموردين -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-secondary">
-              <div class="inner">
-                <h3>{{suppliers_list.count}}</h3>
-                <p>الموردين</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-bag"></i>
-              </div>
-              <a href="{% url 'suppliers' %}" class="small-box-footer"
-                >المزيد <i class="fas fa-arrow-circle-right"></i
-              ></a>
-            </div>
-          </div>
-          <!-- نهاية الموردين -->
-  
-          <!-- بداية العملاء -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-primary">
-              <div class="inner">
-                <h3>{{customers_list.count}}<sup style="font-size: 20px"></sup></h3>
-                <p>العملاء</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-stats-bars"></i>
-              </div>
-              <a href="{% url 'customers' %}" class="small-box-footer"
-                >المزيد <i class="fas fa-arrow-circle-right"></i
-              ></a>
-            </div>
-          </div> 
-          <!-- نهاية العملاء -->
+        <!-- نهاية المخزون -->
 
-          <!-- بداية المخزون -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-primary">
-              <div class="inner">
-                <h3>{{customers_list.count}}<sup style="font-size: 20px"></sup></h3>
-                <p>المخزون</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-stats-bars"></i>
-              </div>
-              <a href="" class="small-box-footer"
-                >المزيد <i class="fas fa-arrow-circle-right"></i
-              ></a>
-            </div>
-          </div> 
-          <!-- نهاية المخزون -->
-
-          <!--بداية القوى العاملة -->
+        <!-- بداية المنتجات -->
         <div class="col-lg-3 col-6">
           <!-- small box -->
-          <div class="small-box bg-warning">
+          <div class="small-box bg-dark sub-card">
+            <div class="inner">
+              <h3>{{items_list.count}}<sup style="font-size: 20px"></sup></h3>
+              <p>المنتجات</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-stats-bars"></i>
+            </div>
+            <a href="{% url 'net_sales' %}" class="small-box-footer"
+              >المزيد <i class="fas fa-arrow-circle-right"></i
+            ></a>
+          </div>
+        </div> 
+        <!-- نهاية المنتجات -->
+
+        <!--بداية القوى العاملة -->
+        <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-primary">
             <div class="inner">
               <h3>{{emp_count.count}}</h3>
 

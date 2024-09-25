@@ -4,13 +4,13 @@ from basicinfo.models import  TypePayment, TypeTransaction, Countries
 from companys.models import Company
 from employees.models import Employee
 from accounts. models import AccountsTree
-from sales.models import Customers, InvoicesSalesBody
+from sales.models import Customers, InvoicesSalesBody, Inventory
 # Create your models here.
-
 
 class CashReceiptHead (models.Model):
     companyID = models.ForeignKey(Company, on_delete=models.PROTECT,blank=True)
     sequence = models.PositiveIntegerField(editable=False)  # الحقل التسلسلي
+    inventoryID = models.ForeignKey(Inventory, verbose_name='المخزن', on_delete=models.PROTECT, blank=True, null=True)
     date = models.DateField(verbose_name='التاريخ', blank=True, null=True)
     typeTransactionID = models.ForeignKey(TypeTransaction, verbose_name='نوع العملية', default=2, on_delete=models.PROTECT, blank=True, null=True)
     typePaymentID = models.ForeignKey(TypePayment, verbose_name='طريقة الدفع', default=1, on_delete=models.PROTECT, blank=True, null=True)
@@ -40,6 +40,7 @@ class CashReceiptBody(models.Model):
     cashReceiptHeadID = models.ForeignKey(CashReceiptHead, on_delete=models.CASCADE, related_name='cash_receipt', blank=True)
     accountID = models.ForeignKey(AccountsTree, verbose_name='الحساب المدين', on_delete=models.PROTECT, blank=True, null=True)
     amountDebit = models.DecimalField(verbose_name='المبلغ المدين', default=0, max_digits=6, decimal_places=2)
+    employeeID = models.ForeignKey(Employee, verbose_name='الموظف', on_delete=models.PROTECT, blank=True, null=True)
     currencyID = models.ForeignKey(Countries , verbose_name='العملة', default=3, on_delete=models.PROTECT, blank=True, null=True)
     rate = models.DecimalField(verbose_name='سعر الصرف', default=1, max_digits=6, decimal_places=2, blank=True, null=True)
     transactionNumber = models.TextField(verbose_name='رقم العملية', max_length=50, blank=True, null=True)

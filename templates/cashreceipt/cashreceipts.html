@@ -32,7 +32,7 @@
     <h4 class="form-group col-md-9" style="color: black;">تقرير |سندات القبض </h4>
   </div>
   <form method="GET"class="form-inline my-2 my-lg-0"action="{% url 'invoices_sales_search' %}">
-    <a href="{% url 'create' %}" class="btn btn-main">إضافة سند قبض جديدة</a>
+    <a href="{% url 'cashreceipt_create' %}" class="btn btn-main">إضافة سند قبض جديدة</a>
     <button class="btn btn-main" type="submit">بحث<i class="fa-solid fa-magnifying-glass"></i></button>
     <a href="{% url 'cashreceipts' %}" class="btn btn-main" type="submit">إعادة تعيين<i class="fa-solid fa-rotate-right"></i></a>
     <div style="width: 100%; display: flex; align-items: center; gap: 10px;">

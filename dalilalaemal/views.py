@@ -133,12 +133,12 @@ def dalil_home(request):
     return render(request, 'dalilalaemal/dalil_home.html', context)
 
 # @login_required
-def dalilalaemal_single(request, id):
+def dalil_single(request, id):
     company = Company.objects.get(id=id)
     context = {
         'company': company,
     }
-    return render(request, 'dalilalaemal/dalilalaemal_single.html', context)
+    return render(request, 'dalilalaemal/dalil_single.html', context)
 
 # @login_required
 def dalils_business_Scope(request):

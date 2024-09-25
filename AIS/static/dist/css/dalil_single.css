@@ -1,0 +1,102 @@
+
+/* ============== Start Single ============ */
+.profile-container {
+    width: 80%;
+    max-width: 1200px;
+    margin: 20px auto;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+  }
+  
+  .profile-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .profile-header img {
+    width: 270px !important;
+    height: auto;
+    border-radius: 10% !important;
+  }
+  
+  .company-name {
+    font-size: 2em;
+    margin: 10px 0;
+  }
+  
+  .company-tagline {
+    font-size: 1.2em;
+    color: #666;
+  }
+  
+  .profile-info {
+    margin-bottom: 20px;
+  }
+  
+  .profile-info h2 {
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+  }
+  
+  .profile-info ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .profile-info li {
+    margin-bottom: 10px;
+  }
+  
+  .profile-info strong {
+    display: inline-block;
+    width: 150px;
+  }
+  
+  .profile-map {
+    margin-top: 20px;
+  }
+  
+  .profile-map h2 {
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+  }
+  
+  .profile-info span {
+    font-weight: bold;
+  }
+  
+  .map-container {
+    position: relative;
+    overflow: hidden;
+    padding-top: 56.25%;
+  }
+  
+  .map-container i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 30vw;
+    text-align: center;
+    width: auto;
+    height: auto;
+  }
+  
+  .map-container h6 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 5vw;
+    text-align: center;
+    width: auto;
+    height: auto;
+  }
+  /* ============== End Single ============ */
+  

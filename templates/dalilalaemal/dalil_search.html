@@ -1,18 +1,14 @@
-{% extends 'base_dalilalaemal.html' %} {% load static %} {% block title %} | Companys 
-{% endblock %} {% block content %}
-
-<!-- <div class="content-wrapper"> -->
-
-  {% include 'partials/_alerts.html' %}
+{% extends 'base_dalilalaemal.html' %} 
+{% load static %} 
+{% block title %} | بحث {% endblock %} 
+{% block content %}
+{% include 'partials/_alerts.html' %}
+<link rel="stylesheet" href="{% static 'dist/css/dalil_search.css' %}?v=0.7" />
+<div class="content-main">
   <form method="GET" action="{% url 'dalil_search' %}">
-    <!-- <div style="width: 100%; display: flex; align-items: center; gap: 10px;">
-    <button class="btn btn-main" type="submit" style="width: 30%;">بحث بالمدينة<i class="fa-solid fa-magnifying-glass"></i></button>
-    {{search_form.businessScopeID}}
-    </div> -->
     <br>
-    <div style="display: flex; align-items: center; margin-top: 45px;">
-      <!-- <label style="width: 150px; text-align: center;" for="city-select">اختر المدينة:</label> -->
-      <select name="city" id="city-select" style="height: 40px; width: 40%;" class="form-control" onchange="goToCityPage()">
+    <div class="select-main">
+      <select name="city" id="city-select" class="form-control" onchange="goToCityPage()">
         <!-- الخيار الافتراضي -->
         <option value="">اختر المدينة</option>
         <!-- حلقة للمدن -->
@@ -22,36 +18,30 @@
         </option>
         {% endfor %}
       </select>
-      <form method="GET"class="form-inline my-2 my-lg-0" style="display: flex; flex-direction: row !important; margin-right: 5px;"  action="{% url 'dalil_search' %}">
+      <form method="GET"class="form-inline my-2 my-lg-0 form-main" action="{% url 'dalil_search' %}">
         <input class="form-control mr-sm-2 remove-outline" value="{{search_name}}" style="width: 40%;" name="search_name"placeholder="أو ابحث بإسم العمل"/>
-        <button class="btn btn-main" type="submit">بحث<i class="fa-solid fa-magnifying-glass"></i></button>
+        <button class="btn btn-main btn-color" type="submit">
+          بحث<i class="fa-solid fa-magnifying-glass"></i>
+        </button>
       </form>
-      <!-- <a style="width: 150px; height: 40px;" href="{% url 'dalil_search' %}?businessScopeID=&cityID=" class="btn btn-main" type="submit">جميع المدن</a> -->
     </div>
     <br>  
-
-    <div class="horizontal-menu-container" style="margin-top: -15px;">
-      <div class="horizontal-menu" style="display: flex;">
+    <div class="horizontal-menu-container">
+      <div class="horizontal-menu">
         {% for id, logo, label, count in businessScope %}
-          <a style="height: 35px; display: flex; flex-direction: row;  align-items: center; background-color: rgb(236, 236, 236) !important; color: black;" href="{% url 'dalil_search' %}?businessScopeID={{id}}&cityID={{search_cityID}}" class="menu-item">{{ label }} ({{ count }})</a>
+          <a class="menu-item" href="{% url 'dalil_search' %}?businessScopeID={{id}}&cityID={{search_cityID}}">{{ label }} ({{ count }})</a>
         {% endfor %}
-          <!-- Add more items as needed -->
       </div>
     </div>
-   
-    <div style="width: 100%; display: flex; align-items: center; gap: 10px;">
-  </div>
   </form>
   <div class="content form-row justify-content-around" >
     {% for company in companys %}
-  
-    <!-- Flexbox container for aligning the cards -->
     <div class="d-flex justify-content-center align-items-center w-100">
       <!-- Company Card -->
-      <div class="card" style="width: 500px; ">
+      <div class="card">
         <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 20px;">
           <div style="padding-right: 20px; padding-left: 10px; display: flex;">
-            <a href="{% url 'dalilalaemal_single' company.id %}">
+            <a href="{% url 'dalil_single' company.id %}">
               {% if company.legalPersonID.basicInfoID.attachments %}
               <img style="width: 50px; height: 50px;" src="{{ company.legalPersonID.basicInfoID.attachments.url }}" class="rounded me-2" alt="...">
               {% else %}
@@ -59,7 +49,7 @@
               {% endif %}
             </a>
             <div style="display: flex; flex-direction: column; padding-right: 10px;">  
-              <a style="color: black;" href="{% url 'dalilalaemal_single' company.id %}"><strong class="me-auto">{{ company.legalPersonID.name_ar }}</strong></a>
+              <a style="color: black;" href="{% url 'dalil_single' company.id %}"><strong class="me-auto">{{ company.legalPersonID.name_ar }}</strong></a>
               <a style="font-size: 12px;" href="{% url 'dalil_search' %}?businessScopeID={{ company.legalPersonID.businessScopeID.id }}">{{ company.legalPersonID.businessScopeID }}</a>
               <a style="font-size: 12px;" class="btn-link" href="{% url 'update' company.id %}"
               ><i class="fas fa-edit"></i>
@@ -77,8 +67,6 @@
               {% if company.legalPersonID.basicInfoID.google_maps_location %}
               <a href="{{ company.legalPersonID.basicInfoID.google_maps_location }}" class="card-link">
                 <i class="fa-solid fa-location-dot"></i></a>
-              <!-- <a href="https://www.google.com/maps/?q={{ company.legalPersonID.basicInfoID.latitude }},{{ company.legalPersonID.basicInfoID.longitude }}" class="card-link"> -->
-                <!-- <i class="fa-solid fa-location-dot"></i></a> -->
               {% endif %}
             </h6>
             <li class="list-group-item" style="display: flex; justify-content: space-evenly; padding-bottom: 0;">
@@ -97,7 +85,6 @@
               {% if company.isDelivery %}
               <a href="tel:{{company.legalPersonID.basicInfoID.phone}}"class="btn-link">
                 <span style="color: black; font-weight: 500;">توصيل</span>
-                <!-- <i class="fa-brands fa-delivery" style="color: green"></i> -->
                 <i class="fa fa-shipping-fast" style="color: green"></i>
               </a>
               {% endif %}
@@ -108,30 +95,5 @@
     </div>
     {% endfor %}
   </div>
-
-  <script>
-
-document.addEventListener('DOMContentLoaded', function() {
-    var citySelect = document.getElementById('city-select');
-    
-    // تحقق مما إذا كانت المدينة محددة بالفعل (من search_cityID)
-    if (citySelect.value) {
-        citySelect.options[0].text = citySelect.options[citySelect.selectedIndex].text;
-    }
-});
-function goToCityPage() {
-    var citySelect = document.getElementById('city-select');
-    var selectedCityID = citySelect.value;
-
-    // إنشاء رابط جديد بدون معايير استعلام سابقة
-    var newURL = new URL(window.location.origin + window.location.pathname);
-
-    // إضافة المدينة المختارة كمعيار استعلام
-    newURL.searchParams.set('cityID', selectedCityID);
-
-    // التوجيه إلى الرابط الجديد
-    window.location.href = newURL.toString();
-}
-
-</script>
+</div>
 {% endblock %}

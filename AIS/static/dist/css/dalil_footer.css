@@ -1,0 +1,52 @@
+
+/* ==================== Start Customize Foooter Fixad ====================*/
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: var(--BackgroundColor-Main); /* لون الخلفية */
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.nav-item {
+    color: white;
+    text-align: center;
+    flex: 1;
+}
+
+.nav-item img {
+    width: 24px;
+    height: 24px;
+}
+
+.nav-item span {
+    display: block;
+    margin-top: 5px;
+}
+
+.nav-center {
+    position: relative;
+    bottom: 20px;
+}
+
+.nav-circle {
+    background-color: var(--mainColor);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.nav-circle img {
+    width: 30px;
+    height: 30px;
+}
+  
+/* ==================== End Customize footer Fixad ====================*/

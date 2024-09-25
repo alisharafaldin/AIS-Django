@@ -1,0 +1,235 @@
+/* استايل  */
+:root{
+  --mainColor: #ffeb01 !important;
+  --subColor: #011c53;
+  --BackgroundColor-Main: #011c53 !important;
+  --BackgroundColor-Sub: #ffeb01 !important;
+  --mainTitleColor: #ffeb01;
+
+  --mainTitle: #fff;
+  --subTitle: #10171a;
+  --subTitleContent: #83888a;
+  --bgC-btn-Main: #003366;
+  --bgC-btn-Sub: #BDB17A;
+  --borderColor: #a0a9ae;
+  --btnDelete: #ff0000;
+}
+
+*{
+  direction: rtl !important;
+  font-family: "Cairo", system-ui;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings: "slnt" 0;
+} 
+
+body {
+  /* font-family: Arial, sans-serif; */
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+ 
+.content-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.content-main {
+  width: 95%;
+  margin: 20% 10px 0 10px;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center !important;
+  align-items: center !important;
+  align-content: center !important;
+  flex-wrap: wrap;
+  position: absolute;
+}
+
+/* ============== تحسين القوائم المنسدلة ====================== */
+.select2-container--default .select2-selection--single {
+  height: 38px !important;
+  padding: 5px !important;
+  border-radius: 4px !important;
+  border: 1px solid #ccc !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  line-height: 28px !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 36px !important;
+}
+/* ============== تحسين القوائم المنسدلة ====================== */
+
+
+.btn-color{
+  background-color: var(--BackgroundColor-Main);
+  color: #fff;
+}
+
+.title-label {
+  background:#ececec;
+  color: rgb(88, 88, 88);
+  /* width: fit-content; */
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+}
+
+.layout-fixed .main-sidebar {
+  right: 0;  
+  position: fixed;
+  background: var(--mainColor);
+  color: #ffff !important;
+  font-weight: bold;
+  border-left: solid 4px var(--subColor);
+}
+
+.brand-image {
+    float: right;
+}
+
+.content-wrapper, .main-footer, .main-header {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.mr-auto-navbav{
+    margin-right: auto!important;
+}
+
+.navbar-expand .navbar-nav .nav-link {
+    padding-right: 1rem;
+    padding-left: 1rem;
+}
+
+[class*=icheck-]>input:first-child:checked+input[type=hidden]+label::after, 
+[class*=icheck-]>input:first-child:checked+label::after {
+    right: 15px;
+    left: auto;
+}
+
+.nav-sidebar .nav-link>.right, 
+.nav-sidebar .nav-link>p>.right {
+    left: 1rem;
+    right: auto;
+}
+
+.nav-sidebar .nav-link>.right:nth-child(2), 
+.nav-sidebar .nav-link>p>.right:nth-child(2) {
+    left: 2.2rem;
+    right: auto;
+}
+
+.small-box .icon>i {
+    left: 15px;
+    right: auto;
+}
+
+.has-treeview:hover{
+  color: var(--mainColor) !important;
+}
+
+
+html, body{
+  direction: rtl;
+  text-align: right;
+  height: 100%;
+  width: 100%;
+}
+
+.container{
+    border: solid var(--borderColor) 1px;
+    /* margin: 5px; */
+    padding: 0px !important;
+    border-top-right-radius: 10px;
+  
+  }
+
+.main-title{
+  background: var(--mainColor) !important;
+  border-top-right-radius: 5px;
+  padding: 10px;
+  padding-right: 20px;
+  color: #fff;
+  font-weight: bold;
+  border-top: var(--subColor) solid;
+}
+
+.content {
+  margin: 15px;
+}
+
+.btn{
+  padding: 6px;
+  margin: 5px;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #fff;
+}
+
+.btn:hover{
+  color: #fff;
+  /* font-weight: bold; */
+  border-color: var(--mainColor);
+}
+
+.btn-main {
+  background-color: var(--subColor) ;
+}
+
+.btn-save{
+  background-color: var(--subColor) !important;
+  border-color: var(--subColor);
+}
+
+.btn-close{
+  background-color: var(--sub2Color) !important;
+  border-color: var(--sub2Color);
+}
+
+.btn-delete{
+  background-color: var(--btnDelete) !important;
+  border-color: var(--btnDelete);
+}
+
+.btn-link{
+  color: var(--mainColor);
+  font-size: 20px;
+}
+
+.current_value{
+  font-weight: bold !important;
+}
+
+.sub-title{
+  background: var(--BackgroundColor-Sub);
+  color: var(--subTitle);
+  padding: 5px;
+  border-radius: 3px;
+  font-weight: bold;
+  font-size: 14px;
+  margin-left: 5px !important;
+  min-width: 110px;
+}
+
+.sub-title-content{
+  width: 160px;
+  margin-left: 5px !important;
+  font-size: 14px;
+  color: var(--subTitleContent);
+  /* min-width: 160px; */
+  border: var(--BackgroundColor-Sub) solid 1px;
+  /* width: auto; */
+  padding: 0 5px;
+  overflow: hidden;
+}
+

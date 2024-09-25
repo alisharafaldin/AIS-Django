@@ -1,161 +1,12 @@
-{% extends 'base_dalilalaemal.html' %} {% load static %} {% block title %} |
-الرئيسة {% endblock %} {% block content %} {% include 'partials/_alerts.html' %}
-
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #ffffff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-  }
-  .content-main {
-    width: 95%;
-    margin: 20% 10px 0 10px;
-    display: flex !important;
-    flex-direction: column;
-    justify-content: center !important;
-    align-items: center !important;
-    align-content: center !important;
-    flex-wrap: wrap;
-  }
-  .counter-container {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    align-items: center;
-    flex-direction: row;
-    margin-top: 5%;
-    text-decoration: none;
-    /* margin-bottom: 150px; */
-  }
-
-  .content::before {
-    /* position: absolute;
-      display: flex;
-      align-items: center;
-      text-align: center;
-      justify-content: center;
-      background-color: black;
-      border-radius: 10px;
-      content: '';
-      color: #fff;
-      font-size: 24px;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0.4;
-      z-index: 0; */
-  }
-  .counter {
-    /* background-color: var(--subColor); */
-    background-color: var(--BackgroundColor-Home);
-    /* background-color: rgb(236, 236, 236) !important; */
-    /* background-color: #fff; */
-    border-radius: 10px;
-    padding: 15px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 10px;
-    width: 33% !important;
-    height: 128px;
-    /* border: solid var(--subColor); */
-    z-index: 1;
-  }
-
-  .counter h2 {
-    font-size: 14px;
-    margin-bottom: 5px;
-    color: var(--mainTitle);
-    /* font-weight: bold; */
-  }
-
-  .counter span {
-    font-size: 40px;
-    font-weight: bold;
-    color: var(--mainColor);
-    text-shadow: 0 2px 2px rgb(0, 0, 0);
-  }
-
-  .image-container {
-    overflow: hidden; /* للتأكد من عدم ظهور الصورة خارج الحاوية أثناء التحريك */
-    position: relative;
-  }
-
-  .fade-in-image {
-    opacity: 0; /* البدء بخلفية شفافة */
-    transform: translateY(-30px); /* البدء من موقع أعلى */
-    animation: fadeInUp 1.5s ease-out forwards; /* تطبيق التأثير */
-    width: 100%;
-  }
-
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px); /* بداية التحريك من أسفل */
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0); /* نهاية التحريك في الموقع النهائي */
-    }
-  }
-
-  /* بداية تنسقات عنصر البحث */
-/* إعداد الحاوية */
-.search-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  align-items: center;
-}
-
-/* تأثير اختيار المدينة */
-.city-search {
-  font-size: 18px;
-  padding: 10px;
-  border-radius: 8px;
-  border: 2px solid #ccc;
-  width: 35%;
-  height: 50px;
-  transition: all 0.3s ease-in-out;
-  outline: none;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  animation: pulse 1.5s infinite;  /* إضافة تأثير الوميض */
-}
-
-.counter:hover {
-        transform: translateY(-10px);
-}
-/* تأثير عند التركيز على العنصر */
-.city-search:focus {
-  border-color: #5cb85c;
-  box-shadow: 0 0 15px rgba(92, 184, 92, 0.7);
-  transition: all 0.3s ease;
-}
-
-/* إعداد حركة الوميض */
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 15px var(--BackgroundColor-Home); /* الضوء الأخضر عند البدء */
-  }
-  50% {
-    box-shadow: 0 0 30px var(--mainColor);  /* زيادة الإضاءة */
-  }
-  100% {
-    box-shadow: 0 0 15px var(--BackgroundColor-Home); /* العودة للإضاءة الخفيفة */
-  }
-}
-
-  /* نهاية تنسقات عنصر البحث */
-</style>
+{% extends 'base_dalilalaemal.html' %} 
+{% load static %} 
+{% block title %} | الرئيسة {% endblock %} 
+{% block content %} 
+{% include 'partials/_alerts.html' %}
+<link rel="stylesheet" href="{% static 'dist/css/dalil_home.css' %}?v=0.1" />
 
 <div class="content-main">
-  <span style="font-size: 20px" class="fade-in-image"
-    >محلات كتير جنبك .. تلقاها بكل سهولة . .</span
-  >
+  <span style="font-size: 20px" class="fade-in-image">محلات كتير جنبك .. تلقاها بكل سهولة . .</span>
   <div class="counter-container">
     <a class="counter" href="{% url 'dalils' %}">
       <h2>أكثر من +</h2>
@@ -174,7 +25,7 @@
     </a>
   </div>
   <div class="search-container">
-    <select name="city" style="font-size: 14px;" id="city-select" class="form-control city-search" onchange="goToCityPage()">
+    <select name="city" style="font-size: 14px;" id="city-select" class="form-control city-search" onchange="goFromHomeToCityPage()">
       <option value="" >اختر المدينة</option>
       {% for city in cities2 %}
       <option value="{{ city.id }}">
@@ -184,94 +35,74 @@
     </select>
     <form method="GET"class="form-inline my-2 my-lg-0" style="display: flex; flex-direction: row !important; margin-right: 5px;"  action="{% url 'dalil_search' %}">
       <input class="form-control mr-sm-2 remove-outline" style="width: 70%;" name="search_name"placeholder="أو ابحث بإسم العمل"/>
-      <button class="btn btn-main" type="submit">بحث<i class="fa-solid fa-magnifying-glass"></i></button>
+      <button class="btn btn-main btn-color " type="submit">بحث<i class="fa-solid fa-magnifying-glass"></i></button>
     </form>
     
   </div>
-  
-  <img src="{% static 'dist/img/مصرسلام.png' %}" alt="" class="fade-in-image" />
-  <span
-    style="
-    text-align: justify !important;
-    width: 95%;
-    line-height: 1.8 !important;
-    font-size: 15px;
-    color: var(--subColor);
-    /* background-color: var(--BackgroundColor-Home); */
-    /* background-color: rgb(236, 236, 236) !important; */
-    padding: 0px 17px;
-    border-radius: 10px;
-    "
-    class="fade-in-image"
-    >دليل الأعمال السودانية في مصر هو :
-    <span style="font-weight: bold">دليل إرشادي</span> يضم الأعمال والأنشطة
-    التجارية السودانية في مصر ,
-    <span style="font-weight: bold">الهدف من الدليل</span> تعزيز التعاون التجاري بين البلدين ودفع عجلة الإقتصاد لأصحاب الأعمال ولبلدنا الحبيب الثاني
-    و المِضياف مصر.
+  <!-- <img src="{% static 'dist/img/تعاون_تجاري.WEBP' %}?v=0.1" alt="" class="fade-in-image bg-img" /> -->
+  <img src="{% static 'dist/img/مصرسلام2.png' %}?v=0.1" alt="" class="fade-in-image bg-img" />
+  <span class="fade-in-image title-home">
+    دليل الأعمال السودانية في مصر هو : 
+    <span style="font-weight: bold">دليل إرشادي</span>
+    يضم الأعمال والأنشطة  التجارية السودانية في مصر , 
+    <span style="font-weight: bold">الهدف من الدليل</span> 
+    تعزيز التعاون التجاري بين البلدين ودفع عجلة الإقتصاد لأصحاب الأعمال ولبلدنا الحبيب الثاني و المِضياف مصر.
   </span>
 </div>
-<!-- للإنتقال إلى صفحة البحثة عند إمدينة -->
 <script>
-  function goToCityPage() {
+  // الإنتقال إلى صفحة البحث بالمدينة
+  function goFromHomeToCityPage() {
     // الحصول على العنصر المحدد
     var select = document.getElementById("city-select");
     // الحصول على قيمة العنصر المختار (معرف المدينة)
     var cityID = select.value;
-
     // إذا كانت المدينة مختارة، الانتقال إلى صفحة البحث مع معرف المدينة
+    console.log("المدينة المختارة" + select)
     if (cityID) {
-      window.location.href = "{% url 'dalil_search' %}?cityID=" + cityID;
-    }
+      // استخدام الرابط الممرر من القالب
+        window.location.href = "{% url 'dalil_search' %}?cityID=" + cityID;
+      }
   }
 
   // تأثير كتابة اختر المدينة
   document.addEventListener("DOMContentLoaded", function() {
-  var placeholderText = "اختر مدينتك";
-  var select = document.getElementById("city-select");
-  var index = 0;
-
-  function typePlaceholder() {
-    if (index < placeholderText.length) {
-      // تحديث قيمة الخيار الافتراضي تدريجياً
-      select.options[0].text = placeholderText.substring(0, index + 1);
-      index++;
-      setTimeout(typePlaceholder, 50);  // سرعة الكتابة (100 مللي ثانية لكل حرف)
+    var placeholderText = "اختر مدينتك";
+    var select = document.getElementById("city-select");
+    var index = 0;
+    function typePlaceholder() {
+      if (index < placeholderText.length) {
+        // تحديث قيمة الخيار الافتراضي تدريجياً
+        select.options[0].text = placeholderText.substring(0, index + 1);
+        index++;
+        setTimeout(typePlaceholder, 50);  // سرعة الكتابة (100 مللي ثانية لكل حرف)
+      }
     }
-  }
+    typePlaceholder();  // بدء تأثير الكتابة عند تحميل الصفحة
+  });
 
-  typePlaceholder();  // بدء تأثير الكتابة عند تحميل الصفحة
-});
-</script>
-
-<script>
-
-  // دالة العد التزايدي
+  // دالة العد التزايدي للأعمال والمجالات والمدن
   function counterAnimation(id, endValue, duration) {
     const element = document.getElementById(id);
     let startValue = 0;
     const increment = endValue / (duration / 10);  // التحسين التدريجي
     const interval = setInterval(() => {
-      startValue += increment;
-      if (startValue >= endValue) {
+    startValue += increment;
+    if (startValue >= endValue) {
         element.textContent = Math.floor(endValue);  // إظهار القيمة النهائية
         clearInterval(interval);  // إيقاف العداد
-      } else {
+    } else {
         element.textContent = Math.floor(startValue);  // تحديث القيمة
-      }
+    }
     }, 10);  // يحدث التحديث كل 10 مللي ثانية
   }
-
   // استخدام الدالة
   const totalCompanies = {{ company }};
   const totalScopes = {{ businessScope }};
   const totalCities = {{ cities }};
-
   // تفعيل العدادات بعد تحميل الصفحة
-  counterAnimation('company-count', totalCompanies, 2000);  // عداد الشركات (2 ثانية)
-  counterAnimation('scope-count', totalScopes, 2500);       // عداد المجالات
-  counterAnimation('cities-count', totalCities, 2600);      // عداد المدن
+  counterAnimation('company-count', totalCompanies, 2000); // عداد الشركات (2 ثانية)
+  counterAnimation('scope-count', totalScopes, 2500); // عداد المجالات
+  counterAnimation('cities-count', totalCities, 2600); // عداد المدن
 
-  console.log(totalCompanies, totalScopes, totalCities);
 </script>
-
 {% endblock %}

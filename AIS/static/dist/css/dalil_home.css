@@ -1,0 +1,131 @@
+/* Start Home */
+  /* إعداد حركة الوميض في حقل البحث */
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 15px var(--BackgroundColor-Main); /* الضوء الأخضر عند البدء */
+    }
+    50% {
+      box-shadow: 0 0 30px var(--mainColor);  /* زيادة الإضاءة */
+    }
+    100% {
+      box-shadow: 0 0 15px var(--BackgroundColor-Main); /* العودة للإضاءة الخفيفة */
+    }
+  }
+  
+  /* حركة المكونات بسلاسة */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px); /* بداية التحريك من أسفل */
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0); /* نهاية التحريك في الموقع النهائي */
+    }
+  }
+
+  .counter-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    flex-direction: row;
+    margin-top: 5%;
+    text-decoration: none;
+  }
+  
+  .counter {
+    background-color: var(--BackgroundColor-Main);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    width: 33% !important;
+    height: 128px;
+    z-index: 1;
+  }
+
+  .counter h2 {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: var(--mainTitle);
+  }
+
+  .counter span {
+    font-size: 40px;
+    font-weight: bold;
+    color: var(--mainColor);
+    text-shadow: 0 2px 2px rgb(0, 0, 0);
+  }
+
+  .image-container {
+    overflow: hidden; /* للتأكد من عدم ظهور الصورة خارج الحاوية أثناء التحريك */
+    position: relative;
+  }
+
+  .bg-img {
+    opacity: 0; /* البدء بخلفية شفافة */
+    transform: translateY(-30px); /* البدء من موقع أعلى */
+    width: 100%;
+    border-radius: 5px;
+    height: 80px;
+    object-fit: cover; /* لضمان عدم تشويه الصورة */
+  }
+
+  .fade-in-image {
+    opacity: 0; /* البدء بخلفية شفافة */
+    transform: translateY(-30px); /* البدء من موقع أعلى */
+    animation: fadeInUp 1.5s ease-out forwards; /* تطبيق التأثير */
+    width: 100%;
+    border-radius: 5px;
+  }
+
+  /* بداية تنسقات عنصر البحث */
+  /* إعداد الحاوية */
+  .search-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+  }
+
+  /* تأثير اختيار المدينة */
+  .city-search {
+    font-size: 18px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid #ccc;
+    width: 35%;
+    height: 50px;
+    transition: all 0.3s ease-in-out;
+    outline: none;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    animation: pulse 1.5s infinite;  /* إضافة تأثير الوميض */
+  }
+
+  .counter:hover {
+          transform: translateY(-10px);
+  }
+  /* تأثير عند التركيز على العنصر */
+  .city-search:focus {
+    border-color: #5cb85c;
+    box-shadow: 0 0 15px rgba(92, 184, 92, 0.7);
+    transition: all 0.3s ease;
+  }
+
+  .title-home {
+      margin-top: 15px !important;
+      text-align: justify !important;
+      width: 95%;
+      line-height: 1.8 !important;
+      font-size: 15px;
+      color: var(--subColor);
+      padding: 0px 17px;
+      border-radius: 10px;
+    }
+  /* نهاية تنسقات عنصر البحث */
+
+/* End Home */
+

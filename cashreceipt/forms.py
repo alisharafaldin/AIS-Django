@@ -1,8 +1,9 @@
 from django import forms
-from .models import CashReceiptHead, CashReceiptBody, ReceiptAllocation
-from products.models import Items
+from .models import CashReceiptHead, CashReceiptBody
 from basicinfo.models import Countries
 from sales.models import Customers
+from django.db.models import Q #لعمل أكثر من تصفية
+from accounts.models import AccountsTree
 from django.forms import modelformset_factory
 from django_select2.forms import Select2Widget
 
@@ -31,6 +32,7 @@ class CashReceiptHeadForm(forms.ModelForm):
             'accountID': forms.Select(attrs={'class':'form-control', 'placeholder':'الحساب الدائن'}),
             'typePaymentID': forms.Select(attrs={'class':'form-control', 'placeholder':'طريقة الدفع'}),
             'employeeID': forms.Select(attrs={'class':'form-control', 'placeholder':'الموظف'}),
+            'inventoryID': forms.Select(attrs={'class':'form-control', 'placeholder':'الفرع'}),
             'amountCredit': forms.NumberInput(attrs={'class':'form-control amountCredit', 'placeholder':'المبلغ الدائن'}),
             'rate': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'سعر الصرف'}),
             'description': forms.Textarea(attrs={'class':'form-control', 'placeholder':'وصف الفاتورة', 'style':'height: 50px;'}),
@@ -41,7 +43,7 @@ class CashReceiptHeadForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         company_id = kwargs.pop('companyID', None)  # استلام الشركة الحالية من العرض
-        super(CashReceiptHead, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         
         # تخصيص تسمية حقل currencyID
         self.fields['currencyID'].label_from_instance = lambda obj: obj.currency_ar
@@ -65,14 +67,26 @@ class CashReceiptBodyForm(forms.ModelForm):
             'DELETE': forms.CheckboxInput(),
             'CashReceiptHeadID': forms.Select(attrs={'class':'form-control', 'placeholder':'رأس سند القبض'}),
             'accountID': forms.Select(attrs={'class':'form-control', 'placeholder':'الحساب المدين'}),
+            'employeeID': forms.Select(attrs={'class':'form-control', 'placeholder':'الموظف'}),
             'amountDebit': forms.NumberInput(attrs={'class':'form-control amountDebit', 'placeholder':'المبلغ المدين'}),
             'rate': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'سعر الصرف'}),
-            'transactionNumber': forms.Textarea(attrs={'class':'form-control', 'placeholder':'رقم العملية'}),
             'amountDebit_local_currency': forms.NumberInput(attrs={'readonly':'readonly','class':'form-control total_price_local_currency', 'placeholder':'إجمالي السعر بعد الخصم'}),
+            'transactionNumber': forms.Textarea(attrs={'class':'form-control', 'placeholder':'رقم العملية', 'style':'height: 50px;'}),
             'description': forms.Textarea(attrs={'class':'form-control', 'placeholder':'الوصف', 'style':'height: 50px;'}),
            
         }
-
+    def __init__(self, *args, **kwargs):
+        company_id = kwargs.pop('companyID', None)  # استلام الشركة الحالية من العرض
+        super(CashReceiptBodyForm, self).__init__(*args, **kwargs)  # تم تصحيح هذا السطر
+        
+        # تخصيص تسمية حقل currencyID
+        self.fields['currencyID'].label_from_instance = lambda obj: obj.currency_ar
+        if company_id:
+            print(f"Filtering accounts with companyID: {company_id}")  # Debugging line
+            self.fields['accountID'].queryset = AccountsTree.objects.filter(
+                Q(companyID=company_id) | Q(companyID__isnull=True), typeID=2)
+        else:
+            self.fields['accountID'].queryset = AccountsTree.objects.none()
     #تعيين قيمة إفتراضية للمخزن في تفاصيل الفاتورة
     # def __init__(self, *args, **kwargs):
     #     super(InvoiceBodyForm, self).__init__(*args, **kwargs)
@@ -100,10 +114,10 @@ class CashReceiptBodyForm(forms.ModelForm):
         delete = cleaned_data.get('DELETE')
         if delete:
             return cleaned_data  # تجاوز التحقق إذا كان السطر سيتم حذفه
-        item = cleaned_data.get('itemID')
-        # التحقق من أن itemID ليس None وأنه يحتوي على قيمة صحيحة
+        item = cleaned_data.get('accountID')
+        # التحقق من أن accountID ليس None وأنه يحتوي على قيمة صحيحة
         if not item:
-            raise forms.ValidationError('يجب إضافة منتج أو حذف السطر.')
+            raise forms.ValidationError('يجب إضافة حساب أو حذف السطر.')
         return cleaned_data
 
 # إنشاء نموذج المجموعة باستخدام الفئة الأساسية المخصصة

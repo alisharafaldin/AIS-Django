@@ -242,7 +242,7 @@ class TypeUnit(models.Model):
   
 class BasicInfo(models.Model):
     nationalityID = models.ForeignKey(Countries, verbose_name='الجنسية', related_name='nationalityID', default=1, on_delete=models.PROTECT, blank=True, null=True) 
-    countryID = models.ForeignKey(Countries, verbose_name='بلد الإقامة', related_name='countryID', default=3, on_delete=models.PROTECT, blank=True, null=True) 
+    countryID = models.ForeignKey(Countries, verbose_name='بلد الإقامة', related_name='countryID', default=2, on_delete=models.PROTECT, blank=True, null=True) 
     regionID = models.ForeignKey(Region, verbose_name='المنطقة', on_delete=models.PROTECT, blank=True, null=True)
     stateID = models.ForeignKey(States, verbose_name='الولاية', on_delete=models.PROTECT, blank=True, null=True)
     cityID = models.ForeignKey(Cities, verbose_name='المدينة', related_name='basicInfo', on_delete=models.PROTECT, blank=True, null=True) 
