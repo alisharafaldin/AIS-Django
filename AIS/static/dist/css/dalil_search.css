@@ -35,17 +35,27 @@ display: flex;
 
 .menu-item {
     display: inline-block;
-    padding: 10px 20px;
+    padding: 5px 20px;
     text-decoration: none;
-    color: var(--BackgroundColor-Main);
+    color: var(--subTitleColor) !important;
     border: 1px solid #ccc;
     margin-right: 10px;
     border-radius: 10px;
-    background-color: #ede1aa !important;
+    background-color: var(--subButtonColor) !important;
 }
 
 .menu-item:hover {
     background-color: #e0e0e0;
+}
+
+.icon-style{
+    color: var(--iconColor) !important;
+    font-size: 14px;
+}
+
+.icon-style span{
+    color: black;
+    font-size: 14px;
 }
 
 

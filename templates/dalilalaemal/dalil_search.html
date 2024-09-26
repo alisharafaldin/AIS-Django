@@ -3,7 +3,7 @@
 {% block title %} | بحث {% endblock %} 
 {% block content %}
 {% include 'partials/_alerts.html' %}
-<link rel="stylesheet" href="{% static 'dist/css/dalil_search.css' %}?v=0.7" />
+<link rel="stylesheet" href="{% static 'dist/css/dalil_search.css' %}?v=0.8" />
 <div class="content-main">
   <form method="GET" action="{% url 'dalil_search' %}">
     <br>
@@ -71,21 +71,22 @@
             </h6>
             <li class="list-group-item" style="display: flex; justify-content: space-evenly; padding-bottom: 0;">
               {% if company.legalPersonID.basicInfoID.phone %}
-              <a href="tel:{{ company.legalPersonID.basicInfoID.phone }}" class="btn-link">
-                <span style="color: black; font-weight: 500;">إتصال</span>
-                <i class="fa fa-phone" style="color: green"></i>
+              <a href="tel:{{ company.legalPersonID.basicInfoID.phone }}" class="btn-link icon-style">
+                <span>إتصال</span>
+                <i class="fa fa-phone " ></i>
               </a>
+    
               {% endif %}
               {% if company.legalPersonID.basicInfoID.phoneOther %}
-              <a href="https://wa.me/{{ company.legalPersonID.basicInfoID.phoneOther }}" class="btn-link">
-                <span style="color: black; font-weight: 500;">واتساب</span>
-                <i class="fa-brands fa-whatsapp" style="color: green"></i>
+              <a href="https://wa.me/{{ company.legalPersonID.basicInfoID.phoneOther }}" class="btn-link icon-style">
+                <span>واتساب</span>
+                <i class="fa-brands fa-whatsapp " ></i>
               </a>
               {% endif %}
               {% if company.isDelivery %}
-              <a href="tel:{{company.legalPersonID.basicInfoID.phone}}"class="btn-link">
-                <span style="color: black; font-weight: 500;">توصيل</span>
-                <i class="fa fa-shipping-fast" style="color: green"></i>
+              <a href="tel:{{company.legalPersonID.basicInfoID.phone}}"class="btn-link icon-style">
+                <span>توصيل</span>
+                <i class="fa fa-shipping-fast " ></i>
               </a>
               {% endif %}
             </li>

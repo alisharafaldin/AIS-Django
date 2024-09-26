@@ -1,18 +1,17 @@
 /* استايل  */
 :root{
-  --mainColor: #ffeb01 !important;
-  --subColor: #011c53;
-  --BackgroundColor-Main: #011c53 !important;
-  --BackgroundColor-Sub: #ffeb01 !important;
-  --mainTitleColor: #ffeb01;
+  /* --mainColor: #ffeb01 !important; */
+  /* --subColor: #011c53; */
+  --mainColor: #fee440 !important;
+  --subColor: #003049;
+  
+  --mainButtonColor: #003049;
+  --subButtonColor: #fefae0;
+  
+  --mainTitleColor: #fefae0;
+  --subTitleColor: #003049;
 
-  --mainTitle: #fff;
-  --subTitle: #10171a;
-  --subTitleContent: #83888a;
-  --bgC-btn-Main: #003366;
-  --bgC-btn-Sub: #BDB17A;
-  --borderColor: #a0a9ae;
-  --btnDelete: #ff0000;
+  --iconColor: #606c38;
 }
 
 *{
@@ -40,7 +39,7 @@ body {
 
 .content-main {
   width: 95%;
-  margin: 20% 10px 0 10px;
+  margin: 20% 10px 20px 10px;
   display: flex !important;
   flex-direction: column;
   justify-content: center !important;
@@ -69,7 +68,7 @@ body {
 
 
 .btn-color{
-  background-color: var(--BackgroundColor-Main);
+  background-color: var(--subColor);
   color: #fff;
 }
 
