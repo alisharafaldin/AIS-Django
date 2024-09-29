@@ -39,7 +39,7 @@ body {
 
 .content-main {
   width: 95%;
-  margin: 20% 10px 20px 10px;
+  margin: 20% 10px 25px 10px;
   display: flex !important;
   flex-direction: column;
   justify-content: center !important;
