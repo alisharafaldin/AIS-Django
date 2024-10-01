@@ -5,8 +5,8 @@ from . import views
 
 urlpatterns = [
     # path('', views.dalilalaemal, name='dalilalaemal'),
-    path('', views.dalils, name='dalils'),
-    path('home', views.dalil_home, name='dalil_home'),
+    path('', views.dalil_home, name='dalil_home'),
+    path('dalils', views.dalils, name='dalils'),
     path('business_Scope', views.dalils_business_Scope, name='dalils_business_Scope'),
     path('cities', views.dalil_cities, name='dalil_cities'),
     path('search', views.dalil_search, name='dalil_search'),

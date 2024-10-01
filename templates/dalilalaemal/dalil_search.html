@@ -3,7 +3,7 @@
 {% block title %} | بحث {% endblock %} 
 {% block content %}
 {% include 'partials/_alerts.html' %}
-<link rel="stylesheet" href="{% static 'dist/css/dalil_search.css' %}?v=0.8" />
+<link rel="stylesheet" href="{% static 'dist/css/dalil_search.css' %}?v=0.9" />
 <div class="content-main">
   <form method="GET" action="{% url 'dalil_search' %}">
     <br>
@@ -64,12 +64,8 @@
               <a style="font-size: 12px;" href="{% url 'dalil_search' %}?cityID={{ company.legalPersonID.basicInfoID.cityID.id }}">{{ company.legalPersonID.basicInfoID.cityID }}</a> - 
               {{ company.legalPersonID.basicInfoID.address }}
               {% endif %}
-              {% if company.legalPersonID.basicInfoID.google_maps_location %}
-              <a href="{{ company.legalPersonID.basicInfoID.google_maps_location }}" class="card-link">
-                <i class="fa-solid fa-location-dot"></i></a>
-              {% endif %}
             </h6>
-            <li class="list-group-item" style="display: flex; justify-content: space-evenly; padding-bottom: 0;">
+            <li class="list-group-item">
               {% if company.legalPersonID.basicInfoID.phone %}
               <a href="tel:{{ company.legalPersonID.basicInfoID.phone }}" class="btn-link icon-style">
                 <span>إتصال</span>
@@ -88,6 +84,11 @@
                 <span>توصيل</span>
                 <i class="fa fa-shipping-fast " ></i>
               </a>
+              {% endif %}
+              {% if company.legalPersonID.basicInfoID.google_maps_location %}
+              <a href="{{ company.legalPersonID.basicInfoID.google_maps_location }}" class="btn-link icon-style">
+                <span>الخريطة</span>
+                <i class="fa-solid fa-location-dot"></i></a>
               {% endif %}
             </li>
           </ul>

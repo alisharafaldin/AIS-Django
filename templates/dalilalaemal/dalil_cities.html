@@ -93,24 +93,26 @@
   </style>
 
 <div class="content-wrapper">
-  <!-- <h1>إحصائيات مجالات العمل</h1> -->
-  <div class="cards-container">
-        {% for id, logo, label, count in scope_data %}
-        <a href="{% url 'dalil_search' %}?cityID={{id}}">
-            {% if logo %}
-            <div class="card" style="background-image: url('{{ logo.url }}');">
-            {% else %}
-            <div class="card">
-            {% endif %}
-                <div class="map-container">
-                    <div class="card-content">
-                        <h3>{{ label }}</h3>
-                        <p>عدد المحلات : {{ count }}</p>
-                    </div>
-                </div>
-            </div>
-        </a>
-        {% endfor %}
+    <div class="content-main">
+        <!-- <h1>إحصائيات مجالات العمل</h1> -->
+        <div class="cards-container">
+              {% for id, logo, label, count in scope_data %}
+              <a href="{% url 'dalil_search' %}?cityID={{id}}">
+                  {% if logo %}
+                  <div class="card" style="background-image: url('{{ logo.url }}');">
+                  {% else %}
+                  <div class="card">
+                  {% endif %}
+                      <div class="map-container">
+                          <div class="card-content">
+                              <h3>{{ label }}</h3>
+                              <p>عدد المحلات : {{ count }}</p>
+                          </div>
+                      </div>
+                  </div>
+              </a>
+              {% endfor %}
+          </div>
+      </div>
     </div>
-</div>
 {% endblock %}
