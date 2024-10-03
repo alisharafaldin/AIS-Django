@@ -1,0 +1,108 @@
+{% extends 'base_dalilalaemal.html' %} 
+{% load static %} 
+{% block title %} | الرئيسة {% endblock %} 
+{% block content %} 
+{% include 'partials/_alerts.html' %}
+<link rel="stylesheet" href="{% static 'dist/css/dalil_home.css' %}?v=0.2" />
+
+<div class="content-main">
+  <span style="font-size: 20px" class="fade-in-image">محلات كتير جنبك .. تلقاها بكل سهولة . .</span>
+  <div class="counter-container">
+    <a class="counter" href="{% url 'dalils' %}">
+      <h2>أكثر من +</h2>
+      <span id="company-count">0</span>
+      <h2>عمل سوداني</h2>
+    </a>
+    <a class="counter" href="{% url 'dalils_business_Scope' %}">
+      <h2>في</h2>
+      <span id="scope-count">0</span>
+      <h2>مجال مختلف</h2>
+    </a>
+    <a class="counter" href="{% url 'dalil_cities' %}">
+      <h2>في</h2>
+      <span id="cities-count">0</span>
+      <h2>مدينة مصرية</h2>
+    </a>
+  </div>
+  <div class="search-container">
+    <select name="city" style="font-size: 14px;" id="city-select" class="form-control city-search" onchange="goFromHomeToCityPage()">
+      <option value="" >اختر المدينة</option>
+      {% for city in cities2 %}
+      <option value="{{ city.id }}">
+        {{ city.name_ar }}
+      </option>
+      {% endfor %}
+    </select>
+    <form method="GET"class="form-inline my-2 my-lg-0" style="display: flex; flex-direction: row !important; margin-right: 5px;"  action="{% url 'dalil_search' %}">
+      <input class="form-control mr-sm-2 remove-outline" style="width: 70%;" name="search_name"placeholder="أو ابحث بإسم العمل"/>
+      <button class="btn btn-main btn-color " type="submit">بحث<i class="fa-solid fa-magnifying-glass"></i></button>
+    </form>
+    
+  </div>
+  <!-- <img src="{% static 'dist/img/تعاون_تجاري.WEBP' %}?v=0.1" alt="" class="fade-in-image bg-img" /> -->
+  <img src="{% static 'dist/img/مصرسلام2.png' %}?v=0.1" alt="" class="fade-in-image bg-img" />
+  <span class="fade-in-image title-home">
+    دليل الأعمال السودانية في مصر هو : 
+    <span style="font-weight: bold">دليل إرشادي</span>
+    يضم الأعمال والأنشطة  التجارية السودانية في مصر , 
+    <span style="font-weight: bold">الهدف من الدليل</span> 
+    تعزيز التعاون التجاري بين البلدين ودفع عجلة الإقتصاد لأصحاب الأعمال ولبلدنا الحبيب الثاني و المِضياف مصر.
+  </span>
+</div>
+<script>
+  // الإنتقال إلى صفحة البحث بالمدينة
+  function goFromHomeToCityPage() {
+    // الحصول على العنصر المحدد
+    var select = document.getElementById("city-select");
+    // الحصول على قيمة العنصر المختار (معرف المدينة)
+    var cityID = select.value;
+    // إذا كانت المدينة مختارة، الانتقال إلى صفحة البحث مع معرف المدينة
+    console.log("المدينة المختارة" + select)
+    if (cityID) {
+      // استخدام الرابط الممرر من القالب
+        window.location.href = "{% url 'dalil_search' %}?cityID=" + cityID;
+      }
+  }
+
+  // تأثير كتابة اختر المدينة
+  document.addEventListener("DOMContentLoaded", function() {
+    var placeholderText = "اختر مدينتك";
+    var select = document.getElementById("city-select");
+    var index = 0;
+    function typePlaceholder() {
+      if (index < placeholderText.length) {
+        // تحديث قيمة الخيار الافتراضي تدريجياً
+        select.options[0].text = placeholderText.substring(0, index + 1);
+        index++;
+        setTimeout(typePlaceholder, 50);  // سرعة الكتابة (100 مللي ثانية لكل حرف)
+      }
+    }
+    typePlaceholder();  // بدء تأثير الكتابة عند تحميل الصفحة
+  });
+
+  // دالة العد التزايدي للأعمال والمجالات والمدن
+  function counterAnimation(id, endValue, duration) {
+    const element = document.getElementById(id);
+    let startValue = 0;
+    const increment = endValue / (duration / 10);  // التحسين التدريجي
+    const interval = setInterval(() => {
+    startValue += increment;
+    if (startValue >= endValue) {
+        element.textContent = Math.floor(endValue);  // إظهار القيمة النهائية
+        clearInterval(interval);  // إيقاف العداد
+    } else {
+        element.textContent = Math.floor(startValue);  // تحديث القيمة
+    }
+    }, 10);  // يحدث التحديث كل 10 مللي ثانية
+  }
+  // استخدام الدالة
+  const totalCompanies = {{ company }};
+  const totalScopes = {{ businessScope }};
+  const totalCities = {{ cities }};
+  // تفعيل العدادات بعد تحميل الصفحة
+  counterAnimation('company-count', totalCompanies, 2000); // عداد الشركات (2 ثانية)
+  counterAnimation('scope-count', totalScopes, 2500); // عداد المجالات
+  counterAnimation('cities-count', totalCities, 2600); // عداد المدن
+
+</script>
+{% endblock %}

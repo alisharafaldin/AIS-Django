@@ -1,0 +1,27 @@
+{% extends 'base_dalilalaemal.html' %}
+{% load static %}
+{% block title %} | شامل {% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'dist/css/dalil_business_Scope.css' %}?v=0.2" />
+<div class="content-main">
+  <!-- <h1>إحصائيات مجالات العمل</h1> -->
+  <div class="cards-container" >
+        {% for id, logo, label, count in scope_data %}
+        <a href="{% url 'dalil_search' %}?businessScopeID={{id}}">
+            {% if logo %}
+            <div class="card" style="background-image: url('{{ logo.url }}');">
+            {% else %}
+            <div class="card">
+            {% endif %}
+                <div class="map-container">
+                    <div class="card-content">
+                        <h3>{{ label }}</h3>
+                        <p>( {{ count }} )</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

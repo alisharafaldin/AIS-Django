@@ -1,0 +1,28 @@
+{% extends 'base_dalilalaemal.html' %} {% load static %} {% block title %} | Update Company
+{% endblock %} {% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<div class="content-wrapper">
+  <div class="content-main" style="margin-top: 70px">
+    <div class="modal-content">
+      <div class="modal-body">
+        {% include 'partials/_alerts.html' %}
+        <!-- Start Modal Countries -->
+        <form method="POST" enctype="multipart/form-data" style="margin-top: 70px;">
+          <div class="form-row main-title">
+            <h5 class="form-group" id="staticBackdropLabel" style="color: var(--subColor);">تعديل بيانات : {{company_id.legalPersonID.name_ar}}</h5>
+          </div>
+          {% csrf_token %}
+          <br />
+          <button type="submit" class="btn btn-save" name="btnempsave">تعديل</button>
+          <a href="{% url 'dalils' %}" class="btn btn-danger">إلغاء</a>
+          <br />
+          <br />
+          {% include 'dalilalaemal/dalil_form.html' %}
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

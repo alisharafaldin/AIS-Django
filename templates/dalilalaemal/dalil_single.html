@@ -1,0 +1,64 @@
+{% extends 'base_dalilalaemal.html' %} 
+{% load static %} 
+{% block title %} | شامل {% endblock %} 
+{% block content %}
+{% include 'partials/_alerts.html' %}
+<link rel="stylesheet" href="{% static 'dist/css/dalil_single.css' %}?v=0.6" />
+
+<div class="content-main">
+  <div class="profile-container">
+    <header class="profile-header">
+      {% if company.legalPersonID.basicInfoID.attachments %}
+      <img
+        src="{{ company.legalPersonID.basicInfoID.attachments.url }}"
+        alt="شعار الشركة"
+        class="logo"
+      />
+      {% else %}
+      <img
+        src="{%  static 'dist/img/dalilalaemal_logo_sudan.jpg' %}"
+        alt="شعار الشركة"
+        class="logo"
+      />
+      {% endif %}
+      <p class="company-tagline"></p>
+    </header>
+    <section class="profile-info">
+      <h2>معلومات العمل</h2>
+      <ul>
+        <li><span>الإسم : </span> {{company.legalPersonID.name_ar}}</li>
+        <li>
+          <span>مجال العمل : </span>{{ company.legalPersonID.businessScopeID }}
+        </li>
+        <li>
+          <span>العنوان : </span>{{ company.legalPersonID.basicInfoID.cityID }}
+          - {{ company.legalPersonID.basicInfoID.address }}
+        </li>
+        <li>
+          <span>رقم إتصال : </span>{{company.legalPersonID.basicInfoID.phone}}
+        </li>
+        <li>
+          <span>رقم واتساب : </span
+          >{{company.legalPersonID.basicInfoID.phoneOther}}
+        </li>
+        <li>
+          <span>رقم إتصال آخر : </span>{{company.legalPersonID.phoneAdmin}}
+        </li>
+      </ul>
+    </section>
+    <section class="profile-map">
+      <h2>موقع العمل Google Map</h2>
+      <div class="map-container">
+        <!-- استخدم خريطة جوجل أو أي خدمة خرائط أخرى هنا -->
+        {% if company.legalPersonID.basicInfoID.google_maps_location %}
+        <a href="{{company.legalPersonID.basicInfoID.google_maps_location}}">
+          <i class="fa-solid fa-map-location-dot"></i>
+        </a>
+        {% else %}
+        <h6>لا تتوفر معلومات عن الموقع الجغرافي</h6>
+        {% endif %}
+      </div>
+    </section>
+  </div>
+</div>
+{% endblock %}
