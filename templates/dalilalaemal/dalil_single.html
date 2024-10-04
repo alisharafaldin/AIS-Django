@@ -1,8 +1,5 @@
-{% extends 'base_dalilalaemal.html' %} 
-{% load static %} 
-{% block title %} | شامل {% endblock %} 
-{% block content %}
-{% include 'partials/_alerts.html' %}
+{% extends 'base_dalilalaemal.html' %} {% load static %} {% block title %} |
+شامل {% endblock %} {% block content %} {% include 'partials/_alerts.html' %}
 <link rel="stylesheet" href="{% static 'dist/css/dalil_single.css' %}?v=0.6" />
 
 <div class="content-main">
@@ -27,19 +24,35 @@
       <h2>معلومات العمل</h2>
       <ul>
         <li><span>الإسم : </span> {{company.legalPersonID.name_ar}}</li>
+        
         <li>
-          <span>مجال العمل : </span>{{ company.legalPersonID.businessScopeID }}
+          <span>مجال العمل : </span>
+          <a class="card-sub-title" href="{% url 'dalil_search' %}?businessScopeID={{ company.legalPersonID.businessScopeID.id }}">{{ company.legalPersonID.businessScopeID }}</a>
         </li>
         <li>
-          <span>العنوان : </span>{{ company.legalPersonID.basicInfoID.cityID }}
-          - {{ company.legalPersonID.basicInfoID.address }}
+          <span>العنوان : </span>
+          {% if company.legalPersonID.basicInfoID.address %}
+          <a href="{% url 'dalil_search' %}?cityID={{ company.legalPersonID.basicInfoID.cityID.id }}">{{ company.legalPersonID.basicInfoID.cityID }}</a> - 
+          {{ company.legalPersonID.basicInfoID.address }}
+          {% endif %}
         </li>
         <li>
-          <span>رقم إتصال : </span>{{company.legalPersonID.basicInfoID.phone}}
+          <span>رقم إتصال : </span>
+          {% if company.legalPersonID.basicInfoID.phone %}
+          <a href="tel:{{ company.legalPersonID.basicInfoID.phone }}" class="btn-link icon-style">
+            <i class="fa fa-phone " ></i>
+          </a>
+          {% endif %}
+          {{company.legalPersonID.basicInfoID.phone}}
         </li>
         <li>
-          <span>رقم واتساب : </span
-          >{{company.legalPersonID.basicInfoID.phoneOther}}
+          <span>رقم واتساب : </span>
+          {% if company.legalPersonID.basicInfoID.phoneOther %}
+          <a href="https://wa.me/{{ company.legalPersonID.basicInfoID.phoneOther }}" class="btn-link icon-style">
+            <i class="fa-brands fa-whatsapp" ></i>
+          </a>
+          {% endif %}
+          {{company.legalPersonID.basicInfoID.phoneOther}}
         </li>
         <li>
           <span>رقم إتصال آخر : </span>{{company.legalPersonID.phoneAdmin}}

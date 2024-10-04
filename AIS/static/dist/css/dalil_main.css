@@ -3,7 +3,7 @@
   /* --mainColor: #ffeb01 !important; */
   /* --subColor: #011c53; */
   --mainColor: #fee440 !important;
-  --subColor: #003049;
+  --subColor: #003566;
   
   --mainButtonColor: #003049;
   --subButtonColor: #fefae0;
@@ -39,15 +39,15 @@ body {
 
 .content-main {
   width: 95%;
-  margin: 20% 10px 25px 10px;
-  margin-top: 70px;
-  display: flex !important;
+  margin: 75px 10px;
+  display: flex;
   flex-direction: column;
-  justify-content: center !important;
-  align-items: center !important;
-  align-content: center !important;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
   flex-wrap: wrap;
   position: absolute;
+  padding-bottom: 100px;
 }
 
 /* ============== تحسين القوائم المنسدلة ====================== */

@@ -34,8 +34,53 @@
       </div>
     </div>
   </form>
-  <div class="content form-row justify-content-around" >
-    {% include 'dalilalaemal/dalils_elements.html' %}
-  </div>
+
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <div id="results-container">
+        {% include 'dalilalaemal/search_list.html' %}
+    </div>
+
+    <div id="loading" style="display: none;">Loading...</div>
+
+    <script>
+        let page = 1;
+        let hasNext = true;
+
+        function loadMoreResults() {
+            if (!hasNext) return;
+
+            page += 1;
+            $.ajax({
+                url: '?q={{ request.GET.q }}&page=' + page,
+                type: 'GET',
+                beforeSend: function() {
+                    $('#loading').show();  // إظهار إشارة التحميل
+                },
+                success: function(response) {
+                    $('#loading').hide();  // إخفاء إشارة التحميل
+                    $('#results-container').append(response);  // إضافة العناصر الجديدة
+                    if (response.trim() === '') {
+                        hasNext = false;  // إيقاف التحميل عند عدم وجود المزيد
+                    }
+                },
+                error: function() {
+                    $('#loading').hide();
+                }
+            });
+        }
+
+        $(window).scroll(function() {
+            if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
+                loadMoreResults();  // تحميل المزيد عند الاقتراب من نهاية الصفحة
+            }
+        });
+    </script>
+
+
 </div>
 {% endblock %}

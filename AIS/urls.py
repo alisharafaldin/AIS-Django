@@ -8,8 +8,6 @@ urlpatterns = [
     path('admin/',admin.site.urls),
     path('',include('dalilalaemal.urls')),
     path('basicinfo/',include('basicinfo.urls')),
-    path('hadena/',include('hadena.urls')),
-    path('forex/',include('forex.urls')),
     path('profiles/',include('profiles.urls')),
     path('accounts/',include('accounts.urls')),
     path('sales/',include('sales.urls')),

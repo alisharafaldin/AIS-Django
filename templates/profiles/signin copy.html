@@ -1,0 +1,94 @@
+{% extends 'base.html' %} {% load static %} {% block title %} | Signin {% endblock %}
+
+{% block content %}
+
+<!-- Start Signin -->
+<div class="login-box">
+  <div class="login-logo">
+    <a href="{% url 'index' %}">
+      <img src="{% static 'dist/img/AIS.png' %}" alt="AdminLTE Logo"  style="margin: 0 !important;" class="brand-link-image"/>
+    </a>
+  </div>
+  <!-- /.login-logo -->
+  <div class="card">
+    <div class="card-body login-card-body">
+      <p class="login-box-msg">قم بتسجيل الدخول</p>
+      {% if request.user.is_authenticated %}
+      <h4 class="alert alert-warning">
+        مرحبا, <strong>{{request.user.username}}</strong> لقد قمت بتسجيل الدخول
+        <a class="text-center" href="{% url 'logout' %}">logout</a>
+      </h4>
+      {% else %}
+      <form method="POST">
+        {% csrf_token %} 
+        {% include 'partials/_alerts.html' %}
+        <hr />
+        <div class="input-group mb-3">
+          <input
+ type="text"
+            class="form-control"
+            name="user"
+            placeholder="Username"
+            required
+          />
+          <div class="input-group-text">
+            <span class="fas fa-envelope"></span>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input
+            type="password"
+            class="form-control"
+            name="pass"
+            placeholder="Password"
+          />
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            <div class="icheck-primary">
+              <label for="rememberme">تذكرني</label>
+              <input
+                type="checkbox"
+                checked
+                name="rememberme"
+                id="inputTerms"
+              />
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-4">
+            <button
+              type="submit"
+              name="btnlogin"
+              class="btn btn-primary btn-block btn-flat"
+            >
+            تسجيل الدخول
+            </button>
+          </div>
+        </div>
+      </form>
+      <div class="social-auth-links text-center mb-3">
+        <p>- OR -</p>
+        <a href="#" class="btn btn-block btn-primary">
+          <i class="fab fa-facebook mr-2"></i> تسجيل الدخول باستخدام الفيسبوك
+        </a>
+        <a href="#" class="btn btn-block btn-danger">
+          <i class="fab fa-google-plus mr-2"></i> تسجيل الدخول باستخدام Google
+        </a>
+      </div>
+      <!-- /.social-auth-links -->
+      <p class="mb-1"><a href="#">لقد نسيت كلمة المرور الخاصة بي</a></p>
+      <p class="mb-0">
+        <a href="{% url 'signup' %}" class="text-center">تسجيل عضوية جديدة</a>
+      </p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+<!-- End Signin -->
+{% endblock %}

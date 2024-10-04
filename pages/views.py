@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from employees.models import Employee
 from sales.models import InvoicesSalesHead, Customers, Inventory
 from purchases.models import InvoicesPurchasesHead, Suppliers
-from shrfntod.models import Posts
 from accounts.models import Qayd
 from cashreceipt.models import CashReceiptHead
 from products.models import Items

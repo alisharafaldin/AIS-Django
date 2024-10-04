@@ -11,12 +11,6 @@ from mptt.models import MPTTModel, TreeForeignKey
 from sales.models import InvoicesSalesHead
 # from .models import AccountsTree
 #  لتجنب مشكلة الاستيراد الدائري (Circular Import)
-def get_shareholdersInfo():
-      from hadena.models import ShareholdersInfo
-      return ShareholdersInfo
-def get_cycle():
-      from hadena.models import Cycle
-      return Cycle
 
 # Create your models here.
 
@@ -112,8 +106,6 @@ class QaydDetails(models.Model):
   description_details = models.TextField(verbose_name='وصف تفصيل القيد', default="تفاصيل قيد يومية جديد", max_length=250,blank=True, null=True)
   projectID = models.ForeignKey(Project, verbose_name='المشروع', on_delete=models.PROTECT, blank=True, null=True)
   empID = models.ForeignKey(Employee, verbose_name='الموظف', on_delete=models.PROTECT, blank=True, null=True)
-  shareholdersID = models.ForeignKey(get_shareholdersInfo(), related_name='المساهم', verbose_name='المساهم', on_delete=models.PROTECT, blank=True, null=True)
-  cycleID = models.ForeignKey(get_cycle(), related_name='cycleID', verbose_name='الدورة', on_delete=models.PROTECT, blank=True, null=True)
 
   def __str__(self):
     return str(self.qaydID)

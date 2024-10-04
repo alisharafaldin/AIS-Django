@@ -9,7 +9,6 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('hadena', '0001_initial'),
         ('employees', '0001_initial'),
         ('accounts', '0001_initial'),
     ]

@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from basicinfo.models import BusinessScope, Cities, BasicInfo, LegalPersons
 from basicinfo.forms import InvoiceSearchForm, BasicInfoForm, BasicInfoForm, LegalPersonsForm
@@ -218,6 +219,13 @@ def dalil_search(request):
         if selected_city:
             selected_city_name = selected_city.name_ar
 
+    # البحث عن المجال المحدد
+    selected_businessScope_name = None
+    if search_businessScopeID:
+        selected_businessScope = BusinessScope.objects.filter(id=search_businessScopeID).first()
+        if selected_businessScope:
+            selected_businessScope_name = selected_businessScope.name_ar
+
     # تصفية المجالات بناءً على المدينة المختارة
     if search_cityID:
         business_scopes = BusinessScope.objects.filter(
@@ -247,6 +255,7 @@ def dalil_search(request):
         'search_cityID': search_cityID,
         'search_name': search_name,
         'selected_city_name': selected_city_name,
+        'selected_businessScope_name':selected_businessScope_name,
         'search_businessScopeID': search_businessScopeID,
         'businessScope': sorted_scope_business,
         'cities': Cities.objects.filter(basicInfo__legalpersons__company__isnull=False).distinct(),
@@ -254,6 +263,20 @@ def dalil_search(request):
     
     return render(request, 'dalilalaemal/dalil_search.html', context)
 
+
+def search_results(request):
+    # query = request.GET.get('q', '')
+    results = Company.objects.all()  # تعديل حسب البحث
+
+    # إعداد البادئة وعدد العناصر
+    paginator = Paginator(results, 7)  # 7 عناصر لكل صفحة
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest': # إذا كان الطلب AJAX
+        return render(request, 'dalilalaemal/search_list.html', {'page_obj': page_obj})
+
+    return render(request, 'dalilalaemal/search.html', {'page_obj': page_obj})
 # @login_required
 def dalils(request):
     company_query = Company.objects.filter(includeInDalilAlaemal=True).order_by('-id')

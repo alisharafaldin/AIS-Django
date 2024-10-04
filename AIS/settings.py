@@ -30,9 +30,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.1.4', '192.168.226.208', '19
 # Application definition
 
 INSTALLED_APPS = [
-    'shrfntod.apps.ShrfntodConfig',
     'basicinfo.apps.BasicinfoConfig',
-    'hadena.apps.HadenaConfig',
     'employees.apps.EmployeesConfig',
     'companys.apps.CompanysConfig',
     'products.apps.ProductsConfig',
@@ -41,8 +39,6 @@ INSTALLED_APPS = [
     'profiles.apps.ProfilesConfig',
     'accounts.apps.AccountsConfig',
     'inventorys.apps.InventorysConfig',
-    'forex.apps.ForexConfig',
-    'effastore.apps.EffastoreConfig',
     'dalilalaemal.apps.DalilalaemalConfig',
     'cashreceipt.apps.CashreceiptConfig',
     'django.contrib.admin',

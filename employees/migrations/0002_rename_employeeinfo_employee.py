@@ -8,7 +8,6 @@ class Migration(migrations.Migration):
     dependencies = [
         ('companys', '0002_rename_legalpersonid_company_legalpersonid'),
         ('accounts', '0003_initial'),
-        ('hadena', '0001_initial'),
         ('basicinfo', '0004_basicinfo_delete_alter_basicinfo_active'),
         ('employees', '0001_initial'),
     ]

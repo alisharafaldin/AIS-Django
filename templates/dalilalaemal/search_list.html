@@ -1,0 +1,64 @@
+{% load static %} 
+{% for company in page_obj %}
+<div class="d-flex justify-content-center align-items-center w-100">
+  <!-- Company Card -->
+  <div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 20px;">
+      <div style="padding-right: 20px; padding-left: 10px; display: flex;">
+        <a href="{% url 'dalil_single' company.id %}">
+          {% if company.legalPersonID.basicInfoID.attachments %}
+          <img style="width: 50px; height: 50px;" src="{{ company.legalPersonID.basicInfoID.attachments.url }}" class="rounded me-2" alt="...">
+          {% else %}
+          <img style="width: 50px; height: 50px;" src="{% static 'dist/img/dalilalaemal_logo_sudan.jpg' %}?=0.1" class="rounded me-2" alt="...">
+          {% endif %}
+        </a>
+        <div style="display: flex; flex-direction: column; padding-right: 10px;">  
+          <a style="color: black;" href="{% url 'dalil_single' company.id %}"><strong class="me-auto">{{ company.legalPersonID.name_ar }}</strong></a>
+          <a style="font-size: 12px;" href="{% url 'dalil_search' %}?businessScopeID={{ company.legalPersonID.businessScopeID.id }}">{{ company.legalPersonID.businessScopeID }}</a>
+          <a style="font-size: 12px;" class="btn-link" href="{% url 'update' company.id %}"
+          ><i class="fas fa-edit"></i>
+        </a>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <ul class="list-group list-group-flush">
+        <h6 style="font-size: 12px;">
+          {% if company.legalPersonID.basicInfoID.address %}
+          <a style="font-size: 12px;" href="{% url 'dalil_search' %}?cityID={{ company.legalPersonID.basicInfoID.cityID.id }}">{{ company.legalPersonID.basicInfoID.cityID }}</a> - 
+          {{ company.legalPersonID.basicInfoID.address }}
+          {% endif %}
+        </h6>
+        <li class="list-group-item">
+          {% if company.legalPersonID.basicInfoID.phone %}
+          <a href="tel:{{ company.legalPersonID.basicInfoID.phone }}" class="btn-link icon-style">
+            <span>إتصال</span>
+            <i class="fa fa-phone " ></i>
+          </a>
+
+          {% endif %}
+          {% if company.legalPersonID.basicInfoID.phoneOther %}
+          <a href="https://wa.me/{{ company.legalPersonID.basicInfoID.phoneOther }}" class="btn-link icon-style">
+            <span>واتساب</span>
+            <i class="fa-brands fa-whatsapp " ></i>
+          </a>
+          {% endif %}
+          {% if company.isDelivery %}
+          <a href="tel:{{company.legalPersonID.basicInfoID.phone}}"class="btn-link icon-style">
+            <span>توصيل</span>
+            <i class="fa fa-shipping-fast " ></i>
+          </a>
+          {% endif %}
+          {% if company.legalPersonID.basicInfoID.google_maps_location %}
+          <a href="{{ company.legalPersonID.basicInfoID.google_maps_location }}" class="btn-link icon-style">
+            <span>الخريطة</span>
+            <i class="fa-solid fa-location-dot"></i></a>
+          {% endif %}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+{% empty %}
+    <p>No results found</p>
+{% endfor %}
