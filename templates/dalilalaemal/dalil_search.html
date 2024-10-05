@@ -3,9 +3,9 @@
 {% block title %} | بحث {% endblock %} 
 {% block content %}
 {% include 'partials/_alerts.html' %}
-<link rel="stylesheet" href="{% static 'dist/css/dalil_search.css' %}?v=0.9" />
+<link rel="stylesheet" href="{% static 'dist/css/dalil_search.css' %}?v=1.2" />
 <div class="content-main">
-  <form method="GET" action="{% url 'dalil_search' %}">
+  <form id="search-form">
     <br>
     <div class="select-main">
       <select name="city" id="city-select" class="form-control" onchange="goToCityPage()">
@@ -18,12 +18,15 @@
         </option>
         {% endfor %}
       </select>
-      <form method="GET"class="form-inline my-2 my-lg-0 form-main" action="{% url 'dalil_search' %}">
-        <input class="form-control mr-sm-2 remove-outline" value="{{search_name}}" style="width: 40%;" name="search_name"placeholder="أو ابحث بإسم العمل"/>
-        <button class="btn btn-main btn-color" type="submit">
-          بحث<i class="fa-solid fa-magnifying-glass"></i>
-        </button>
-      </form>
+      <input class="form-control mr-sm-2 remove-outline" 
+      id="search-name-input" 
+      value="{{search_name}}" 
+      style="width: 40%;" 
+      name="search_name"
+      placeholder="أو ابحث بإسم العمل"/>
+      <button class="btn btn-main btn-color" type="submit">
+        بحث<i class="fa-solid fa-magnifying-glass"></i>
+      </button>
     </div>
     <br>  
     <div class="horizontal-menu-container">
@@ -36,6 +39,7 @@
     </div>
     </div>
   </form>
+  
   <div class="content form-row justify-content-around" >
     {% include 'dalilalaemal/dalil_search_ajax.html' %}
   </div>

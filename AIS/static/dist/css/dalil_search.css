@@ -1,11 +1,14 @@
 
 .select-main {
     display: flex;
+    flex-direction: row;
     align-items: center;
 }
 
 form {
-display: flex;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
 .form-control{
@@ -43,6 +46,3 @@ display: flex;
 .menu-item:hover {
     background-color: #e0e0e0;
 }
-
-
-

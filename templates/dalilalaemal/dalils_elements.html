@@ -1,5 +1,5 @@
 {% load static %} 
-<link rel="stylesheet" href="{% static 'dist/css/dalils_elements.css' %}?v=0.2" />
+<link rel="stylesheet" href="{% static 'dist/css/dalils_elements.css' %}?v=0.3" />
 <style>
     #load-more {
       background-color: #3498db;  /* اللون الأساسي للزر */
@@ -27,10 +27,9 @@
 
 </style>
 
-<div id="results">
+<div id="results" class="card-main">
   {% for company in companys %}
     <div class="d-flex justify-content-center align-items-center w-100 item">
-      <!-- Company Card -->
       <div class="card">
         <div class="card-head">
           <div class="card-logo">
@@ -124,7 +123,4 @@ document.getElementById('load-more').addEventListener('click', function() {
     xhr.send();
 });
 </script>
-
-
-
 

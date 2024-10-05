@@ -1,0 +1,122 @@
+{% load static %} 
+
+<link rel="stylesheet" href="{% static 'dist/css/dalil_dalils_card.css' %}?v=0.4" />
+<div id="results">
+  {% for company in companys %}
+    <div class="card item">
+      <div class="card-header-dalil">
+        <a href="{% url 'dalil_single' company.id %}">
+          {% if company.legalPersonID.basicInfoID.photo %}
+          <img src="{{ company.legalPersonID.basicInfoID.photo.url }}" alt="card Avatar" class="card-logo">
+          {% else %}
+          <img src="{% static 'dist/img/dalilalaemal_logo_sudan.jpg' %}?=0.1" alt="card Avatar" class="card-logo">
+          {% endif %}
+        </a>
+        <div class="card-info">
+          <a class="card-name" href="{% url 'dalil_single' company.id %}"> 
+            <h3>{{ company.legalPersonID.name_ar }}</h3>
+          </a>
+          <a class="card-businessScope" href="{% url 'dalil_search' %}?businessScopeID={{ company.legalPersonID.businessScopeID.id }}">
+            <p>{{ company.legalPersonID.businessScopeID }}</p>
+          </a>      
+        </div>
+      </div>
+      
+      <div class="card-body">
+        <p class="card-address">
+            {% if company.legalPersonID.basicInfoID.address %}
+            <a href="{% url 'dalil_search' %}?cityID={{ company.legalPersonID.basicInfoID.cityID.id }}">{{ company.legalPersonID.basicInfoID.cityID }}</a> - 
+            {{ company.legalPersonID.basicInfoID.address }}
+            {% endif %}
+            {% if request.user.is_authenticated %}
+            <a class="card-sub-title btn-link" href="{% url 'update' company.id %}"
+            ><i class="fas fa-edit"></i></a>
+            {% endif %}
+        </p>
+        <a href="{% url 'dalil_single' company.id %}">
+          {% if company.legalPersonID.basicInfoID.attachments %}
+          <img src="{{ company.legalPersonID.basicInfoID.attachments.url }}" alt="card Image" class="card-attachments">
+          {% else %}
+          <img src="{% static 'dist/img/dalilalaemal_logo_sudan.jpg' %}?=0.1" alt="card Image" class="card-attachments">
+          {% endif %}
+        </a>
+      </div>
+
+      <div class="card-actions">
+        
+        <button class="like-btn">
+          {% if company.legalPersonID.basicInfoID.phone %}
+          <a href="tel:{{ company.legalPersonID.basicInfoID.phone }}" class="btn-link icon-style">
+            <span>إتصال</span>
+            <i class="fa fa-phone " ></i>
+          </a>
+          {% endif %}
+        </button>
+
+        <button class="comment-btn">
+          {% if company.legalPersonID.basicInfoID.phoneOther %}
+          <a href="https://wa.me/{{ company.legalPersonID.basicInfoID.phoneOther }}" class="btn-link icon-style">
+            <span>واتساب</span>
+            <i class="fa-brands fa-whatsapp " ></i>
+          </a>
+          {% endif %}
+        </button>
+
+        <button class="share-btn">
+          {% if company.isDelivery %}
+          <a href="tel:{{company.legalPersonID.basicInfoID.phone}}"class="btn-link icon-style">
+            <span>توصيل</span>
+            <i class="fa fa-shipping-fast " ></i>
+          </a>
+          {% endif %}
+        </button>
+
+        <button class="share-btn">
+          {% if company.legalPersonID.basicInfoID.google_maps_location %}
+          <a href="{{ company.legalPersonID.basicInfoID.google_maps_location }}" class="btn-link icon-style">
+            <span>الخريطة</span>
+            <i class="fa-solid fa-location-dot"></i></a>
+            {% endif %}
+        </button>
+
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+{% if page_obj.has_next %}
+<button id="load-more" data-page="{{ page_obj.next_page_number }}" style="display: block;">
+  عرض المزيد..
+</button>
+{% else %}
+<p>لا توجد المزيد من النتائج.</p>
+{% endif %}
+
+<script>
+document.getElementById('load-more').addEventListener('click', function() {
+    var page = this.getAttribute('data-page');
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '?page=' + page, true);
+    xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 400) {
+            var newContent = document.createElement('div');
+            newContent.innerHTML = xhr.responseText;
+            
+            // استخراج العناصر الجديدة فقط
+            var newItems = newContent.querySelectorAll('#results .item');
+            newItems.forEach(function(item) {
+                document.getElementById('results').appendChild(item);
+            });
+
+            // تحقق من المزيد
+            var hasNext = newContent.querySelector('#load-more');
+            if (hasNext) {
+                document.getElementById('load-more').setAttribute('data-page', parseInt(page) + 1);
+            } else {
+                document.getElementById('load-more').style.display = 'none';
+            }
+        }
+    };
+    xhr.send();
+});
+</script>

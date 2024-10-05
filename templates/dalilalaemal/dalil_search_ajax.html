@@ -1,5 +1,5 @@
 {% load static %} 
-<link rel="stylesheet" href="{% static 'dist/css/dalils_elements.css' %}?v=0.2" />
+<link rel="stylesheet" href="{% static 'dist/css/dalils_elements.css' %}?v=0.3" />
 <style>
     #load-more {
       background-color: #3498db;  /* اللون الأساسي للزر */
@@ -29,8 +29,7 @@
 
 <div id="content-area" >
   {% for company in companys %}
-    <div class="d-flex justify-content-center align-items-center w-100 item">
-      <!-- Company Card -->
+    <div class="d-flex justify-content-center align-items-center w-100">
       <div class="card">
         <div class="card-head">
           <div class="card-logo">
@@ -65,7 +64,6 @@
                 <span>إتصال</span>
                 <i class="fa fa-phone " ></i>
               </a>
-    
               {% endif %}
               {% if company.legalPersonID.basicInfoID.phoneOther %}
               <a href="https://wa.me/{{ company.legalPersonID.basicInfoID.phoneOther }}" class="btn-link icon-style">
@@ -94,37 +92,46 @@
   
 
 <script>
-  // كود أجاكس للمجالات
-  document.addEventListener('DOMContentLoaded', function () {
-    // احصل على جميع عناصر القائمة
-    const menuItems = document.querySelectorAll('.menu-item');
+  // كود أجاكس
+  // استمع لتغيير المدينة
+document.getElementById('city-select').addEventListener('change', function() {
+    submitSearch();
+});
 
-    // أضف حدث النقر إلى كل عنصر
-    menuItems.forEach(item => {
-        item.addEventListener('click', function (e) {
-            e.preventDefault(); // منع إعادة تحميل الصفحة
+// استمع للبحث عند الضغط على زر البحث
+document.getElementById('search-button').addEventListener('click', function() {
+    submitSearch();
+});
 
-            const businessScopeID = this.getAttribute('data-business-scope-id');
-            const cityID = this.getAttribute('data-city-id');
-
-             // احصل على رابط URL عبر Django template tag
-             const ajaxUrl = "{% url 'dalil_search' %}";
-
-            // إعداد طلب AJAX
-            fetch(`${ajaxUrl}?businessScopeID=${businessScopeID}&cityID=${cityID}`, {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'  // توضيح أن هذا طلب AJAX
-                    }
-                })
-                .then(response => response.text())  // توقع نص (HTML)
-                .then(data => {
-                    // تحديث منطقة المحتوى
-                    document.getElementById('content-area').innerHTML = data;
-                })
-                .catch(error => console.error('Error:', error));
-        });
+// استمع للنقر على عناصر القائمة الأفقية
+document.querySelectorAll('.menu-item').forEach(item => {
+    item.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('businessScopeID').value = this.getAttribute('data-business-scope-id');
+        submitSearch();
     });
 });
+
+// دالة لإرسال طلب البحث باستخدام AJAX
+function submitSearch() {
+    let cityID = document.getElementById('city-select').value;
+    let searchName = document.getElementById('search-name-input').value;
+    let businessScopeID = document.querySelector('input[name="businessScopeID"]').value;
+
+    let ajaxUrl = '{% url "dalil_search" %}';
+
+    fetch(`${ajaxUrl}?cityID=${cityID}&search_name=${searchName}&businessScopeID=${businessScopeID}`, {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('content-area').innerHTML = data;  // تحديث النتائج
+    })
+    .catch(error => console.error('Error:', error));
+}
+
 </script>
 
 

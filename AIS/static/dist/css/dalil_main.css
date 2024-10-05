@@ -22,6 +22,13 @@
   font-variation-settings: "slnt" 0;
 } 
 
+html{
+  direction: rtl;
+  text-align: right;
+  height: 100%;
+  width: 100%;
+}
+
 body {
   /* font-family: Arial, sans-serif; */
   background-color: #ffffff;
@@ -31,7 +38,34 @@ body {
   height: 100vh;
   margin: 0;
 }
- 
+
+.container{
+    border: solid var(--borderColor) 1px;
+    /* margin: 5px; */
+    padding: 0px !important;
+    border-top-right-radius: 10px;
+  
+  }
+
+.main-title{
+  background: var(--mainColor) !important;
+  border-top-right-radius: 5px;
+  padding: 10px;
+  padding-right: 20px;
+  color: #fff;
+  font-weight: bold;
+  border-top: var(--subColor) solid;
+}
+
+.content {
+  margin: 15px;
+  width: 100%;
+}
+
+.wrapper {
+  width: 100%;
+}
+
 .content-wrapper {
   display: flex;
   justify-content: center;
@@ -39,7 +73,7 @@ body {
 
 .content-main {
   width: 95%;
-  margin: 75px 10px;
+  margin: 15px 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -97,77 +131,6 @@ body {
     float: right;
 }
 
-.content-wrapper, .main-footer, .main-header {
-    margin-left: 0px;
-    margin-right: 0px;
-}
-
-.mr-auto-navbav{
-    margin-right: auto!important;
-}
-
-.navbar-expand .navbar-nav .nav-link {
-    padding-right: 1rem;
-    padding-left: 1rem;
-}
-
-[class*=icheck-]>input:first-child:checked+input[type=hidden]+label::after, 
-[class*=icheck-]>input:first-child:checked+label::after {
-    right: 15px;
-    left: auto;
-}
-
-.nav-sidebar .nav-link>.right, 
-.nav-sidebar .nav-link>p>.right {
-    left: 1rem;
-    right: auto;
-}
-
-.nav-sidebar .nav-link>.right:nth-child(2), 
-.nav-sidebar .nav-link>p>.right:nth-child(2) {
-    left: 2.2rem;
-    right: auto;
-}
-
-.small-box .icon>i {
-    left: 15px;
-    right: auto;
-}
-
-.has-treeview:hover{
-  color: var(--mainColor) !important;
-}
-
-
-html, body{
-  direction: rtl;
-  text-align: right;
-  height: 100%;
-  width: 100%;
-}
-
-.container{
-    border: solid var(--borderColor) 1px;
-    /* margin: 5px; */
-    padding: 0px !important;
-    border-top-right-radius: 10px;
-  
-  }
-
-.main-title{
-  background: var(--mainColor) !important;
-  border-top-right-radius: 5px;
-  padding: 10px;
-  padding-right: 20px;
-  color: #fff;
-  font-weight: bold;
-  border-top: var(--subColor) solid;
-}
-
-.content {
-  margin: 15px;
-  width: 100%;
-}
 
 .btn{
   padding: 6px;
@@ -179,7 +142,6 @@ html, body{
 
 .btn:hover{
   color: #fff;
-  /* font-weight: bold; */
   border-color: var(--mainColor);
 }
 
@@ -233,4 +195,3 @@ html, body{
   padding: 0 5px;
   overflow: hidden;
 }
-

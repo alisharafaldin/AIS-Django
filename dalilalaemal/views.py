@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
+from django.template.loader import render_to_string
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from basicinfo.models import BusinessScope, Cities, BasicInfo, LegalPersons
@@ -284,11 +285,12 @@ def search_results(request):
         })
 
     return render(request, 'dalilalaemal/search.html', {'page_obj': page_obj})
+
 # @login_required
 def dalils(request):
-    company_query = Company.objects.filter(includeInDalilAlaemal=True).order_by('-id')
+    company_query = Company.objects.filter(includeInDalilAlaemal=True).order_by('?')
     # إعداد عرض المزيد البادئة وعدد العناصر
-    paginator = Paginator(company_query, 7) # تقسيم النتائج لـ 7 عناصر في الصفحة الواحدة
+    paginator = Paginator(company_query, 3) # تقسيم النتائج لـ 7 عناصر في الصفحة الواحدة
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -307,4 +309,4 @@ def dalils(request):
         'page_obj': page_obj
     }
     # عرض الصفحة مع البيانات
-    return render(request, 'dalilalaemal/dalils.html', context)
+    return render(request, 'dalilalaemal/dalil_dalils.html', context)
