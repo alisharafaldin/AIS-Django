@@ -27,7 +27,7 @@
 
 </style>
 
-<div id="results">
+<div id="content-area" >
   {% for company in companys %}
     <div class="d-flex justify-content-center align-items-center w-100 item">
       <!-- Company Card -->
@@ -92,39 +92,39 @@
   {% endfor %}
 </div>
   
-<button id="load-more" data-page="2"
-style="display: {% if page_obj.has_next %}block{% else %}none{% endif %};">
-عرض المزيد..</button>
 
 <script>
-document.getElementById('load-more').addEventListener('click', function() {
-    var page = this.getAttribute('data-page');
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', '?page=' + page, true);
-    xhr.onload = function() {
-        if (xhr.status >= 200 && xhr.status < 400) {
-            var newContent = document.createElement('div');
-            newContent.innerHTML = xhr.responseText;
-            
-            // استخراج العناصر الجديدة فقط
-            var newItems = newContent.querySelectorAll('#results .item');
-            newItems.forEach(function(item) {
-                document.getElementById('results').appendChild(item);
-            });
+  // كود أجاكس للمجالات
+  document.addEventListener('DOMContentLoaded', function () {
+    // احصل على جميع عناصر القائمة
+    const menuItems = document.querySelectorAll('.menu-item');
 
-            // تحقق من المزيد
-            var hasNext = newContent.querySelector('#load-more');
-            if (hasNext) {
-                document.getElementById('load-more').setAttribute('data-page', parseInt(page) + 1);
-            } else {
-                document.getElementById('load-more').style.display = 'none';
-            }
-        }
-    };
-    xhr.send();
+    // أضف حدث النقر إلى كل عنصر
+    menuItems.forEach(item => {
+        item.addEventListener('click', function (e) {
+            e.preventDefault(); // منع إعادة تحميل الصفحة
+
+            const businessScopeID = this.getAttribute('data-business-scope-id');
+            const cityID = this.getAttribute('data-city-id');
+
+             // احصل على رابط URL عبر Django template tag
+             const ajaxUrl = "{% url 'dalil_search' %}";
+
+            // إعداد طلب AJAX
+            fetch(`${ajaxUrl}?businessScopeID=${businessScopeID}&cityID=${cityID}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'  // توضيح أن هذا طلب AJAX
+                    }
+                })
+                .then(response => response.text())  // توقع نص (HTML)
+                .then(data => {
+                    // تحديث منطقة المحتوى
+                    document.getElementById('content-area').innerHTML = data;
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    });
 });
 </script>
-
-
 
 

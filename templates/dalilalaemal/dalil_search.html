@@ -29,13 +29,16 @@
     <div class="horizontal-menu-container">
       <div class="horizontal-menu">
         {% for id, logo, label, count in businessScope %}
-          <a class="menu-item" href="{% url 'dalil_search' %}?businessScopeID={{id}}&cityID={{search_cityID}}">{{ label }} ({{ count }})</a>
+            <a class="menu-item" href="#" data-business-scope-id="{{ id }}" data-city-id="{{ search_cityID }}">
+                {{ label }} ({{ count }})
+            </a>
         {% endfor %}
-      </div>
+    </div>
     </div>
   </form>
   <div class="content form-row justify-content-around" >
-    {% include 'dalilalaemal/dalils_elements.html' %}
+    {% include 'dalilalaemal/dalil_search_ajax.html' %}
   </div>
 </div>
 {% endblock %}
+
