@@ -267,40 +267,27 @@ def dalil_search(request):
     }
     return render(request, 'dalilalaemal/dalil_search.html', context)
 
-
-def search_results(request):
-    search_query = request.GET.get('q', '')
-    results = Company.objects.filter(legalPersonID__name_ar__icontains=search_query)  # مثال للبحث
-
-    # إعداد عرض المزيد البادئة وعدد العناصر
-    paginator = Paginator(results, 7) # تقسيم النتائج لـ 7 عناصر في الصفحة الواحدة
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest': # إذا كان الطلب AJAX
-        results_list = list(page_obj.object_list.values())  # تحويل النتائج إلى قائمة JSON
-        return JsonResponse({
-            'results': results_list,
-            'has_next': page_obj.has_next()  # تحقق مما إذا كانت هناك صفحة أخرى
-        })
-
-    return render(request, 'dalilalaemal/search.html', {'page_obj': page_obj})
-
 # @login_required
 def dalils(request):
-    company_query = Company.objects.filter(includeInDalilAlaemal=True).order_by('?')
+   # الحصول على قائمة معرفات الشركات التي تم تحميلها سابقًا
+    loaded_ids = request.GET.getlist('loaded_ids[]', [])
+    company_query = Company.objects.filter(includeInDalilAlaemal=True).exclude(id__in=loaded_ids).order_by('?')
+    
     # إعداد عرض المزيد البادئة وعدد العناصر
-    paginator = Paginator(company_query, 3) # تقسيم النتائج لـ 7 عناصر في الصفحة الواحدة
+    paginator = Paginator(company_query, 3)  # تقسيم النتائج لـ 3 عناصر في الصفحة الواحدة
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest': # إذا كان الطلب AJAX
-        results_list = list(page_obj.object_list.values())  # تحويل النتائج إلى قائمة JSON
+    # إذا كان الطلب AJAX، قم بإرجاع HTML القالب الفرعي مع الحالة
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        html = render_to_string('dalilalaemal/dalil_dalils_card.html', {'companys': page_obj})
+        results_list = [company.id for company in page_obj.object_list]  # احصل على معرفات النتائج الجديدة
         return JsonResponse({
-            'results': results_list,
-            'has_next': page_obj.has_next()  # تحقق مما إذا كانت هناك صفحة أخرى
+            'html': html,
+            'has_next': page_obj.has_next(),
+            'loaded_ids': results_list  # أضف المعرفات إلى البيانات المستجيبة
         })
-
+    
     context = {
         'companys': page_obj,
         'search_form': InvoiceSearchForm(request.GET),

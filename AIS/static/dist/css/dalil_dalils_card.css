@@ -7,7 +7,7 @@
     background-color: #fff;
     border-radius: 8px;
     margin: 15px auto;
-    max-width: 85%;
+    width: 95%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     direction: rtl;
@@ -37,13 +37,13 @@
 
 .card-name h3 {
     margin: 0;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: bold;
     color: var(--subColor);
 }
 
 .card-businessScope {
-    font-size: 12px;
+    font-size: 10px;
     margin-top: 5px;
 }
 
@@ -97,6 +97,15 @@
     font-size: 14px;
 } 
 
+.contenar-btn-load-more {
+    margin-bottom: 52px;
+    justify-content: center;
+    align-items: stretch;
+    display: flex;
+    background-color: var(--mainColor);
+    width: 70%;
+}
+
 #load-more {
     background-color: #3498db;  /* اللون الأساسي للزر */
     color: white;               /* لون النص */
@@ -107,6 +116,7 @@
     font-size: 16px;            /* حجم الخط */
     transition: all 0.3s ease;  /* تأثير الانتقال عند التفاعل */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* تأثير الظل */
+    position: absolute;
 }
 
 #load-more:hover {

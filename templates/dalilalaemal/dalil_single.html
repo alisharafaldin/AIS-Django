@@ -1,6 +1,6 @@
 {% extends 'base_dalilalaemal.html' %} {% load static %} {% block title %} |
 شامل {% endblock %} {% block content %} {% include 'partials/_alerts.html' %}
-<link rel="stylesheet" href="{% static 'dist/css/dalil_single.css' %}?v=0.6" />
+<link rel="stylesheet" href="{% static 'dist/css/dalil_single.css' %}?v=0.7" />
 
 <div class="content-main">
   <div class="profile-container">
@@ -55,12 +55,18 @@
           {{company.legalPersonID.basicInfoID.phoneOther}}
         </li>
         <li>
-          <span>رقم إتصال آخر : </span>{{company.legalPersonID.phoneAdmin}}
+          <span>رقم إتصال آخر : </span>
+          {% if company.legalPersonID.phoneAdmin %}
+          <a href="tel:{{ company.legalPersonID.phoneAdmin }}" class="btn-link icon-style">
+            <i class="fa fa-phone " ></i>
+          </a>
+          {% endif %}
+          {{company.legalPersonID.phoneAdmin}}
         </li>
       </ul>
     </section>
     <section class="profile-map">
-      <h2>موقع العمل Google Map</h2>
+      <h2>إضغط على الخريطة للوصول للعنوان</h2>
       <div class="map-container">
         <!-- استخدم خريطة جوجل أو أي خدمة خرائط أخرى هنا -->
         {% if company.legalPersonID.basicInfoID.google_maps_location %}

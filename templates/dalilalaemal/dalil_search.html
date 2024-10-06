@@ -1,17 +1,18 @@
 {% extends 'base_dalilalaemal.html' %} 
 {% load static %} 
 {% block title %} | بحث {% endblock %} 
+
 {% block content %}
 {% include 'partials/_alerts.html' %}
-<link rel="stylesheet" href="{% static 'dist/css/dalil_search.css' %}?v=1.2" />
+
+<link rel="stylesheet" href="{% static 'dist/css/dalil_search.css' %}?v=1.3" />
+
 <div class="content-main">
   <form id="search-form">
     <br>
     <div class="select-main">
       <select name="city" id="city-select" class="form-control" onchange="goToCityPage()">
-        <!-- الخيار الافتراضي -->
         <option value="">اختر المدينة</option>
-        <!-- حلقة للمدن -->
         {% for city in cities %}
         <option value="{{ city.id }}"{% if city.id == search_cityID %} selected {% endif %}>
           {{ city.name_ar }}
@@ -36,13 +37,71 @@
                 {{ label }} ({{ count }})
             </a>
         {% endfor %}
+      </div>
     </div>
-    </div>
+    <input type="hidden" name="businessScopeID" id="businessScopeID" value="">
   </form>
   
-  <div class="content form-row justify-content-around" >
-    {% include 'dalilalaemal/dalil_search_ajax.html' %}
+  <div class="content form-row justify-content-around">
+    <div id="content-area">
+      {% include 'dalilalaemal/dalil_search_ajax.html' %}
+    </div>
   </div>
 </div>
+
 {% endblock %}
 
+<script>
+  // كود أجاكس
+
+// إضافة حدث click لكل عنصر في القائمة الأفقية
+document.querySelectorAll(".menu-item").forEach((item) => {
+    item.addEventListener("click", function (e) {
+        e.preventDefault(); // منع الانتقال الافتراضي للرابط
+        // استرجاع معرّف المدينة المختارة
+        let cityID = document.getElementById("city-select").value;
+        // تعيين قيمة معرّف مجال الأعمال المختار
+        document.getElementById("businessScopeID").value = this.getAttribute("data-business-scope-id");
+        // استدعاء دالة submitSearch مع المدينة المختارة
+        submitSearch(cityID);
+    });
+});
+
+// دالة لإرسال طلب بحث باستخدام AJAX
+function submitSearch(cityID = null) {
+    // استرجاع قيمة اسم البحث
+    let searchName = document.getElementById("search-name-input").value;
+    // استرجاع قيمة معرّف مجال الأعمال
+    let businessScopeID = document.getElementById("businessScopeID").value;
+
+    // عنوان الطلب
+    let ajaxUrl = '{% url "dalil_search" %}';
+
+    // إعداد معلمات الطلب
+    let params = new URLSearchParams({
+        cityID: cityID || document.getElementById("city-select").value, // استخدام المدينة المحددة أو القيمة الموجودة
+        search_name: searchName,
+        businessScopeID: businessScopeID
+    });
+
+    // إرسال طلب fetch
+    fetch(`${ajaxUrl}?${params.toString()}`, {
+        headers: {
+            "X-Requested-With": "XMLHttpRequest" // تحديد الطلب كطلب AJAX
+        }
+    })
+    .then((response) => {
+        // التحقق من نجاح الطلب
+        if (!response.ok) {
+            throw new Error('Network response was not ok'); // إظهار خطأ في حال كانت الاستجابة غير ناجحة
+        }
+        return response.text(); // إرجاع نص الاستجابة
+    })
+    .then((data) => {
+        // تحديث محتوى المنطقة المخصصة للنتائج
+        document.getElementById("content-area").innerHTML = data;
+    })
+    .catch((error) => console.error("Error:", error)); // التعامل مع الأخطاء
+}
+
+</script>
