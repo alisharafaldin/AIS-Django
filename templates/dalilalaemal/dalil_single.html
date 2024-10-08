@@ -1,5 +1,18 @@
-{% extends 'base_dalilalaemal.html' %} {% load static %} {% block title %} |
-شامل {% endblock %} {% block content %} {% include 'partials/_alerts.html' %}
+{% extends 'base_dalilalaemal.html' %}
+ {% load static %}
+  {% block title %} | شامل {% endblock %}
+
+  {% block iconog %}
+    <meta property="og:image" content="{% if company.legalPersonID.basicInfoID.attachments %}{{ company.legalPersonID.basicInfoID.attachments.url }}{% else %}{% static 'dist/img/dalilalaemal_logo_sudan.jpg' %}{% endif %}">
+  {% endblock %}
+
+  {% block icontw %}
+    <meta property="twitter:image" content="{% if company.legalPersonID.basicInfoID.attachments %}{{ company.legalPersonID.basicInfoID.attachments.url }}{% else %}{% static 'dist/img/dalilalaemal_logo_sudan.jpg' %}{% endif %}">
+  {% endblock %}
+
+  {% block content %}
+  {% include 'partials/_alerts.html' %}
+
 <link rel="stylesheet" href="{% static 'dist/css/dalil_single.css' %}?v=0.7" />
 
 <div class="content-main">

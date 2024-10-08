@@ -1,6 +1,7 @@
 
 * {
     box-sizing: border-box;
+    text-decoration: none !important;
 }
 
 .card {
@@ -33,6 +34,10 @@
     align-items: flex-start;
     height: 40px;
     padding-right: 10px;
+}
+
+.card-name  {
+    text-decoration: none !important;
 }
 
 .card-name h3 {

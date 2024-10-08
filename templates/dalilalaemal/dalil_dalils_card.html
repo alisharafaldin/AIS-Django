@@ -1,5 +1,96 @@
 {% load static %} 
 
+<style>
+  /* تنسيق الحاوية */
+  .share-container {
+    position: relative;
+    width: 0;
+    /* top: 144px;*/
+    right: 280px; 
+  }
+
+  /* أيقونة المشاركة الرئيسية */
+  .main-share-icon {
+    font-size: 30px;
+    width: 30px;
+    height: 30px;
+    color: #fff;
+    background-color: #333;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .main-share-icon .fa-solid, .fas {
+    font-weight: 700;
+    font-size: 19px;
+}
+  /* قائمة الأيقونات المنبثقة */
+  .share-popup {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    bottom: -px;
+    left: 7px;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.8);
+    transition: opacity 0.3s, transform 0.3s;
+  }
+
+  .share-popup a {
+      display: inline-block;
+      margin: 5px;
+      font-size: 20px;
+      color: #fff;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+
+  .share-popup a i {
+    font-size: 15px;
+  }
+  .share-popup a.facebook { background-color: #3b5998; }
+  .share-popup a.twitter { background-color: #1da1f2; }
+  .share-popup a.whatsapp { background-color: #25d366; }
+  .share-popup a.telegram { background-color: #0088cc; }
+
+  /* إظهار القائمة عند المرور على الأيقونة */
+  .share-container:hover .share-popup {
+      display: flex;
+  }
+
+
+  /* تأثيرات الظهور المتسلسل */
+  .share-container:hover .share-popup {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
+  }
+  .share-container:hover .share-popup a:nth-child(1) { animation-delay: 0.1s; }
+  .share-container:hover .share-popup a:nth-child(2) { animation-delay: 0.2s; }
+  .share-container:hover .share-popup a:nth-child(3) { animation-delay: 0.3s; }
+  .share-container:hover .share-popup a:nth-child(4) { animation-delay: 0.4s; }
+
+  /* حركات CSS */
+  @keyframes slideIn {
+      from {
+          opacity: 0;
+          transform: translateY(20px);
+      }
+      to {
+          opacity: 1;
+          transform: translateY(0);
+      }
+  }
+</style>
+
 {% for company in companys %}
 <div class="card item">
   <div class="card-header-dalil">
@@ -38,13 +129,51 @@
         href="{% url 'dalil_search' %}?cityID={{ company.legalPersonID.basicInfoID.cityID.id }}"
         >{{ company.legalPersonID.basicInfoID.cityID }}</a
       >
-      - {{ company.legalPersonID.basicInfoID.address }} {% endif %} {% if
-      request.user.is_authenticated %}
+      - {{ company.legalPersonID.basicInfoID.address }} 
+      {% endif %} 
+      {% if request.user.is_authenticated %}
       <a class="card-sub-title btn-link" href="{% url 'update' company.id %}"
         ><i class="fas fa-edit"></i
       ></a>
       {% endif %}
     </p>
+      <!-- أيقونات المشاركة -->
+      <div class="share-container">
+        <!-- أيقونة المشاركة الرئيسية -->
+        <div class="main-share-icon">
+            <i class="fas fa-share-alt"></i>
+        </div>
+        
+        <!-- القائمة المنبثقة للأيقونات -->
+        <div class="share-popup">
+            <a href="fb://sharer/sharer.php?u=https://www.dalilalaemal.com" target="_blank" class="facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://x.com/intent/tweet?url=مفيد جداً للسياح والمقيمين السودانيين في مصر , دليل إرشادي يضم الأعمال والأنشطة التجارية السودانية في مصر , أنا أستخدم دليل الأعمال وأستفيد من خدماته الإرشادية : https://www.dalilalaemal.com" target="_blank" class="twitter">
+                <i class="fab fa-x"></i>
+            </a>
+            <a href="https://wa.me/?text=
+            %0A*إسم العمل* : {{ company.legalPersonID.name_ar }}
+            %0A*مجال العمل* : {{ company.legalPersonID.businessScopeID }}
+            %0A*العنوان* : {{ company.legalPersonID.basicInfoID.cityID }} - {{ company.legalPersonID.basicInfoID.address }}
+            %0A*لمزيد من المعلومات عن {{ company.legalPersonID.name_ar }} : 👇👇*
+            %0Ahttps://www.dalilalaemal.com/single/{{company.id}}
+            %0A
+            %0A➖➖➖➖➖➖➖
+            %0A*دليل الأعمال السودانية في مصر*
+            %0Aهو أول دليل إرشادي للسياح والمقيمين السودانيين في مصر , يضم الأعمال والأنشطة التجارية السودانية مصنفة نوعياً و جغرافياً . .
+            %0A
+            %0A*يمكنكم تصفح كامل الدليل والإستفادة من خدماته الإرشادية :*
+            %0Ahttps://www.dalilalaemal.com
+            " target="_blank" class="whatsapp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="https://t.me/share/url?url=https://example.com&text=تحقق+من+هذا+الموقع+الرائع!" target="_blank" class="telegram">
+                <i class="fab fa-telegram-plane"></i>
+            </a>
+        </div>
+       </div>
+       <!-- أيقونات المشاركة -->
     <a href="{% url 'dalil_single' company.id %}">
       {% if company.legalPersonID.basicInfoID.attachments %}
       <img

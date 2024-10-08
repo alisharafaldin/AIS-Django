@@ -2,13 +2,17 @@
 .select-main {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 5px;
 }
 
 form {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 .form-control{
@@ -25,7 +29,7 @@ form {
 .horizontal-menu-container {
     overflow-x: auto; /* Enable horizontal scrolling */
     white-space: nowrap; /* Prevent line breaks */
-    width: 95%;
+    width: 100%;
 }
 
 .horizontal-menu {
