@@ -124,28 +124,78 @@
         <p>{{ company.legalPersonID.businessScopeID }}</p>
       </a>
         <!-- أيقونات المشاركة -->
-     <div class="share-container">
-      <!-- أيقونة المشاركة الرئيسية -->
-      <div class="main-share-icon">
-          <i class="fas fa-share-alt"></i>
-      </div>
-      
-      <!-- القائمة المنبثقة للأيقونات -->
-      <div class="share-popup">
-          <a href="https://www.facebook.com/sharer/sharer.php?u=https://example.com" target="_blank" class="facebook">
-              <i class="fab fa-facebook-f"></i>
-          </a>
-          <a href="https://twitter.com/intent/tweet?url=https://example.com&text=تحقق+من+هذا+الموقع+الرائع!" target="_blank" class="twitter">
-              <i class="fab fa-twitter"></i>
-          </a>
-          <a href="https://wa.me/?text={{ request.build_absolute_uri }}" target="_blank" class="whatsapp">
-              <i class="fab fa-whatsapp"></i>
-          </a>
-          <a href="https://t.me/share/url?url=https://example.com&text=تحقق+من+هذا+الموقع+الرائع!" target="_blank" class="telegram">
-              <i class="fab fa-telegram-plane"></i>
-          </a>
-      </div>
-     </div>
+        <div class="share-container">
+          <!-- أيقونة المشاركة الرئيسية -->
+          <div class="main-share-icon">
+              <i class="fas fa-share-alt"></i>
+          </div>
+          
+          <!-- القائمة المنبثقة للأيقونات -->
+          <div class="share-popup">
+              <a href="fb://sharer/sharer.php?u=
+              %0Aإسم العمل : {{ company.legalPersonID.name_ar }}
+              %0Aمجال العمل : {{ company.legalPersonID.businessScopeID }}
+              %0Aالعنوان : {{ company.legalPersonID.basicInfoID.cityID }} - {{ company.legalPersonID.basicInfoID.address }}
+              %0Aلمزيد من المعلومات عن {{ company.legalPersonID.name_ar }} : 👇👇
+              %0Ahttps://www.dalilalaemal.com/single/{{company.id}}
+              %0A
+              %0A➖➖➖➖➖➖➖
+              %0Aدليل الأعمال السودانية في مصر
+              %0Aهو أول دليل إرشادي للسياح والمقيمين السودانيين في مصر , يضم الأعمال والأنشطة التجارية السودانية مصنفة نوعياً و جغرافياً . .
+              %0A
+              %0Aيمكنكم تصفح كامل الدليل والإستفادة من خدماته الإرشادية :
+              %0Ahttps://www.dalilalaemal.com" target="_blank" class="facebook">
+                  <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="https://x.com/intent/tweet?url=
+              %0Aإسم العمل : {{ company.legalPersonID.name_ar }}
+              %0Aمجال العمل : {{ company.legalPersonID.businessScopeID }}
+              %0Aالعنوان : {{ company.legalPersonID.basicInfoID.cityID }} - {{ company.legalPersonID.basicInfoID.address }}
+              %0Aلمزيد من المعلومات عن {{ company.legalPersonID.name_ar }} : 👇👇
+              %0Ahttps://www.dalilalaemal.com/single/{{company.id}}
+              %0A
+              %0A➖➖➖➖➖➖➖
+              %0Aدليل الأعمال السودانية في مصر
+              %0Aهو أول دليل إرشادي للسياح والمقيمين السودانيين في مصر , يضم الأعمال والأنشطة التجارية السودانية مصنفة نوعياً و جغرافياً . .
+              %0A
+              %0Aيمكنكم تصفح كامل الدليل والإستفادة من خدماته الإرشادية :
+              %0Ahttps://www.dalilalaemal.com" target="_blank" class="twitter">
+                  <i class="fab fa-x"></i>
+              </a>
+              <a href="https://wa.me/?text=
+              %0A*إسم العمل* : {{ company.legalPersonID.name_ar }}
+              %0A*مجال العمل* : {{ company.legalPersonID.businessScopeID }}
+              %0A*العنوان* : {{ company.legalPersonID.basicInfoID.cityID }} - {{ company.legalPersonID.basicInfoID.address }}
+              %0A*لمزيد من المعلومات عن {{ company.legalPersonID.name_ar }} : 👇👇*
+              %0Ahttps://www.dalilalaemal.com/single/{{company.id}}
+              %0A
+              %0A➖➖➖➖➖➖➖
+              %0A*دليل الأعمال السودانية في مصر*
+              %0Aهو أول دليل إرشادي للسياح والمقيمين السودانيين في مصر , يضم الأعمال والأنشطة التجارية السودانية مصنفة نوعياً و جغرافياً . .
+              %0A
+              %0A*يمكنكم تصفح كامل الدليل والإستفادة من خدماته الإرشادية :*
+              %0Ahttps://www.dalilalaemal.com
+              " target="_blank" class="whatsapp">
+                  <i class="fab fa-whatsapp"></i>
+              </a>
+              <a href="https://t.me/share/url?url=
+              %0Aإسم العمل : {{ company.legalPersonID.name_ar }}
+              %0Aمجال العمل : {{ company.legalPersonID.businessScopeID }}
+              %0Aالعنوان : {{ company.legalPersonID.basicInfoID.cityID }} - {{ company.legalPersonID.basicInfoID.address }}
+              %0Aلمزيد من المعلومات عن {{ company.legalPersonID.name_ar }} : 👇👇
+              %0Ahttps://www.dalilalaemal.com/single/{{company.id}}
+              %0A
+              %0A➖➖➖➖➖➖➖
+              %0Aدليل الأعمال السودانية في مصر
+              %0Aهو أول دليل إرشادي للسياح والمقيمين السودانيين في مصر , يضم الأعمال والأنشطة التجارية السودانية مصنفة نوعياً و جغرافياً . .
+              %0A
+              %0Aيمكنكم تصفح كامل الدليل والإستفادة من خدماته الإرشادية :
+              %0Ahttps://www.dalilalaemal.com" target="_blank" class="telegram">
+                  <i class="fab fa-telegram-plane"></i>
+              </a>
+          </div>
+         </div>
+         <!-- أيقونات المشاركة -->
     </div>
   </div>
 

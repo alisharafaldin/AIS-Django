@@ -120,7 +120,7 @@
       {% endfor %}
     </select>
     <form method="GET"class="form-inline my-2 my-lg-0" style="display: flex; flex-direction: row !important; margin-right: 5px;"  action="{% url 'dalil_search' %}">
-      <input class="form-control mr-sm-2 remove-outline" style="width: 70%;" name="search_name"placeholder="أو ابحث بإسم العمل"/>
+      <input required  class="form-control mr-sm-2 remove-outline" style="width: 70%;" name="search_name"placeholder="أو ابحث بإسم العمل"/>
       <button class="btn btn-main btn-color " type="submit">بحث<i class="fa-solid fa-magnifying-glass"></i></button>
     </form>
     
