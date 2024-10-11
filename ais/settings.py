@@ -14,7 +14,16 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # استخدم اسم مناسب للمجلد
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),  # المسار لمجلد static الخاص بك
+# ]
 
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -25,7 +34,7 @@ SECRET_KEY = 'django-insecure-!jh7*^y0ypid3zm^*di7-)21)3e4wpbi+*@4*rb@#p1zsu-41f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.dalilalaemal.com']
+ALLOWED_HOSTS = ['.dalilalaemal.com','192.168.1.4']
 
 
 # Application definition
@@ -130,7 +139,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # default static files settings for PythonAnywhere.
 # see https://help.pythonanywhere.com/pages/DjangoStaticFiles for more info
-MEDIA_ROOT = '/home/alisharafaldinali/ais/media'
-MEDIA_URL = '/media/'
-STATIC_ROOT = '/home/alisharafaldinali/ais/static'
-STATIC_URL = '/static/'
+
+# مسار الإنتاج
+# MEDIA_ROOT = '/home/alisharafaldinali/ais/media'
+# MEDIA_URL = '/media/'
+# STATIC_ROOT = '/home/alisharafaldinali/ais/static'
+# STATIC_URL = '/static/'
