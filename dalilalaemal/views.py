@@ -1,4 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator
+from django.template.loader import render_to_string
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from basicinfo.models import BusinessScope, Cities, BasicInfo, LegalPersons
 from basicinfo.forms import InvoiceSearchForm, BasicInfoForm, BasicInfoForm, LegalPersonsForm
@@ -183,7 +186,6 @@ def dalil_search(request):
     # إزالة المسافات في نهاية النص إذا كانت موجودة
     search_regex = search_regex.strip()
 
-
     # استعلام الشركات
     company_query = Company.objects.filter(includeInDalilAlaemal=True).order_by('-id')
     
@@ -218,6 +220,13 @@ def dalil_search(request):
         if selected_city:
             selected_city_name = selected_city.name_ar
 
+    # البحث عن المجال المحدد
+    selected_businessScope_name = None
+    if search_businessScopeID:
+        selected_businessScope = BusinessScope.objects.filter(id=search_businessScopeID).first()
+        if selected_businessScope:
+            selected_businessScope_name = selected_businessScope.name_ar
+
     # تصفية المجالات بناءً على المدينة المختارة
     if search_cityID:
         business_scopes = BusinessScope.objects.filter(
@@ -240,6 +249,10 @@ def dalil_search(request):
     # ترتيب القائمة تنازلياً حسب العدد
     sorted_scope_business = sorted(scope_business, key=lambda x: x[3], reverse=True)
 
+    # إذا كان الطلب AJAX، أعد فقط المحتوى المطلوب
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return render(request, 'dalilalaemal/dalil_search_ajax.html', {'companys': company_query})
+    
     # إعداد السياق
     context = {
         'companys': company_query,
@@ -247,21 +260,40 @@ def dalil_search(request):
         'search_cityID': search_cityID,
         'search_name': search_name,
         'selected_city_name': selected_city_name,
+        'selected_businessScope_name':selected_businessScope_name,
         'search_businessScopeID': search_businessScopeID,
         'businessScope': sorted_scope_business,
         'cities': Cities.objects.filter(basicInfo__legalpersons__company__isnull=False).distinct(),
     }
-    
     return render(request, 'dalilalaemal/dalil_search.html', context)
 
 # @login_required
 def dalils(request):
-    company_query = Company.objects.filter(includeInDalilAlaemal=True).order_by('-id')
+   # الحصول على قائمة معرفات الشركات التي تم تحميلها سابقًا
+    loaded_ids = request.GET.getlist('loaded_ids[]', [])
+    company_query = Company.objects.filter(includeInDalilAlaemal=True).exclude(id__in=loaded_ids).order_by('?')
+    
+    # إعداد عرض المزيد البادئة وعدد العناصر
+    paginator = Paginator(company_query, 3)  # تقسيم النتائج لـ 3 عناصر في الصفحة الواحدة
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    # إذا كان الطلب AJAX، قم بإرجاع HTML القالب الفرعي مع الحالة
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        html = render_to_string('dalilalaemal/dalil_dalils_card.html', {'companys': page_obj})
+        results_list = [company.id for company in page_obj.object_list]  # احصل على معرفات النتائج الجديدة
+        return JsonResponse({
+            'html': html,
+            'has_next': page_obj.has_next(),
+            'loaded_ids': results_list  # أضف المعرفات إلى البيانات المستجيبة
+        })
+    
     context = {
-        'companys': company_query,
+        'companys': page_obj,
         'search_form': InvoiceSearchForm(request.GET),
         'businessScope':BusinessScope.objects.filter(legalpersons__company__isnull=False).distinct(),
         'cities': Cities.objects.filter(basicInfo__legalpersons__company__isnull=False).distinct(),
+        'page_obj': page_obj
     }
     # عرض الصفحة مع البيانات
-    return render(request, 'dalilalaemal/dalils.html', context)
+    return render(request, 'dalilalaemal/dalil_dalils.html', context)

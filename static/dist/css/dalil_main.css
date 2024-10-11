@@ -4,10 +4,10 @@
   /* --subColor: #011c53; */
   --mainColor: #fee440 !important;
   --subColor: #003566;
-
+  
   --mainButtonColor: #003049;
   --subButtonColor: #fefae0;
-
+  
   --mainTitleColor: #fefae0;
   --subTitleColor: #003049;
 
@@ -20,6 +20,13 @@
   font-optical-sizing: auto;
   font-style: normal;
   font-variation-settings: "slnt" 0;
+} 
+
+html{
+  direction: rtl;
+  text-align: right;
+  height: 100%;
+  width: 100%;
 }
 
 body {
@@ -32,6 +39,33 @@ body {
   margin: 0;
 }
 
+.container{
+    border: solid var(--borderColor) 1px;
+    /* margin: 5px; */
+    padding: 0px !important;
+    border-top-right-radius: 10px;
+  
+  }
+
+.main-title{
+  background: var(--mainColor) !important;
+  border-top-right-radius: 5px;
+  padding: 10px;
+  padding-right: 20px;
+  color: #fff;
+  font-weight: bold;
+  border-top: var(--subColor) solid;
+}
+
+.content {
+  margin: 15px;
+  width: 100%;
+}
+
+.wrapper {
+  width: 100%;
+}
+
 .content-wrapper {
   display: flex;
   justify-content: center;
@@ -39,15 +73,15 @@ body {
 
 .content-main {
   width: 95%;
-  margin: 40px 10px 25px 10px;
-  display: flex !important;
+  margin: 88px 10px;
+  display: flex;
   flex-direction: column;
-  justify-content: center !important;
-  align-items: center !important;
-  align-content: center !important;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
   flex-wrap: wrap;
   position: absolute;
-  top: 35px;
+  padding-bottom: 100px;
 }
 
 /* ============== تحسين القوائم المنسدلة ====================== */
@@ -85,7 +119,7 @@ body {
 }
 
 .layout-fixed .main-sidebar {
-  right: 0;
+  right: 0;  
   position: fixed;
   background: var(--mainColor);
   color: #ffff !important;
@@ -97,76 +131,6 @@ body {
     float: right;
 }
 
-.content-wrapper, .main-footer, .main-header {
-    margin-left: 0px;
-    margin-right: 0px;
-}
-
-.mr-auto-navbav{
-    margin-right: auto!important;
-}
-
-.navbar-expand .navbar-nav .nav-link {
-    padding-right: 1rem;
-    padding-left: 1rem;
-}
-
-[class*=icheck-]>input:first-child:checked+input[type=hidden]+label::after,
-[class*=icheck-]>input:first-child:checked+label::after {
-    right: 15px;
-    left: auto;
-}
-
-.nav-sidebar .nav-link>.right,
-.nav-sidebar .nav-link>p>.right {
-    left: 1rem;
-    right: auto;
-}
-
-.nav-sidebar .nav-link>.right:nth-child(2),
-.nav-sidebar .nav-link>p>.right:nth-child(2) {
-    left: 2.2rem;
-    right: auto;
-}
-
-.small-box .icon>i {
-    left: 15px;
-    right: auto;
-}
-
-.has-treeview:hover{
-  color: var(--mainColor) !important;
-}
-
-
-html, body{
-  direction: rtl;
-  text-align: right;
-  height: 100%;
-  width: 100%;
-}
-
-.container{
-    border: solid var(--borderColor) 1px;
-    /* margin: 5px; */
-    padding: 0px !important;
-    border-top-right-radius: 10px;
-
-  }
-
-.main-title{
-  background: var(--mainColor) !important;
-  border-top-right-radius: 5px;
-  padding: 10px;
-  padding-right: 20px;
-  color: #fff;
-  font-weight: bold;
-  border-top: var(--subColor) solid;
-}
-
-.content {
-  margin: 15px;
-}
 
 .btn{
   padding: 6px;
@@ -178,7 +142,6 @@ html, body{
 
 .btn:hover{
   color: #fff;
-  /* font-weight: bold; */
   border-color: var(--mainColor);
 }
 
@@ -232,4 +195,3 @@ html, body{
   padding: 0 5px;
   overflow: hidden;
 }
-

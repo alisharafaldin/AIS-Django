@@ -1,0 +1,361 @@
+*{
+    direction: rtl !important;
+} 
+
+/* ==================== Start Customize Navbar ====================*/
+a#navbarDropdown {
+  display: flex !important;
+  align-items: baseline;
+  }
+  
+  ul.navbar-nav.mr-auto-navbav {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  
+  .user-panel.mt-3.pb-3.mb-3.d-flex {
+    margin: 0 !important;
+    padding: 2px !important;
+  }
+  
+  /* =======================  End Customize Navbar =======================*/
+  
+  /* ==================== Start Customize Navbar Fixad ====================*/
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #003366; /* لون الخلفية */
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.nav-item {
+    color: white;
+    text-align: right;
+    flex: 1;
+}
+
+.nav-item img {
+    width: 24px;
+    height: 24px;
+}
+
+.nav-item span {
+    display: block;
+    margin-top: 5px;
+}
+
+.nav-center {
+    position: relative;
+    bottom: 20px;
+}
+
+.nav-circle {
+    background-color: yellow;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.nav-circle img {
+    width: 30px;
+    height: 30px;
+}
+  
+  /* ==================== End Customize Navbar Fixad ====================*/
+.title-label {
+  background:#ececec;
+  color: rgb(88, 88, 88);
+  /* width: fit-content; */
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+}
+
+.layout-fixed .main-sidebar {
+  right: 0;  
+  position: fixed;
+  background: var(--mainColor);
+  color: #ffff !important;
+  font-weight: bold;
+  border-left: solid 4px var(--subColor);
+}
+
+.brand-image {
+    float: right;
+}
+
+.content-wrapper, .main-footer, .main-header {
+    margin-left: 0px;
+    margin-right: 250px;
+}
+
+.mr-auto-navbav{
+    margin-right: auto!important;
+}
+
+.navbar-expand .navbar-nav .nav-link {
+    padding-right: 1rem;
+    padding-left: 1rem;
+}
+
+[class*=icheck-]>input:first-child:checked+input[type=hidden]+label::after, 
+[class*=icheck-]>input:first-child:checked+label::after {
+    right: 15px;
+    left: auto;
+}
+.nav-sidebar .nav-link>.right, 
+.nav-sidebar .nav-link>p>.right {
+    left: 1rem;
+    right: auto;
+}
+.nav-sidebar .nav-link>.right:nth-child(2), 
+.nav-sidebar .nav-link>p>.right:nth-child(2) {
+    left: 2.2rem;
+    right: auto;
+}
+.small-box .icon>i {
+    left: 15px;
+    right: auto;
+}
+@media (min-width: 992px){
+    .sidebar-mini.sidebar-collapse .content-wrapper, .sidebar-mini.sidebar-collapse .main-footer, .sidebar-mini.sidebar-collapse .main-header {
+        margin-right: 4.6rem!important;
+    }
+    .sidebar-mini.sidebar-collapse .content-wrapper, .sidebar-mini.sidebar-collapse .main-footer, .sidebar-mini.sidebar-collapse .main-header {
+        margin-right: 4.6rem!important;
+        margin-left: 0!important;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .main-sidebar, .main-sidebar::before {
+        box-shadow: none !important;
+        margin-right: -50px;
+    }
+
+    .title-label{
+      height: 40px;
+    }
+    /* القاعدة الأساسية للشريط الجانبي */
+.main-sidebar {
+  width: 250px;
+  transition: margin-right 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+}
+
+/* تعديل الشريط الجانبي للأجهزة الصغيرة */
+@media (max-width: 1199.98px) {
+  .main-sidebar {
+      margin-right: -200px; /* تحريك الشريط الجانبي قليلاً إلى اليسار */
+  }
+}
+
+@media (max-width: 991.98px) {
+  .main-sidebar {
+      margin-right: -250px; /* تحريك الشريط الجانبي أكثر إلى اليسار */
+  }
+}
+
+@media (max-width: 767.98px) {
+  .main-sidebar {
+      margin-right: -250px; /*تحريك الشريط الجانبي بالكامل إلى اليسار */
+      box-shadow: none !important; /* إزالة الظل */
+      background-color:#fff !important;
+      /* display: none !important; */
+  }
+  .main-sidebar::before {
+      box-shadow: none !important; /* إزالة الظل من pseudo-element */
+  }
+}
+    .content-wrapper, .content-wrapper::before, .main-footer, .main-footer::before, .main-header, .main-header::before {
+        margin-right: 0;
+    }
+
+    .sidebar-open .main-sidebar, .sidebar-open .main-sidebar::before {
+        margin-right: 0;
+    }
+}
+
+
+
+/* استايل  */
+:root{
+    --mainColor: #243743 !important;
+    --subColor: #28b78d;
+    --sub2Color: #a0a9ae;
+    --BackgroundColor-Main: #28b78d !important;
+    --BackgroundColor-Sub: #efefef !important;
+    --mainTitle: #000000;
+    --subTitle: #10171a;
+    --subTitleContent: #83888a;
+    --bgC-btn-Main: #28b78d;
+    --bgC-btn-Sub: #a0a9ae;
+    --borderColor: #a0a9ae;
+    --btnDelete: #ff0000;
+  }
+.has-treeview:hover{
+  color: var(--mainColor) !important;
+}
+.active{
+  color: var(--mainColor);
+}
+.brand-link-image{
+  width: 125px !important;
+  margin-right: 21% !important;
+}
+.card-img{
+  width: 100%;
+}
+html, body{
+    direction: rtl;
+    text-align: right;
+    height: 100%;
+    width: 100%;
+  }
+.container{
+    border: solid var(--borderColor) 1px;
+    /* margin: 5px; */
+    padding: 0px !important;
+    border-top-right-radius: 10px;
+  
+  }
+  .main-title{
+    background: var(--mainColor) !important;
+    border-top-right-radius: 5px;
+    padding: 10px;
+    padding-right: 20px;
+    color: #fff;
+    font-weight: bold;
+    border-top: var(--subColor) solid;
+  }
+  .content {
+    margin: 15px;
+  }
+  .btn{
+    padding: 6px;
+    margin: 5px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #fff;
+  }
+  .btn:hover{
+    color: #fff;
+    /* font-weight: bold; */
+    border-color: var(--mainColor);
+  
+  }
+  .btn-main {
+    background-color: var(--subColor) ;
+  }
+  .btn-save{
+    background-color: var(--subColor) !important;
+    border-color: var(--subColor);
+  }
+  .btn-close{
+    background-color: var(--sub2Color) !important;
+    border-color: var(--sub2Color);
+  }
+
+  .btn-delete{
+    background-color: var(--btnDelete) !important;
+    border-color: var(--btnDelete);
+  }
+  
+  .btn-link{
+    color: var(--mainColor);
+    font-size: 20px;
+  }
+  .current_value{
+    font-weight: bold !important;
+  }
+  .sub-title{
+    background: var(--BackgroundColor-Sub);
+    color: var(--subTitle);
+    padding: 5px;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 14px;
+    margin-left: 5px !important;
+    min-width: 110px;
+  }
+  .sub-title-content{
+    width: 160px;
+    margin-left: 5px !important;
+    font-size: 14px;
+    color: var(--subTitleContent);
+    /* min-width: 160px; */
+    border: var(--BackgroundColor-Sub) solid 1px;
+    /* width: auto; */
+    padding: 0 5px;
+    overflow: hidden;
+  }
+
+  /* ============== تحسين القوائم المنسدلة ====================== */
+  .select2-container--default .select2-selection--single {
+    height: 38px !important;
+    padding: 5px !important;
+    border-radius: 4px !important;
+    border: 1px solid #ccc !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 28px !important;
+  }
+  
+  .select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 36px !important;
+  }
+  /* ============== تحسين القوائم المنسدلة ====================== */
+  
+  /*  =================== Start Customize Table ======================= */
+  /*@media (max-width: 768px) {
+    .table-responsive thead {
+      display: none;
+    }
+
+    .table-responsive tbody, 
+    .table-responsive th, 
+    .table-responsive td {
+      display: block;
+    }
+
+    .table-responsive tr {
+      margin-bottom: 15px;
+    }
+
+
+    .table-responsive td, 
+    .table-responsive th {
+      direction: rtl; 
+      text-align: right;
+      padding-right: 30%;
+      position: relative;
+      width: 100vw;
+    }
+
+    .table-responsive td::before, 
+    .table-responsive th::before {
+      content: attr(data-label);
+      position: absolute;
+      right: 0;
+      width: 25%;
+      padding-right: 10px;
+      margin: -12px 1px 2px 2px;
+      padding: 12px 8px 12px 0px;
+      font-weight: bold;
+      background-color: rgb(219, 219, 219);
+    }
+  }*/
+/*===================   End Customize Table ======================= */
+

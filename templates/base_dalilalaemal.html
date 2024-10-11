@@ -2,8 +2,62 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="theme-color" content="#fee440">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4385125030567370"
+     crossorigin="anonymous"></script>
+     <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KZRY420LSY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KZRY420LSY');
+</script>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="دليل الأعمال السودانية في مصر">
+    <meta property="og:description" content="
+أول دليل إرشادي متخصص في توفير معلومات عن الأعمال والأنشطة التجارية السودانية في مصر, *الهدف من الدليل :*
+
+* *✅ تسويق الأعمال التجارية* ، سيما وأن غالبية أصحاب الأعمال بدأو من الصفر وفي أماكن جديدة.
+
+* *✅ توفير آلية سهلة وسلسلة* للمستهلكين للعثور على الأعمال القريبة من مكان سكنهم.
+
+* *✅ التشبيك بين أصحاب الأعمال* عن طريق التعرف على بعضهم البعض.
+
+* *✅ تعزيز التعاون التجاري بين البلدين.* والترابط المجتمعي بين الشعبين.
+
+* *✅ إبراز الجانب الحيوي المُنتج والمُفيد* للجالية السودانية في مصر.">
+    {% block iconog %}
+      <meta property="og:image" content="{%  static 'dist/img/dalilalaemal_logo_sudan.jpg' %}">
+    {% endblock %}
+    <!-- <meta property="og:image" content="{%  static 'dist/img/dalilalaemal_logo_sudan.jpg' %}"> -->
+    <meta property="og:url" content="https://dalilalaemal.com">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="دليل الأعمال السودانية في مصر">
+    {% block icontw %}
+      <meta name="twitter:image" content="{%  static 'dist/img/dalilalaemal_logo_sudan.jpg' %}">
+    {% endblock %}
+    <!-- <meta name="twitter:image" content="{%  static 'dist/img/dalilalaemal_logo_sudan.jpg' %}"> -->
+    <meta name="twitter:description" content="
+أول دليل إرشادي متخصص في توفير معلومات عن الأعمال والأنشطة التجارية السودانية في مصر, *الهدف من الدليل :*
+
+* *✅ تسويق الأعمال التجارية* ، سيما وأن غالبية أصحاب الأعمال بدأو من الصفر وفي أماكن جديدة.
+
+* *✅ توفير آلية سهلة وسلسلة* للمستهلكين للعثور على الأعمال القريبة من مكان سكنهم.
+
+* *✅ التشبيك بين أصحاب الأعمال* عن طريق التعرف على بعضهم البعض.
+
+* *✅ تعزيز التعاون التجاري بين البلدين.* والترابط المجتمعي بين الشعبين.
+
+* *✅ إبراز الجانب الحيوي المُنتج والمُفيد* للجالية السودانية في مصر.">
+
     <title>دليل الأعمال{% block title %}{% endblock %}</title>
     <!-- Responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -23,10 +77,12 @@
     <!-- Bootstrap 4 RTL -->
     <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css"/>
     <!-- Custom RTL Style -->
-    <link rel="stylesheet" href="{% static 'dist/css/dalil_main.css' %}?v=0.1" />
+    <link rel="stylesheet" href="{% static 'dist/css/dalil_main.css' %}?v=2.7" />
   </head>
   <body>
     <div class="wrapper">
+
+
       {% include 'partials/_navbar_dalil.html' %}
       {% block content %}
       {% endblock %}

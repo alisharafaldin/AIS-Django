@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} | Delete Employee ( {{employee_label.id}} ) {% endblock %}
+{% block content %}
+<div class="content-wrapper">
+  <h4 class="main-title">حذف بيانات الموظف : {{employee_form.personID.fullName_ar}}</h4>
+ <div class="content">
+  <br>
+  <form method="POST">
+    {% csrf_token %}
+    {% include 'partials/_alerts.html' %}
+    <button type="submit" class="btn btn-danger">تأكيد الحذف</button>
+    <a href="{% url 'employee_update' employee_form.id %}" name="btnupdate" class="btn btn-save">تعديل</a>
+    <a href="{% url 'employees' %}" class="btn btn-close">إلغاء</a>
+    <br>
+    <br>
+    <br>
+    {% include 'employees/employee_form.html' %}
+  </form>
+ </div>
+</div>
+{% endblock %}

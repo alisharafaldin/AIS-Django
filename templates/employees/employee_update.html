@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} | Update Employee ( {{employee_update.id}} ){% endblock %}
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<div class="content-wrapper">
+  <div class="content">
+    <div class="modal-content">
+      <div class="modal-body">
+        <br>
+        <form method="POST">
+          <h4 class="main-title">تعديل بيانات الموظف : {{employee.personID.fullName_ar}} </h4>
+          {% csrf_token %}
+          {% include 'partials/_alerts.html' %}
+          <button type="submit" class="btn btn-save">حفظ التعديل</button>
+          <a href="{% url 'employees' %}" class="btn btn-close">إلغاء</a>
+          <br>
+          {% include 'employees/employee_form.html' %}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

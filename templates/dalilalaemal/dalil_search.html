@@ -1,101 +1,143 @@
 {% extends 'base_dalilalaemal.html' %} 
 {% load static %} 
 {% block title %} | بحث {% endblock %} 
+
 {% block content %}
 {% include 'partials/_alerts.html' %}
-<link rel="stylesheet" href="{% static 'dist/css/dalil_search.css' %}?v=0.9" />
+
+<link rel="stylesheet" href="{% static 'dist/css/dalil_search.css' %}?v=1.4" />
+<style>
+  /* تنسيق الحاوية */
+  .share-container {
+    position: relative;
+    width: 0;
+    /* top: 144px;*/
+    right: 280px; 
+  }
+
+  /* أيقونة المشاركة الرئيسية */
+  .main-share-icon {
+    font-size: 30px;
+    width: 30px;
+    height: 30px;
+    color: #fff;
+    background-color: #333;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .main-share-icon .fa-solid, .fas {
+    font-weight: 700;
+    font-size: 19px;
+}
+  /* قائمة الأيقونات المنبثقة */
+  .share-popup {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    bottom: -6px;
+    left: 7px;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.8);
+    transition: opacity 0.3s, transform 0.3s;
+  }
+
+  .share-popup a {
+      display: inline-block;
+      margin: 5px;
+      font-size: 20px;
+      color: #fff;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+
+  .share-popup a i {
+    font-size: 15px;
+  }
+  .share-popup a.facebook { background-color: #3b5998; }
+  .share-popup a.twitter { background-color: #1da1f2; }
+  .share-popup a.whatsapp { background-color: #25d366; }
+  .share-popup a.telegram { background-color: #0088cc; }
+
+  /* إظهار القائمة عند المرور على الأيقونة */
+  .share-container:hover .share-popup {
+      display: flex;
+  }
+
+
+  /* تأثيرات الظهور المتسلسل */
+  .share-container:hover .share-popup {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
+  }
+  .share-container:hover .share-popup a:nth-child(1) { animation-delay: 0.1s; }
+  .share-container:hover .share-popup a:nth-child(2) { animation-delay: 0.2s; }
+  .share-container:hover .share-popup a:nth-child(3) { animation-delay: 0.3s; }
+  .share-container:hover .share-popup a:nth-child(4) { animation-delay: 0.4s; }
+
+  /* حركات CSS */
+  @keyframes slideIn {
+      from {
+          opacity: 0;
+          transform: translateY(20px);
+      }
+      to {
+          opacity: 1;
+          transform: translateY(0);
+      }
+  }
+</style>
+
 <div class="content-main">
-  <form method="GET" action="{% url 'dalil_search' %}">
+  <form id="search-form">
     <br>
     <div class="select-main">
       <select name="city" id="city-select" class="form-control" onchange="goToCityPage()">
-        <!-- الخيار الافتراضي -->
         <option value="">اختر المدينة</option>
-        <!-- حلقة للمدن -->
         {% for city in cities %}
         <option value="{{ city.id }}"{% if city.id == search_cityID %} selected {% endif %}>
           {{ city.name_ar }}
         </option>
         {% endfor %}
       </select>
-      <form method="GET"class="form-inline my-2 my-lg-0 form-main" action="{% url 'dalil_search' %}">
-        <input class="form-control mr-sm-2 remove-outline" value="{{search_name}}" style="width: 40%;" name="search_name"placeholder="أو ابحث بإسم العمل"/>
-        <button class="btn btn-main btn-color" type="submit">
-          بحث<i class="fa-solid fa-magnifying-glass"></i>
-        </button>
-      </form>
+      <input required  class="form-control mr-sm-2 remove-outline" 
+      id="search-name-input" 
+      value="{{search_name}}" 
+      style="width: 40%;" 
+      name="search_name"
+      placeholder="أو ابحث بإسم العمل"/>
+      <button class="btn btn-main btn-color" type="submit">
+        بحث<i class="fa-solid fa-magnifying-glass"></i>
+      </button>
     </div>
     <br>  
     <div class="horizontal-menu-container">
       <div class="horizontal-menu">
         {% for id, logo, label, count in businessScope %}
-          <a class="menu-item" href="{% url 'dalil_search' %}?businessScopeID={{id}}&cityID={{search_cityID}}">{{ label }} ({{ count }})</a>
+            <a class="menu-item" href="{% url 'dalil_search' %}?businessScopeID={{id}}&cityID={{search_cityID}}" data-business-scope-id="{{ id }}" data-city-id="{{ search_cityID }}">
+                {{ label }} ({{ count }})
+            </a>
         {% endfor %}
       </div>
     </div>
+    <input type="hidden" name="businessScopeID" id="businessScopeID" value="">
   </form>
-  <div class="content form-row justify-content-around" >
-    {% for company in companys %}
-    <div class="d-flex justify-content-center align-items-center w-100">
-      <!-- Company Card -->
-      <div class="card">
-        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 20px;">
-          <div style="padding-right: 20px; padding-left: 10px; display: flex;">
-            <a href="{% url 'dalil_single' company.id %}">
-              {% if company.legalPersonID.basicInfoID.attachments %}
-              <img style="width: 50px; height: 50px;" src="{{ company.legalPersonID.basicInfoID.attachments.url }}" class="rounded me-2" alt="...">
-              {% else %}
-              <img style="width: 50px; height: 50px;" src="{% static 'dist/img/dalilalaemal_logo_sudan.jpg' %}?=0.1" class="rounded me-2" alt="...">
-              {% endif %}
-            </a>
-            <div style="display: flex; flex-direction: column; padding-right: 10px;">  
-              <a style="color: black;" href="{% url 'dalil_single' company.id %}"><strong class="me-auto">{{ company.legalPersonID.name_ar }}</strong></a>
-              <a style="font-size: 12px;" href="{% url 'dalil_search' %}?businessScopeID={{ company.legalPersonID.businessScopeID.id }}">{{ company.legalPersonID.businessScopeID }}</a>
-              <a style="font-size: 12px;" class="btn-link" href="{% url 'update' company.id %}"
-              ><i class="fas fa-edit"></i>
-            </a>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <ul class="list-group list-group-flush">
-            <h6 style="font-size: 12px;">
-              {% if company.legalPersonID.basicInfoID.address %}
-              <a style="font-size: 12px;" href="{% url 'dalil_search' %}?cityID={{ company.legalPersonID.basicInfoID.cityID.id }}">{{ company.legalPersonID.basicInfoID.cityID }}</a> - 
-              {{ company.legalPersonID.basicInfoID.address }}
-              {% endif %}
-            </h6>
-            <li class="list-group-item">
-              {% if company.legalPersonID.basicInfoID.phone %}
-              <a href="tel:{{ company.legalPersonID.basicInfoID.phone }}" class="btn-link icon-style">
-                <span>إتصال</span>
-                <i class="fa fa-phone " ></i>
-              </a>
-    
-              {% endif %}
-              {% if company.legalPersonID.basicInfoID.phoneOther %}
-              <a href="https://wa.me/{{ company.legalPersonID.basicInfoID.phoneOther }}" class="btn-link icon-style">
-                <span>واتساب</span>
-                <i class="fa-brands fa-whatsapp " ></i>
-              </a>
-              {% endif %}
-              {% if company.isDelivery %}
-              <a href="tel:{{company.legalPersonID.basicInfoID.phone}}"class="btn-link icon-style">
-                <span>توصيل</span>
-                <i class="fa fa-shipping-fast " ></i>
-              </a>
-              {% endif %}
-              {% if company.legalPersonID.basicInfoID.google_maps_location %}
-              <a href="{{ company.legalPersonID.basicInfoID.google_maps_location }}" class="btn-link icon-style">
-                <span>الخريطة</span>
-                <i class="fa-solid fa-location-dot"></i></a>
-              {% endif %}
-            </li>
-          </ul>
-        </div>
-      </div>
+  
+  <div class="content form-row justify-content-around">
+    <div id="content-area">
+      {% include 'dalilalaemal/dalil_search_ajax.html' %}
     </div>
-    {% endfor %}
   </div>
 </div>
+
 {% endblock %}
+

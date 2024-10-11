@@ -1,9 +1,19 @@
-{% extends 'base_dalilalaemal.html' %} 
-{% load static %} 
-{% block title %} | شامل {% endblock %} 
-{% block content %}
-{% include 'partials/_alerts.html' %}
-<link rel="stylesheet" href="{% static 'dist/css/dalil_single.css' %}?v=0.6" />
+{% extends 'base_dalilalaemal.html' %}
+ {% load static %}
+  {% block title %} | شامل {% endblock %}
+
+  {% block iconog %}
+    <meta property="og:image" content="{% if company.legalPersonID.basicInfoID.attachments %}{{ company.legalPersonID.basicInfoID.attachments.url }}{% else %}{% static 'dist/img/dalilalaemal_logo_sudan.jpg' %}{% endif %}">
+  {% endblock %}
+
+  {% block icontw %}
+    <meta property="twitter:image" content="{% if company.legalPersonID.basicInfoID.attachments %}{{ company.legalPersonID.basicInfoID.attachments.url }}{% else %}{% static 'dist/img/dalilalaemal_logo_sudan.jpg' %}{% endif %}">
+  {% endblock %}
+
+  {% block content %}
+  {% include 'partials/_alerts.html' %}
+
+<link rel="stylesheet" href="{% static 'dist/css/dalil_single.css' %}?v=0.7" />
 
 <div class="content-main">
   <div class="profile-container">
@@ -27,27 +37,49 @@
       <h2>معلومات العمل</h2>
       <ul>
         <li><span>الإسم : </span> {{company.legalPersonID.name_ar}}</li>
+        
         <li>
-          <span>مجال العمل : </span>{{ company.legalPersonID.businessScopeID }}
+          <span>مجال العمل : </span>
+          <a class="card-sub-title" href="{% url 'dalil_search' %}?businessScopeID={{ company.legalPersonID.businessScopeID.id }}">{{ company.legalPersonID.businessScopeID }}</a>
         </li>
         <li>
-          <span>العنوان : </span>{{ company.legalPersonID.basicInfoID.cityID }}
-          - {{ company.legalPersonID.basicInfoID.address }}
+          <span>العنوان : </span>
+          {% if company.legalPersonID.basicInfoID.address %}
+          <a href="{% url 'dalil_search' %}?cityID={{ company.legalPersonID.basicInfoID.cityID.id }}">{{ company.legalPersonID.basicInfoID.cityID }}</a> - 
+          {{ company.legalPersonID.basicInfoID.address }}
+          {% endif %}
         </li>
         <li>
-          <span>رقم إتصال : </span>{{company.legalPersonID.basicInfoID.phone}}
+          <span>رقم إتصال : </span>
+          {% if company.legalPersonID.basicInfoID.phone %}
+          <a href="tel:{{ company.legalPersonID.basicInfoID.phone }}" class="btn-link icon-style">
+            <i class="fa fa-phone " ></i>
+          </a>
+          {% endif %}
+          {{company.legalPersonID.basicInfoID.phone}}
         </li>
         <li>
-          <span>رقم واتساب : </span
-          >{{company.legalPersonID.basicInfoID.phoneOther}}
+          <span>رقم واتساب : </span>
+          {% if company.legalPersonID.basicInfoID.phoneOther %}
+          <a href="https://wa.me/{{ company.legalPersonID.basicInfoID.phoneOther }}" class="btn-link icon-style">
+            <i class="fa-brands fa-whatsapp" ></i>
+          </a>
+          {% endif %}
+          {{company.legalPersonID.basicInfoID.phoneOther}}
         </li>
         <li>
-          <span>رقم إتصال آخر : </span>{{company.legalPersonID.phoneAdmin}}
+          <span>رقم إتصال آخر : </span>
+          {% if company.legalPersonID.phoneAdmin %}
+          <a href="tel:{{ company.legalPersonID.phoneAdmin }}" class="btn-link icon-style">
+            <i class="fa fa-phone " ></i>
+          </a>
+          {% endif %}
+          {{company.legalPersonID.phoneAdmin}}
         </li>
       </ul>
     </section>
     <section class="profile-map">
-      <h2>موقع العمل Google Map</h2>
+      <h2>إضغط على الخريطة للوصول للعنوان</h2>
       <div class="map-container">
         <!-- استخدم خريطة جوجل أو أي خدمة خرائط أخرى هنا -->
         {% if company.legalPersonID.basicInfoID.google_maps_location %}

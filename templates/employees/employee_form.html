@@ -1,0 +1,175 @@
+<div>
+  <div class="form-row">
+    <label class="form-group col-md-2 title-label">الإسم الكامل عربي</label>
+    <div class="form-group col-md-2">{{person_form.f_Name_ar}}</div>
+    <div class="form-group col-md-2">{{person_form.s_Name_ar}}</div>
+    <div class="form-group col-md-2">{{person_form.t_Name_ar}}</div>
+    <div class="form-group col-md-2">{{person_form.fo_Name_ar}}</div>
+    <label class="form-group col-md-1 title-label"
+      >{{person_label.genderID.label}}</label
+    >
+    <div class="form-group col-md-1">{{person_form.genderID}}</div>
+  </div>
+  <div class="form-row">
+    <label class="form-group col-md-2 title-label">الإسم الكامل إنجليزي</label>
+    <div class="form-group col-md-2">{{person_form.f_Name_en}}</div>
+    <div class="form-group col-md-2">{{person_form.s_Name_en}}</div>
+    <div class="form-group col-md-2">{{person_form.t_Name_en}}</div>
+    <div class="form-group col-md-2">{{person_form.fo_Name_en}}</div>
+    <label class="form-group col-md-1 title-label"
+      >{{basicInfo_label.nationalityID.label}}</label
+    >
+    <div class="form-group col-md-1">{{basicInfo_form.nationalityID}}</div>
+  </div>
+  <!--المهنة - التخصص - تاريخ الميلا - الجنس - الجنسية - الحالة الإجتماعية -->
+  <div class="form-row">
+    <label class="form-group col-md-1 title-label"
+      >{{person_label.dateOfBirth.label}}</label
+    >
+    <div class="form-group col-md-1">{{person_form.dateOfBirth}}</div>
+    <label class="form-group col-md-1 title-label"
+      >{{person_label.socialStatusID.label}}</label
+    >
+    <div class="form-group col-md-1">{{person_form.socialStatusID}}</div>
+    <label class="form-group col-md-1 title-label"
+      >{{person_label.workTradeID.label}}</label
+    >
+    <div class="form-group col-md-2">{{person_form.workTradeID}}</div>
+    <label class="form-group col-md-1 title-label"
+      >{{person_label.workSpecialtyID.label}}</label
+    >
+    <div class="form-group col-md-1">{{person_form.workSpecialtyID}}</div>
+    <label class="form-group col-md-2 title-label">المسمى الوظيفي</label>
+    <div class="form-group col-md-1">{{person_form.jobTitleID}}</div>
+  </div>
+  <!--  الدولة - المنطقة - الولاية - المدية -  وصف العنوان -->
+  <div class="form-row">
+    <label class="form-group col-md-1 title-label"
+      >{{basicInfo_label.countryID.label}}</label
+    >
+    <div class="form-group col-md-2">{{basicInfo_form.countryID}}</div>
+    <label class="form-group col-md-1 title-label"
+      >{{basicInfo_label.regionID.label}}</label
+    >
+    <div class="form-group col-md-2">{{basicInfo_form.regionID}}</div>
+    <label class="form-group col-md-1 title-label"
+      >{{basicInfo_label.stateID.label}}</label
+    >
+    <div class="form-group col-md-2">{{basicInfo_form.stateID}}</div>
+    <label class="form-group col-md-1 title-label"
+      >{{basicInfo_label.cityID.label}}</label
+    >
+    <div class="form-group col-md-2">{{basicInfo_form.cityID}}</div>
+  </div>
+  <!-- وصف عنوان السكن -->
+  <div class="form-row">
+    <label class="form-group col-md-2 title-label"
+      >{{basicInfo_label.address.label}}</label
+    >
+    <div class="form-group col-md-10">{{basicInfo_form.address}}</div>
+  </div>
+  <!--  نوع الهوية - رقم الهوية - تاريخ إنتهاء الهوية  -->
+  <div class="form-row">
+    <label class="form-group col-md-1 title-label"
+      >{{person_label.typeID.label}}</label
+    >
+    <div class="form-group col-md-3">{{person_form.typeID}}</div>
+    <label class="form-group col-md-1 title-label"
+      >{{person_label.id_number.label}}</label
+    >
+    <div class="form-group col-md-3">{{person_form.id_number}}</div>
+    <label class="form-group col-md-2 title-label"
+      >{{person_label.id_ExpiredDate.label}}</label
+    >
+    <div class="form-group col-md-2">{{person_form.id_ExpiredDate}}</div>
+  </div>
+  <!--البريد الإلكتروني - رقم الجوال - رقم جوال آخر -->
+  <div class="form-row">
+    <label class="form-group col-md-1 title-label"
+      >{{basicInfo_label.phone.label}}</label
+    >
+    <div class="form-group col-md-2">{{basicInfo_form.phone}}</div>
+    <label class="form-group col-md-2 title-label"
+      >{{basicInfo_label.phoneOther.label}}</label
+    >
+    <div class="form-group col-md-2">{{basicInfo_form.phoneOther}}</div>
+    <label class="form-group col-md-2 title-label"
+      >{{basicInfo_label.email.label}}</label
+    >
+    <div class="form-group col-md-3">{{basicInfo_form.email}}</div>
+  </div>
+  <!-- البنك - الفرع - نوع الحساب - رقم الحساب - رقم الأيبان ر -->
+  <div class="form-row">
+    <label class="form-group col-md-1 title-label"
+      >{{basicInfo_label.bankID.label}}</label
+    >
+    <div class="form-group col-md-3">{{basicInfo_form.bankID}}</div>
+    <label class="form-group col-md-1 title-label"
+      >{{basicInfo_label.branchBankID.label}}</label
+    >
+    <div class="form-group col-md-3">{{basicInfo_form.branchBankID}}</div>
+    <label class="form-group col-md-2 title-label"
+      >{{basicInfo_label.typeAccBankID.label}}</label
+    >
+    <div class="form-group col-md-2">{{basicInfo_form.typeAccBankID}}</div>
+  </div>
+  <div class="form-row">
+    <label class="form-group col-md-2 title-label"
+      >{{basicInfo_label.accountNumber.label}}</label
+    >
+    <div class="form-group col-md-4">{{basicInfo_form.accountNumber}}</div>
+    <label class="form-group col-md-2 title-label"
+      >{{basicInfo_label.IBANNumber.label}}</label
+    >
+    <div class="form-group col-md-4">{{basicInfo_form.IBANNumber}}</div>
+  </div>
+
+  <!--  -حالة العمل - الراتب الأساسي - الإضافي - تاريخ بداية العمل  - بداية العمل -->
+  <div class="form-row">
+    <label class="form-group col-md-2 title-label"
+      >{{basicInfo_label.photo.label}}</label
+    >
+    <div class="form-group col-md-2">{{basicInfo_form.photo}}</div>
+    <label class="form-group col-md-2 title-label"
+      >{{employee_label.workStartDate.label}}</label
+    >
+    <div class="form-group col-md-2">{{employee_form.workStartDate}}</div>
+    <label class="form-group col-md-2 title-label"
+      >{{employee_label.workEndDate.label}}</label
+    >
+    <div class="form-group col-md-2">{{employee_form.workEndDate}}</div>
+  </div>
+
+  <div class="form-row">
+    <label class="form-group col-md-2 title-label"
+      >{{employee_label.workingStatusID.label}}</label
+    >
+    <div class="form-group col-md-2">{{employee_form.workingStatusID}}</div>
+    <label class="form-group col-md-2 title-label"
+      >{{employee_label.contractSalary.label}}</label
+    >
+    <div class="form-group col-md-2">{{employee_form.contractSalary}}</div>
+    <label class="form-group col-md-2 title-label"
+      >{{employee_label.fixedExtra.label}}</label
+    >
+    <div class="form-group col-md-2">{{employee_form.fixedExtra}}</div>
+  </div>
+  <!-- رابط المستندات - ملاحظات -->
+  <div class="form-row">
+    <label class="form-group col-md-1 title-label"
+      >{{basicInfo_label.attachments.label}}</label
+    >
+    <div class="form-group col-md-2">{{basicInfo_form.attachments}}</div>
+    <label class="form-group col-md-1 title-label"
+      >{{basicInfo_label.notes.label}}</label
+    >
+    <div class="form-group col-md-8">{{basicInfo_form.notes}}</div>
+  </div>
+  <!--المهارات -  اللغات   -->
+  <div class="form-row">
+    <label class="form-group col-md-1 title-label">{{person_label.skillsID.label}}</label>
+    <div class="form-group col-md-2">{{person_form.skillsID}}</div>
+    <label class="form-group col-md-1 title-label">{{person_label.languagesID.label}}</label>
+    <div class="form-group col-md-2">{{person_form.languagesID}}</div>
+  </div>
+</div>
