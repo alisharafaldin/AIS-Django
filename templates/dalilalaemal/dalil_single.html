@@ -1,6 +1,6 @@
-{% extends 'base_dalilalaemal.html' %}
+{% extends 'base_dalil.html' %}
  {% load static %}
-  {% block title %} | شامل {% endblock %}
+  {% block title %} | {{ company.legalPersonID.name_ar }} | {{ company.legalPersonID.businessScopeID }} {% endblock %}
 
   {% block iconog %}
     <meta property="og:image" content="{% if company.legalPersonID.basicInfoID.attachments %}{{ company.legalPersonID.basicInfoID.attachments.url }}{% else %}{% static 'dist/img/dalilalaemal_logo_sudan.jpg' %}{% endif %}">
@@ -10,14 +10,38 @@
     <meta property="twitter:image" content="{% if company.legalPersonID.basicInfoID.attachments %}{{ company.legalPersonID.basicInfoID.attachments.url }}{% else %}{% static 'dist/img/dalilalaemal_logo_sudan.jpg' %}{% endif %}">
   {% endblock %}
 
+  {% block descog %}
+  <meta property="og:description" content="
+  إسم العمل : {{ company.legalPersonID.name_ar }}
+  مجال العمل : {{ company.legalPersonID.businessScopeID }}
+  العنوان : {{ company.legalPersonID.basicInfoID.cityID }} - {{ company.legalPersonID.basicInfoID.address }}
+  لمزيد من المعلومات عن النشاط . .
+  ">
+  {% endblock %}
+
+  {% block desctw %}
+  <meta name="twitter:description" content="
+  إسم العمل : {{ company.legalPersonID.name_ar }}
+  مجال العمل : {{ company.legalPersonID.businessScopeID }}
+  العنوان : {{ company.legalPersonID.basicInfoID.cityID }} - {{ company.legalPersonID.basicInfoID.address }}
+  لمزيد من المعلومات عن النشاط . .
+  ">
+  {% endblock %}
+
   {% block content %}
   {% include 'partials/_alerts.html' %}
 
-<link rel="stylesheet" href="{% static 'dist/css/dalil_single.css' %}?v=0.7" />
-
+<link rel="stylesheet" href="{% static 'dist/css/dalil_single.css' %}?v=0.8" />
+<style>
+  .share-and-review {
+    left: 70px ;
+    top: 55px ;
+}
+</style>
 <div class="content-main">
   <div class="profile-container">
     <header class="profile-header">
+      {% include 'dalilalaemal/dalil_share_bisnes_card.html' %}
       {% if company.legalPersonID.basicInfoID.attachments %}
       <img
         src="{{ company.legalPersonID.basicInfoID.attachments.url }}"

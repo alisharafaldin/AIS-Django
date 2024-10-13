@@ -59,6 +59,7 @@
 .card-address {
     margin: 0 0 10px 0;
     font-size: 14px;
+    text-align: right !important;
 }
 
 .card-attachments {

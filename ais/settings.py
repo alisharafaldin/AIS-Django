@@ -14,12 +14,15 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-# Static files (CSS, JavaScript, Images)
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # استخدم اسم مناسب للمجلد
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'static'),  # المسار لمجلد static الخاص بك
-# ]
+
+# تحديد مسار المجلد static الموجود في جذر المشروع
+STATIC_URL = '/static/'  # الرابط الذي سيستخدم للوصول إلى ملفات static
+# تحديد مسار جمع ملفات static في الإنتاج
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# تحديد مسار البحث عن ملفات static داخل المجلدات في المشروع
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 # Media files
 MEDIA_URL = '/media/'

@@ -1,0 +1,506 @@
+{% load static %}
+<link
+  href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+  rel="stylesheet"
+/>
+
+<style>
+  .share-and-review {
+    position: absolute;
+    width: 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    direction: rtl !important;
+    background-color: #ffffff93 !important;
+    border-radius: 5px;
+    height: 89px;
+    width: 40px;
+    justify-content: center;
+  }
+  /* تنسيق الحاوية */
+  .container-img {
+    position: relative;
+  }
+
+  /* تنسيق المراجعة */
+  .modal-body{
+    padding: 0;
+  }
+  .modal-body label,
+  .col-sm-8 {
+    text-align: right !important;
+    padding: 0 15px 7px !important;
+  }
+
+  .review-container {
+    margin-top: 7px;
+  }
+
+  .modal-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .modal-header h4 {
+    font-size: 18px;
+  }
+  .modal-header p {
+    background-color: var(--subColor);
+    color: #fff;
+    font-size: 20px;
+    padding: 5px;
+    border-radius: 5px;
+    width: 90%;
+    text-align: center !important;
+  }
+  .btn-review {
+    font-size: 25px;
+  }
+
+  .modal-footer {
+    justify-content: flex-start;
+  }
+
+  .contactForm{
+    width: 100%;
+  }
+  .review-form {
+    display: flex;
+    flex-direction: row;
+    margin: 0 !important;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .review-form label {
+    width: 38%;
+    font-size: 12px;
+    padding-left: 0;
+  }
+  .review-form div {
+    width: 60%;
+    padding-right: 0;
+  }
+  .review-form div input {
+    width: 100% !important;
+  }
+  /* نهاية تنسيق المراجعة */
+
+
+
+  /* أيقونة المشاركة الرئيسية */
+  .main-share-icon {
+    font-size: 30px;
+    width: 28px;
+    height: 28px;
+    color: #fff;
+    background-color: #333;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .main-share-icon .fa-solid,
+  .fas {
+    font-weight: 700;
+    font-size: 15px;
+  }
+  /* قائمة الأيقونات المنبثقة */
+  .share-popup {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    bottom: 41px !important;
+    left: 40px !important;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.8);
+    transition: opacity 0.3s, transform 0.3s;
+    background-color: #fff;
+    border-radius: 5px;
+  }
+
+  .share-popup a {
+    display: inline-block;
+    margin: 5px;
+    font-size: 20px;
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .share-popup a i {
+    font-size: 15px;
+  }
+  .share-popup a.facebook {
+    background-color: #3b5998;
+  }
+  .share-popup a.twitter {
+    background-color: #1da1f2;
+  }
+  .share-popup a.whatsapp {
+    background-color: #25d366;
+  }
+  .share-popup a.telegram {
+    background-color: #0088cc;
+  }
+
+  /* إظهار القائمة عند المرور على الأيقونة */
+  .share-container:hover .share-popup {
+    display: flex;
+  }
+
+  /* تأثيرات الظهور المتسلسل */
+  .share-container:hover .share-popup {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
+  }
+  .share-container:hover .share-popup a:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  .share-container:hover .share-popup a:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .share-container:hover .share-popup a:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  .share-container:hover .share-popup a:nth-child(4) {
+    animation-delay: 0.4s;
+  }
+
+  /* حركات CSS */
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<div class="share-and-review">
+  <!--  بداية أيقونات المشاركة -->
+  <div class="share-container">
+    <!-- أيقونة المشاركة الرئيسية -->
+    <div class="main-share-icon">
+      <i class="fas fa-share-alt"></i>
+    </div>
+    <!-- القائمة المنبثقة للأيقونات -->
+    <div class="share-popup">
+      <a
+        href="fb://sharer/sharer.php?u=
+        %0Aإسم العمل : {{ company.legalPersonID.name_ar }}
+        %0Aمجال العمل : {{ company.legalPersonID.businessScopeID }}
+        %0Aالعنوان : {{ company.legalPersonID.basicInfoID.cityID }} - {{ company.legalPersonID.basicInfoID.address }}
+        %0Aلمزيد من المعلومات عن {{ company.legalPersonID.name_ar }} : 👇👇
+        %0Ahttps://www.dalilalaemal.com/single/{{company.id}}
+        %0A
+        %0A➖➖➖➖➖➖➖
+        %0Aدليل الأعمال السودانية في مصر
+        %0Aهو أول دليل إرشادي للسياح والمقيمين السودانيين في مصر , يضم الأعمال والأنشطة التجارية السودانية مصنفة نوعياً و جغرافياً . .
+        %0A
+        %0Aيمكنكم تصفح كامل الدليل والإستفادة من خدماته الإرشادية :
+        %0Ahttps://www.dalilalaemal.com"
+        target="_blank"
+        class="facebook"
+      >
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a
+        href="https://x.com/intent/tweet?url=
+        %0Aإسم العمل : {{ company.legalPersonID.name_ar }}
+        %0Aمجال العمل : {{ company.legalPersonID.businessScopeID }}
+        %0Aالعنوان : {{ company.legalPersonID.basicInfoID.cityID }} - {{ company.legalPersonID.basicInfoID.address }}
+        %0Aلمزيد من المعلومات عن {{ company.legalPersonID.name_ar }} : 👇👇
+        %0Ahttps://www.dalilalaemal.com/single/{{company.id}}
+        %0A
+        %0A➖➖➖➖➖➖➖
+        %0Aدليل الأعمال السودانية في مصر
+        %0Aهو أول دليل إرشادي للسياح والمقيمين السودانيين في مصر , يضم الأعمال والأنشطة التجارية السودانية مصنفة نوعياً و جغرافياً . .
+        %0A
+        %0Aيمكنكم تصفح كامل الدليل والإستفادة من خدماته الإرشادية :
+        %0Ahttps://www.dalilalaemal.com"
+        target="_blank"
+        class="twitter"
+      >
+        <i class="fab fa-x"></i>
+      </a>
+      <a
+        href="https://wa.me/?text=
+        %0A*إسم العمل* : {{ company.legalPersonID.name_ar }}
+        %0A*مجال العمل* : {{ company.legalPersonID.businessScopeID }}
+        %0A*العنوان* : {{ company.legalPersonID.basicInfoID.cityID }} - {{ company.legalPersonID.basicInfoID.address }}
+        %0A*لمزيد من المعلومات عن {{ company.legalPersonID.name_ar }} : 👇👇*
+        %0Ahttps://www.dalilalaemal.com/single/{{company.id}}
+        %0A
+        %0A➖➖➖➖➖➖➖
+        %0A*دليل الأعمال السودانية في مصر*
+        %0Aهو أول دليل إرشادي للسياح والمقيمين السودانيين في مصر , يضم الأعمال والأنشطة التجارية السودانية مصنفة نوعياً و جغرافياً . .
+        %0A
+        %0A*يمكنكم تصفح كامل الدليل والإستفادة من خدماته الإرشادية :*
+        %0Ahttps://www.dalilalaemal.com
+        "
+        target="_blank"
+        class="whatsapp"
+      >
+        <i class="fab fa-whatsapp"></i>
+      </a>
+      <a
+        href="https://t.me/share/url?url=
+        %0Aإسم العمل : {{ company.legalPersonID.name_ar }}
+        %0Aمجال العمل : {{ company.legalPersonID.businessScopeID }}
+        %0Aالعنوان : {{ company.legalPersonID.basicInfoID.cityID }} - {{ company.legalPersonID.basicInfoID.address }}
+        %0Aلمزيد من المعلومات عن {{ company.legalPersonID.name_ar }} : 👇👇
+        %0Ahttps://www.dalilalaemal.com/single/{{company.id}}
+        %0A
+        %0A➖➖➖➖➖➖➖
+        %0Aدليل الأعمال السودانية في مصر
+        %0Aهو أول دليل إرشادي للسياح والمقيمين السودانيين في مصر , يضم الأعمال والأنشطة التجارية السودانية مصنفة نوعياً و جغرافياً . .
+        %0A
+        %0Aيمكنكم تصفح كامل الدليل والإستفادة من خدماته الإرشادية :
+        %0Ahttps://www.dalilalaemal.com"
+        target="_blank"
+        class="telegram"
+      >
+        <i class="fab fa-telegram-plane"></i>
+      </a>
+    </div>
+  </div>
+  <!-- نهاية أيقونات المشاركة -->
+
+  <!-- بداية إرسال الملاحظات -->
+  <div class="review-container">
+    <!-- زر فتح النموذج المنبثق -->
+    <i
+      class="fa-solid fa-circle-exclamation btn-review"
+      data-toggle="modal"
+      data-target="#exampleModal"
+    ></i>
+
+    <!-- المودال -->
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <!-- رأس المودال -->
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel"></h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4>إرسال مراجعة تصحيحة حول إسم العمل :</h4>
+            <p>{{company.legalPersonID.name_ar}}</p>
+          </div>
+          <!-- جسم المودال -->
+          <div class="modal-body">
+            <form id="contactForm">
+              <div class="form-group review-form row">
+                <label for="name" class="col-sm-4 col-form-label"
+                  >تصحيح إسم العمل:</label
+                >
+                <div class="col-sm-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    name="name"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-group review-form row">
+                <label for="businessTypes" class="col-sm-4 col-form-label"
+                  >تصحيح مجال العمل:</label
+                >
+                <div class="col-sm-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="businessTypes"
+                    name="businessTypes"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-group review-form row">
+                <label for="address" class="col-sm-4 col-form-label"
+                  >تصحيح العنوان:</label
+                >
+                <div class="col-sm-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="address"
+                    name="address"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-group review-form row">
+                <label for="addressMap" class="col-sm-4 col-form-label"
+                  >تصحيح رابط خرائط قوقل:</label
+                >
+                <div class="col-sm-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="addressMap"
+                    name="addressMap"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-group review-form row">
+                <label for="phoneCall" class="col-sm-4 col-form-label"
+                  >تصحيح رقم الإتصال:</label
+                >
+                <div class="col-sm-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="phoneCall"
+                    name="phoneCall"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-group review-form row">
+                <label for="phoneWhatsApp" class="col-sm-4 col-form-label"
+                  >تصحيح رقم الواتساب:</label
+                >
+                <div class="col-sm-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="phoneWhatsApp"
+                    name="phoneWhatsApp"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-group review-form row">
+                <label for="phoneDelivery" class="col-sm-4 col-form-label"
+                  >تصحيح رقم التوصيل:</label
+                >
+                <div class="col-sm-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="phoneDelivery"
+                    name="phoneDelivery"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-group review-form row">
+                <label for="notes" class="col-sm-4 col-form-label"
+                  >ملاحظات أخرى:</label
+                >
+                <div class="col-sm-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="notes"
+                    name="notes"
+                    required
+                  />
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- قدم المودال -->
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              إغلاق
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="sendToWhatsApp()"
+            >
+              إرسال المراجعة 
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function sendToWhatsApp() {
+        // استرجاع البيانات من النموذج
+        // var name_ar = document.getElementById("name_ar").value;
+        var name = document.getElementById("name").value;
+        var businessTypes = document.getElementById("businessTypes").value;
+        var address = document.getElementById("address").value;
+        var addressMap = document.getElementById("addressMap").value;
+        var phoneCall = document.getElementById("phoneCall").value;
+        var phoneWhatsApp = document.getElementById("phoneWhatsApp").value;
+        var phoneDelivery = document.getElementById("phoneDelivery").value;
+        var notes = document.getElementById("notes").value;
+
+        // تكوين الرسالة
+        var message = `السلام عليكم ورحمة الله . .
+مراجعة تصحيحية حول إسم العمل :
+ *{{company.legalPersonID.name_ar}}* المسجل في دليل الأعمال بالرقم :
+  *{{ company.id }}*
+
+✅ *المعلومات المطلوب تصحيحها :-*
+
+*إسم العمل :* ${name}
+*مجال العمل :* ${businessTypes}
+*العنوان :*  ${address}
+*رابط خرائط قوقل :*  ${addressMap}
+*رقم الإتصال :* ${phoneCall}
+*رقم الواتساب :* ${phoneWhatsApp}
+*رقم التوصيل :*  ${phoneDelivery}
+
+➖➖➖➖➖➖➖
+ 
+*ملاحظات أخرى :* ${notes}`;
+
+        // رقم الواتساب المراد الإرسال إليه، يجب أن يبدأ بالكود الدولي
+        var phoneNumber = "+201147528751"; // عدل هذا الرقم إلى رقم الواتساب المراد الإرسال إليه
+
+        // تكوين الرابط وإعادة التوجيه إليه
+        var whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+          message
+        )}`;
+        window.open(whatsappURL, "_blank");
+      }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </div>
+
+  <!-- نهاية إرسال الملاحظات -->
+</div>

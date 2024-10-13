@@ -1,117 +1,132 @@
 
 .select-main {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 5px;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    justify-content: space-between !important;
+    margin-bottom: 5px !important;
 }
 
 form {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: flex !important;
+    flex-direction: row !important;
+    width: 100% !important;
+    flex-wrap: wrap !important;
+    justify-content: space-between !important;
 }
 
 .form-control{
-    height: 40px; 
-    width: 40%;
+    height: 40px !important; 
+    width: 40% !important;
 }
 
 .form-main{
-    display: flex; 
+    display: flex !important; 
     flex-direction: row !important; 
-    margin-right: 5px;
+    margin-right: 5px !important;
+    
 }
 
 .horizontal-menu-container {
-    overflow-x: auto; /* Enable horizontal scrolling */
-    white-space: nowrap; /* Prevent line breaks */
-    width: 100%;
+    overflow-x: auto !important; /* Enable horizontal scrolling */
+    white-space: nowrap !important; /* Prevent line breaks */
+    width: 100% !important;
+    align-items: flex-start;
+    display: flex;
 }
 
 .horizontal-menu {
-    display: inline-block;
+    display: inline-block !important;
 }
 
 .menu-item {
-    display: inline-block;
-    padding: 5px 20px;
-    text-decoration: none;
+    display: inline-block!important;
+    padding: 5px 20px!important;
+    text-decoration: none!important;
     color: var(--subTitleColor) !important;
-    border: 1px solid #ccc;
-    margin-right: 10px;
-    border-radius: 10px;
+    border: 1px solid #ccc!important;
+    margin-right: 10px!important;
+    border-radius: 10px!important;
+    font-size: 12px!important;
     background-color: var(--subButtonColor) !important;
 }
 
 .menu-item:hover {
-    background-color: #e0e0e0;
+    background-color: #e0e0e0!important;
 }
 
 #content-area {
-    width: 100%;
+    width: 100%!important;
 }
 /* أجاكس */
 
 .card-main {
-    width: 100%;
+    width: 100%!important;
 }
 .card{
-    width: 100%; 
+    width: 100%!important; 
 }
 
 .card-head {
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    padding-top: 20px;
+    display: flex!important; 
+    justify-content: space-between!important; 
+    align-items: center!important; 
+    padding-top: 20px!important;
 }
 
 .card-logo {
-    padding-right: 20px; 
-    padding-left: 10px; 
-    display: flex;
+    padding-right: 20px!important; 
+    padding-left: 10px!important; 
+    display: flex!important;
 }
 
 .card-logo div {
-    display: flex; 
-    flex-direction: column; 
-    padding-right: 10px;
+    display: flex!important; 
+    flex-direction: column!important; 
+    padding-right: 10px!important;
 }
 
 .card-logo .card-main-title{
-    font-size: 15px;
-    color: var(--subColor);
+    font-size: 15px!important;
+    color: var(--subColor)!important;
 }
 
 .card-logo .card-sub-title{
-    font-size: 12px;
+    font-size: 12px!important;
+    text-align: right !important;
+
 }
 
 .card-logo img{
-    width: 50px; 
-    height: 50px;
+    width: 50px!important; 
+    height: 50px!important;
 }
 
-.card-body h6, a {
-    font-size: 12px;
+.card-body h6 {
+    font-size: 12px!important;
+    text-align: right !important;
 }
 
 .list-group-item{
-    display: flex;
-    justify-content: space-between;
-    padding-bottom: 0;
+    display: flex !important;
+    justify-content: space-between !important;
+    padding-bottom: 0 !important;
+    /* text-align: center !important; */
+
 }
 
 .icon-style{
     color: var(--iconColor) !important;
-    font-size: 14px;
+    font-size: 14px!important;
 }
 
 .icon-style span{
-    color: black;
-    font-size: 14px;
+    color: black!important;
+    font-size: 14px!important;
+}
+
+.btn-search{
+    background-color: var(--subColor) !important;
+    color: #fff !important;
+    font-size: 14px !important;
 }
