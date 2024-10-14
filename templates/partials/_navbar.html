@@ -1,0 +1,69 @@
+    <!--navbar-->
+    {% load static %}
+ 
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="{% url 'index' %}" class="nav-link">Home</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a class="nav-link" href="http://127.0.0.1:8000/admin/" target="blank" >Admin</a>
+      </li>      
+    </ul>
+
+  
+    <ul class="navbar-nav mr-auto-navbav ">
+      <li 
+      {% if 'signin' in request.path or 'signup' in request.path or 'profile' in request.path %}
+      class="nav-item dropdown active"
+      {% else %}
+      class="nav-item dropdown"
+      {% endif %}>
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {% if request.user.is_authenticated %}
+          {% for company_user in request.user.companyuser_set.all %}
+              <li>{{ company_user }} 
+                  <a href="{% url 'switch_company' company_user.companyID.id %}"> وواااااااايتبديل</a>
+              </li>
+          {% endfor %}
+          <p>{{ request.session.current_company_name }}</p>
+          {% endif %}
+        </a>
+        <div class="dropdown-menu animate slideIn" aria-labelledby="navbarDropdown">
+          {% if request.user.is_authenticated %}
+          {% if request.current_company %}
+          <a class="dropdown-item" href="{% url 'company_reade' request.current_company.id %}">ملف الشركة</a>
+          <a class="dropdown-item" href="{% url 'company_update' request.current_company.id %}">تعديل بيانات الشركة</a>
+          {% endif %}
+          <a class="dropdown-item" href="{% url 'companys' %}">تبديل الشركة</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'logout' %}">
+            تسجيل خروج
+          </a>
+          {% else %}
+          <a class="dropdown-item" href="{% url 'signin' %}">تسجيل دخول</a>
+          <a class="dropdown-item" href="{% url 'signup' %}">تسجيل جديد</a>
+          {% endif %}    
+        </div>
+      </li>
+      <li>
+        <a href="{% url 'index' %}">
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+              {% if request.current_company.logo %}
+              <img src="{{ request.current_company.logo.url }}" class="img-circle elevation-2" alt="User Image"/>
+              {% else %}
+              <img src="{% static 'dist/img/AIS.png' %}" class="img-circle elevation-2" alt="User Image"/>
+              {% endif %}
+            </div>
+          </div>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- /.navbar -->

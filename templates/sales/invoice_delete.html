@@ -1,0 +1,30 @@
+{% extends 'base.html' %} {% load static %} {% block title %} | Qayd Delete (
+{{qayd_id.id}} ) {% endblock %} {% block content %}
+<div class="content-wrapper">
+  <h4 class="main-title">حذف فاتورة مبيعات رقم : ( {{invoice_head_form.sequence}} )</h4>
+  <div class="content">
+    <a
+      href="{% url 'invoice_sales_update' invoice_head_form.id %}"
+      class="btn-link"
+      ><i class="fas fa-edit"></i
+    ></a>
+    <a
+      href="{% url 'invoice_sales_reade' invoice_head_form.id %}"
+      class="btn-link"
+      ><i class="fas fa-print"></i
+    ></a>
+    <a href="{% url 'invoices_sales' %}" class="btn-link"
+      ><i class="fas fa-close"></i
+    ></a>
+    <form method="POST">
+      {% csrf_token %} {% include 'partials/_alerts.html' %} 
+      
+      {% include 'sales/invoice_forml.html' %}
+
+      <button type="submit" name="btndelete" class="btn btn-danger">تأكيد الحذف</button>
+      <a href="{% url 'invoices_sales' %}" class="btn btn-close">إلغاء</a>
+    </form>
+    <br />
+  </div>
+</div>
+{% endblock %}

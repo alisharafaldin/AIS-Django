@@ -1,0 +1,28 @@
+{% extends 'base.html' %} {% load static %} {% block title %} | Update Coustomer
+{% endblock %} {% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<div class="content-wrapper">
+  <div class="content">
+    <div class="modal-content">
+      <div class="modal-body">
+        {% include 'partials/_alerts.html' %}
+        <!-- Start Modal Countries -->
+        <form method="POST">
+          <div class="form-row main-title">
+            <h5 class="form-group" id="staticBackdropLabel">عرض بيانات العميل : {{customer_form.legalPersonID.name_ar}}</h5>
+          </div>
+          <br>
+          <a href="{% url 'customers' %}" class="btn btn-save">جميع العملاء</a>
+          <a href="{% url 'customer_update' customer_form.id %}" class="btn btn-save">تعديل</a>
+          <br>
+          <br>
+
+          {% csrf_token %}
+          {% include 'sales/customer_form.html' %}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

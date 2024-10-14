@@ -50,11 +50,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'import_export',
+    'django.contrib.humanize',
+    'pages.apps.PagesConfig',
     'dalilalaemal.apps.DalilalaemalConfig',
     'basicinfo.apps.BasicinfoConfig',
     'companys.apps.CompanysConfig',
     'profiles.apps.ProfilesConfig',
     'employees.apps.EmployeesConfig',
+    'products.apps.ProductsConfig',
+    'inventorys.apps.InventorysConfig',
+    'purchases.apps.PurchasesConfig',
+    'sales.apps.SalesConfig',
 ]
 
 MIDDLEWARE = [
@@ -148,3 +154,4 @@ USE_I18N = True
 
 USE_TZ = True
 
+LOGIN_URL = '/profiles/signin/'  # استبدل '/custom-login/' بالمسار الخاص بك

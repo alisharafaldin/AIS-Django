@@ -1,0 +1,222 @@
+<!--footer-->
+{% load static %}
+<!-- Main Sidebar Container -->
+<!-- sidebar-dark-primary -->
+<aside class="main-sidebar " style="position: fixed">
+  <!-- Brand Logo -->
+  <a href="{% url 'index' %}" class="brand-link">
+    <img
+      src="{% static 'dist/img/AIS.png' %}"
+      alt="AdminLTE Logo"
+      class="brand-link-image"
+    />
+    <!-- <span class="brand-text font-weight-light">TimeSheet</span> -->
+  </a>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <p>مرحباً {{ request.user.username }}</p>
+        <li class="nav-item has-treeview menu-open">
+          <a href="#" class="nav-link active">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>
+              لوحة المتابعة
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a> 
+          <ul class="nav nav-treeview">
+            <!-- Start G Sales -->
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-edit"></i>
+                <p>المبيعات<i class="fas fa-angle-left right"></i></p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{% url 'customers' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>العملاء</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'invoices_sales' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>فواتير المبيعات</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'sold_products' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>المنتجات المباعة</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- End G Sales -->
+
+            <!-- Start G Sales -->
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-edit"></i>
+                <p>المشتريات<i class="fas fa-angle-left right"></i></p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{% url 'suppliers' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>الموردين</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'invoices_purchases' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>فواتير المشتريات</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'purchased_products' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>المنتجات المشتراه</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- End G Sales -->
+            
+            <!-- Start G Sales -->
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-edit"></i>
+                <p>المخزون<i class="fas fa-angle-left right"></i></p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>المخازن</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'product_quantity_summary' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>المنتجات في المخازن</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'net_sales' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>صافي المبيعات</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- End G المخزون -->
+            
+            <!-- Start G Accounts -->
+            <!-- <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-edit"></i>
+                <p>
+                  الحسابات العامة
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>قيود اليومية</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>شجرة الحسابات</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>كشف حساب</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/forms/editors.html" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>مراكز التكلة</p>
+                  </a>
+                </li>
+              </ul>
+            </li> -->
+            <!-- End G Accounts -->
+
+            <!-- Start Emp -->
+            <!-- <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-edit"></i>
+                <p>
+                  الموظفين
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{% url 'employees' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>جميع الموظفين</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/forms/advanced.html" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>مسير الرواتب</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/forms/editors.html" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>المكافئات</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/forms/editors.html" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>السلف</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="pages/forms/editors.html" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>الخصومات</p>
+                  </a>
+                </li>
+              </ul> -->
+              <!-- Start Dalil Alaemal -->
+              <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-edit"></i>
+                  <p>دليل الأعمال<i class="fas fa-angle-left right"></i></p>
+                  <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      <a href="{% url 'dalils' %}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>دليل الأعمال</p>
+                      </a>
+                    </li>
+                  </ul>
+                </a>
+              </li>
+              <!-- End Dalil Alaemal -->
+            </li>
+            <!-- End Emp -->
+          </ul>  
+        </li>
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</aside>

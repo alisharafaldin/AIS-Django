@@ -1,6 +1,9 @@
 from django import forms
 from .models import Persons, LegalPersons, BasicInfo, Countries, Region, States, Cities, BusinessScope
 from companys.models import Company
+from sales.models import Customers, Inventory
+from purchases.models import Suppliers
+from products.models import Items, ItemGrop
 from django_select2.forms import Select2Widget
 
 class InvoiceSearchForm(forms.Form):
@@ -24,6 +27,21 @@ class InvoiceSearchForm(forms.Form):
         empty_label="اختر الشركة",
         required=False,
         widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'الشركة'})
+    )
+
+    customerID = forms.ModelChoiceField(
+        queryset=Customers.objects.all(),
+        label='العميل',
+        empty_label="اختر العميل",
+        required=False,
+        widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'العميل'})
+    )
+    supplierID = forms.ModelChoiceField(
+        queryset=Suppliers.objects.all(),
+        label='المورد',
+        empty_label="اختر المورد",
+        required=False,
+        widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'المورد'})
     )
 
     businessScopeID = forms.ModelChoiceField(

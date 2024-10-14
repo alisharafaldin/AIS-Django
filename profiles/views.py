@@ -53,7 +53,7 @@ def signin(request):
             return redirect('signin')
     else:
         return render(request, 'profiles/signin.html')
-
+                            
 @login_required
 def profile(request):
     user_profile, created = UserProfile.objects.get_or_create(userID=request.user)

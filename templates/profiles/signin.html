@@ -1,0 +1,26 @@
+{% extends 'base.html' %} {% load static %} {% block title %} | Signin {% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'dist/css/signin.css' %}?v=0.2" />
+
+<div class="login-container">
+    {% if request.user.is_authenticated %}
+      <h4 class="alert alert-warning">
+        مرحبا, <strong>{{request.user.username}}</strong> لقد قمت بتسجيل الدخول
+        <a class="text-center" href="{% url 'logout' %}">logout</a>
+      </h4>
+    {% else %}
+    <h2>تسجيل دخول</h2>
+    <form method="POST">
+        {% csrf_token %} 
+        {% include 'partials/_alerts.html' %}
+        <input type="text" name="user" placeholder="Username or Email" required>
+        <input type="password" name="pass" placeholder="Password" required>
+        <input type="submit" value="دخول">
+    </form>
+    <p class="signup-link">ليس لديك حساب ؟ <a href="{% url 'signup' %}">تسجيل جديد</a></p>
+    {% endif %}
+</div>
+
+{% endblock %}

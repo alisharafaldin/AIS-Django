@@ -1,0 +1,146 @@
+{% extends 'base.html' %} 
+{% load static %} {% block title %} | تقرير | فواتير المبيعات 
+{% endblock %} {% block content %} 
+{% load humanize %}
+
+<style>
+  table {
+    width: 100%;
+    table-layout: auto;
+  }
+  th {
+    text-align: center;
+  }
+  td {
+    padding: 5px !important;
+    text-align: center;
+    vertical-align: middle !important;
+    width: auto !important;
+    white-space: nowrap;
+    width: fit-content !important;
+  }
+  td input {
+    padding: 5px;
+    text-align: center;
+  }
+</style>
+
+<div class="content-wrapper">
+  <a href="https://wa.me/+966595924802" target="blank" style="color: #0b0f8f; font-weight: bold; text-decoration: none; font-size: 20px;" ><img style="width: 50px;" src="{% static 'dist/img/ais.png' %}?v=0.2" alt="">الإبداع لنظم المعلومات</a>
+
+  <div class="main-title">
+    <h4 class="form-group col-md-9" style="color: black;">تقرير | فواتير المبيعات </h4>
+  </div>
+  <form method="GET"class="form-inline my-2 my-lg-0"action="{% url 'invoices_sales_search' %}">
+    <a href="{% url 'invoice_sales_create' %}" class="btn btn-main">إضافة فاتورة جديدة</a>
+    <button class="btn btn-main" type="submit">بحث<i class="fa-solid fa-magnifying-glass"></i></button>
+    <a href="{% url 'invoices_sales' %}" class="btn btn-main" type="submit">إعادة تعيين<i class="fa-solid fa-rotate-right"></i></a>
+    <div style="width: 100%; display: flex; align-items: center; gap: 10px;">
+<!-- حقل التاريخ "من" -->
+<div style="position: relative; width: 48%;">
+  <input
+      style="width: 100%; background: white; color: black; padding-right: 30px; border-radius: 5px;"
+      class="btn btn-main" type="date" name="start_date" placeholder="بحث بالتاريخ" value="{{start_date}}"/>
+  <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+    من  
+    <i class="fa fa-calendar"></i>
+  </span>
+</div>
+<!-- حقل التاريخ "إلى" -->
+<div style="position: relative; width: 48%;">
+  <input
+      style="width: 100%; background: white; color: black;; padding-right: 30px; border-radius: 5px;"
+      class="btn btn-main" type="date" name="end_date" placeholder="بحث بالتاريخ" value="{{end_date}}"/>
+  <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+    إلى  
+    <i class="fa fa-calendar"></i>
+  </span>
+</div>
+    </div>
+    {{invoice_search_form.customerID}} 
+    {{invoice_search_form.currencyID}}
+    {{invoice_search_form.inventoryID}}
+    <input class="form-control mr-sm-2 remove-outline"name="search_invoice_number"placeholder="بحث برقم الفاتورة"/>
+  </form>
+<div class="content">
+  {% include 'partials/_alerts.html' %}
+  <form method="POST">
+    {% csrf_token %}
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">رقم الفاتورة</th>
+            <th scope="col">تاريخ الفاتورة</th>
+            <th scope="col">العميل</th>
+            <th scope="col">إجمالي الفاتورة</th>
+            <th scope="col">العملة</th>
+            <th scope="col">إجمالي عملة العملية</th>
+            <!-- <th scope="col">معتمد</th> -->
+            <th scope="col">إجراءات</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for invoice in invoices %}
+          <tr>
+            <th data-label="#" scope="row">{{ forloop.counter }}</th>
+            <td data-label="رقم الفاتورة">{{ invoice.sequence }}</td>
+            <td data-label="التاريخ">{{ invoice.date|date:"Y-m-d" }}</td>
+            {% if invoice.attachments %}
+            <td data-label="العميل" style="color: #28b78d; font-weight: bold">
+              {{ invoice.customerID.legalPersonID.acronym_ar }}
+            </td>
+            {% else %}
+            <td data-label="العميل">
+              {{ invoice.customerID.legalPersonID.acronym_ar }}
+            </td>
+            {% endif %}
+            <td data-label="إجمالي الفاتورة">
+              {{ invoice.total_local_sum|floatformat:2|intcomma }}
+            </td>
+            <td data-label="العملة">{{ invoice.currencyID.symbol_ar}}</td>
+            <td data-label="إجمالي عملة العملية">
+              {{ invoice.total_sum|floatformat:2|intcomma }}
+            </td>
+            <!-- <td data-label="إعتماد">{{ invoice.approve }}</td> -->
+            <td data-label="الإجرات">
+              <a
+                href="{% url 'invoice_sales_update' invoice.id %}"
+                class="btn-link"
+              >
+                <i class="fas fa-edit"></i>
+              </a>
+              <a
+                href="{% url 'invoice_sales_reade' invoice.id %}"
+                class="btn-link"
+              >
+                <i class="fa fa-print" aria-hidden="true"></i>
+              </a>
+              <a
+                href="{% url 'invoice_sales_delete' invoice.id %}"
+                class="btn-link"
+              >
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        <tr>
+          <td></td>
+          <th>الإجمالي</th>
+          <td></td>
+          <td></td>
+          <th>{{total_local_currency|floatformat:2|intcomma}}</th>
+          <td></td>
+          <th>{{total_sum|floatformat:2|intcomma}}</th>
+        </tr>
+      </table>
+    </div>
+  </form>
+  <!-- End Modal -->
+  </div>
+</div>
+
+{% endblock %}
