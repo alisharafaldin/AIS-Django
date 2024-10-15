@@ -116,4 +116,4 @@ class InvoiceBodyForm(forms.ModelForm):
         return cleaned_data
 
 # إنشاء نموذج المجموعة باستخدام الفئة الأساسية المخصصة
-InvoiceBodyFormSet = modelformset_factory(InvoicesSalesBody, form=InvoiceBodyForm, can_delete=True, extra=2)
+InvoiceBodyFormSet = modelformset_factory(InvoicesSalesBody, form=InvoiceBodyForm, can_delete=True, extra=3)

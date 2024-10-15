@@ -19,7 +19,7 @@
     <form method="POST">
       {% csrf_token %} {% include 'partials/_alerts.html' %} 
       
-      {% include 'sales/invoice_forml.html' %}
+      {% include 'sales/invoice_form.html' %}
 
       <button type="submit" name="btndelete" class="btn btn-danger">تأكيد الحذف</button>
       <a href="{% url 'invoices_sales' %}" class="btn btn-close">إلغاء</a>

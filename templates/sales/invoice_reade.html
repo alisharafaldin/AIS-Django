@@ -22,7 +22,7 @@ Sales ( {{Invoice_reade.id}} ) {% endblock %} {% block content %}
     <form method="GET">
       {% csrf_token %} {% include 'partials/_alerts.html' %}
 
-      {% include 'sales/invoice_forml.html' %}
+      {% include 'sales/invoice_form.html' %}
     </form>
   </div>
 </div>

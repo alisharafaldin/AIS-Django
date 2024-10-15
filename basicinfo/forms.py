@@ -36,6 +36,7 @@ class InvoiceSearchForm(forms.Form):
         required=False,
         widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'العميل'})
     )
+   
     supplierID = forms.ModelChoiceField(
         queryset=Suppliers.objects.all(),
         label='المورد',

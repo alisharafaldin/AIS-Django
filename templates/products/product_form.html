@@ -1,0 +1,61 @@
+<div>
+  <!-- إسم الشركة عربي - الإسم المختصر عربي -->
+  <div class="form-row">
+    <div class="form-group col-md-5" style="display: none">{{company_form.owner}}</div>
+    <label class="form-group col-md-2 title-label">{{item_label.name_ar.label}}</label>
+    <div class="form-group col-md-4">{{item_form.name_ar}}</div>
+    <label class="form-group col-md-2 title-label">{{item_label.name_en.label}}</label>
+    <div class="form-group col-md-4">{{item_form.name_en}}</div>
+  </div>
+  <!-- سعر الشراء - سعر البيع -->
+  <div class="form-row">
+    <label class="form-group col-md-2 title-label"
+      >{{item_label.purchasingPrice.label}}</label>
+    <div class="form-group col-md-4">{{item_form.purchasingPrice}}</div>
+    <label class="form-group col-md-2 title-label"
+      >{{item_label.sellingPrice.label}}</label>
+    <div class="form-group col-md-4">{{item_form.sellingPrice}}</div>
+  </div>
+  <!-- كود الصنف - وصف المنتج -->
+  <div class="form-row">
+    <label class="form-group col-md-2 title-label"
+    >{{item_label.itemCode.label}}</label>
+  <div class="form-group col-md-2">{{item_form.itemCode}}</div>
+    <label class="form-group col-md-2 title-label"
+      >{{item_label.description.label}}</label
+    >
+    <div class="form-group col-md-6">{{item_form.description}}</div>
+  </div>
+  <!--  الفئة المستهدفة  - وحدة القياس -->
+  <div class="form-row">
+    <label class="form-group col-md-2 title-label"
+      >{{item_label.targetGroupID.label}}</label>
+    <div class="form-group col-md-2">{{item_form.targetGroupID}}</div>
+    <label class="form-group col-md-2 title-label"
+      >{{item_label.typeUnitID.label}}</label>
+    <div class="form-group col-md-2">{{item_form.typeUnitID}}</div>
+    <label class="form-group col-md-2 title-label"
+      >{{item_label.sizeID.label}}</label>
+    <div class="form-group col-md-2">{{item_form.sizeID}}</div>
+  </div>
+  
+  <!-- صورة الصنف - نشط -->
+  <div class="form-row">
+    <label class="form-group col-md-2 title-label"
+      >{{item_label.colorID.label}}</label>
+    <div class="form-group col-md-2">{{item_form.colorID}}</div>
+    <label class="form-group col-md-2 title-label"
+    >{{item_label.photo.label}}</label>
+    <div class="form-group col-md-2">{{item_form.photo}}</div>
+    <label class="form-group col-md-2 title-label"
+    >{{item_label.available.label}}</label>
+    <div class="form-group col-md-2">{{item_form.available}}</div>
+  </div>
+  <!-- ملاحظات -->
+  <div class="form-row">
+    <label class="form-group col-md-1 title-label"
+      >{{item_label.notes.label}}</label>
+    <div class="form-group col-md-11">{{item_form.notes}}</div>
+  </div>
+</div>
+{% include 'basicinfo/updateDropdown.html' %}

@@ -86,11 +86,34 @@
             </li>
             <!-- End G Sales -->
             
-            <!-- Start G Sales -->
+            <!-- Start G المخزون -->
             <li class="nav-item has-treeview">
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-edit"></i>
-                <p>المخزون<i class="fas fa-angle-left right"></i></p>
+                <p>المخازن والمنتجات<i class="fas fa-angle-left right"></i></p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{% url 'product_quantity_summary' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>المخازن</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'net_sales' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>المنتجات</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- End G المخزون -->
+
+            <!-- Start G التقارير -->
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-edit"></i>
+                <p>التقارير<i class="fas fa-angle-left right"></i></p>
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
@@ -100,20 +123,20 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="{% url 'product_quantity_summary' %}" class="nav-link">
+                  <a href="{% url 'net_sales' %}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>المنتجات في المخازن</p>
+                    <p>إجمالي الأرباح</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="{% url 'net_sales' %}" class="nav-link">
+                  <a href="{% url 'product_quantity_summary' %}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>صافي المبيعات</p>
+                    <p>رصيد المخزون</p>
                   </a>
                 </li>
               </ul>
             </li>
-            <!-- End G المخزون -->
+            <!-- End G التقارير -->
             
             <!-- Start G Accounts -->
             <!-- <li class="nav-item has-treeview">

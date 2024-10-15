@@ -12,10 +12,14 @@ from basicinfo.models import *  # استبدل your_app و YourModel باسم ت
 from companys.models import *
 from employees.models import *
 from profiles.models import *
+from inventorys.models import *
+from products.models import *
+from purchases.models import *
+from sales.models import *
 # استعلام البيانات
 # إنشاء قائمة بالجداول
 models = {
-    # App.basicinfo
+    #1- App.basicinfo
     'Countries': Countries,
     'Region': Region,
     'States': States,
@@ -50,12 +54,26 @@ models = {
     'BasicInfo': BasicInfo,
     'LegalPersons': LegalPersons,
     'Persons': Persons,
-    # App.companys
+    #2- App.companys
     'Company': Company,
     'CompanyUser': CompanyUser,
-    # App.employees
+    #3- App.employees
     'Employee': Employee,
     'ProjectRotation': ProjectRotation,
+    #4- App.inventorys
+    'inventory': Inventory,
+    #5- App.products
+    'ItemGrop': ItemGrop,
+    'ItemType': ItemType,
+    'ItemType': Items,
+    #6- App.purchases
+    'Suppliers': Suppliers,
+    'InvoicesPurchasesHead': InvoicesPurchasesHead,
+    'InvoicesPurchasesBody': InvoicesPurchasesBody,
+    #7- App.sales
+    'Customers': Customers,
+    'InvoicesSalesHead': InvoicesSalesHead,
+    'InvoicesSalesBody': InvoicesSalesBody,
 }
 
 def to_xlsx():

@@ -547,7 +547,6 @@ def invoices_sales(request):
     # عرض الصفحة مع البيانات
     return render(request, 'sales/invoices.html', context)
 
-
 # def post_invoice_sales_to_journal(invoice):
 #     # إنشاء القيد الرئيسي
 #     qayd = Qayd.objects.create(date=invoice.date, description=f"ترحيل فاتورة مبيعات #{invoice.sequence}",

@@ -14,17 +14,20 @@ document.addEventListener("DOMContentLoaded", function () {
     const newForm = document.createElement("tr"); // إنشاء عنصر <tr> جديد
     newForm.classList.add("form-container"); // إضافة الكلاس 'form-container' للعنصر الجديد
     newForm.innerHTML = container
-      .querySelector(".form-container")
-      .innerHTML.replace(/form-\d+/g, `form-${formCount}`)
-      .replace(/id_form-\d+-DELETE/g, `id_form-${formCount}-DELETE`); // استبدال الأرقام في الحقول بترقيم النموذج الجديد
+    .querySelector(".form-container")
+    .innerHTML.replace(/form-\d+/g, `form-${formCount}`)
+    .replace(/id_form-\d+-DELETE/g, `id_form-${formCount}-DELETE`); // استبدال الأرقام في الحقول بترقيم النموذج الجديد
     // تفريغ قيم الحقول في النموذج الجديد
     const inputs = newForm.querySelectorAll('input[type="hidden"]');
     inputs.forEach((input) => {
       input.value = ""; // تفريغ قيمة الحقل
     });
     container.appendChild(newForm); // إضافة النموذج الجديد إلى الـ container
+    // $(newForm).find('.django-select2').select2();
+    
     formCount++; // زيادة عداد النماذج
     totalForms.value = formCount; // تحديث عدد النماذج الإجمالي
+
     calculateTotals(); // تحديث المجموع بعد إضافة نموذج جديد
   });
 
