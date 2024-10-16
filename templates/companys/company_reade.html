@@ -6,17 +6,17 @@
         {% include 'partials/_alerts.html' %}
         <!-- Start Modal Countries -->
         <form method="POST">
-          <div class="form-row main-title">
-            <h5 class="form-group" id="staticBackdropLabel">
-              بيانات : {{company_form.legalPersonID.name_ar}}
-            </h5>
+          <div class="form-row main-title sub-navbar">
+            <h4 class="form-group" id="staticBackdropLabel">
+              {{company_form.legalPersonID.name_ar}}
+            </h4>
           </div>
           {% csrf_token %}
           <br />
-          <button type="submit" class="btn btn-save" name="btnempsave">
+          <button type="submit" class="btn btn-save btn-main-aktboh" name="btnempsave">
             إضافة
           </button>
-          <a href="{% url 'companys' %}" class="btn btn-close">إلغاء</a>
+          <a href="{% url 'companys' %}" class="btn btn-close btn-sub-aktboh">إلغاء</a>
 
           <a class="btn-link" href="{% url 'company_update' company_form.id %}">
             <i class="fas fa-edit"></i>

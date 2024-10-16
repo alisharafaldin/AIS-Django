@@ -5,14 +5,22 @@ from sales.models import Customers, Inventory
 from purchases.models import Suppliers
 from products.models import Items, ItemGrop
 from django_select2.forms import Select2Widget
+from inventorys.models import Inventory
 
-class InvoiceSearchForm(forms.Form):
+class SetComboBox(forms.Form):
     sequence = forms.CharField(
         required=False,
         label='رقم القيد',
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'رقم القيد'})
     )
 
+    inventoryID = forms.ModelChoiceField(
+        queryset=Inventory.objects.all(),
+        label='المخزن',
+        empty_label="اختر المخزن",
+        required=False,
+        widget=forms.Select(attrs={'name':'search_currencyID', 'class':'form-control', 'placeholder':'المخزن'})
+    )
     currencyID = forms.ModelChoiceField(
         queryset=Countries.objects.all(),
         label='العملة',
@@ -35,6 +43,22 @@ class InvoiceSearchForm(forms.Form):
         empty_label="اختر العميل",
         required=False,
         widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'العميل'})
+    )
+   
+
+    itemID = forms.ModelChoiceField(
+        queryset=Items.objects.all(),
+        label='الصنف',
+        empty_label="اختر الصنف",
+        required=False,
+        widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'الصنف'})
+    )
+    itemGropID = forms.ModelChoiceField(
+        queryset=ItemGrop.objects.all(),
+        label='المجموعة',
+        empty_label="اختر المجموعة",
+        required=False,
+        widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'المجموعة'})
     )
    
     supplierID = forms.ModelChoiceField(
@@ -79,7 +103,7 @@ class InvoiceSearchForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         company_id = kwargs.pop('companyID', None)  # احصل على companyID من kwargs
-        super(InvoiceSearchForm, self).__init__(*args, **kwargs)
+        super(SetComboBox, self).__init__(*args, **kwargs)
         # تخصيص تسمية حقل currencyID
         self.fields['currencyID'].label_from_instance = lambda obj: obj.currency_ar
         if company_id:

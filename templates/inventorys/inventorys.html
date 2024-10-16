@@ -1,0 +1,88 @@
+{% extends 'base.html' %} {% load static %} {% block title %} | تقرير | الأصناف
+{% endblock %} {% block content %} {% load humanize %}
+
+<style>
+  table {
+    width: 100%;
+    table-layout: auto;
+  }
+  th {
+    text-align: center;
+  }
+  td {
+    padding: 5px !important;
+    text-align: center;
+    vertical-align: middle !important;
+    width: auto !important;
+    white-space: nowrap;
+    width: fit-content !important;
+  }
+  td input {
+    padding: 5px;
+    text-align: center;
+  }
+</style>
+
+<div class="content-wrapper">
+  <div class="main-title sub-navbar">
+    <h4 class="form-group col-md-9" style="color: black">جميع المخازن</h4>
+  </div>
+  <form method="GET" class="form-inline my-2 my-lg-0" action="{% url 'inventorys_search' %}">
+    <a href="{% url 'inventory_create' %}" class="btn btn-main-aktboh">إضافة صنف جديد</a>
+    <button class="btn btn-main-aktboh" type="submit">
+      بحث<i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+    <a href="{% url 'inventorys' %}" class="btn btn-main-aktboh" type="submit"
+      >إعادة تعيين<i class="fa-solid fa-rotate-right"></i></a>
+
+    {{SetComboBox.inventoryID}} 
+    <input class="form-control mr-sm-2 remove-outline" name="search_name" placeholder="بحث بإسم المخزن"/>
+  </form>
+  <div class="content">
+    {% include 'partials/_alerts.html' %}
+    <form method="POST">
+      {% csrf_token %}
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">رقم المخزن</th>
+              <th scope="col">إسم المخزن</th>
+              <th scope="col">العنوان</th>
+              <th scope="col">أمين المخزن</th>
+              <th scope="col">إجراءات</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for inventory in inventorys %}
+            <tr>
+              <th data-label="#" scope="row">{{ forloop.counter }}</th>
+              <td data-label="رقم المخزن">{{ inventory.sequence }}</td>
+              <td data-label="إسم المخزن">{{ inventory.name_ar }}</td>
+              <td data-label="العنوان">{{ inventory.address }}</td>
+              <td data-label="أمين المخزن">{{ inventory.administratorID }}</td>
+              <td data-label="رقم هاتف أمين المخزن">{{ inventory.phoneAdmin }}</td>
+              <!-- <td data-label="إعتماد">{{ inventory.approve }}</td> -->
+              <td data-label="الإجرات">
+                <a href="{% url 'inventory_update' inventory.id %}" class="btn-link">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <a href="{% url 'inventory_reade' inventory.id %}" class="btn-link">
+                  <i class="fa fa-print" aria-hidden="true"></i>
+                </a>
+                <a href="{% url 'inventory_delete' inventory.id %}" class="btn-link">
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </form>
+    <!-- End Modal -->
+  </div>
+</div>
+
+{% endblock %}

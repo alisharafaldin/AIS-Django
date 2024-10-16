@@ -9,14 +9,14 @@
         {% include 'partials/_alerts.html' %}
         <!-- Start Modal Countries -->
         <form method="POST">
-          <div class="form-row main-title">
-            <h5 class="form-group" id="staticBackdropLabel">إضافة عميل جديد</h5>
+          <div class="form-row main-title sub-navbar">
+            <h4 class="form-group" id="staticBackdropLabel">إضافة عميل جديد</h4>
           </div>
           <br>
-          <button type="submit" class="btn btn-save" name="btnempsave">
+          <button type="submit" class="btn btn-save btn-main-aktboh" name="btnempsave">
             إضافة
           </button>
-          <a href="{% url 'customers' %}" class="btn btn-close">إلغاء</a>
+          <a href="{% url 'customers' %}" class="btn btn-close btn-sub-aktboh">إلغاء</a>
           <br>
           <br>
           {% csrf_token %}

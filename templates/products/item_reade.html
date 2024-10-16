@@ -1,0 +1,28 @@
+{% extends 'base.html' %} {% load static %} {% block title %} | Update Coustomer
+{% endblock %} {% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<div class="content-wrapper">
+  <div class="content">
+    <div class="modal-content">
+      <div class="modal-body">
+        {% include 'partials/_alerts.html' %}
+        <!-- Start Modal Countries -->
+        <form method="POST">
+          <div class="form-row main-title sub-navbar">
+            <h4 class="form-group" id="staticBackdropLabel">صنف : {{item_form.name_ar}}</h4>
+          </div>
+          <br>
+          <a href="{% url 'items' %}" class="btn btn-save btn-main-aktboh">جميع الأصناف</a>
+          <a href="{% url 'item_update' item_form.id %}" class="btn btn-save btn-sub-aktboh">تعديل</a>
+          <br>
+          <br>
+
+          {% csrf_token %}
+          {% include 'products/item_form.html' %}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

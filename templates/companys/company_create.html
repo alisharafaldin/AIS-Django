@@ -9,15 +9,15 @@
         {% include 'partials/_alerts.html' %}
         <!-- Start Modal Countries -->
         <form method="POST" enctype="multipart/form-data">
-          <div class="form-row main-title">
-            <h5 class="form-group" id="staticBackdropLabel">
+          <div class="form-row main-title sub-navbar">
+            <h4 class="form-group" id="staticBackdropLabel">
               إضافة إسم عمل جديد
-            </h5>
-            <button type="submit" class="btn btn-save" name="btnempsave">
+            </h4>
+          </div>
+            <button type="submit" class="btn btn-save btn-main-aktboh" name="btnempsave">
               إضافة
             </button>
-            <a href="{% url 'companys' %}" class="btn btn-close">إلغاء</a>
-          </div>
+            <a href="{% url 'companys' %}" class="btn btn-close btn-sub-aktboh">إلغاء</a>
           {% csrf_token %}
           <br />
           {% include 'companys/company_form.html' %}

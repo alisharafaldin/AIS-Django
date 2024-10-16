@@ -9,12 +9,12 @@
         {% include 'partials/_alerts.html' %}
         <!-- Start Modal Countries -->
         <form method="POST">
-          <div class="form-row main-title">
+          <div class="form-row main-title sub-navbar">
             <h5 class="form-group" id="staticBackdropLabel">حذف العميل : {{customer_form.legalPersonID.name_ar}}</h5>
           </div>
           <br>
-          <button type="submit" class="btn btn-delete" name="btnempsave">تأكيد الحذف</button>
-          <a href="{% url 'customers' %}" class="btn btn-close">إلغاء</a>
+          <button type="submit" class="btn btn-delete " name="btnempsave">تأكيد الحذف</button>
+          <a href="{% url 'customers' %}" class="btn btn-close btn-sub-aktboh">إلغاء</a>
 
           <a class="btn-link" href="{% url 'customer_update' customer_form.id %}">
             <i class="fas fa-edit"></i>

@@ -1,0 +1,33 @@
+/* استايل  */
+:root{
+  /* --mainColor: #ffeb01 !important; */
+  /* --subColor: #011c53; */
+  --mainColor-aktboh: #ff6600 !important;
+  --subColor-aktboh: #ffe8d3;
+  
+  --mainButtonColor-aktboh: #8b573e;
+  --subButtonColor-aktboh: #ffe8d3;
+  
+  --mainTitleColor: #fefae0;
+  --subTitleColor: #003049;
+
+  --iconColor: green;
+}
+.sub-navbar {
+  background-color: var(--subColor-aktboh) !important;
+  border-top: var(--mainColor-aktboh) solid;
+  color: #000;
+}
+
+.sub-navbar h4 {
+  font-weight: bold !important;
+}
+
+.btn-main-aktboh {
+  background-color: var(--mainButtonColor-aktboh) !important;
+}
+
+.btn-sub-aktboh {
+  background-color: var(--subButtonColor-aktboh) !important;
+  color: var(--mainButtonColor-aktboh);
+}

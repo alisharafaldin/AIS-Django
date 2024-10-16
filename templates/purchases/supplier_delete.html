@@ -9,12 +9,12 @@
         {% include 'partials/_alerts.html' %}
         <!-- Start Modal Countries -->
         <form method="POST">
-          <div class="form-row main-title">
-            <h5 class="form-group" id="staticBackdropLabel">حذف المورد : {{supplier_form.legalPersonID.name_ar}}</h5>
+          <div class="form-row main-title sub-navbar">
+            <h4 class="form-group" id="staticBackdropLabel">حذف المورد : {{supplier_form.legalPersonID.name_ar}}</h4>
           </div>
           <br>
           <button type="submit" class="btn btn-delete" name="btnempsave">تأكيد الحذف</button>
-          <a href="{% url 'suppliers' %}" class="btn btn-close">إلغاء</a>
+          <a href="{% url 'suppliers' %}" class="btn btn-close btn-sub-aktboh">إلغاء</a>
 
           <a class="btn-link" href="{% url 'supplier_update' supplier_form.id %}">
             <i class="fas fa-edit"></i>

@@ -1,0 +1,68 @@
+
+a#navbarDropdown {
+  display: flex !important;
+  align-items: baseline;
+  }
+  
+  ul.navbar-nav.mr-auto-navbav {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  
+  .user-panel.mt-3.pb-3.mb-3.d-flex {
+    margin: 0 !important;
+    padding: 2px !important;
+  }
+  
+  /* =======================  End Customize Navbar =======================*/
+  
+  /* ==================== Start Customize Navbar Fixad ====================*/
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #ff6600; /* لون الخلفية */
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.nav-item {
+    color: white;
+    text-align: right;
+    flex: 1;
+}
+
+.nav-item img {
+    width: 24px;
+    height: 24px;
+}
+
+.nav-item span {
+    display: block;
+    margin-top: 5px;
+}
+
+.nav-center {
+    position: relative;
+    bottom: 20px;
+}
+
+.nav-circle {
+    background-color: yellow;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.nav-circle img {
+    width: 30px;
+    height: 30px;
+}
+

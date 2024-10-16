@@ -10,4 +10,6 @@ urlpatterns = [
     path('company_update/<int:id>', views.company_update, name='company_update'),
     path('company_delete/<int:id>', views.company_delete, name='company_delete'),
     path('switch_company/<int:company_id>/', views.switch_company, name='switch_company'),
+    
+    path('tonavbar', views.tonavbar, name='tonavbar'),
 ]

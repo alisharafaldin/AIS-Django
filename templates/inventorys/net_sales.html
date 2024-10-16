@@ -25,23 +25,19 @@
 </style>
 
 <div class="content-wrapper">
-  <a href="https://wa.me/+966595924802" target="blank" style="color: #0b0f8f; font-weight: bold; text-decoration: none; font-size: 20px;" >
-    <img style="width: 50px;" src="{% static 'dist/img/ais.png' %}?v=0.2" alt="">
-    الإبداع لنظم المعلومات
-  </a>
-  <div class="main-title">
 
-    <h4 class="form-group col-md-9" style="color: black;">تقرير | إجمالي أرباح المبيعات</h4>
+  <div class="main-title sub-navbar">
+    <h4 class="form-group col-md-9" style="color: black;">إجمالي أرباح المبيعات</h4>
   </div>
   <form
     method="GET"
     class="form-inline my-2 my-lg-0"
     action="{% url 'net_sales' %}"
   >
-    <button class="btn btn-main" type="submit">
+    <button class="btn btn-main btn-main-aktboh" type="submit">
       بحث<i class="fa-solid fa-magnifying-glass"></i>
     </button>
-    <a href="{% url 'net_sales_search' %}" class="btn btn-main" type="submit"
+    <a href="{% url 'net_sales_search' %}" class="btn btn-main btn-main-aktboh" type="submit"
       >إعادة تعيين<i class="fa-solid fa-rotate-right"></i
     ></a>
     <div style="width: 100%; display: flex; align-items: center; gap: 10px">
@@ -159,7 +155,7 @@
               <th data-label="#" scope="row">{{ forloop.counter }}</th>
            
               <td data-label="المنتج">{{ invoice.item_name }}</td>
-              <td data-label="الكميات المباعة"><a href="{% url 'product_quantity_summary' %}?itemID={{ invoice.item_id }}">
+              <td data-label="الكميات المباعة"><a href="{% url 'item_quantity_summary' %}?itemID={{ invoice.item_id }}">
                 {{ invoice.sold_quantity }}
               </a></td>
               <td data-label="إجمالي المبيعات"><a href="{% url 'sold_products_search' %}?itemID={{ invoice.item_id }}&inventoryID={{ search_inventoryID }}&start_date={{ start_date }}&end_date={{ end_date }}">

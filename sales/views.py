@@ -1,17 +1,14 @@
 from django.shortcuts import render , redirect, get_object_or_404
-from basicinfo.forms import BasicInfoForm, LegalPersonsForm, InvoiceSearchForm
+from basicinfo.forms import BasicInfoForm, LegalPersonsForm, SetComboBox
 from django.db.models import Sum, Count
 from basicinfo.models import BasicInfo, LegalPersons
 from django.contrib import messages
 from . models import Customers, InvoicesSalesHead, InvoicesSalesBody
 from companys.models import Company
-# from accounts.models import Qayd, QaydDetails
 from . forms import CustomerForm, InvoiceHeadForm, InvoiceBodyForm, InvoiceBodyFormSet
 from django.forms import modelformset_factory
 from django.contrib.auth.decorators import login_required
-from django.utils.dateparse import parse_date
-
-from rest_framework import viewsets, generics
+from rest_framework import viewsets
 from .serializers import CustomersSerializer
 
 class CustomerViewSet(viewsets.ModelViewSet):
@@ -19,6 +16,7 @@ class CustomerViewSet(viewsets.ModelViewSet):
     serializer_class = CustomersSerializer
 
 # دوال لإنشاء وتحديث وقراءة وحذف القيود المحاسبية
+
 def handle_form_errors(head_form, request):
     """وظيفة مساعد لمعالجة الأخطاء وعرض الرسائل المناسبة."""
     for field, errors in head_form.errors.items():
@@ -255,14 +253,14 @@ def customer_sales_invoices(request, customer_id):
         invoices = []  # إذا لم يكن هناك أي كائنات، العودة إلى قائمة فارغة
     context = {
         'invoices': invoices,
-        'invoice_search_form':InvoiceSearchForm(request.GET),
+        'invoice_search_form':SetComboBox(request.GET),
         'total_invoices_sum':total_invoices_sum,
     }
     return render(request, 'sales/invoices.html', context)
 
-# دالة عرض جميع فواتير المبيعات
+# # دالة عرض جميع القيود
 def calculate_totals(details_queryset):
-    """ وظيفة مساعدة لعمل مجاميع الفواتير """
+    """ وظيفة مساعدة لعمل مجاميع القيود """
     total_d = sum(item.debit for item in details_queryset)
     total_c = sum(item.credit for item in details_queryset)
     return total_d, total_c, total_d - total_c
@@ -326,7 +324,7 @@ def invoices_sales_search(request):
     # إعداد السياق
     context = {
         'invoices': invoices,
-        'invoice_search_form': InvoiceSearchForm(request.GET),
+        'invoice_search_form': SetComboBox(request.GET),
         'total_sum':total_sum,
         'total_invoices_sum':total_invoices_sum,
         'total_local_currency':total_local_currency,
@@ -539,7 +537,7 @@ def invoices_sales(request):
         invoices = []  # إذا لم يكن هناك أي كائنات، العودة إلى قائمة فارغة
     context = {
         'invoices': invoices,
-        'invoice_search_form':InvoiceSearchForm(request.GET),
+        'invoice_search_form':SetComboBox(request.GET),
         'total_sum':total_sum,
         'total_invoices_sum':total_invoices_sum,
         'total_local_currency':total_local_currency,
@@ -580,8 +578,6 @@ def invoices_sales(request):
 def sold_products(request):
     # استرجاع بيانات المنتجات التي تم بيعها من فواتير المبيعات
     sold_products = InvoicesSalesBody.objects.select_related('itemID', 'invoiceHeadID').all()
-
-    
     # الحصول على الشركة الحالية من الجلسة
     current_company_id = request.session.get('current_company_id')
     if not current_company_id:
@@ -607,7 +603,7 @@ def sold_products(request):
         'total_price': total_price,
         'total_local_price': total_local_price,
         'sold_products': sold_products,
-        'products_search_form': InvoiceSearchForm(request.GET),
+        'products_search_form': SetComboBox(request.GET),
     }
     return render(request, 'sales/sold_products.html', context)
 
@@ -674,7 +670,7 @@ def sold_products_search(request):
         'total_price': total_price,
         'total_local_price': total_local_price,
         'sold_products': invoices,
-        'products_search_form': InvoiceSearchForm(request.GET),
+        'products_search_form': SetComboBox(request.GET),
     }
 
     # عرض الصفحة مع البيانات

@@ -1,0 +1,131 @@
+{% extends 'base.html' %} {% load static %} {% block title %} | المخزون 
+{% endblock %} {% block content %} {% load humanize %}
+
+<style>
+  table {
+    width: 100%;
+    table-layout: auto;
+  }
+  th {
+    text-align: center;
+  }
+  td {
+    padding: 5px !important;
+    text-align: center;
+    vertical-align: middle !important;
+    width: auto !important;
+    white-space: nowrap;
+    width: fit-content !important;
+  }
+  td input {
+    padding: 5px;
+    text-align: center;
+  }
+</style>
+
+<div class="content-wrapper">
+  <div class="main-title sub-navbar">
+    <h4 class="form-group col-md-9" style="color: black;">حركة المنتجات ورصيد المخزون</h4>
+  </div>
+  <form
+    method="GET"
+    class="form-inline my-2 my-lg-0"
+    action="{% url 'item_quantity_summary' %}"
+  >
+    <button class="btn btn-main btn-main-aktboh" type="submit">
+      بحث<i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+    <a href="{% url 'item_quantity_summary' %}" class="btn btn-main btn-main-aktboh" type="submit"
+      >إعادة تعيين<i class="fa-solid fa-rotate-right"></i
+    ></a>
+    <div style="width: 100%; display: flex; align-items: center; gap: 10px"><!-- حقل التاريخ "من" -->
+      <div style="position: relative; width: 48%;">
+          <input
+              style="width: 100%; background: white; color: black; padding-right: 30px; border-radius: 5px;"
+              class="btn btn-main" type="date" name="start_date" placeholder="بحث بالتاريخ" value="{{start_date}}"/>
+          <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+            من  
+            <i class="fa fa-calendar"></i>
+          </span>
+      </div>
+      <!-- حقل التاريخ "إلى" -->
+      <div style="position: relative; width: 48%;">
+          <input
+              style="width: 100%; background: white; color: black;; padding-right: 30px; border-radius: 5px;"
+              class="btn btn-main" type="date" name="end_date" placeholder="بحث بالتاريخ" value="{{end_date}}"/>
+          <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+            إلى  
+            <i class="fa fa-calendar"></i>
+          </span>
+      </div>
+    </div>
+    {{search_form.ItemGrop}}
+    {{search_form.itemID}}
+    {{search_form.inventoryID}}
+  </form>
+  <div class="content">
+    {% include 'partials/_alerts.html' %}
+    <form method="POST">
+      {% csrf_token %}
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col"><a href="?ordering=item_name&direction={% if direction == 'asc' %}desc{% else %}asc{% endif %}{% for key, value in request.GET.items %}{% if key != 'ordering' and key != 'direction' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                المنتج
+                {% if ordering == 'item_name' %}
+                  {% if direction == 'asc' %}▲{% else %}▼{% endif %}
+                {% endif %}
+              </a></th>
+              <th scope="col"><a href="?ordering=purchased_quantity&direction={% if direction == 'asc' %}desc{% else %}asc{% endif %}{% for key, value in request.GET.items %}{% if key != 'ordering' and key != 'direction' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                الكمية المشتراة
+                {% if ordering == 'purchased_quantity' %}
+                  {% if direction == 'asc' %}▲{% else %}▼{% endif %}
+                {% endif %}
+              </a></th>
+              <th scope="col"><a href="?ordering=sold_quantity&direction={% if direction == 'asc' %}desc{% else %}asc{% endif %}{% for key, value in request.GET.items %}{% if key != 'ordering' and key != 'direction' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                الكمية المباعة
+                {% if ordering == 'sold_quantity' %}
+                  {% if direction == 'asc' %}▲{% else %}▼{% endif %}
+                {% endif %}
+              </a></th>
+              <th scope="col"><a href="?ordering=difference&direction={% if direction == 'asc' %}desc{% else %}asc{% endif %}{% for key, value in request.GET.items %}{% if key != 'ordering' and key != 'direction' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                الكمية المتبقية
+                {% if ordering == 'difference' %}
+                  {% if direction == 'asc' %}▲{% else %}▼{% endif %}
+                {% endif %}
+              </a></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for invoice in items_comparison %}
+            <tr>
+              <th data-label="#" scope="row">{{ forloop.counter }}</th>
+           
+              <td data-label="المنتج">{{ invoice.item_name }}</td>
+              <td data-label="المشتريات"><a href="{% url 'purchased_products_search' %}?itemID={{ invoice.item_id }}&inventoryID={{ search_inventoryID }}&start_date={{ start_date }}&end_date={{ end_date }}">
+                {{ invoice.purchased_quantity }}
+              </a></td>
+              <td data-label="المبيعات"><a href="{% url 'sold_products_search' %}?itemID={{ invoice.item_id }}&inventoryID={{ search_inventoryID }}&start_date={{ start_date }}&end_date={{ end_date }}">
+                {{ invoice.sold_quantity }}
+              </a></td>
+              <td data-label="الرصيد">{{ invoice.difference }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+          <tr>
+            <td></td>
+            <th>الإجمالي</th>
+            <th>{{total_purchased_sum|floatformat:0|intcomma}}</th>
+            <th>{{total_sold_sum|floatformat:0|intcomma}}</th>
+            <th>{{total_difference_sum|intcomma}}</th>
+          </tr>
+        </table>
+      </div>
+    </form>
+    <!-- End Modal -->
+  </div>
+</div>
+
+{% endblock %}

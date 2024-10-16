@@ -179,21 +179,26 @@ def companys(request):
   }
   return render(request, 'companys/companys.html', context)
 
-#إعداد عرض لتبديل الشركة
+# تبديل الشركة وتوجيه المستخدم إلى الصفحة المطلوبة.
 @login_required
 def switch_company(request, company_id):
-    company = get_object_or_404(Company, id=company_id)
     # تحقق إذا كان المستخدم ينتمي للشركة
+    company = get_object_or_404(Company, id=company_id)
     if CompanyUser.objects.filter(userID=request.user, companyID=company).exists():
+        # تخزين بيانات الشركة في الجلسة
         request.session['current_company_id'] = company.id
         request.session['current_company_name'] = company.legalPersonID.name_ar
-        messages.success(request, f'تم بدء العمل في : {company.legalPersonID.name_ar}')
-        return redirect('index')  # 
+        # تخزين مسار الـ URL الخاص بالصورة
+        photo_url = company.legalPersonID.basicInfoID.photo.url if company.legalPersonID.basicInfoID.photo else None
+        request.session['current_company_photo'] = photo_url
+        messages.success(request, f'تم بدء العمل في: {company.legalPersonID.name_ar}')
+        return redirect('index')  # توجه إلى الصفحة الرئيسية أو أي عرض آخر حسب الحاجة
     else:
         messages.error(request, 'الشركة غير موجودة أو ليس لديك صلاحيات الوصول إليها.')
-    return redirect('companys')
+        return redirect('companys')
 
-#إضافة معلومات الشركة الحالية إلى الجلسة
+
+# إضافة معلومات الشركة الحالية إلى الطلب عبر Middleware
 class CompanyMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
@@ -203,10 +208,26 @@ class CompanyMiddleware:
             company_id = request.session.get('current_company_id')
             if company_id:
                 try:
-                    request.current_company = CompanyUser.objects.get(id=company_id, userID=request.user)
+                    # جلب كائن الشركة الكامل مع العلاقات المرتبطة به
+                    request.current_company = Company.objects.select_related('legalPersonID').get(id=company_id)
                 except Company.DoesNotExist:
                     request.current_company = None
             else:
                 request.current_company = None
         response = self.get_response(request)
         return response
+
+
+# عرض يعرض بيانات الشركة الحالية
+@login_required
+def tonavbar(request):
+    # تأكد من أن الشركة الحالية موجودة
+    company = request.current_company
+    if not company:
+        messages.error(request, 'لم يتم تحديد الشركة الحالية.')
+        return redirect('companys')  # أو أي عرض آخر حسب الحاجة
+    # تمرير بيانات الشركة إلى القالب
+    context = {
+        'current_company': company
+    }
+    return render(request, 'partials/_navbar.html', context)

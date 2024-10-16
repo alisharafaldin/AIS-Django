@@ -1,6 +1,6 @@
 from django.shortcuts import render , redirect, get_object_or_404
 from . models import Suppliers, InvoicesPurchasesHead, InvoicesPurchasesBody
-from basicinfo.forms import BasicInfoForm, LegalPersonsForm, InvoiceSearchForm
+from basicinfo.forms import BasicInfoForm, LegalPersonsForm, SetComboBox
 from django.db.models import Sum, Count
 from basicinfo.models import BasicInfo, LegalPersons
 from django.contrib import messages
@@ -433,7 +433,7 @@ def invoices_purchases(request):
 
     context = {
         'invoices': invoices,
-        'invoice_search_form':InvoiceSearchForm(request.GET),
+        'invoice_search_form':SetComboBox(request.GET),
         'total_sum':total_sum,
         'total_local_currency':total_local_currency,
     }
@@ -471,7 +471,7 @@ def supplier_purchases_invoices(request, supplier_id):
     context = {
         'invoices': invoices,
         'total_invoices_sum':total_invoices_sum,
-        'invoice_search_form':InvoiceSearchForm(request.GET),
+        'invoice_search_form':SetComboBox(request.GET),
     }
     return render(request, 'purchases/invoices.html', context)
 
@@ -527,7 +527,7 @@ def invoices_purchases_search(request):
     # إعداد السياق
     context = {
         'invoices': invoices,
-        'invoice_search_form': InvoiceSearchForm(request.GET),
+        'invoice_search_form': SetComboBox(request.GET),
         'total_sum':total_sum,
         'total_invoices_sum':total_invoices_sum,
         'total_local_currency':total_local_currency,
@@ -566,7 +566,7 @@ def purchased_products(request):
         'total_price': total_price,
         'total_local_price': total_local_price,
         'purchased_products': purchased_products,
-        'products_search_form': InvoiceSearchForm(request.GET),
+        'products_search_form': SetComboBox(request.GET),
     }
     return render(request, 'purchases/purchased_products.html', context)
 
@@ -633,7 +633,7 @@ def purchased_products_search(request):
         'total_price': total_price,
         'total_local_price': total_local_price,
         'purchased_products': invoices,
-        'products_search_form': InvoiceSearchForm(request.GET),
+        'products_search_form': SetComboBox(request.GET),
         'start_date': start_date,  # تمرير معايير البحث إلى القالب
         'end_date': end_date,  # تمرير معايير البحث إلى القالب
     }

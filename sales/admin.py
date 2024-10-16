@@ -7,11 +7,6 @@ class CustomersImportExport(ImportExportModelAdmin):
     pass
     list_display = ['id', 'legalPersonID']
 
-@admin.register(Inventory)
-class InventoryImportE(ImportExportModelAdmin):
-    pass
-    list_display = ['id', 'name_ar']
-
 @admin.register(InvoicesSalesBody)
 class InvoicesSalesBodyImportExport(ImportExportModelAdmin):
     pass
@@ -24,9 +19,6 @@ class InvoicesSalesBodyInline(admin.TabularInline):
 class InvoicesAdmin(admin.ModelAdmin):
     list_display = ('id', 'companyID', 'sequence', 'created_by')
     inlines = [InvoicesSalesBodyInline]  # إذا كنت بحاجة إلى إدراج `QaydDetailsInline`
-
-# تسجيل نموذج `Qayd` باستخدام `QaydAdmin` فقط مرة واحدة
-# admin.site.register(InvoicesSalesHead, InvoicesAdmin)
 
 @admin.register(InvoicesSalesHead)
 class InvoicesSalesHeadImportE(ImportExportModelAdmin):

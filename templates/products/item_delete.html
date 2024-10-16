@@ -1,0 +1,34 @@
+{% extends 'base.html' %} {% load static %} {% block title %} | Delete Coustomer
+{% endblock %} {% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<div class="content-wrapper">
+  <div class="content">
+    <div class="modal-content">
+      <div class="modal-body">
+        {% include 'partials/_alerts.html' %}
+        <!-- Start Modal Countries -->
+        <form method="POST">
+          <div class="form-row main-title sub-navbar">
+            <h4 class="form-group" id="staticBackdropLabel">حذف صنف : {{item_form.name_ar}}</h4>
+          </div>
+          <br>
+          <button type="submit" class="btn btn-delete" name="btnempsave">تأكيد الحذف</button>
+          <a href="{% url 'items' %}" class="btn btn-close btn-sub-aktboh">إلغاء</a>
+
+          <a class="btn-link" href="{% url 'item_update' item_form.id %}">
+            <i class="fas fa-edit"></i>
+          </a>
+          <a href="{% url 'item_reade' item_form.id %}" class="btn-link">
+            <i class="fa fa-print" aria-hidden="true"></i>
+          <br>
+          <br>
+
+          {% csrf_token %}
+          {% include 'products/item_form.html' %}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

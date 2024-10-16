@@ -1,44 +1,6 @@
 {% extends 'base.html' %} {% load static %} {% block title %} | العملاء 
 {% endblock %} {% block content %}
 <style>
-  /* @media (max-width: 768px) {
-    .table-responsive thead {
-      display: none;
-    }
-
-    .table-responsive tbody,
-    .table-responsive th,
-    .table-responsive td {
-      display: block;
-    }
-
-    .table-responsive tr {
-      margin-bottom: 15px;
-    }
-
-    .table-responsive td,
-    .table-responsive th {
-      direction: rtl; 
-      text-align: right;
-      padding-right: 25%;
-      position: relative;
-      width: 100vw;
-    }
-
-    .table-responsive td::before,
-    .table-responsive th::before {
-      content: attr(data-label);
-      position: absolute;
-      right: 0;
-      width: 20%;
-      padding-right: 10px;
-      margin: -12px 1px 2px 2px;
-      padding: 12px 8px 12px 0px;
-      font-weight: bold;
-      background-color: rgb(219, 219, 219);
-    }
-  } */
-
   table {
     width: 100%;
     table-layout: auto;
@@ -62,18 +24,18 @@
 </style>
 
 <div class="content-wrapper">
-  <div class="main-title">
-    <h4 class="form-group col-md-9">العملاء | Customers</h4>
+  <div class="main-title sub-navbar">
+    <h4 class="form-group col-md-9">العملاء</h4>
   </div>
   <form method="GET" class="form-inline my-2 my-lg-0">
-    <a href="{% url 'customer_create' %}" class="btn btn-main" target="blank"
+    <a href="{% url 'customer_create' %}" class="btn btn-main-aktboh" target="blank"
       >إضافة عميل جديد</a
     >
     <!-- Start Search -->
-    <button class="btn btn-main" type="submit">
+    <button class="btn btn-main-aktboh" type="submit">
       بحث<i class="fa-solid fa-magnifying-glass"></i>
     </button>
-    <a href="{% url 'customers' %}" class="btn btn-main" type="submit"
+    <a href="{% url 'customers' %}" class="btn btn-main-aktboh" type="submit"
       >إعادة تعيين<i class="fa-solid fa-rotate-right"></i
     ></a>
     <input

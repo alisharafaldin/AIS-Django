@@ -2,7 +2,8 @@ import os
 from django.db.models.signals import pre_save, post_delete
 from django.db.models import Max
 from django.dispatch import receiver
-from .models import Customers, Inventory, InvoicesSalesHead
+from .models import Customers, InvoicesSalesHead
+
 
 # # إضافة تسلسل للعملاء خاص بكل شركة
 # @receiver(pre_save, sender=Customers)
@@ -53,18 +54,11 @@ def set_customers_sequence(sender, instance, **kwargs):
     if instance.pk is None:  # إذا كان هذا سجل جديد
         set_model_sequence(instance, 'sequence')
 
-@receiver(pre_save, sender=Inventory)
-def set_inventory_sequence(sender, instance, **kwargs):
-    """تعيين تسلسل للمخازن."""
-    if instance.pk is None:  # إذا كان هذا سجل جديد
-        set_model_sequence(instance, 'sequence')
-
 @receiver(pre_save, sender=InvoicesSalesHead)
 def set_invoices_sales_head_sequence(sender, instance, **kwargs):
     """تعيين تسلسل لفواتير المبيعات."""
     if instance.pk is None:  # إذا كان هذا سجل جديد
         set_model_sequence(instance, 'sequence')
-
 
 # -------------- دوال إذالة المرفقات من المشروع في حال التغيير أو الحذف -------------
 

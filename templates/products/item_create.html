@@ -1,0 +1,29 @@
+{% extends 'base.html' %} {% load static %} {% block title %} | Create Employee
+{% endblock %} {% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<div class="content-wrapper">
+  <div class="content">
+    <div class="modal-content">
+      <div class="modal-body">
+        {% include 'partials/_alerts.html' %}
+        <!-- Start Modal Countries -->
+        <form method="POST">
+          <div class="form-row main-title sub-navbar">
+            <h4 class="form-group" id="staticBackdropLabel">إضافة صنف جديد</h4>
+          </div>
+          <br>
+          <button type="submit" class="btn btn-save btn-main-aktboh" name="btnempsave">
+            إضافة
+          </button>
+          <a href="{% url 'items' %}" class="btn btn-close btn-sub-aktboh">إلغاء</a>
+          <br>
+          <br>
+          {% csrf_token %}
+          {% include 'products/item_form.html' %}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

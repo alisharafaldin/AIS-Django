@@ -6,7 +6,7 @@
   <!-- Brand Logo -->
   <a href="{% url 'index' %}" class="brand-link">
     <img
-      src="{% static 'dist/img/AIS.png' %}"
+      src="{% static 'dist/img/Aktboh.jpg' %}"
       alt="AdminLTE Logo"
       class="brand-link-image"
     />
@@ -90,19 +90,19 @@
             <li class="nav-item has-treeview">
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-edit"></i>
-                <p>المخازن والمنتجات<i class="fas fa-angle-left right"></i></p>
+                <p>المخازن والأصناف<i class="fas fa-angle-left right"></i></p>
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="{% url 'product_quantity_summary' %}" class="nav-link">
+                  <a href="{% url 'inventorys' %}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>المخازن</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="{% url 'net_sales' %}" class="nav-link">
+                  <a href="{% url 'items' %}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>المنتجات</p>
+                    <p>الأصناف</p>
                   </a>
                 </li>
               </ul>
@@ -117,19 +117,13 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>المخازن</p>
-                  </a>
-                </li>
-                <li class="nav-item">
                   <a href="{% url 'net_sales' %}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>إجمالي الأرباح</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="{% url 'product_quantity_summary' %}" class="nav-link">
+                  <a href="{% url 'item_quantity_summary' %}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>رصيد المخزون</p>
                   </a>

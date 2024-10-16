@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% load static %} {% block title %} | Qayd Update (
 {{qayd_update.id}} ) {% endblock %} {% block content %}
 <div class="content-wrapper">
-  <h4 class="main-title">
+  <h4 class="main-title sub-navbar">
     تعديل فاتورة مبيعات رقم : ( {{invoice_head.sequence}} )
   </h4>
   <div class="content">
@@ -10,10 +10,10 @@
       {% csrf_token %}
        
       {% include 'partials/_alerts.html' %}
-      <button type="submit" name="btnsave" class="btn btn-save">
+      <button type="submit" name="btnsave" class="btn btn-save btn-main-aktboh">
         حفظ التعديل
       </button>
-      <a href="{% url 'invoices_sales' %}" class="btn btn-close">إلغاء</a>
+      <a href="{% url 'invoices_sales' %}" class="btn btn-close btn-sub-aktboh">إلغاء</a>
       <br />
       <br />
 

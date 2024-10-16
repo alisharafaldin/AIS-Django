@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% load static %} {% block title %} | Qayd Delete (
 {{qayd_id.id}} ) {% endblock %} {% block content %}
 <div class="content-wrapper">
-  <h4 class="main-title">حذف فاتورة مبيعات رقم : ( {{invoice_head_form.sequence}} )</h4>
+  <h4 class="main-title sub-navbar">حذف فاتورة مبيعات رقم : ( {{invoice_head_form.sequence}} )</h4>
   <div class="content">
     <a
       href="{% url 'invoice_sales_update' invoice_head_form.id %}"
@@ -22,7 +22,7 @@
       {% include 'sales/invoice_form.html' %}
 
       <button type="submit" name="btndelete" class="btn btn-danger">تأكيد الحذف</button>
-      <a href="{% url 'invoices_sales' %}" class="btn btn-close">إلغاء</a>
+      <a href="{% url 'invoices_sales' %}" class="btn btn-close btn-sub-aktboh">إلغاء</a>
     </form>
     <br />
   </div>

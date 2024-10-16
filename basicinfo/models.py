@@ -261,7 +261,7 @@ class BasicInfo(models.Model):
     accountNumber = models.CharField(verbose_name='رقم الحساب المصرفي',max_length=100, blank=True, null=True)
     IBANNumber = models.CharField(verbose_name='رقم الآيبان المصرفي',max_length=100, blank=True, null=True)
     ownerAccount = models.CharField(verbose_name='إسم صاحب الحساب',max_length=100, blank=True, null=True)
-    photo = models.ImageField(verbose_name='صورة / لوقو', upload_to='photos/%Y/%m/%d/', null=True, blank=True)
+    photo = models.ImageField(verbose_name='صورة / لوقو', upload_to='photo_basicInfo', null=True, blank=True)
     notes = models.TextField(verbose_name='ملاحظات', blank=True, null=True)
     attachments = models.FileField(verbose_name='مرفقات', upload_to='attach_basicInfo', blank=True, null=True)
     documentLink = models.CharField(verbose_name='رابط المستندات',max_length=100, blank=True, null=True)

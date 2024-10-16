@@ -4,7 +4,7 @@ from django.template.loader import render_to_string
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from basicinfo.models import BusinessScope, Cities, BasicInfo, LegalPersons
-from basicinfo.forms import InvoiceSearchForm, BasicInfoForm, BasicInfoForm, LegalPersonsForm
+from basicinfo.forms import SetComboBox, BasicInfoForm, BasicInfoForm, LegalPersonsForm
 from django.contrib.auth.decorators import login_required
 from companys.models import Company, CompanyUser, JobTitle
 from django.contrib import messages
@@ -256,7 +256,7 @@ def dalil_search(request):
     # إعداد السياق
     context = {
         'companys': company_query,
-        'search_form': InvoiceSearchForm(request.GET),
+        'search_form': SetComboBox(request.GET),
         'search_cityID': search_cityID,
         'search_name': search_name,
         'selected_city_name': selected_city_name,
@@ -290,7 +290,7 @@ def dalils(request):
     
     context = {
         'companys': page_obj,
-        'search_form': InvoiceSearchForm(request.GET),
+        'search_form': SetComboBox(request.GET),
         'businessScope':BusinessScope.objects.filter(legalpersons__company__isnull=False).distinct(),
         'cities': Cities.objects.filter(basicInfo__legalpersons__company__isnull=False).distinct(),
         'page_obj': page_obj

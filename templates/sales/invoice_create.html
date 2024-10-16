@@ -2,7 +2,7 @@
 New {% endblock %} {% block content %}
 
 <div class="content-wrapper">
-  <div class="main-title">
+  <div class="main-title sub-navbar">
     <h4 class="form-group col-md-9">فاتورة مبيعات جديدة</h4>
   </div>
   <div class="content">
@@ -10,10 +10,10 @@ New {% endblock %} {% block content %}
     <form method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       <br />
-      <button type="submit" name="btnsave" class="btn btn-save">إضافة</button>
+      <button type="submit" name="btnsave" class="btn btn-save btn-main-aktboh">إضافة</button>
       <a
         href="{% url 'invoices_sales' %}"
-        class="btn btn-close"
+        class="btn btn-close btn-sub-aktboh"
         data-dismiss="modal"
         aria-label="Close"
         >إلغاء</a

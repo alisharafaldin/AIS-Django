@@ -1,0 +1,61 @@
+<div>
+  <!-- إسم الشركة عربي - الإسم المختصر عربي -->
+  <div class="form-row">
+    <div class="form-group col-md-5" style="display: none">{{company_form.owner}}</div>
+    <label class="form-group col-md-2 title-label">{{inventory_label.name_ar.label}}</label>
+    <div class="form-group col-md-4">{{inventory_form.name_ar}}</div>
+    <label class="form-group col-md-2 title-label">{{inventory_label.name_en.label}}</label>
+    <div class="form-group col-md-4">{{inventory_form.name_en}}</div>
+  </div>
+  <!-- سعر الشراء - سعر البيع -->
+  <div class="form-row">
+    <label class="form-group col-md-2 title-label"
+      >{{inventory_label.countryID.label}}</label>
+    <div class="form-group col-md-4">{{inventory_form.countryID}}</div>
+    <label class="form-group col-md-2 title-label"
+      >{{inventory_label.regionID.label}}</label>
+    <div class="form-group col-md-4">{{inventory_form.regionID}}</div>
+  </div>
+  <!-- كود الصنف - وصف المنتج -->
+  <div class="form-row">
+    <label class="form-group col-md-2 title-label"
+    >{{inventory_label.stateID.label}}</label>
+  <div class="form-group col-md-2">{{inventory_form.stateID}}</div>
+    <label class="form-group col-md-2 title-label"
+      >{{inventory_label.cityID.label}}</label
+    >
+    <div class="form-group col-md-6">{{inventory_form.cityID}}</div>
+  </div>
+  <!--  الفئة المستهدفة  - وحدة القياس -->
+  <div class="form-row">
+    <label class="form-group col-md-2 title-label"
+      >{{inventory_label.address.label}}</label>
+    <div class="form-group col-md-2">{{inventory_form.address}}</div>
+    <label class="form-group col-md-2 title-label"
+      >{{inventory_label.google_maps_location.label}}</label>
+    <div class="form-group col-md-2">{{inventory_form.google_maps_location}}</div>
+    <label class="form-group col-md-2 title-label"
+      >{{inventory_label.administratorID.label}}</label>
+    <div class="form-group col-md-2">{{inventory_form.administratorID}}</div>
+  </div>
+  
+  <!-- صورة الصنف - نشط -->
+  <div class="form-row">
+    <label class="form-group col-md-2 title-label"
+      >{{inventory_label.phoneAdmin.label}}</label>
+    <div class="form-group col-md-2">{{inventory_form.phoneAdmin}}</div>
+    <label class="form-group col-md-2 title-label"
+    >{{inventory_label.photo.label}}</label>
+    <div class="form-group col-md-2">{{inventory_form.photo}}</div>
+    <label class="form-group col-md-2 title-label"
+    >{{inventory_label.available.label}}</label>
+    <div class="form-group col-md-2">{{inventory_form.available}}</div>
+  </div>
+  <!-- ملاحظات -->
+  <div class="form-row">
+    <label class="form-group col-md-1 title-label"
+      >{{inventory_label.notes.label}}</label>
+    <div class="form-group col-md-11">{{inventory_form.notes}}</div>
+  </div>
+</div>
+{% include 'basicinfo/updateDropdown.html' %}
