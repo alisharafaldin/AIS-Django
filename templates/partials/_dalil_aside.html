@@ -1,0 +1,33 @@
+
+{% load static %}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'dist/css/dalil_aside.css' %}?v=0.1" />
+
+<!-- القائمة الجانبية -->
+<div id="sidebar" class="sidebar">
+    <div class="logo">
+        <a href="{% url 'dalil_home' %}" class="brand-link">
+          <img src="{% static 'dist/img/dalilalaemal_logo_sudan.jpg' %}" alt="AdminLTE Logo" class="brand-link-image"/>
+        </a>
+      </div>
+      <hr>
+    <a class="title-list" href="{% url 'dalils' %}">جميع الأعمال</a>
+    <a class="title-list" href="{% url 'dalils_business_Scope' %}">حسب القسم</a>
+    <a class="title-list" href="{% url 'dalil_cities' %}">حسب المدينة</a>
+    <a class="title-list" href="{% url 'dalil_home' %}">بحث مخصص</a>
+    <hr>
+    {% if request.user.is_authenticated %}
+    <a class="title-list" href="{% url 'profile' %}">الملف الشخصي</a>
+    <a class="title-list" href="{% url 'logout' %}">تسجيل الخروج</a>
+    {% else %}
+    <a class="title-list" href="{% url 'signin' %}">تسجيل الدخول</a>
+    <a class="title-list" href="{% url 'signup' %}">مستخدم جديد</a>
+    {% endif %}
+    <hr>
+    {% if request.user.is_authenticated %}
+    <a class="title-list" href="{% url 'index' %}">الإنتقال إلى نظام أكتبوه</a>
+    {% endif %}
+</div>
+
+

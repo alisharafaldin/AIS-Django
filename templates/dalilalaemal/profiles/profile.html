@@ -1,0 +1,54 @@
+{% extends 'base_dalil.html' %} {% load static %} {% block title %} |
+Create Company {% endblock %} {% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<div class="content-wrapper">
+  <div class="content-main" style="margin-top: 70px">
+    <div class="modal-content">
+      <div class="modal-body">
+        {% include 'partials/_alerts.html' %}
+        <!-- Start Modal Countries -->
+        <form method="POST" enctype="multipart/form-data">
+          <div
+            class="form-row main-title"
+            style="display: flex; align-items: center; align-content: center"
+          >
+            <h5
+              class="form-group"
+              style="color: var(--subColor)"
+              id="staticBackdropLabel"
+            >
+              الملف الشخصي
+            </h5>
+          </div>
+          {% csrf_token %}
+          <br />
+          
+          
+          <form method="POST">
+            {% csrf_token %}
+            {{ user_form.as_p }}
+            {{ profile_form.as_p }}
+            
+            <!-- إضافة حقل كلمة المرور -->
+            <div class="form-group">
+                <label for="password">كلمة المرور الجديدة</label>
+                <input type="password" name="pass_field" id="password" class="form-control">
+            </div>
+        
+            <!-- إضافة حقل تأكيد كلمة المرور -->
+            <div class="form-group">
+                <label for="confirm_password">تأكيد كلمة المرور الجديدة</label>
+                <input type="password" name="confirm_pass_field" id="confirm_password" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-save">تحديث البيانات</button>
+            <a href="{% url 'dalil_home' %}" class="btn btn-danger">إلغاء</a>
+        </form>
+        
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

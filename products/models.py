@@ -40,7 +40,7 @@ class Items(models.Model):
     updated_by = models.ForeignKey(User, verbose_name='المُعدِل', related_name='updated_by_itemsDetails', on_delete=models.PROTECT, blank=True, null=True)
     updated_at = models.DateTimeField(verbose_name='تاريخ التعديل', auto_now=True, blank=True, null=True)
     available = models.BooleanField(verbose_name='متاح', default=True, blank=True, null=True)
-    # notes = models.TextField(verbose_name='ملاحظات', blank=True, null=True)
+    notes = models.TextField(verbose_name='ملاحظات', blank=True, null=True)
     def __str__(self):
         return self.name_ar
     

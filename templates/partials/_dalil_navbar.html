@@ -1,13 +1,108 @@
 
 {% load static %}
-<link rel="stylesheet" href="{% static 'dist/css/dalil_navbar.css' %}?v=0.4" />
-<div class="navbar">
-  <!-- <a href="{% url 'dalil_home' %}"><img class="logo" src="{% static 'dist/img/dalilalaemal_logo.jpg' %}?v=0.3" alt=""></a> -->
-  <a class="logo" href="{% url 'dalil_home' %}">
-    <h1>د</h1>
-    <span>دليل الأعمال</span>
-  </a>
-  <h5 class="title">دليل الأعمال السودانية في مصر</h5>
-</div>
+<!-- إضافة Bootstrap -->
+
+<style>
+    /* تنسيقات خاصة بالقائمة الجانبية */
+    .sidebar {
+        height: 100%;
+        width: 250px;
+        position: fixed;
+        top: 0;
+        left: -250px;
+        background-color: #343a40;
+        overflow-x: hidden;
+        transition: 0.3s;
+        z-index: 10;
+    }
+    .sidebar a {
+        padding: 15px 25px;
+        text-decoration: none;
+        font-size: 18px;
+        color: #f1f1f1;
+        display: block;
+        transition: 0.3s;
+    }
+    .sidebar a:hover {
+        background-color: #575d63;
+    }
+    .open-sidebar {
+        right: 0;
+    }
+    .main-content {
+        margin-right: 250px;
+        transition: 0.3s;
+    }
+    
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        z-index: 10;
+    }
+    .show-overlay {
+        display: block;
+    }
+    /* تغيير لون الهامبرغر */
+    .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(0,0,0,1)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+    }
+</style>
+
+<link rel="stylesheet" href="{% static 'dist/css/dalil_navbar.css' %}?v=0.6" />
+
+<!-- شريط التنقل -->
+<nav class="navbar navbar-dark ">
+    <div class="container-fluid">
+      <a class="logo" href="{% url 'dalil_home' %}">
+        <h1>د</h1>
+        <span>دليل الأعمال</span>
+      </a>
+    <h6 class="title">دليل الأعمال السودانية في مصر</h6>
+      <button class="navbar-toggler" type="button" id="hamburger" aria-label="Toggle sidebar">
+        <span class="navbar-toggler-icon" style="color: black;"></span>
+      </button>
+    </div>
+</nav>
+
+<!-- الطبقة الخلفية (Overlay) -->
+<div id="overlay" class="overlay"></div>
+
+<!-- إضافة مكتبة JavaScript الخاصة بـ Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- التحكم في القائمة الجانبية -->
+<script>
+    document.getElementById('hamburger').addEventListener('click', function () {
+        var sidebar = document.getElementById('sidebar');
+        var overlay = document.getElementById('overlay');
+        sidebar.classList.toggle('open-sidebar');
+        overlay.classList.toggle('show-overlay');
+    });
+
+    // إغلاق القائمة الجانبية عند النقر على الطبقة الخلفية أو الروابط
+    document.getElementById('overlay').addEventListener('click', function () {
+        closeSidebar();
+    });
+
+    document.querySelectorAll('.sidebar a').forEach(function (link) {
+        link.addEventListener('click', function () {
+            closeSidebar();
+        });
+    });
+
+    function closeSidebar() {
+        var sidebar = document.getElementById('sidebar');
+        var overlay = document.getElementById('overlay');
+        sidebar.classList.remove('open-sidebar');
+        overlay.classList.remove('show-overlay');
+    }
+</script>
+
+<!-- -------------- -->
 
 

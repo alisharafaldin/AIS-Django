@@ -1,0 +1,275 @@
+<!--footer-->
+{% load static %}
+<!-- Main Sidebar Container -->
+<!-- sidebar-dark-primary -->
+
+<style>
+.nav-color {
+  background-color: var(--subColor-aktboh);
+}
+
+.active {
+  background-color: black !important;
+}
+</style>
+
+<aside class="main-sidebar " style="position: fixed">
+  <!-- Brand Logo -->
+  <a href="{% url 'index' %}" class="brand-link">
+    <img
+      src="{% static 'dist/img/Aktboh.jpg' %}"
+      alt="AdminLTE Logo"
+      class="brand-link-image"
+    />
+    <!-- <span class="brand-text font-weight-light">TimeSheet</span> -->
+  </a>
+
+  <div class="sidebar">
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <p>مرحباً {{ request.user.username }}</p>
+        <li class="nav-item has-treeview menu-open">
+          <a href="#" class="nav-link active">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>
+              لوحة المتابعة
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a> 
+          <ul class="nav nav-treeview">
+            <!-- Start G العلاء -->
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link nav-color">
+                <i class="nav-icon fas fa-edit"></i>
+                <p>العملاء<i class="fas fa-angle-left right"></i></p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{% url 'customer_create' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>إضافة عميل</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'customers' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>جميع العملاء</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- End G العملاء -->
+
+            <!-- Start G المبيعات -->
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link nav-color">
+                <i class="nav-icon fas fa-edit"></i>
+                <p>المبيعات<i class="fas fa-angle-left right"></i></p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{% url 'invoice_sales_create' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>إضافة فاتورة مبيعات</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'invoices_sales' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>جميع فواتير المبيعات</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- End G المبيعات -->
+
+            <!-- Start G الموردين -->
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link nav-color ">
+                <i class="nav-icon fas fa-edit"></i>
+                <p>الموردين<i class="fas fa-angle-left right"></i></p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{% url 'supplier_create' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>إضافة مورد</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'suppliers' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>جميع الموردين</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- End G الموردين -->
+            
+             <!-- Start G المشتريات -->
+             <li class="nav-item has-treeview">
+              <a href="#" class="nav-link nav-color">
+                <i class="nav-icon fas fa-edit"></i>
+                <p>المشتريات<i class="fas fa-angle-left right"></i></p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{% url 'invoice_purchases_create' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>إضافة فاتورة مشتريات</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'invoices_purchases' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>جميع فواتير المشتريات</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- End G المشتريات -->
+
+            <!-- Start G المخزون -->
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link nav-color">
+                <i class="nav-icon fas fa-edit"></i>
+                <p>المخازن<i class="fas fa-angle-left right"></i></p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{% url 'inventory_create' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>إضافة مخزن</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'inventorys' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>جميع المخازن</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- End G المخزون -->
+
+            <!-- Start G الأصناف -->
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link nav-color">
+                <i class="nav-icon fas fa-edit"></i>
+                <p>الأصناف<i class="fas fa-angle-left right"></i></p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{% url 'item_create' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>إضافة صنف</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'items' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>جميع الأصناف</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- End G الأصناف -->
+
+            <!-- Start G التقارير -->
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link nav-color">
+                <i class="nav-icon fas fa-edit"></i>
+                <p>التقارير<i class="fas fa-angle-left right"></i></p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{% url 'purchased_products' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>المنتجات المشتراه</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'sold_products' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>المنتجات المباعة</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'net_sales' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>إجمالي الأرباح</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'item_quantity_summary' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>رصيد المخزون</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- End G التقارير -->
+            
+            <!-- Start Dalil Alaemal -->
+              <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-edit"></i>
+                  <p>دليل الأعمال<i class="fas fa-angle-left right"></i></p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{% url 'dalils' %}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>دليل الأعمال</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <!-- End Dalil Alaemal -->
+            </li>
+            <!-- End Emp -->
+          </ul>  
+        </li>
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+  </div>
+</aside>
+<!--  -->
+
+<script>
+  // البحث عن جميع القوائم التي تحتوي على العناصر الفرعية
+  const treeItems = document.querySelectorAll('.has-treeview');
+
+  treeItems.forEach((item) => {
+    item.addEventListener('click', function (event) {
+      event.preventDefault(); // منع السلوك الافتراضي للرابط
+      
+      // إغلاق جميع القوائم الأخرى المفتوحة
+      treeItems.forEach((otherItem) => {
+        if (otherItem !== item && otherItem.classList.contains('menu-open')) {
+          otherItem.classList.remove('menu-open');
+          // إخفاء القائمة الفرعية للقائمة المفتوحة الأخرى
+          const otherSubMenu = otherItem.querySelector('.nav-treeview');
+          if (otherSubMenu) {
+            otherSubMenu.style.display = 'none';
+          }
+        }
+      });
+
+      // فتح أو غلق القائمة الحالية
+      item.classList.toggle('menu-open');
+
+      // العثور على القائمة الفرعية وإظهارها أو إخفائها
+      const subMenu = item.querySelector('.nav-treeview');
+      if (subMenu) {
+        if (item.classList.contains('menu-open')) {
+          subMenu.style.display = 'block'; // إظهار القائمة الفرعية
+        } else {
+          subMenu.style.display = 'none'; // إخفاء القائمة الفرعية
+        }
+      }
+    });
+  });
+</script>

@@ -37,8 +37,8 @@ class ItemsForm(forms.ModelForm):
             'sizeID': forms.Select(attrs={'class':'form-control', 'placeholder':'مقاس الصنف'}),
             'photo': forms.ClearableFileInput(attrs={'class':'form-control', 'placeholder':'صورة شخصية'}),
             'description': forms.TextInput(attrs={'class':'form-control', 'placeholder':'وصف الصنف'}),
-            'notes': forms.TextInput(attrs={'class':'form-control', 'placeholder':'ملاحظات'}),
             'available': forms.CheckboxInput(attrs={'class':'form-control', 'placeholder':'متاح'}),     
+            'notes': forms.TextInput(attrs={'class':'form-control', 'placeholder':'ملاحظات'}),
         }
 
 

@@ -4,6 +4,7 @@ from basicinfo.models import Countries
 from products.models import Items
 from django.forms import modelformset_factory
 from django_select2.forms import Select2Widget
+from inventorys.models import Inventory
 
 
 class SupplierForm(forms.ModelForm):
@@ -53,9 +54,7 @@ class InvoiceHeadForm(forms.ModelForm):
         # تصفية الموردين بناءً على الشركة
         if company_id:
             self.fields['supplierID'].queryset = Suppliers.objects.filter(companyID_id=company_id)
-        # تصفية المخازن بناءً على الشركة
-        # if company_id:
-            # self.fields['inventoryID'].queryset = inv.objects.filter(companyID_id=company_id)
+            self.fields['inventoryID'].queryset = Inventory.objects.filter(companyID_id=company_id)
    
 class InvoiceBodyForm(forms.ModelForm):
     DELETE = forms.BooleanField(required=False, initial=False)
@@ -82,7 +81,14 @@ class InvoiceBodyForm(forms.ModelForm):
             'tax_value': forms.NumberInput(attrs={'readonly':'readonly','class':'form-control tax_value', 'placeholder':'قيمة الضريبة'}),
             'total_price_after_tax': forms.NumberInput(attrs={'readonly':'readonly','class':'form-control total_price_after_tax', 'placeholder':'إجمالي السعر بعد الخصم'}),
         }
-
+        def __init__(self, *args, **kwargs):
+            company_id = kwargs.pop('companyID', None)  # استلام الشركة الحالية من العرض
+            super(InvoiceHeadForm, self).__init__(*args, **kwargs)
+            # تصفية الموردين بناءً على الشركة
+            if company_id:
+                self.fields['inventoryID'].queryset = Inventory.objects.filter(companyID_id=company_id)
+                self.fields['itemID'].queryset = Items.objects.filter(companyID_id=company_id)
+   
     #التأكد من إضافة منتج قبل الحفظ
     def clean(self):
         cleaned_data = super().clean()
@@ -97,4 +103,4 @@ class InvoiceBodyForm(forms.ModelForm):
         return cleaned_data
 
 # إنشاء نموذج المجموعة باستخدام الفئة الأساسية المخصصة
-InvoiceBodyFormSet = modelformset_factory(InvoicesPurchasesBody, form=InvoiceBodyForm, can_delete=True, extra=2)
+InvoiceBodyFormSet = modelformset_factory(InvoicesPurchasesBody, form=InvoiceBodyForm, can_delete=True, extra=1)

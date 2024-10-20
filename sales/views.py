@@ -523,12 +523,12 @@ def invoices_sales(request):
         ).order_by("-id")
 
         # حساب الإجمالي الكلي لجميع الفواتير (بالعملة الأساسية والمحلية)
-        total_invoices_sum = invoices.aggregate(total_sum=Sum('total_sum'),total_local_sum=Sum('total_local_sum'))
-
+        # total_invoices_sum = invoices.aggregate(total_sum=Sum('total_sum'),total_local_sum=Sum('total_local_sum'))
+        total_invoices_sum = invoices.aggregate(
+            total_sum=Sum('sales_invoice__total_price_after_tax'),
+            total_local_sum=Sum('sales_invoice__total_price_local_currency'))
         # إجمالي الفواتير بالعملة الأساسية
         total_sum = invoices.aggregate(total_sum=Sum('sales_invoice__total_price_after_tax'))['total_sum'] or 0
-
-        # total_sum = total_invoices_sum['total_sum'] or 0
 
         # إجمالي الفواتير بالعملة المحلية
         total_local_currency = invoices.aggregate(total_sum=Sum('sales_invoice__total_price_local_currency'))['total_sum'] or 0

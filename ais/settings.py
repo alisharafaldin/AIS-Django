@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'import_export',
     'django.contrib.humanize',
     'pages.apps.PagesConfig',
@@ -155,3 +156,12 @@ USE_I18N = True
 USE_TZ = True
 
 LOGIN_URL = '/profiles/signin/'  # استبدل '/custom-login/' بالمسار الخاص بك
+
+# إعداد إستعادة كلمة المرور
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # مضيف SMTP الصحيح لـ Gmail
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'dalilalaemal@gmail.com'
+EMAIL_HOST_PASSWORD = 'asa13579@GD01'  # كلمة المرور لحساب Gmail (أو كلمة مرور التطبيق إذا كنت تستخدم التحقق بخطوتين)
+DEFAULT_FROM_EMAIL = 'dalilalaemal@gmail.com'

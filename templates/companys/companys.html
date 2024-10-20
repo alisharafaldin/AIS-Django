@@ -4,16 +4,12 @@
 {% block content %}
 <div class="content-wrapper">
   <div class="main-title sub-navbar">
-    <h4 class="form-group col-md-9">جميع أسماء الأعمال</h4>
+    <h4 class="form-group col-md-9">الشركات</h4>
   </div>
-  <a href="{% url 'company_create' %}" class="btn btn-main btn-main-aktboh" target="blank"
-    >إضافة إسم عمل جديد</a
-  >
-  <a href="{% url 'dalils' %}" class="btn btn-main btn-main-aktboh" target="blank"
-    >الإنتقال إلى دليل الأعمال</a>
-  <br />
+  <a href="{% url 'company_create' %}" class="btn btn-main btn-main-aktboh" >إضافة شركة جديدة</a>
+  <br/>
   {% include 'partials/_alerts.html' %}
-
+  
   <div class="content form-row justify-content-around">
     {% for company in companys %}
     <div class="card" style="width: 18rem">

@@ -4,7 +4,7 @@ from basicinfo.models import Countries
 from products.models import Items
 from django.forms import modelformset_factory
 from django_select2.forms import Select2Widget
-
+from inventorys.models import Inventory
 
 class CustomerForm(forms.ModelForm):
     class Meta:
@@ -20,6 +20,7 @@ class InvoiceHeadForm(forms.ModelForm):
         empty_label="اختر العملة",
         widget=forms.Select(attrs={'class': 'form-control'}),
     )
+   
     customerID = forms.ModelChoiceField(
         queryset=Customers.objects.all(),
         label='العميل',
@@ -54,6 +55,7 @@ class InvoiceHeadForm(forms.ModelForm):
         # تصفية العملاء بناءً على الشركة
         if company_id: 
             self.fields['customerID'].queryset = Customers.objects.filter(companyID_id=company_id)
+            self.fields['inventoryID'].queryset = Inventory.objects.filter(companyID_id=company_id)
    
 class InvoiceBodyForm(forms.ModelForm):
     DELETE = forms.BooleanField(required=False, initial=False)
@@ -81,7 +83,14 @@ class InvoiceBodyForm(forms.ModelForm):
             'total_price_after_tax': forms.NumberInput(attrs={'readonly':'readonly','class':'form-control total_price_after_tax', 'placeholder':'إجمالي السعر بعد الخصم'}),
             'total_price_local_currency': forms.NumberInput(attrs={'readonly':'readonly','class':'form-control total_price_local_currency', 'placeholder':'إجمالي السعر بعد الخصم'}),
         }
-
+    def __init__(self, *args, **kwargs):
+        company_id = kwargs.pop('companyID', None)  # استلام الشركة الحالية من العرض
+        super(InvoiceBodyForm, self).__init__(*args, **kwargs)
+        # تصفية العملاء بناءً على الشركة
+        if company_id: 
+            self.fields['inventoryID'].queryset = Inventory.objects.filter(companyID_id=company_id)
+            self.fields['itemID'].queryset = Items.objects.filter(companyID_id=company_id)
+   
     #تعيين قيمة إفتراضية للمخزن في تفاصيل الفاتورة
     # def __init__(self, *args, **kwargs):
     #     super(InvoiceBodyForm, self).__init__(*args, **kwargs)
@@ -116,4 +125,4 @@ class InvoiceBodyForm(forms.ModelForm):
         return cleaned_data
 
 # إنشاء نموذج المجموعة باستخدام الفئة الأساسية المخصصة
-InvoiceBodyFormSet = modelformset_factory(InvoicesSalesBody, form=InvoiceBodyForm, can_delete=True, extra=3)
+InvoiceBodyFormSet = modelformset_factory(InvoicesSalesBody, form=InvoiceBodyForm, can_delete=True, extra=1)

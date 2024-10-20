@@ -1,0 +1,37 @@
+{% extends 'base_dalil.html' %} {% load static %} {% block title %} |
+Create Company {% endblock %} {% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<div class="content-wrapper">
+  <div class="content-main">
+    <!-- <div class="modal-content"> -->
+      <!-- <div class="modal-body"> -->
+
+        {% include 'partials/_alerts.html' %}
+        <link rel="stylesheet" href="{% static 'dist/css/signin.css' %}?v=0.3" />
+        <div class="login-container">
+          {% if request.user.is_authenticated %}
+          <h4 class="alert alert-warning">
+            مرحبا, <strong>{{request.user.username}}</strong> لقد قمت بتسجيل الدخول
+            <a class="text-center" href="{% url 'logout' %}">logout</a>
+          </h4>
+          {% else %}
+          <h2>تسجيل دخول</h2>
+          
+          <form method="POST">
+              {% csrf_token %} 
+              {% include 'partials/_alerts.html' %}
+              <input type="text" name="user" placeholder="Username or Email" required>
+              <input type="password" name="pass" placeholder="Password" required>
+              <input type="submit" value="دخول">
+          </form>
+          <p class="signup-link"><a href="{% url 'signup' %}">مستخدم جديد</a></p>
+          {% endif %}
+        </div>
+        
+        </form>
+      <!-- </div> -->
+    <!-- </div> -->
+  </div>
+</div>
+{% endblock %}

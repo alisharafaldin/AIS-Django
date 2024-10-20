@@ -21,6 +21,7 @@ class SetComboBox(forms.Form):
         required=False,
         widget=forms.Select(attrs={'name':'search_currencyID', 'class':'form-control', 'placeholder':'المخزن'})
     )
+    
     currencyID = forms.ModelChoiceField(
         queryset=Countries.objects.all(),
         label='العملة',
@@ -44,7 +45,6 @@ class SetComboBox(forms.Form):
         required=False,
         widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'العميل'})
     )
-   
 
     itemID = forms.ModelChoiceField(
         queryset=Items.objects.all(),
@@ -53,6 +53,7 @@ class SetComboBox(forms.Form):
         required=False,
         widget=Select2Widget(attrs={'class':'form-control', 'placeholder':'الصنف'})
     )
+   
     itemGropID = forms.ModelChoiceField(
         queryset=ItemGrop.objects.all(),
         label='المجموعة',

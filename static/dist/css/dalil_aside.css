@@ -1,0 +1,46 @@
+
+  /* حركة القا بسلاسة */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateX(30px); /* بداية التحريك من أسفل */
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0); /* نهاية التحريك في الموقع النهائي */
+    }
+  }
+
+.sidebar {
+  background-color: #fff;
+  color: var(--subColor);
+  border-left: var(--subColor) solid 5px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  text-align: right;
+  animation: fadeInUp 1.5s ease-out forwards !important; /* تطبيق التأثير */
+
+}
+.sidebar .logo {
+  padding: 15px;
+  text-align: center;
+  /* background-color: #34495e; */
+  margin-bottom: 20px;
+}
+.sidebar .logo img{
+  border-radius: 50%;
+  margin: 0 !important;
+  width: 130px;
+}
+
+.sidebar a {
+  color: var(--subColor);
+}
+.sidebar a:hover {
+  background-color: var(--mainColor);
+}
+
+.sidebar .title-list:hover {
+  background-color: var(--subColor);
+  color: #fff;
+}

@@ -1,33 +1,54 @@
-from django.shortcuts import render , redirect
-from django.contrib import messages
 from django.contrib import auth
 from .models import UserProfile
+from django.contrib.auth import login
+from django.contrib import messages
 from .forms import UserProfileForm, UserForm
+from django.shortcuts import render , redirect
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import PasswordResetView
-from django.core.mail import send_mail
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-
 import re
-# Create your views here.
+
+
+# دليل الأعمال
+
 def signup(request):
     if request.method == 'POST':
-        user_profile_form = UserProfileForm(request.POST)
-        if user_profile_form.is_valid():
-            # حفظ المستخدم
-            user = user_profile_form.save(commit=False)
-            password = request.POST.get('password')
-            user.set_password(password)
+        user_form = UserCreationForm(request.POST)
+        user_profile_form = UserProfileForm(request.POST, request.FILES)
+        if user_form.is_valid() and user_profile_form.is_valid():
+            # حفظ المستخدم الجديد
+            user = user_form.save()
+            user.set_password(user_form.cleaned_data['password1'])
             user.save()
-            # توجيه المستخدم إلى الصفحة بعد التسجيل بنجاح
-            return redirect('index')  # اسم العرض بعد تسجيل المستخدم بنجاح
+
+            # حفظ الملف الشخصي مع ربطه بالمستخدم الجديد
+            user_profile = user_profile_form.save(commit=False)
+            user_profile.userID = user  # تعيين userID للمستخدم الجديد
+            user_profile.save()
+
+            # تسجيل المستخدم بعد نجاح التسجيل
+            login(request, user)
+            messages.success(request, "تم التسجيل بنجاح")
+            return redirect('index')
+        else:
+            # عرض رسائل الخطأ إذا كانت النماذج غير صالحة
+            for field, errors in user_form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+            for field, errors in user_profile_form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
     else:
-        user_form = UserForm()
+        user_form = UserCreationForm()
         user_profile_form = UserProfileForm()
+
     context = {
         'user_form': user_form,
-        'user_profile_form':user_profile_form,
+        'user_profile_form': user_profile_form,
     }
-    return render(request, 'profiles/signup.html', context)
+    return render(request, 'dalilalaemal/profiles/signup.html', context)
 
 def signin(request):
     if request.user.is_authenticated:
@@ -52,51 +73,65 @@ def signin(request):
             messages.error(request, 'يوجد خطأ في إسم المستخدم أو كلمة المرور')
             return redirect('signin')
     else:
-        return render(request, 'profiles/signin.html')
-                            
+        return render(request, 'dalilalaemal/profiles/signin.html')                           
+
 @login_required
 def profile(request):
+    # جلب أو إنشاء كائن UserProfile للمستخدم الحالي
     user_profile, created = UserProfile.objects.get_or_create(userID=request.user)
 
-       # التحقق من أن كائن Person مرتبط بـ UserProfile، وإذا لم يكن كذلك، قم بإنشائه
-    if user_profile.personID is None:
-        # user_profile.personID = Person.objects.create()
-        user_profile.save()
+    # التحقق من وجود كائن Person مرتبط بملف المستخدم، وإذا لم يكن موجودًا، نقوم بإنشائه
+    if user_profile.userID is None:
+        user_profile.userID = UserProfile.objects.create()  # إنشاء كائن Person جديد
+        user_profile.save()  # حفظ التغييرات
 
     if request.method == 'POST':
         user_form = UserForm(request.POST, instance=request.user)
-        # person_form = PersonForm(request.POST, instance=user_profile)
         profile_form = UserProfileForm(request.POST, instance=user_profile)
 
+        # التحقق من صحة البيانات في كلا النموذجين
         if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save(commit=False)
-            # person = person_form.save(commit=False)
-            profile = profile_form.save(commit=False)
-
             # تحديث بيانات المستخدم
-            user.set_password(request.POST['pass_field'])
-            user.save()
+            user = user_form.save(commit=False)
 
-            # تحديث بيانات العلومات العامة
-            # person.save()
+            # التحقق مما إذا تم إدخال كلمة مرور جديدة وحقل التأكيد
+            password = request.POST.get('pass_field')
+            confirm_password = request.POST.get('confirm_pass_field')
+
+            if password and password != "":
+                # التحقق من تطابق كلمة المرور مع التأكيد
+                if password == confirm_password:
+                    user.set_password(password)
+                    user.save()  # حفظ التغييرات في بيانات المستخدم
+                    # تحديث الجلسة بحيث يبقى المستخدم مسجلاً للدخول بعد تغيير كلمة المرور
+                    update_session_auth_hash(request, user)
+                else:
+                    # عرض رسالة خطأ إذا كانت كلمات المرور غير متطابقة
+                    messages.error(request, 'كلمة المرور وتأكيد كلمة المرور غير متطابقتين.')
+                    return redirect('profile')
+
+            user.save()  # حفظ التغييرات في بيانات المستخدم
 
             # تحديث بيانات الملف الشخصي
-            profile.save()
+            profile = profile_form.save(commit=False)
+            profile.save()  # حفظ التغييرات في ملف المستخدم
 
             messages.success(request, 'تم تحديث البيانات بنجاح')
-            return redirect('profile')
+            return redirect('profile')  # إعادة توجيه المستخدم إلى صفحة الملف الشخصي
         else:
             messages.error(request, 'الرجاء التحقق من البيانات المدخلة')
     else:
+        # إنشاء نماذج مع البيانات الحالية للمستخدم والملف الشخصي
         user_form = UserForm(instance=request.user)
-        # person_form = PersonForm(instance=request.user)
         profile_form = UserProfileForm(instance=user_profile)
+
+    # إرسال النماذج إلى القالب لعرضها
     context = {
         'user_form': user_form,
-        # 'person_form': person_form,
         'profile_form': profile_form,
     }
-    return render(request, 'profiles/profile.html', context)
+
+    return render(request, 'dalilalaemal/profile.html', context)
 
 def logout(request):
     if request.user.is_authenticated:

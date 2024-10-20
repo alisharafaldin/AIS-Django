@@ -49,7 +49,6 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True, null=True, verbose_name='تاريخ الإنشاء')),
                 ('updated_at', models.DateTimeField(auto_now=True, null=True, verbose_name='تاريخ التعديل')),
                 ('available', models.BooleanField(blank=True, default=True, null=True, verbose_name='متاح')),
-                ('notes', models.TextField(blank=True, null=True, verbose_name='ملاحظات')),
                 ('colorID', models.ForeignKey(blank=True, default=1, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='the_color', to='basicinfo.color', verbose_name='اللون')),
                 ('companyID', models.ForeignKey(blank=True, on_delete=django.db.models.deletion.PROTECT, to='companys.company')),
                 ('created_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='created_by_itemsDetails', to=settings.AUTH_USER_MODEL, verbose_name='المنشئ')),

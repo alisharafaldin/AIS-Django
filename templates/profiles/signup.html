@@ -1,24 +1,55 @@
-{% extends 'base.html' %} {% load static %} {% block title %} | Signup {% endblock %} {% block content %}
-
-<link rel="stylesheet" href="{% static 'dist/css/signup.css' %}?v=0.1" />
-
-<div class="signup-container">
-  <h2>إنشاء حساب</h2>
-  <form action="/signup" method="POST">
-    <input type="text" name="username" placeholder="Username" required />
-    <input type="email" name="email" placeholder="Email" required />
-    <input type="password" name="password" placeholder="Password" required />
-    <input
-      type="password"
-      name="password_confirmation"
-      placeholder="Confirm Password"
-      required
-    />
-    <input type="submit" value="تسجيل" />
-  </form>
-  <p class="login-link">
-    لديك حساب ؟ <a href="{% url 'signin' %}">تسجيل دخول</a>
-  </p>
-</div>
-
+{% extends 'base.html' %}
+{% block title %} | Signup{% endblock %}
+{% block content %}
+<div class="register-box">
+    <div class="card card-outline card-primary">
+      <div class="card-header text-center">
+        <a href="#" class="h1"><b>دليل الأعمال</b></a>
+      </div>
+      <div class="card-body">
+        <p class="login-box-msg">تسجيل عضوية جديدة</p>
+        {% include 'partials/_alerts.html' %}
+        {% if is_added == True %}
+        <form method="POST" style="display: none;">
+        {% else %}
+        <form method="POST" >
+        {% endif %}
+            {% csrf_token %}
+           
+            <div class="form-row">
+                <div class="form-group col-md-6">{{user_form.first_name}}</div>
+                <div class="form-group col-md-6">{{user_form.last_name}}</div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">{{user_profile_form.nationalityID}}</div>
+                <div class="form-group col-md-6">{{user_profile_form.phone}}</div>
+            </div>
+            <div class="form-group">{{user_form.email}}</div>
+            <div class="form-row">
+                <div class="form-group col-6"><label>إسم المستخم</label></div>
+                <div class="form-group col-6">{{user_form.username}}</div>
+            </div>
+            <div class="form-group">
+              <label for="inputPassword">كلمة المرور</label>
+              {{user_form.password1}}
+              {{user_form.password2}}
+            </div>
+          <div class="row">
+            <div class="col"><label>أوافق على <a href="#">الشروط</a></label></div>
+            <div class="col-3">{{user_profile_form.terms}}</div>
+            <div class="col">
+              <button type="submit"  name="btnsignup" class="btn btn-primary btn-block">تسجيل</button>
+            </div>
+            <!-- /.col -->
+          </div>
+        </form>
+        <div class="social-auth-links text-center">
+          <a href="#" class="btn btn-block btn-primary"><i class="fab fa-facebook mr-2"></i>تسجيل الدخول باستخدام الفيسبوك</a>
+          <a href="#" class="btn btn-block btn-danger"><i class="fab fa-google-plus mr-2"></i>تسجيل الدخول باستخدام Google</a>
+        </div>
+        <a href="{% url 'signin' %}" class="text-center">لدي حساب بالفعل</a>
+      </div>
+      <!-- /.form-box -->
+    </div><!-- /.card -->
+  </div>
 {% endblock %}
