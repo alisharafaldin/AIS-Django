@@ -6,17 +6,13 @@
     <i class="fas fa-home nav-icon icon-footer"></i>
       <span class="title-footer">الرئيسة</span>
   </a>
-  {% if request.user.is_authenticated  %}
-  <a href="{% url 'dalil_create' %}" class="nav-center">
-  {% else %}
-  <a href="https://docs.google.com/forms/d/e/1FAIpQLSdIJcsZD9iOsvD9QLYo4mSN-hWxQkZTqhJd1OzPl49qQ4XTzA/viewform" class="nav-center" target="_blank">
-  {% endif %}
+    <a href="{% url 'add_dalil' %}" class="nav-center">
     <div class="nav-circle">
         <i class="far fa-add nav-icon" style="color: black; font-size: 20px;" ></i>
       </div>
       <span class="title-footer" style="margin-top: 10px;">إضافة عمل جديد</span>
     </a>
-   <a href="https://wa.me/+201147528751" target="_blank" class="whatsapp-float nav-item">
+   <a href="https://wa.me/+201090871697" target="_blank" class="whatsapp-float nav-item">
     <i class="fab fa-whatsapp icon-footer" style="font-size: 18px;"></i>
     <span class="title-footer">تواصل معنا</span>
   </a>

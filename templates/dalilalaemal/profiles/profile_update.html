@@ -1,0 +1,65 @@
+{% extends 'base_dalil.html' %} {% load static %} {% block title %} |
+Create Company {% endblock %} {% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<div class="content-wrapper">
+  <div class="content-main" style="margin-top: 70px">
+    <div class="modal-content">
+      <div class="modal-body">
+        {% include 'partials/_alerts.html' %}
+        <!-- Start Modal Countries -->
+        <div class="form-row main-title"style="display: flex; align-items: center; align-content: center">
+          <h5 class="form-group" style="color: var(--subColor); margin: 0.5rem;" >تعديل بيانات الملف الشخصي</h5>
+        </div>
+        <br />
+        <form method="POST">
+          {% csrf_token %} 
+          <div class="form-row">
+            <label class="form-group col-md-3 title-label">الإسم الأول</label>
+            <div class="form-group col-md-3">{{user_form.first_name}}</div>
+          </div>  
+          <div class="form-row">
+            <label class="form-group col-md-3 title-label">إسم العائلة</label>
+            <div class="form-group col-md-6">{{user_form.last_name}}</div>
+          </div>
+          <div class="form-row">
+            <label class="form-group col-md-3 title-label">الجنس</label>
+            <div class="form-group col-md-6">{{profile_form.genderID}}</div>
+          </div>
+          <div class="form-row">
+            <label class="form-group col-md-3 title-label">إسم المستخدم</label>
+            <div class="form-group col-md-6">{{user_form.username}}</div>
+          </div>
+          <div class="form-row">
+            <label class="form-group col-md-3 title-label">صورة ملف شخصي</label>
+            <div class="form-group col-md-6">{{profile_form.photo}}</div>
+          </div>
+          <div class="form-row">
+            <label class="form-group col-md-3 title-label">رقم هاتف</label>
+            <div class="form-group col-md-6">{{profile_form.phone}}</div>
+          </div>   
+          <div class="form-row">
+            <label class="form-group col-md-3 title-label">رقم هاتف آخر</label>
+            <div class="form-group col-md-6">{{profile_form.phoneOther}}</div>
+          </div>          
+          <div class="form-row">
+            <label class="form-group col-md-3 title-label">البريد الإلكتروني</label>
+            <div class="form-group col-md-6">{{user_form.email}}</div>
+          </div>  
+          <div class="form-row">
+            <label class="form-group col-md-3 title-label">بلد الإقامة</label>
+            <div class="form-group col-md-6">{{profile_form.countryID}}</div>
+          </div>
+          <div class="form-row">
+            <label class="form-group col-md-3 title-label">الموطن الأصلي</label>
+            <div class="form-group col-md-6">{{profile_form.nationalityID}}</div>
+          </div>
+          <button type="submit" class="btn btn-save">تحديث البيانات</button>
+          <a href="{% url 'dalil_home' %}" class="btn btn-danger">إلغاء</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

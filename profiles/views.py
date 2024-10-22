@@ -1,52 +1,70 @@
 from django.contrib import auth
 from .models import UserProfile
+from django.contrib.auth.models import User
 from django.contrib.auth import login
 from django.contrib import messages
 from .forms import UserProfileForm, UserForm
-from django.shortcuts import render , redirect
+from django.shortcuts import render , redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import PasswordResetView
 from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 import re
 
+def handle_form_errors(head_form, request):
+    """وظيفة مساعد لمعالجة الأخطاء وعرض الرسائل المناسبة."""
+    for field, errors in head_form.errors.items():
+        for error in errors:
+            messages.error(request, f"خطأ في النموذج في الحقل '{field}': {error}")
 
-# دليل الأعمال
+def handle_formset_errors(head_form, formset, request):
+    """وظيفة مساعد لمعالجة الأخطاء وعرض الرسائل المناسبة."""
+    for field, errors in head_form.errors.items():
+        for error in errors:
+            messages.error(request, f"خطأ في نموذج الرأس في الحقل '{field}': {error}")
+    for form_index, form in enumerate(formset.forms):
+        for field, errors in form.errors.items():
+            for error in errors:
+                messages.error(request, f"خطأ في نموذج التفاصيل {form_index + 1} في الحقل '{field}': {error}")
+    for error in formset.non_form_errors():
+        messages.error(request, f"خطأ في الـ FormSet: {error}")
 
 def signup(request):
     if request.method == 'POST':
         user_form = UserCreationForm(request.POST)
-        user_profile_form = UserProfileForm(request.POST, request.FILES)
-        if user_form.is_valid() and user_profile_form.is_valid():
+        profile_form = UserProfileForm(request.POST, request.FILES)
+        if user_form.is_valid() and profile_form.is_valid():
             # حفظ المستخدم الجديد
             user = user_form.save()
             user.set_password(user_form.cleaned_data['password1'])
             user.save()
 
             # حفظ الملف الشخصي مع ربطه بالمستخدم الجديد
-            user_profile = user_profile_form.save(commit=False)
+            user_profile = profile_form.save(commit=False)
             user_profile.userID = user  # تعيين userID للمستخدم الجديد
             user_profile.save()
 
             # تسجيل المستخدم بعد نجاح التسجيل
             login(request, user)
             messages.success(request, "تم التسجيل بنجاح")
-            return redirect('index')
+            return redirect('dalil_home')
         else:
             # عرض رسائل الخطأ إذا كانت النماذج غير صالحة
             for field, errors in user_form.errors.items():
                 for error in errors:
                     messages.error(request, f"{field}: {error}")
-            for field, errors in user_profile_form.errors.items():
+            for field, errors in profile_form.errors.items():
                 for error in errors:
                     messages.error(request, f"{field}: {error}")
     else:
-        user_form = UserCreationForm()
-        user_profile_form = UserProfileForm()
+        user_form = UserForm()
+        profile_form = UserProfileForm()
+        userCreationForm = UserCreationForm()
 
     context = {
         'user_form': user_form,
-        'user_profile_form': user_profile_form,
+        'profile_form': profile_form,
     }
     return render(request, 'dalilalaemal/profiles/signup.html', context)
 
@@ -68,7 +86,7 @@ def signin(request):
                 request.session.set_expiry(0)
             auth.login(request, user)
             messages.success(request, 'تم تسجيل الدخول بنجاح')
-            return redirect('companys')
+            return redirect('dalil_home')
         else:
             messages.error(request, 'يوجد خطأ في إسم المستخدم أو كلمة المرور')
             return redirect('signin')
@@ -77,61 +95,44 @@ def signin(request):
 
 @login_required
 def profile(request):
-    # جلب أو إنشاء كائن UserProfile للمستخدم الحالي
-    user_profile, created = UserProfile.objects.get_or_create(userID=request.user)
+    user = get_object_or_404(User, id=request.user.id)
+    user_profile =  get_object_or_404(UserProfile, userID=user)
+    context = {
+        'user': user,
+        'user_profile': user_profile,
+    }
+    return render(request, 'dalilalaemal/profiles/profile.html', context)
 
-    # التحقق من وجود كائن Person مرتبط بملف المستخدم، وإذا لم يكن موجودًا، نقوم بإنشائه
-    if user_profile.userID is None:
-        user_profile.userID = UserProfile.objects.create()  # إنشاء كائن Person جديد
-        user_profile.save()  # حفظ التغييرات
-
+@login_required
+def profile_update(request, id):
+    # user_profile, created = UserProfile.objects.get_or_create(userID=request.user)
+    # user = get_object_or_404(User, id=request.user.id)
+    user_profile =  get_object_or_404(UserProfile, userID__id=id)
     if request.method == 'POST':
         user_form = UserForm(request.POST, instance=request.user)
         profile_form = UserProfileForm(request.POST, instance=user_profile)
-
-        # التحقق من صحة البيانات في كلا النموذجين
+        
         if user_form.is_valid() and profile_form.is_valid():
-            # تحديث بيانات المستخدم
-            user = user_form.save(commit=False)
-
-            # التحقق مما إذا تم إدخال كلمة مرور جديدة وحقل التأكيد
-            password = request.POST.get('pass_field')
-            confirm_password = request.POST.get('confirm_pass_field')
-
-            if password and password != "":
-                # التحقق من تطابق كلمة المرور مع التأكيد
-                if password == confirm_password:
-                    user.set_password(password)
-                    user.save()  # حفظ التغييرات في بيانات المستخدم
-                    # تحديث الجلسة بحيث يبقى المستخدم مسجلاً للدخول بعد تغيير كلمة المرور
-                    update_session_auth_hash(request, user)
-                else:
-                    # عرض رسالة خطأ إذا كانت كلمات المرور غير متطابقة
-                    messages.error(request, 'كلمة المرور وتأكيد كلمة المرور غير متطابقتين.')
-                    return redirect('profile')
-
-            user.save()  # حفظ التغييرات في بيانات المستخدم
-
-            # تحديث بيانات الملف الشخصي
-            profile = profile_form.save(commit=False)
-            profile.save()  # حفظ التغييرات في ملف المستخدم
-
-            messages.success(request, 'تم تحديث البيانات بنجاح')
-            return redirect('profile')  # إعادة توجيه المستخدم إلى صفحة الملف الشخصي
+            user_form.save()
+            # حفظ بيانات الملف الشخصي، مع التأكد من أن userID مرتبط بالمستخدم الحالي
+            profile = profile_form.save(commit=False)  # لا تحفظ مباشرة حتى نربط userID
+            profile.userID = request.user  # تعيين userID
+            profile.save()
+            messages.success(request, 'تم تحديث البيانات بنجاح.')
+            return redirect('profile')
         else:
-            messages.error(request, 'الرجاء التحقق من البيانات المدخلة')
+            handle_form_errors(user_form, request)
+            handle_form_errors(profile_form, request)
+            messages.error(request, 'الرجاء تصحيح الأخطاء في النموذج.')
     else:
-        # إنشاء نماذج مع البيانات الحالية للمستخدم والملف الشخصي
         user_form = UserForm(instance=request.user)
         profile_form = UserProfileForm(instance=user_profile)
 
-    # إرسال النماذج إلى القالب لعرضها
     context = {
         'user_form': user_form,
         'profile_form': profile_form,
     }
-
-    return render(request, 'dalilalaemal/profile.html', context)
+    return render(request, 'dalilalaemal/profiles/profile_update.html', context)
 
 def logout(request):
     if request.user.is_authenticated:
@@ -160,4 +161,19 @@ class CustomPasswordResetView(PasswordResetView):
         # إضافة رسالة توضيحية هنا
         print("تم إرسال بريد إلكتروني لاستعادة كلمة المرور")
         return response
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # لإبقاء المستخدم مسجلاً بعد تغيير كلمة المرور
+            messages.success(request, 'تم تغيير كلمة المرور بنجاح.')
+            return redirect('profile')
+        else:
+            messages.error(request, 'الرجاء تصحيح الأخطاء في النموذج.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'accounts/change_password.html', {'form': form})
 

@@ -37,7 +37,7 @@ SECRET_KEY = 'django-insecure-!jh7*^y0ypid3zm^*di7-)21)3e4wpbi+*@4*rb@#p1zsu-41f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.dalilalaemal.com','192.168.1.4']
+ALLOWED_HOSTS = ['.dalilalaemal.com','192.168.1.4','192.168.0.123']
 
 
 # Application definition
@@ -91,8 +91,6 @@ TEMPLATES = [
         },
     },
 ]
-
-WSGI_APPLICATION = 'ais.wsgi.application'
 
 # Database
 from dotenv import load_dotenv #بمتطلبات متغيرات البيئة

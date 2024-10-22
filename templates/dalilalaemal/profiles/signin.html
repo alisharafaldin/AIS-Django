@@ -4,10 +4,6 @@ Create Company {% endblock %} {% block content %}
 
 <div class="content-wrapper">
   <div class="content-main">
-    <!-- <div class="modal-content"> -->
-      <!-- <div class="modal-body"> -->
-
-        {% include 'partials/_alerts.html' %}
         <link rel="stylesheet" href="{% static 'dist/css/signin.css' %}?v=0.3" />
         <div class="login-container">
           {% if request.user.is_authenticated %}

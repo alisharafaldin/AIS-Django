@@ -11,15 +11,17 @@ Create Company {% endblock %} {% block content %}
         <form method="POST" enctype="multipart/form-data">
           <div
             class="form-row main-title"
-            style="display: flex; align-items: center; align-content: center"
+            style="display: flex; align-items: center; align-content: center; justify-content: space-between;"
           >
             <h5
               class="form-group"
-              style="color: var(--subColor)"
-              id="staticBackdropLabel"
-            >
+              style="color: var(--subColor); margin: 0;">
               الملف الشخصي
             </h5>
+            <a href="{% url 'profile_update' user_profile.userID.id %}" class="btn btn-save"">
+              <i class="fas fa-edit"></i> تعديل البيانات</a>
+          <!-- <button >تحديث البيانات</button> -->
+
           </div>
           {% csrf_token %}
           <br />
@@ -27,22 +29,56 @@ Create Company {% endblock %} {% block content %}
           
           <form method="POST">
             {% csrf_token %}
-            {{ user_form.as_p }}
-            {{ profile_form.as_p }}
+            <!-- {{ user.as_p }}
+            {{ user_profile.as_p }} -->
+
+            <div class="form-row">
+              <label class="form-group col-md-3 title-label">الإسم الأول</label>
+              <div class="form-group col-md-3">{{user.first_name}}</div>
+            </div>
             
-            <!-- إضافة حقل كلمة المرور -->
-            <div class="form-group">
-                <label for="password">كلمة المرور الجديدة</label>
-                <input type="password" name="pass_field" id="password" class="form-control">
+            <div class="form-row">
+              <label class="form-group col-md-3 title-label">إسم العائلة</label>
+              <div class="form-group col-md-6">{{user.last_name}}</div>
             </div>
-        
-            <!-- إضافة حقل تأكيد كلمة المرور -->
-            <div class="form-group">
-                <label for="confirm_password">تأكيد كلمة المرور الجديدة</label>
-                <input type="password" name="confirm_pass_field" id="confirm_password" class="form-control">
+
+            <div class="form-row">
+              <label class="form-group col-md-3 title-label">الجنس</label>
+              <div class="form-group col-md-6">{{user_profile.genderID}}</div>
             </div>
-            <button type="submit" class="btn btn-save">تحديث البيانات</button>
-            <a href="{% url 'dalil_home' %}" class="btn btn-danger">إلغاء</a>
+            <div class="form-row">
+              <label class="form-group col-md-3 title-label">إسم المستخدم</label>
+              <div class="form-group col-md-6">{{user.username}}</div>
+            </div>
+            <div class="form-row">
+              <label class="form-group col-md-3 title-label">صورة ملف شخصي</label>
+              <div class="form-group col-md-6">{{user_profile.photo}}</div>
+            </div>
+            <div class="form-row">
+              <label class="form-group col-md-3 title-label">رقم هاتف</label>
+              <div class="form-group col-md-6">{{user_profile.phone}}</div>
+            </div>   
+            <div class="form-row">
+              <label class="form-group col-md-3 title-label">رقم هاتف آخر</label>
+              <div class="form-group col-md-6">{{user_profile.phoneOther}}</div>
+            </div>          
+            <div class="form-row">
+              <label class="form-group col-md-3 title-label">البريد الإلكتروني</label>
+              <div class="form-group col-md-6">{{user.email}}</div>
+            </div>  
+            <div class="form-row">
+              <label class="form-group col-md-3 title-label">بلد الإقامة</label>
+              <div class="form-group col-md-6">{{user_profile.countryID}}</div>
+            </div>
+     
+            <div class="form-row">
+              <label class="form-group col-md-3 title-label">الموطن الأصلي</label>
+              <div class="form-group col-md-6">{{user_profile.nationalityID}}</div>
+            </div>
+
+              <div class="form-group col-md-6">{{user.password1}}</div>
+              <div class="form-group col-md-6">{{user.password2}}</div>
+            </div>
         </form>
         
         </form>

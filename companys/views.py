@@ -6,9 +6,9 @@ from basicinfo.forms import BasicInfoForm, LegalPersonsForm
 from .forms import CompanyForm
 from django.contrib.auth.decorators import login_required
 
-# Create your views here.
+#Create your views here.
 
-# دوال لإنشاء وتحديث وقراءة وحذف القيود المحاسبية
+#دوال لإنشاء وتحديث وقراءة وحذف القيود المحاسبية
 def handle_form_errors(head_form, request):
     """وظيفة مساعد لمعالجة الأخطاء وعرض الرسائل المناسبة."""
     for field, errors in head_form.errors.items():
@@ -36,7 +36,7 @@ def company_create(request):
       legalPerson = legalPerson_Form.save(commit=False)
       legalPerson.basicInfoID = basicInfo
       legalPerson.save()
-      
+
       company = company_form.save(commit=False)
       company.legalPersonID = legalPerson
       company.owner = request.user
@@ -179,7 +179,7 @@ def companys(request):
   }
   return render(request, 'companys/companys.html', context)
 
-# تبديل الشركة وتوجيه المستخدم إلى الصفحة المطلوبة.
+#تبديل الشركة وتوجيه المستخدم إلى الصفحة المطلوبة.
 @login_required
 def switch_company(request, company_id):
     # تحقق إذا كان المستخدم ينتمي للشركة
@@ -197,8 +197,7 @@ def switch_company(request, company_id):
         messages.error(request, 'الشركة غير موجودة أو ليس لديك صلاحيات الوصول إليها.')
         return redirect('companys')
 
-
-# إضافة معلومات الشركة الحالية إلى الطلب عبر Middleware
+#إضافة معلومات الشركة الحالية إلى الطلب عبر Middleware
 class CompanyMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
@@ -217,8 +216,7 @@ class CompanyMiddleware:
         response = self.get_response(request)
         return response
 
-
-# عرض يعرض بيانات الشركة الحالية
+#عرض يعرض بيانات الشركة الحالية
 @login_required
 def tonavbar(request):
     # تأكد من أن الشركة الحالية موجودة

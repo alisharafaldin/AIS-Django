@@ -1,15 +1,14 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.core.paginator import Paginator
-from django.template.loader import render_to_string
-from django.http import JsonResponse
-from django.shortcuts import render, redirect
-from basicinfo.models import BusinessScope, Cities, BasicInfo, LegalPersons
-from basicinfo.forms import SetComboBox, BasicInfoForm, BasicInfoForm, LegalPersonsForm
-from django.contrib.auth.decorators import login_required
-from companys.models import Company, CompanyUser, JobTitle
 from django.contrib import messages
 from companys.forms import CompanyForm
-from django.db.models import Q
+from django.core.paginator import Paginator
+from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse, HttpResponseRedirect
+from companys.models import Company, CompanyUser, JobTitle
+from django.shortcuts import render, redirect, get_object_or_404
+from basicinfo.models import BusinessScope, Cities, BasicInfo, LegalPersons
+from basicinfo.forms import SetComboBox, BasicInfoForm, BasicInfoForm, LegalPersonsForm
 
 def handle_form_errors(head_form, request):
     """وظيفة مساعد لمعالجة الأخطاء وعرض الرسائل المناسبة."""
@@ -297,3 +296,13 @@ def dalils(request):
     }
     # عرض الصفحة مع البيانات
     return render(request, 'dalilalaemal/dalil_dalils.html', context)
+
+def the_four_freedoms_view(request):
+    return render(request, 'dalilalaemal/TheFourFreedoms.html')
+ 
+def add_dalil(request):
+    if not request.user.is_authenticated:
+        # عرض رسالة خطأ في حال لم يكن المستخدم مسجلاً للدخول
+        messages.error(request, 'الرجاء تسجيل الدخول لإضافة عمل جديد إلى الدليل.')
+        return redirect('signin')  # إعادة توجيه المستخدم إلى صفحة تسجيل الدخول
+    return redirect('https://docs.google.com/forms/d/e/1FAIpQLSdIJcsZD9iOsvD9QLYo4mSN-hWxQkZTqhJd1OzPl49qQ4XTzA/viewform')

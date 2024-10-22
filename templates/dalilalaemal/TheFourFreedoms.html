@@ -1,0 +1,126 @@
+{% extends 'base_dalil.html' %} {% load static %} {% block title %} |
+Create Company {% endblock %} {% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<style>
+  .accordion-flush {
+    text-align: right;
+  }
+  .custom-list {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      margin: 0 auto;
+  }
+
+  .custom-list ul {
+      list-style-type: none; /* إزالة النقاط الافتراضية */
+      padding: 0;
+  }
+
+  .custom-list li {
+      background-color: #e7f1ff; /* لون خلفية لكل عنصر */
+      border-left: 5px solid #007bff; /* شريط جانبي */
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      transition: transform 0.3s; /* تأثير الحركة عند التحويم */
+  }
+
+  .custom-list li:hover {
+      transform: translateX(5px); /* تحريك العنصر عند التحويم */
+      background-color: #cfe2ff; /* تغيير لون الخلفية عند التحويم */
+  }
+
+  .custom-list h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #007bff;
+  }
+</style>
+
+<div class="content-wrapper">
+  <div class="content-main" style="margin-top: 70px">
+    <div class="modal-content">
+      <div class="modal-body">
+        {% include 'partials/_alerts.html' %}
+        <!-- Start Modal Countries -->
+        <div class="form-row main-title"
+          style="display: flex; align-items:flex-start; text-align: right; align-content:flex-start; justify-content: space-between;">
+          <h5 class="form-group" style="color: var(--subColor); margin: 0;">ضوابط ومتطلبات ترخيص الأعمال في مصر</h5>
+        </div>
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <!-- <iframe src="{% static 'dist/img/the_four_freedoms_view.pdf' %}" style="width:100%; height:600px;" frameborder="0"></iframe> -->
+          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+          <div class="accordion accordion-flush" id="accordionFlushExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                  إتفاقية الحريات الأربعة بين مصر والسودان
+                </button>
+              </h2>
+              <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                  <a href="{% static 'dist/img/the_four_freedoms_view.pdf' %}" target="_blank">أضغط هنا لتحميل ملف نص الإتفاقية PDF</a>
+              </div>
+            </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                  المتطلبات الخاصة بصاحب النشاط
+                </button>
+              </h2>
+              <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                  <div class="custom-list">
+                    <ul>
+                      <li>تقديم صورة من البطاقة أو جواز السفر - بعد الإطلاع على الأصل، - <code>في حال كان طالب الترخيص غير مصرى </code> بالإضافة إلى تقديم صورة من الترخيص.</li>
+                      <li>تقديم الموافقة الصادرة له من وزارة القوى العاملة.</li>
+                      <li>في حالة عدم حضور صاحب الرخصة يجب إحضار توكيل رسمي منه.</li>
+                      <li>تقديم شهادات صحية لجميع العاملين بالمحلات المختصة بتقديم وتحضير وتداول الأغذية والمشروبات</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                    المتطلبات الخاصة بالنشاط
+                </button>
+              </h2>
+              <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                  <div class="custom-list">
+                    <!-- <h2>الأوراق المطلوبة للحصول على رخصة محل</h2> -->
+                    <ul>
+                      <li>تقديم مستخرج رسمي من السجل التجاري.</li>
+                      <li>تقديم عدد صورة من البطاقة الضريبية بعد الاطلاع على الأصل.</li>
+                      <li>تقديم رسم توضيحي «كروكي»، يتضمن التالي : موقع المحل، ومشتمل على اسم الحي، أو الجهاز، أو المنطقة، واسم الشارع، ورقم العقار، إن وجد، الواقع به المحل</li>
+                      <li>تقديم صورة من عقد الملكية أو عقد الإيجار بعد الاطلاع على الأصل.</li>
+                      <li>في حالة عقد الإيجار، حدد القانون أن يكون العقد يتضمن الآتي (مثبت التاريخ - أن يكون ساري المفعول لمدة لا تقل عن سنة - أن يكون موضحاً به نوع النشاط المطلوب ترخيصه)</li>
+                      <li>تقديم صورة من رخصة البناء بعد الاطلاع على الأصل إن وجدت، أو ما يفيد التقدم بطلب تقنين وضع العقار.</li>
+                      <li>تقديم إفادة من إدارة التنظيم يوضح بها موقف المحل العام في حال وجود رخصة بناء أو تقنين وضع العقار.</li>
+                      <li>تقديم شهادة تصرفات عقارية أو كشف رسمي مستخرج من سجلات مصلحة الضرائب العقارية، موضحا به تاريخ إتمام إقامة المحل بالعقار في حالة بناء العقار قبل العمل بالقوانين المنظمة للبناء، أو المستثناة من تطبيق أحكام قانون البناء.</li>
+                      <li>في حالة عدم وجود رخصة بناء أو تقنين وضع العقار يجب على طالب الترخيص تقديم تقرير هندسي معتمد يثبت السلامة الإنشائية للعقار.</li>
+                      <li>يجب أن تكون جميع المستندات المُقدمة مستندات رسمية في تطبيق قانون العقوبات.</li>
+                    </ul>
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

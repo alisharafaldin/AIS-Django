@@ -58,8 +58,9 @@
     <!-- Bootstrap 4 RTL -->
     <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css"/>
     <!-- Custom RTL Style -->
-    <link rel="stylesheet" href="{% static 'dist/css/dalil_main.css' %}?v=2.5" />
+    <link rel="stylesheet" href="{% static 'dist/css/dalil_main.css' %}?v=2.6" />
   </head>
+
   <body>
     <div class="wrapper">
       {% include 'partials/_dalil_navbar.html' %}
@@ -71,6 +72,14 @@
     <br>
     <br>
     <br>
+      <!-- JavaScript لإخفاء الموقع عن الحواسيب -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      if (window.innerWidth > 768) {
+        document.body.innerHTML = "<h2>نأسف, النسخة الحالية لهذا الموقع تعمل فقط على متصفح الجوال</h2>";
+      }
+    });
+  </script>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- jQuery UI -->

@@ -17,6 +17,8 @@
     <a class="title-list" href="{% url 'dalil_cities' %}">حسب المدينة</a>
     <a class="title-list" href="{% url 'dalil_home' %}">بحث مخصص</a>
     <hr>
+    <a class="title-list" href="{% url 'the_four_freedoms_view' %}">ضوابط ومتطلبات ترخيص الأعمال في مصر</a>
+    <hr>
     {% if request.user.is_authenticated %}
     <a class="title-list" href="{% url 'profile' %}">الملف الشخصي</a>
     <a class="title-list" href="{% url 'logout' %}">تسجيل الخروج</a>

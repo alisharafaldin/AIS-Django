@@ -410,6 +410,7 @@ def invoice_sales_reade(request, id):
     context = {
        'is_edit_mode':is_edit_mode,
        'customer':customer,
+       
         'invoice_body_label': invoice_body,
         'invoice_head_label': invoice_head,
 
