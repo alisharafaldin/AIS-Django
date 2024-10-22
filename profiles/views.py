@@ -3,7 +3,7 @@ from .models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth import login
 from django.contrib import messages
-from .forms import UserProfileForm, UserForm
+from .forms import UserProfileForm, UserForm, UserCreatForm
 from django.shortcuts import render , redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import PasswordResetView
@@ -32,13 +32,11 @@ def handle_formset_errors(head_form, formset, request):
 
 def signup(request):
     if request.method == 'POST':
-        user_form = UserCreationForm(request.POST)
+        user_creat_form = UserCreatForm(request.POST)
         profile_form = UserProfileForm(request.POST, request.FILES)
-        if user_form.is_valid() and profile_form.is_valid():
-            # حفظ المستخدم الجديد
-            user = user_form.save()
-            user.set_password(user_form.cleaned_data['password1'])
-            user.save()
+        if user_creat_form.is_valid() and profile_form.is_valid():
+            # حفظ user_creat_form الجديد
+            user = user_creat_form.save()
 
             # حفظ الملف الشخصي مع ربطه بالمستخدم الجديد
             user_profile = profile_form.save(commit=False)
@@ -51,19 +49,18 @@ def signup(request):
             return redirect('dalil_home')
         else:
             # عرض رسائل الخطأ إذا كانت النماذج غير صالحة
-            for field, errors in user_form.errors.items():
+            for field, errors in user_creat_form.errors.items():
                 for error in errors:
                     messages.error(request, f"{field}: {error}")
             for field, errors in profile_form.errors.items():
                 for error in errors:
                     messages.error(request, f"{field}: {error}")
     else:
-        user_form = UserForm()
         profile_form = UserProfileForm()
-        userCreationForm = UserCreationForm()
+        user_creat_form = UserCreatForm()
 
     context = {
-        'user_form': user_form,
+        'user_creat_form': user_creat_form,
         'profile_form': profile_form,
     }
     return render(request, 'dalilalaemal/profiles/signup.html', context)

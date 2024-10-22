@@ -14,15 +14,15 @@ Company {% endblock %} {% block content %}
         <form method="post">
           {% csrf_token %}
           <div class="form-row">
-            <div class="form-group col-6">{{user_form.first_name}}</div>
-            <div class="form-group col-6">{{user_form.last_name}}</div>
-            <div class="form-group col-md-6">{{user_form.username}}</div>
+            <div class="form-group col-6">{{user_creat_form.first_name}}</div>
+            <div class="form-group col-6">{{user_creat_form.last_name}}</div>
+            <div class="form-group col-md-6">{{user_creat_form.username}}</div>
             <div class="form-group col-md-6">{{profile_form.phone}}</div>
-            <div class="form-group col-md-6">{{user_form.email}}</div>
-            <div class="form-group col-6">{{profile_form.countryID}}</div>
-            <div class="form-group col-6">{{profile_form.nationalityID}}</div>
-            <div class="form-group col-6">{{user_form.password1}}</div>
-            <div class="form-group col-6">{{user_form.password2}}</div>
+            <div class="form-group col-md-6">{{user_creat_form.email}}</div>
+            <div class="form-group col-md-6">{{profile_form.countryID}}</div>
+            <div class="form-group col-md-6">{{profile_form.nationalityID}}</div>
+            <div class="form-group col-md-6">{{user_creat_form.password1}}</div>
+            <div class="form-group col-md-6">{{user_creat_form.password2}}</div>
           </div>
           <div class="row">
             <div class="col">

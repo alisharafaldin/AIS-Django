@@ -44,3 +44,32 @@ class UserForm(forms.ModelForm):
             'first_name': forms.TextInput(attrs={'class':'form-control', 'placeholder':'الإسم الأول'}),
             'last_name': forms.TextInput(attrs={'class':'form-control', 'placeholder':'الإسم الأخير'}),
         }
+
+
+class UserCreatForm(UserCreationForm):
+    email = forms.EmailField(required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'البريد الإلكتروني'}))
+    first_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'الإسم الأول'}))
+    last_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'الإسم الأخير'}))
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
+        widgets = {
+            'username': forms.TextInput(attrs={'class':'form-control', 'placeholder':'إسم المستخدم'}),
+            'password1': forms.PasswordInput(attrs={'class':'form-control', 'placeholder':'كلمة المرور'}),
+            'password2': forms.PasswordInput(attrs={'class':'form-control', 'placeholder':'تأكيد كلمة المرور'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(UserCreatForm, self).__init__(*args, **kwargs)
+        self.fields['password1'].widget = forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'كلمة المرور'})
+        self.fields['password2'].widget = forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'تأكيد كلمة المرور'})
+
+    def save(self, commit=True):
+        user = super(UserCreatForm, self).save(commit=False)
+        user.email = self.cleaned_data['email']
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        if commit:
+            user.save()
+        return user
