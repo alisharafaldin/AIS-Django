@@ -14,5 +14,7 @@ urlpatterns = [
     path('create', views.create, name='dalil_create'),
     path('update/<int:id>', views.update, name='update'),
 
+    path('check_company', views.check_company, name='check_company'),
+
     path('the_four_freedoms_view', views.the_four_freedoms_view, name='the_four_freedoms_view'),
 ]

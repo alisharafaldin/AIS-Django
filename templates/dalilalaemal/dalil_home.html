@@ -2,7 +2,6 @@
 {% load static %}
 {% block title %} | الرئيسة {% endblock %}
 {% block content %}
-{% include 'partials/_alerts.html' %}
 <link rel="stylesheet" href="{% static 'dist/css/dalil_home.css' %}?v=0.2" />
     <!-- رابط إلى مكتبة Font Awesome لأيقونات المواقع الاجتماعية -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -92,6 +91,7 @@
         }
     </style>
 <div class="content-main">
+  {% include 'partials/_alerts.html' %}
   <span style="font-size: 20px" class="fade-in-image">محلات كتير جنبك .. تلقاها بكل سهولة . .</span>
   <div class="counter-container">
     <a class="counter" href="{% url 'dalils' %}">

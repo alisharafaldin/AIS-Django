@@ -1,16 +1,16 @@
-from django.contrib import auth
 from .models import UserProfile
-from django.contrib.auth.models import User
-from django.contrib.auth import login
+from django.contrib import auth
 from django.contrib import messages
-from .forms import UserProfileForm, UserForm, UserCreatForm
-from django.shortcuts import render , redirect, get_object_or_404
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+from django.contrib.auth.models import User
 from django.contrib.auth.views import PasswordResetView
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
-import re
+from .forms import UserProfileForm, UserForm, UserCreatForm
+from django.contrib.auth.views import PasswordChangeDoneView
+from django.shortcuts import render , redirect, get_object_or_404
+
 
 def handle_form_errors(head_form, request):
     """وظيفة مساعد لمعالجة الأخطاء وعرض الرسائل المناسبة."""
@@ -102,8 +102,6 @@ def profile(request):
 
 @login_required
 def profile_update(request, id):
-    # user_profile, created = UserProfile.objects.get_or_create(userID=request.user)
-    # user = get_object_or_404(User, id=request.user.id)
     user_profile =  get_object_or_404(UserProfile, userID__id=id)
     if request.method == 'POST':
         user_form = UserForm(request.POST, instance=request.user)
@@ -130,6 +128,28 @@ def profile_update(request, id):
         'profile_form': profile_form,
     }
     return render(request, 'dalilalaemal/profiles/profile_update.html', context)
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # للحفاظ على تسجيل الدخول بعد تغيير كلمة المرور
+            messages.success(request, 'تم تغيير كلمة المرور بنجاح!')
+            return redirect('password_change_done')
+        else:
+                # عرض رسائل الخطأ إذا كانت النماذج غير صالحة
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+            messages.error(request, 'من فضلك، قم بتصحيح الأخطاء التالية.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'dalilalaemal/profiles/change_password.html', {'form': form})
+
+class CustomPasswordChangeDoneView(PasswordChangeDoneView):
+    template_name = 'dalilalaemal/profiles/password_change_done.html'
 
 def logout(request):
     if request.user.is_authenticated:
@@ -158,19 +178,4 @@ class CustomPasswordResetView(PasswordResetView):
         # إضافة رسالة توضيحية هنا
         print("تم إرسال بريد إلكتروني لاستعادة كلمة المرور")
         return response
-
-@login_required
-def change_password(request):
-    if request.method == 'POST':
-        form = PasswordChangeForm(request.user, request.POST)
-        if form.is_valid():
-            user = form.save()
-            update_session_auth_hash(request, user)  # لإبقاء المستخدم مسجلاً بعد تغيير كلمة المرور
-            messages.success(request, 'تم تغيير كلمة المرور بنجاح.')
-            return redirect('profile')
-        else:
-            messages.error(request, 'الرجاء تصحيح الأخطاء في النموذج.')
-    else:
-        form = PasswordChangeForm(request.user)
-    return render(request, 'accounts/change_password.html', {'form': form})
 

@@ -306,3 +306,20 @@ def add_dalil(request):
         messages.error(request, 'الرجاء تسجيل الدخول لإضافة عمل جديد إلى الدليل.')
         return redirect('signin')  # إعادة توجيه المستخدم إلى صفحة تسجيل الدخول
     return redirect('https://docs.google.com/forms/d/e/1FAIpQLSdIJcsZD9iOsvD9QLYo4mSN-hWxQkZTqhJd1OzPl49qQ4XTzA/viewform')
+
+
+def check_company(request):
+    # التحقق من تسجيل الدخول
+    if request.user.is_authenticated:
+        # التحقق مما إذا كان المستخدم لديه شركة مرتبطة
+        user_companies = Company.objects.filter(owner=request.user)
+        if user_companies.exists():
+            messages.success(request, 'تم الدخول إلى نظام اكتبوه بنجاح, نتمنى لك يوم عمل موفق')
+            return redirect('companys')
+        else:
+            messages.error(request, 'عُذراً, ليس لديك عمل مرتبط بنظام أكتبوه')
+            messages.info(request, f'في حال لديك عمل مسجل في دليل الأعمال يمكنك التواصل مع الدعم الفني - من خلال زر التواصل أسفل الموقع - لتفعيل عملك في نظام اكتبوه, أم قم بتسجيل عمل جديد')
+            return redirect('dalil_home')
+    else:
+        messages.error(request, 'الرجاء تسجيل الدخول لإستخدام نظام اكتبوه.')
+        return redirect('signin')
